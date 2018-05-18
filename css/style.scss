@@ -1,10 +1,10 @@
-@charset "UTF-8";
+@charset "utf8";
 html {
   overflow-x: hidden;
 }
 
 .bg-light {
-  background-image: url("/assets/Retângulo 1.png");
+  background-image: url('/assets/Retângulo\ 1.png');
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
@@ -19,7 +19,7 @@ html {
   margin-left: 8rem;
 }
 
-.nav > a {
+.nav>a {
   color: #495057;
   font-size: 1.1em;
   font-style: italic;
@@ -43,7 +43,7 @@ html {
     display: none;
   }
   html {
-    background-image: url("/assets/Rectangle 1 copy.png");
+    background-image: url('/assets/Rectangle\ 1\ copy.png');
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -64,7 +64,126 @@ html {
   }
   #destaques {
     padding-top: -10rem;
-  }
+  } // #btn_1 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn1.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  // }
+  // #btn_2 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn2.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_3 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn3.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_4 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn4.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_5 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn5.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_6 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn6.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_7 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn7.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_8 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn8.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_9 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn9.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  // }
+  // #btn_10 {
+  //   height: 65px;
+  //   width: 70px;
+  //   border: solid rgb(97, 97, 97) 0.5px !important;
+  //   cursor: pointer;
+  //   background-image: url('/assets/btn10.png');
+  //   background-repeat: no-repeat;
+  //   background-size: cover;
+  //   position: relative;
+  //   border-radius: 15px 15px 15px 15px;
+  //   margin: 0.3rem;
+  //   margin-bottom: -5rem !important;
+  // }
   #fundo_full {
     display: none !important;
   }
@@ -72,7 +191,7 @@ html {
     display: none;
   }
   #como_funciona {
-    background-image: url("/assets/Como Funciona.png");
+    background-image: url('/assets/Como\ Funciona.png');
     background-repeat: no-repeat;
     height: 6rem;
     margin-left: 2rem;
@@ -89,7 +208,7 @@ html {
     margin-left: -3rem;
   }
   #destaques {
-    background-image: url("/assets/");
+    background-image: url('/assets/');
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -97,7 +216,7 @@ html {
     display: none !important;
   }
   #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
+    background-image: url('/assets/Vantagens_title.png');
     background-repeat: no-repeat;
     margin-top: 3rem;
     margin-left: 4rem;
@@ -112,7 +231,7 @@ html {
     padding-right: 4rem;
   }
   #person {
-    background-image: url("/assets/person_book.png");
+    background-image: url('/assets/person_book.png');
     background-repeat: no-repeat;
     background-size: cover;
     height: 18rem;
@@ -121,28 +240,28 @@ html {
     margin-bottom: -8rem;
   }
   #baixe_o_app {
-    background-image: url("/assets/Baixe o aplicativo App Store.png");
+    background-image: url('/assets/Baixe\ o\ aplicativo\ App\ Store.png');
     background-repeat: no-repeat;
     background-size: cover;
     height: 4rem;
     margin-left: -1rem;
   }
   #escolha_o_livro {
-    background-image: url("/assets/Escolha o livro Mais de 1500 a sua disposicao.png");
+    background-image: url('/assets/Escolha\ o\ livro\ Mais\ de\ 1500\ a\ sua\ disposicao.png');
     background-repeat: no-repeat;
     background-size: cover;
     height: 4rem;
     margin-left: -1rem;
   }
   #marque_local {
-    background-image: url("/assets/Marque a localizacao Dica_ Escolha o mais proximo de você.png");
+    background-image: url('/assets/Marque\ a\ localizacao\ Dica_\ Escolha\ o\ mais\ proximo\ de\ você.png');
     background-repeat: no-repeat;
     background-size: cover;
     height: 4rem;
     margin-left: -1rem;
   }
   #pegue_o_livro {
-    background-image: url("/assets/Pegue o livro Vá no encontro do doador e boa leitura.png");
+    background-image: url('/assets/Pegue\ o\ livro\ Vá\ no\ encontro\ do\ doador\ e\ boa\ leitura.png');
     background-repeat: no-repeat;
     background-size: cover;
     height: 4rem;
@@ -151,7 +270,7 @@ html {
 }
 
 .jumbotron {
-  background-image: url("/assets/banner.png");
+  background-image: url('/assets/banner.png');
   background-repeat: no-repeat;
   background-size: cover;
   height: 410px;
@@ -187,7 +306,7 @@ html {
   height: 38px;
   background-color: #fff;
   border: none;
-  color: #302d59;
+  color: rgb(48, 45, 89);
   font-style: italic;
   font-weight: 500;
   border-radius: 0 15px 15px 0;
@@ -205,7 +324,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn1.png");
+  background-image: url('/assets/btn1.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -234,7 +353,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn2.png");
+  background-image: url('/assets/btn2.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -247,7 +366,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn3.png");
+  background-image: url('/assets/btn3.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -260,7 +379,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn4.png");
+  background-image: url('/assets/btn4.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -273,7 +392,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn5.png");
+  background-image: url('/assets/btn5.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -286,7 +405,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn6.png");
+  background-image: url('/assets/btn6.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -299,7 +418,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn7.png");
+  background-image: url('/assets/btn7.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -312,7 +431,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn8.png");
+  background-image: url('/assets/btn8.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -325,7 +444,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn9.png");
+  background-image: url('/assets/btn9.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -338,7 +457,7 @@ html {
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("/assets/btn10.png");
+  background-image: url('/assets/btn10.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -379,6 +498,15 @@ PARA COLOCAR EFEITO DE SOMBRA DEBAIXO DOS CARDS ONDE IRAO AS IMAENS DOS LIVROS
 REMOVA OS COMENTARIOS ABAIXO PARA ABILITAR O EFEITO 
 OU CASO PREFIRA DEIXE-O DESABILITADO 
 */
+
+// .card:hover {
+//   color: rgb(61, 61, 61);
+//   cursor: pointer;
+//   transform: scale(1.1);
+//   box-shadow: 0px 20px 30px 0.1px grey;
+//   border: none;
+//   font-weight: 600;
+// }
 .carousel {
   margin-bottom: -4.4rem;
   margin-top: 6rem;
@@ -394,7 +522,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
 
 #footer {
   margin-top: 14rem;
-  background-image: url("/assets/footer.png");
+  background-image: url('/assets/footer.png');
   background-repeat: no-repeat;
   background-size: cover;
   height: 30rem;
@@ -424,7 +552,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
   margin-top: -36rem;
   margin-left: 5rem;
   z-index: 1;
-  background-image: url("/assets/ok_yellow.png");
+  background-image: url('/assets/ok_yellow.png');
   background-size: cover;
   height: 40px;
   padding-left: 2rem;
@@ -486,7 +614,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     display: none;
   }
   #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
+    background-image: url('/assets/Vantagens_title.png');
     background-repeat: no-repeat;
     margin-top: 3rem;
     margin-left: 4rem;
@@ -501,7 +629,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     padding-right: 4rem;
   }
   #person {
-    background-image: url("/assets/person_book.png");
+    background-image: url('/assets/person_book.png');
     background-repeat: no-repeat;
     height: 20rem;
     max-width: 320px !important;
@@ -513,7 +641,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-bottom: -8rem;
   }
   #baixe_o_app {
-    background-image: url("/assets/Baixe o aplicativo App Store.png");
+    background-image: url('/assets/Baixe\ o\ aplicativo\ App\ Store.png');
     background-repeat: no-repeat;
     height: 5rem;
     max-width: 500px !important;
@@ -521,7 +649,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-left: 30%;
   }
   #escolha_o_livro {
-    background-image: url("/assets/Escolha o livro Mais de 1500 a sua disposicao.png");
+    background-image: url('/assets/Escolha\ o\ livro\ Mais\ de\ 1500\ a\ sua\ disposicao.png');
     background-repeat: no-repeat;
     height: 5rem;
     max-width: 500px !important;
@@ -529,7 +657,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-left: 30%;
   }
   #marque_local {
-    background-image: url("/assets/Marque a localizacao Dica_ Escolha o mais proximo de você.png");
+    background-image: url('/assets/Marque\ a\ localizacao\ Dica_\ Escolha\ o\ mais\ proximo\ de\ você.png');
     background-repeat: no-repeat;
     height: 5rem;
     max-width: 500px !important;
@@ -537,7 +665,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-left: 30%;
   }
   #pegue_o_livro {
-    background-image: url("/assets/Pegue o livro Vá no encontro do doador e boa leitura.png");
+    background-image: url('/assets/Pegue\ o\ livro\ Vá\ no\ encontro\ do\ doador\ e\ boa\ leitura.png');
     background-repeat: no-repeat;
     height: 5rem;
     max-width: 500px !important;
@@ -545,4 +673,3 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-left: 30%;
   }
 }
-/*# sourceMappingURL=style.css.map */
