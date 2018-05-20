@@ -9,7 +9,7 @@ PS. Layout responsivo em desenvolvimento(prévia)
 
 # frontend
 
- O template do site SharedBook em sua versão Beta está sendo utilizado apenas o Bootstrap 4
+ O template do site ShareBook em sua versão Beta está sendo utilizado apenas o Bootstrap 4
 para um melhor aproveitamento de responsividade além das medias queries como auxilio complementar
 para o layout, sendo de suma importância que nessa atual fase de testes e não definitiva do projeto,
 o backend seja implementado visando um melhor aproveitamento de suas funcionalidades.
