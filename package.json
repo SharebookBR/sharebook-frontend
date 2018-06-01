@@ -18,10 +18,13 @@
     "url": "https://github.com/SharebookBR/frontend/issues"
   },
   "homepage": "https://github.com/SharebookBR/frontend#readme",
+<<<<<<< HEAD
 =======
   "name": "angular",
   "version": "0.0.0",
 >>>>>>> 1f9d723... initial commit
+=======
+>>>>>>> 53f78fc... Converting to Angular 6
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
