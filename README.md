@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 #Github
 https://github.com/SharebookBR
@@ -56,10 +54,3 @@ Lembrando-se a princípio que o projeto ainda está em sua fase beta (apenas tes
 
 
 
-<<<<<<< HEAD
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
->>>>>>> 1f9d723... initial commit
-=======
->>>>>>> 53f78fc... Converting to Angular 6

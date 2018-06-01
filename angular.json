@@ -23,15 +23,7 @@
               "src/assets"
             ],
             "styles": [
-<<<<<<< HEAD
-<<<<<<< HEAD
               { "input": "src/style.scss", "bundleName": "style.css" , "lazy":true}
-=======
-              "src/styles.css"
->>>>>>> 1f9d723... initial commit
-=======
-              { "input": "src/style.scss", "bundleName": "style.css" , "lazy":true}
->>>>>>> 53f78fc... Converting to Angular 6
             ],
             "scripts": []
           },
@@ -132,12 +124,4 @@
     }
   },
   "defaultProject": "angular"
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1f9d723... initial commit
-=======
-}
->>>>>>> 53f78fc... Converting to Angular 6
