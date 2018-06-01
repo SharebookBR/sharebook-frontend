@@ -23,7 +23,11 @@
               "src/assets"
             ],
             "styles": [
+<<<<<<< HEAD
               { "input": "src/style.scss", "bundleName": "style.css" , "lazy":true}
+=======
+              "src/styles.css"
+>>>>>>> 1f9d723... initial commit
             ],
             "scripts": []
           },
@@ -124,4 +128,8 @@
     }
   },
   "defaultProject": "angular"
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1f9d723... initial commit

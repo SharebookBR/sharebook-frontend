@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "frontend",
   "version": "1.0.0",
   "description": "It's just a getting started of front end sharebook application",
@@ -17,6 +18,10 @@
     "url": "https://github.com/SharebookBR/frontend/issues"
   },
   "homepage": "https://github.com/SharebookBR/frontend#readme",
+=======
+  "name": "angular",
+  "version": "0.0.0",
+>>>>>>> 1f9d723... initial commit
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
