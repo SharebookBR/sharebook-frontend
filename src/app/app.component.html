@@ -1,36 +1,5 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<app-header></app-header>
 
-  <!--TOPO DO SITE-->
-  <div class="row navbar-link">
-    <div class="col-md-12">
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="col-6">
-          <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-                aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="col-md-6 links">
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="nav">
-              <a class="nav-item nav-link hvr-underline-from-center" href="#">Livros</a>
-              <a class="nav-item nav-link hvr-underline-from-center" href="#">Como Funciona</a>
-              <a class="nav-item nav-link hvr-underline-from-center" href="#">Vantagens</a>
-              <a class="nav-item nav-link hvr-underline-from-center" href="#">Seja um doador</a>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
+<router-outlet></router-outlet>
 
-  <hr/>
-
-  <ul>
-    <li><a routerLink="/"> HOME </a> </li>
-    <li><a routerLink="/book/form"> Cadastro de Livro </a> </li>
-    <li><a routerLink="/another"> Another component </a> </li>
-  </ul>
-
-  <router-outlet></router-outlet>
+<app-footer></app-footer>
