@@ -22,9 +22,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              { "input": "src/style.scss", "bundleName": "style.css" , "lazy":true}
-            ],
+            "styles": [],
             "scripts": []
           },
           "configurations": {
