@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-import { FormComponent as BookFormComponent} from './book/form/form.component';
+import { HomeComponent } from '../components/home/home.component';
+import { FormComponent as BookFormComponent} from '../components/book/form/form.component';
 
 const routes: Routes = [
   {
