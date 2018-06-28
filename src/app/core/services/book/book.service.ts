@@ -35,11 +35,11 @@ export class BookService {
 
   public getFreightOptions() {
     return [
-      new FreightOptions(1, 'Não vou pagar'),
       new FreightOptions(2, 'Cidade'),
-      new FreightOptions(3, 'Stado'),
+      new FreightOptions(3, 'Estado'),
       new FreightOptions(4, 'País'),
       new FreightOptions(5, 'Mundo'),
+      new FreightOptions(1, 'Não vou pagar'),
     ];
     // return this._http.get<Category[]>(`${API_URL}/book/category`);
   }
