@@ -1,0 +1,100 @@
+<form [formGroup]="formGroup" 
+  class="container form-horizontal" 
+  style="padding: 80px 0 80px 0" 
+  (ngSubmit)="addBook()"
+>
+ <div style="padding: 40px 40px 40px 40px">
+    <h1 class="text-center display-4">Quero doar um livro</h1>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group col-md-6 offset-md-3 mb-2">
+          <label class="col-form-label" for="title">Título do livro</label>
+          <input formControlName="title" name="title" type="text" class="form-control">
+          
+          <div *ngIf="formGroup.controls['title'].touched && !formGroup.controls['title'].valid">  
+              <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('required')">  
+              Titulo do livro obrigatório. 
+            </small>  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('minlength')">  
+              O titúlo deve conter no mínimo 3 caracteres.
+            </small>  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('maxlength') ">  
+              O titúlo deve conter no máximo 50 caracteres.
+            </small>  
+          </div>  
+        </div>
+
+        <div class="form-group col-md-6 offset-md-3 mb-2">
+          <label class="col-form-label" for="author">Autor</label>
+          <input formControlName="author" type="text" class="form-control">
+
+          <div *ngIf="formGroup.controls['author'].touched && !formGroup.controls['author'].valid">  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('required')">  
+              Informe o nome do autor do livro.
+            </small>  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('minlength')">  
+              O nome do autor deve conter no mínimo 3 caracteres.
+            </small>  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('maxlength') ">  
+              O nome do autor deve conter no máximo 50 caracteres.
+            </small>  
+          </div>  
+        </div>
+        
+        <div class="form-group col-md-6 offset-md-3 mb-4">
+          <label class="col-form-label" for="categoryId">Categoria</label>
+          <select class="form-control" formControlName="categoryId">
+            <option value=""></option>
+            <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+          </select>
+          <div *ngIf="formGroup.controls['categoryId'].touched && !formGroup.controls['categoryId'].valid">  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['categoryId'].hasError('required')">  
+              Informe a categoria do livro.
+            </small>  
+          </div>  
+        </div>
+
+        <div class="form-group col-md-6 offset-md-3 mb-2">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" formControlName="image" (change)="convertImageToBase64($event)">
+            <label class="custom-file-label" for="image" *ngIf="!formGroup.controls['image'].valid">
+              Selecionar imagem da capa do livro
+            </label>
+            <label class="custom-file-label" for="image" *ngIf="formGroup.controls['image'].valid">
+              {{formGroup.value.image}}
+            </label>
+          </div>
+          <div *ngIf="formGroup.controls['image'].touched && !formGroup.controls['image'].valid">  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['image'].hasError('required')">  
+              Selecione a capa do livro.
+            </small>  
+          </div>
+        </div>
+
+        <div class="form-group col-md-6 offset-md-3 mb-3">
+          <label class="col-form-label" for="value">Vc pagaria o frete para? <3</label>
+          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
+            <label 
+              *ngFor="let option of freightOptions" 
+              class="btn btn-outline-secondary form-control" 
+              (click)="changeFieldFreightOption(option.value)">
+              <input type="radio" name="value"> {{option.text}}
+            </label>
+          </div>
+        </div>
+             
+        <div class="form-group col-md-6 offset-md-3">
+          <div class="text-center">
+            <input 
+              type="submit" 
+              class="btn btn-primary" 
+              value="Doar este livro" 
+              style="padding-left: 50px; padding-right: 50px"
+              [disabled]="!formGroup.valid"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
