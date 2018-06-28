@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent} from './components/book/form/form.component';
 
 import { BookService } from './core/services/book/book.service';
+import { CategoryService } from './core/services/category/category.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { BookService } from './core/services/book/book.service';
     ReactiveFormsModule
   ],
   providers: [
-    BookService
+    BookService,
+    CategoryService
   ],
   bootstrap: [AppComponent]
 })
