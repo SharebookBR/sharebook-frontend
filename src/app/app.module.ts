@@ -1,18 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-import { AppRoutingModule } from './core/app-routing.module';
-import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from "./core/app-routing.module";
+import { AppComponent } from "./app.component";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { FormComponent as BookFormComponent} from './components/book/form/form.component';
+import { HomeComponent } from "./components/home/home.component";
+import { HeaderComponent } from "./components/header/header.component";
+import { FooterComponent } from "./components/footer/footer.component";
+import { FormComponent as BookFormComponent } from "./components/book/form/form.component";
 
-import { BookService } from './core/services/book/book.service';
-import { CategoryService } from './core/services/category/category.service';
+import { BookService } from "./core/services/book/book.service";
+import { CategoryService } from "./core/services/category/category.service";
+import { QuemSomosComponent } from "./components/quem-somos/quem-somos.component";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CategoryService } from './core/services/category/category.service';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
+    QuemSomosComponent
   ],
   imports: [
     BrowserModule,
@@ -29,11 +31,7 @@ import { CategoryService } from './core/services/category/category.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [
-    BookService,
-    CategoryService
-  ],
+  providers: [BookService, CategoryService],
   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {}
