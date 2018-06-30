@@ -16,12 +16,14 @@ import { FormComponent as BookFormComponent } from './components/book/form/form.
 import { RegisterComponent } from './components/register/register.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { AlertComponent } from './core/directives/alert/alert.component'
 import { AuthGuard } from './core/guards/auth.guard'
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service'
 import { UserService } from './core/services/user/user.service'
+import { AlertService } from './core/services/alert/alert.service'
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { UserService } from './core/services/user/user.service'
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import { UserService } from './core/services/user/user.service'
     AuthGuard,
     BookService,
     CategoryService,
+    AlertService,
     AuthenticationService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
