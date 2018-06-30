@@ -10,9 +10,12 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent} from './components/book/form/form.component';
+import { RegisterComponent } from './components/register/register.component'
+import { LoginComponent } from './components/login/login.component'
 
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
+import { UserService } from './core/services/user/user.service'
 
 @NgModule({
   declarations: [
@@ -21,6 +24,8 @@ import { CategoryService } from './core/services/category/category.service';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +36,8 @@ import { CategoryService } from './core/services/category/category.service';
   ],
   providers: [
     BookService,
-    CategoryService
+    CategoryService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
