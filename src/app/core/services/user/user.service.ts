@@ -10,13 +10,25 @@ const API_URL = 'http://localhost:3000/api';
 export class UserService {
     constructor(private _http: HttpClient) { }
 
-    register(user: User) {
-        return this._http.post<User>(`${API_URL}/Account/Register`, user);
+    getAll() {
+        return this._http.get<User[]>(`${API_URL}/users`);
     }
 
-    login(user: User) {
-        return this._http.post<User>(`${API_URL}/Account/Login/`, user);
+    getById(id: number) {
+        return this._http.get(`${API_URL}/users/` + id);
     }
+
+    register(user: User) {
+        return this._http.post(`${API_URL}/Account/Register`, user);
+    }
+
+    update(user: User) {
+        return this._http.put(`${API_URL}/users/` + user.id, user);
+    }
+
+    delete(id: number) {
+        return this._http.delete(`${API_URL}/users/` + id);
+    }    
 
     public getProfile() {
         return [
