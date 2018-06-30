@@ -16,7 +16,6 @@ export class AuthenticationService {
                 if (user && user.token) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('shareBookUser', JSON.stringify(user));
-                    this.router.navigate(['/book/form']);
                 }
 
                 return user;

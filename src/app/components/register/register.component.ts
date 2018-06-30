@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { UserService } from '../../core/services/user/user.service'
-import { User } from '../../core/models/user'
+import { AlertService } from '../../core/services/alert/alert.service'
 
 @Component({
   selector: 'app-form',
@@ -15,6 +16,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private _scUser: UserService,
+    private _scAlert: AlertService,
+    private _router: Router,
     private _formBuilder: FormBuilder
   ) { 
     this.formGroup = _formBuilder.group({
@@ -32,7 +35,15 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.formGroup.valid) {
-      this._scUser.register(this.formGroup.value).subscribe();
+      this._scUser.register(this.formGroup.value).subscribe(
+        data => {
+          this._scAlert.success('Registro realizado com sucesso', true);
+          this._router.navigate(['/login']);
+        },
+        error => {
+          this._scAlert.error(error);
+        }
+      );
     }
   }
 

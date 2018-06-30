@@ -10,8 +10,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        console.log(request.url)
-
         // array in local storage for registered users
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -22,7 +20,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (request.url.endsWith('/Account/Login/') && request.method === 'POST') {
                 // find if any user matches login credentials
                 let filteredUsers = users.filter(user => {
-                    return user.username === request.body.username && user.password === request.body.password;
+                    return user.email === request.body.email && user.password === request.body.password;
                 });
 
                 if (filteredUsers.length) {
@@ -40,7 +38,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return of(new HttpResponse({ status: 200, body: body }));
                 } else {
                     // else return 400 bad request
-                    return throwError({ error: { message: 'Username or password is incorrect' } });
+                    return throwError({ error: { message: 'Usuário ou senha incorreta.' } });
                 }
             }
 
@@ -76,14 +74,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             */
             // register user
             if (request.url.endsWith('/Account/Register') && request.method === 'POST') {
-                console.log('register');
                 // get new user object from post body
                 let newUser = request.body;
 
                 // validation
-                let duplicateUser = users.filter(user => { return user.username === newUser.username; }).length;
+                let duplicateUser = users.filter(user => { return user.email === newUser.email; }).length;
                 if (duplicateUser) {
-                    return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
+                    return throwError({ error: { message: 'Email "' + newUser.email + '" já cadastrado.' } });
                 }
 
                 // save new user
