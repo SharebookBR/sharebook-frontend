@@ -13,6 +13,7 @@ import { FormComponent as BookFormComponent} from './components/book/form/form.c
 import { RegisterComponent } from './components/register/register.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { AuthGuard } from './core/guards/auth.guard'
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
 import { UserService } from './core/services/user/user.service'
@@ -35,6 +36,7 @@ import { UserService } from './core/services/user/user.service'
     ReactiveFormsModule
   ],
   providers: [
+    AuthGuard,
     BookService,
     CategoryService,
     UserService
