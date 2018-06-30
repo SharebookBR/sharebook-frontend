@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this._subscription = this._scUser.getLoggedUser().subscribe(shareBookUser => {
-      console.log(shareBookUser)
       this.shareBookUser = shareBookUser;
       if (this.shareBookUser) {
         this.userLogged = true;
