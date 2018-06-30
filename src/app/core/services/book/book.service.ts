@@ -17,7 +17,6 @@ export class BookService {
   }
 
   public create(book: Book) {
-    console.log(book);
     return this._http.post<Book>(`${API_URL}`, book);
   }
 
