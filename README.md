@@ -34,8 +34,8 @@ ng generate component book/list nomeDoComponente
 
 ```
 
-## Documentação das apis - Swagger
-http://www.sharebook.com.br/swagger/
+## API no ambiente de dev
+http://dev.sharebook.com.br/swagger/
 
 ## HTML Responsivo original - Bootstrap 4
 http://devfrontend.com.br/siteteste.html
