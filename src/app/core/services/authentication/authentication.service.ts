@@ -7,8 +7,6 @@ import { UserService } from '../user/user.service';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 
-const API_URL = 'http://localhost:3000/api';
-
 @Injectable()
 export class AuthenticationService {
     constructor(private http: HttpClient,
