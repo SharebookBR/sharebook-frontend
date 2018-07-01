@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Category } from '../../models/category';
 
-const API_URL = 'http://localhost:3000';
+import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient,  @Inject(APP_CONFIG) private config: AppConfig) { }
 
   public getAll() {
     return [
@@ -21,6 +22,6 @@ export class CategoryService {
   }
 
   public getById(categoryId: number) {
-    return this._http.get<Category>(`${API_URL}/category/${categoryId}`);
+    return this._http.get<Category>(`${this.config.apiEndpoint}/category/${categoryId}`);
   }
 }

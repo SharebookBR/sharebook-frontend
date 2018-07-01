@@ -25,6 +25,8 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { UserService } from './core/services/user/user.service'
 import { AlertService } from './core/services/alert/alert.service'
 
+import { AppConfigModule } from './app-config.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,8 @@ import { AlertService } from './core/services/alert/alert.service'
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppConfigModule
   ],
   providers: [
     AuthGuard,
@@ -54,7 +57,7 @@ import { AlertService } from './core/services/alert/alert.service'
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
-    fakeBackendProvider
+   // fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

@@ -1,37 +1,37 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { User } from '../../models/user';
 import { Profile } from '../../models/profile';
 
-const API_URL = 'http://localhost:3000/api';
+import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 
 @Injectable()
 export class UserService {
 
     private _subject = new Subject<any>();
 
-    constructor(private _http: HttpClient) { }
+    constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) { }
 
     getAll() {
-        return this._http.get<User[]>(`${API_URL}/users`);
+        return this._http.get<User[]>(`${this.config.apiEndpoint}/users`);
     }
 
     getById(id: number) {
-        return this._http.get(`${API_URL}/users/` + id);
+        return this._http.get(`${this.config.apiEndpoint}/users/` + id);
     }
 
     register(user: User) {
-        return this._http.post(`${API_URL}/Account/Register`, user);
+        return this._http.post(`${this.config.apiEndpoint}/Account/Register`, user);
     }
 
     update(user: User) {
-        return this._http.put(`${API_URL}/users/` + user.id, user);
+        return this._http.put(`${this.config.apiEndpoint}/users/` + user.id, user);
     }
 
     delete(id: number) {
-        return this._http.delete(`${API_URL}/users/` + id);
+        return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
     }
 
     setLoggedUser(user: User) {
@@ -40,7 +40,7 @@ export class UserService {
 
     getLoggedUser(): Observable<any> {
         return this._subject.asObservable();
-    }    
+    }
 
     public getProfile() {
         return [
