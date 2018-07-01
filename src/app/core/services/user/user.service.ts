@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { User } from '../../models/user';
 import { Profile } from '../../models/profile';
@@ -23,7 +24,16 @@ export class UserService {
     }
 
     register(user: User) {
-        return this._http.post(`${this.config.apiEndpoint}/Account/Register`, user);
+        return this._http.post<any>(`${this.config.apiEndpoint}/Account/Register`, user)
+        .pipe(map(response => {
+          // login successful if there's a jwt token in the response
+          if (response.success || response.authenticated) {
+              // store user details and jwt token in local storage to keep user logged in between page refreshes
+              localStorage.setItem('shareBookUser', JSON.stringify(response));
+              this.setLoggedUser(response);
+          }
+          return response;
+      }));
     }
 
     update(user: User) {
