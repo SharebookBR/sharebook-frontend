@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         this._scAuthentication.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';        
+        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
 
   }
 
@@ -44,10 +44,14 @@ export class LoginComponent implements OnInit {
         this.formGroup.value.email,
         this.formGroup.value.password).subscribe(
           data => {
-            this._router.navigate([this.returnUrl]);
+            if(data.success || data.authenticated){
+              this._router.navigate([this.returnUrl]);
+            } else {
+              this._scAlert.error(data.messages[0]);
+            }
           },
           error => {
-            this._scAlert.error(error);            
+            this._scAlert.error(error);
           }
         );
     }

@@ -16,15 +16,15 @@ export class AuthenticationService {
 
     login(email: string, password: string) {
         return this.http.post<any>(`${this.config.apiEndpoint}/Account/Login/`, { email: email, password: password })
-            .pipe(map(user => {
+            .pipe(map(response => {
                 // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (response.success || response.authenticated) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('shareBookUser', JSON.stringify(user));
-                    this._user.setLoggedUser(user);
+                    localStorage.setItem('shareBookUser', JSON.stringify(response));
+                    this._user.setLoggedUser(response);
                 }
 
-                return user;
+                return response;
             }));
     }
 
