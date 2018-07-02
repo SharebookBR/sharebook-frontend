@@ -40,7 +40,11 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.freightOptions = this._scBook.getFreightOptions();
-    this.categories = this._scCategory.getAll();
+    this._scCategory.getAll().subscribe(
+      data => {
+        this.categories = data;
+      }
+    );
   }
 
   addBook() {
