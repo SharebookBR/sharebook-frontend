@@ -19,14 +19,14 @@ export class RegisterComponent implements OnInit {
     private _scAlert: AlertService,
     private _router: Router,
     private _formBuilder: FormBuilder
-  ) { 
+  ) {
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
       passwordSalt: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
       linkedin: ['', []],
-      postalCode: ['', [Validators.required]]
+      cep: ['', [Validators.required]]
     })
   }
 
@@ -37,8 +37,13 @@ export class RegisterComponent implements OnInit {
     if (this.formGroup.valid) {
       this._scUser.register(this.formGroup.value).subscribe(
         data => {
+          console.log(data)
+         if(data.success || data.authenticated) {
           this._scAlert.success('Registro realizado com sucesso', true);
-          this._router.navigate(['/login']);
+          this._router.navigate(['/']);
+         } else {
+          this._scAlert.error(data.messages[0]);
+         }
         },
         error => {
           this._scAlert.error(error);

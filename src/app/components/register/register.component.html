@@ -52,7 +52,7 @@
               A senha deve conter no máximo 50 caracteres.
             </small>
           </div>
-        </div>        
+        </div>
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="passwordSalt">Confirmar Senha</label>
@@ -69,8 +69,8 @@
               A confirmação de senha deve conter no máximo 50 caracteres.
             </small>
           </div>
-        </div>        
-        
+        </div>
+
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="linkedin">LinkedIn</label>
           <input formControlName="linkedin" type="text" class="form-control">
@@ -89,21 +89,21 @@
         </div>
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="postalCode">CEP</label>
-          <input formControlName="postalCode" type="text" class="form-control">
+          <label class="col-form-label" for="cep">CEP</label>
+          <input formControlName="cep" type="text" class="form-control">
 
-          <div *ngIf="formGroup.controls['postalCode'].touched && !formGroup.controls['postalCode'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('required')">
+          <div *ngIf="formGroup.controls['cep'].touched && !formGroup.controls['cep'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('required')">
               CEP obrigatório.
             </small>
-            <!--small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('minlength')">
+            <!--small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('minlength')">
               O CEP deve conter no mínimo 3 caracteres.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('maxlength') ">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('maxlength') ">
               O CEP deve conter no máximo 50 caracteres.
             </small-->
           </div>
-        </div>        
+        </div>
 
         <div class="form-group col-md-6 offset-md-3">
           <div class="text-center">
@@ -178,13 +178,13 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="postalcode" class="col-4 col-form-label">CEP</label>
+          <label for="cep" class="col-4 col-form-label">CEP</label>
           <div class="col-8">
             <div class="input-group">
               <div class="input-group-addon">
                 <i class="fa fa-map-marker"></i>
               </div>
-              <input id="postalcode" name="postalcode" type="text" class="form-control here">
+              <input id="cep" name="cep" type="text" class="form-control here">
             </div>
           </div>
         </div>
