@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { fakeBackendProvider } from "./core/helpers";
 
 import { HomeComponent } from "./components/home/home.component";
+import { QuemSomosComponent } from "./components/quem-somos/quem-somos.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { FormComponent as BookFormComponent } from "./components/book/form/form.component";
@@ -31,6 +32,7 @@ import { AppConfigModule } from "./app-config.module";
     AppComponent,
     BookFormComponent,
     HomeComponent,
+    QuemSomosComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
