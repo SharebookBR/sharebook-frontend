@@ -46,9 +46,9 @@ npm start
 ng generate component book/list nomeDoComponente
 ```
 
-## Documentação das apis - Swagger
+## API no ambiente de dev
 
-http://www.sharebook.com.br/swagger/
+http://dev.sharebook.com.br/swagger/
 
 ## HTML Responsivo original - Bootstrap 4
 

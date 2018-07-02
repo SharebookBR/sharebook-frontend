@@ -7,6 +7,9 @@
       <img src="assets/img/baixe.png" alt="baixe o app" id="baixe">
       <img src="assets/img/store.png" alt="aple store e google store" id="store">
       <img src="assets/img/iconfacebook.png" alt="facebook" id="facebook">
+      <div *ngIf="userLogged">
+        Seja bem-vindo, {{shareBookUser.name}}
+      </div>
     </div>
   </div>
 </nav>
@@ -28,7 +31,9 @@
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/">Início</a>
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
+            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Quem somos</a>
+            <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
+            <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
           </div>
         </div>
       </div>
