@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { UserService } from '../../core/services/user/user.service'
-import { AlertService } from '../../core/services/alert/alert.service'
+import { UserService } from '../../core/services/user/user.service';
+import { AlertService } from '../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
       passwordSalt: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
       linkedin: ['', []],
       cep: ['', [Validators.required]]
-    })
+    });
   }
 
   ngOnInit() {
@@ -37,8 +37,8 @@ export class RegisterComponent implements OnInit {
     if (this.formGroup.valid) {
       this._scUser.register(this.formGroup.value).subscribe(
         data => {
-          console.log(data)
-         if(data.success || data.authenticated) {
+          console.log(data);
+         if (data.success || data.authenticated) {
           this._scAlert.success('Registro realizado com sucesso', true);
           this._router.navigate(['/']);
          } else {

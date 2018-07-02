@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthenticationService } from '../../core/services/authentication/authentication.service'
-import { AlertService } from '../../core/services/alert/alert.service'
+import { AuthenticationService } from '../../core/services/authentication/authentication.service';
+import { AlertService } from '../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     this.formGroup = _formBuilder.group({
       email: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]]
-    })
+    });
   }
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.formGroup.value.email,
         this.formGroup.value.password).subscribe(
           data => {
-            if(data.success || data.authenticated){
+            if (data.success || data.authenticated) {
               this._router.navigate([this.returnUrl]);
             } else {
               this._scAlert.error(data.messages[0]);
