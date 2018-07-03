@@ -34,8 +34,6 @@ export class FormComponent implements OnInit {
     });
   }
 
-  get freightOption(): any { return this.formGroup.get('freightOption'); }
-
   ngOnInit() {
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
@@ -53,7 +51,7 @@ export class FormComponent implements OnInit {
   }
 
   onChangeFieldFreightOption(freightOption) {
-    this.freightOption.setValue(freightOption);
+    this.formGroup.controls['freightOption'].setValue(freightOption);
   }
 
   onConvertImageToBase64(event) {
