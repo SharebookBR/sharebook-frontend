@@ -25,6 +25,8 @@ import { UserService } from './core/services/user/user.service';
 import { AlertService } from './core/services/alert/alert.service';
 
 import { AppConfigModule } from './app-config.module';
+import { ListComponent } from './components/book/list/list.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { AppConfigModule } from './app-config.module';
     FooterComponent,
     RegisterComponent,
     LoginComponent,
-    AlertComponent
+    AlertComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,8 @@ import { AppConfigModule } from './app-config.module';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppConfigModule
+    AppConfigModule,
+    Ng2SmartTableModule
   ],
   providers: [
     AuthGuard,

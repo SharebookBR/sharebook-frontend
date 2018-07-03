@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from '../components/home/home.component';
 import { FormComponent as BookFormComponent } from '../components/book/form/form.component';
+import { ListComponent as BookListComponent } from '../components/book/list/list.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -15,6 +16,11 @@ const routes: Routes = [
   {
     path: 'book/form',
     component: BookFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'book/list',
+    component: BookListComponent,
     canActivate: [AuthGuard]
   },
   {
