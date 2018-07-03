@@ -13,17 +13,16 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
-import { RegisterComponent } from './components/register/register.component'
-import { LoginComponent } from './components/login/login.component'
-
-import { AlertComponent } from './core/directives/alert/alert.component'
-import { AuthGuard } from './core/guards/auth.guard'
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { AlertComponent } from './core/directives/alert/alert.component';
+import { AuthGuard } from './core/guards/auth.guard';
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
-import { AuthenticationService } from './core/services/authentication/authentication.service'
-import { UserService } from './core/services/user/user.service'
-import { AlertService } from './core/services/alert/alert.service'
+import { AuthenticationService } from './core/services/authentication/authentication.service';
+import { UserService } from './core/services/user/user.service';
+import { AlertService } from './core/services/alert/alert.service';
 
 import { AppConfigModule } from './app-config.module';
 

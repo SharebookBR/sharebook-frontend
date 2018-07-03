@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { User } from '../../core/models/user';
-import { UserService } from "../../core/services/user/user.service";
+import { UserService } from '../../core/services/user/user.service';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
 
@@ -18,8 +18,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _scUser: UserService) {
 
-    //if has shareBookUser, set value to variables
-    if (localStorage.getItem('shareBookUser')) {      
+    // if has shareBookUser, set value to variables
+    if (localStorage.getItem('shareBookUser')) {
       this.shareBookUser = JSON.parse(localStorage.getItem('shareBookUser'));
       this.userLogged = true;
     }
