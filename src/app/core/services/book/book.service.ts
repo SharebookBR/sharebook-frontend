@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { FreightOptions } from '../../models/freightOptions';
+import { map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 
@@ -17,7 +18,7 @@ export class BookService {
   }
 
   public create(book: Book) {
-    return this._http.post<Book>(`${this.config.apiEndpoint}`, book);
+    return this._http.post<Book>(`${this.config.apiEndpoint}/book`, book);
   }
 
   public getById(bookId: number) {
@@ -33,13 +34,9 @@ export class BookService {
   }
 
   public getFreightOptions() {
-    return [
-      new FreightOptions(2, 'Cidade'),
-      new FreightOptions(3, 'Estado'),
-      new FreightOptions(4, 'País'),
-      new FreightOptions(5, 'Mundo'),
-      new FreightOptions(1, 'Não vou pagar'),
-    ];
-    // return this._http.get<Category[]>(`${API_URL}/book/category`);
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/freightOptions`)
+      .pipe(map(response => {
+        return response;
+    }));
   }
 }
