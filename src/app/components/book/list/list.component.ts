@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
-import { Book } from '../../../core/models/book';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list',
@@ -13,7 +13,15 @@ export class ListComponent implements OnInit {
   books: LocalDataSource;
   settings: any;
 
-  constructor(private _scBook: BookService) {
+  constructor(private _scBook: BookService, private _sanitizer: DomSanitizer) {
+  }
+
+  getCheckBoxTable(value: boolean = false) {
+    if (value) {
+      return '<input type="checkbox" disabled checked>';
+    } else {
+      return '<input type="checkbox" disabled>';
+    }
   }
 
   ngOnInit() {
@@ -21,7 +29,12 @@ export class ListComponent implements OnInit {
       this.books =  new LocalDataSource(resp['items'])
     );
 
+    const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
+    const btnEdit = '<span class="btn btn-info btn-sm"> <i class="fa fa-edit"></i> </span>';
+
     this.settings = {
+      mode: 'inline',
+      hideSubHeader: true,
       columns: {
         title: {
           title: 'Titulo',
@@ -40,22 +53,26 @@ export class ListComponent implements OnInit {
           filter: false
         },
         approved: {
-          title: 'Status',
-          filter: false
+          title: 'Visível',
+          filter: false,
+          type: 'html',
+          valuePrepareFunction: value =>
+            this._sanitizer.bypassSecurityTrustHtml(this.getCheckBoxTable(value)),
         }
       },
       actions: {
         delete: false,
         edit: false,
         add: false,
+        update: false,
         custom: [
           {
             name: 'edit',
-            title: '<span>Editar </span>',
+            title: btnEdit,
           },
           {
             name: 'delete',
-            title: '<span>Deletar </span>',
+            title: btnDelete,
           },
         ],
         position: 'right', // left|right
@@ -91,7 +108,11 @@ export class ListComponent implements OnInit {
 
   onCustom(event) {
     if (event.action === 'delete') {
-      this._scBook.delete(event.data.id);
+      this._scBook.delete(event.data.id).subscribe(resp => {
+        if (resp['success']) {
+          this.books.remove(event.data);
+        }
+      });
     } else {
       console.log('teste');
     }
