@@ -206,6 +206,7 @@
 
 #button_container {
   margin-right: -0.9rem;
+  margin-bottom: 50px;
 }
 
 @media screen and (min-width: 991px) and (max-width: 1195px) {
