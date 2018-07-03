@@ -30,9 +30,7 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       image: ['', [Validators.required]],
       imageBytes: [this._formBuilder.array([])],
-      freightOption: _formBuilder.group({
-        value: new FormControl('', [Validators.required])
-      }),
+      freightOption: ['', [Validators.required]],
     });
   }
 
@@ -43,17 +41,17 @@ export class FormComponent implements OnInit {
     this.categories = this._scCategory.getAll();
   }
 
-  addBook() {
+  onAddBook() {
     if (this.formGroup.valid) {
       this._scBook.create(this.formGroup.value).subscribe();
     }
   }
 
-  changeFieldFreightOption(option) {
+  onChangeFieldFreightOption(option) {
     this.freightOption.setValue({value: option});
   }
 
-  convertImageToBase64(event) {
+  onConvertImageToBase64(event) {
     if (event.target.value) {
       fileUpload(event).then(({base64}) => {
         const control = <FormArray>this.formGroup.controls['imageBytes'];
