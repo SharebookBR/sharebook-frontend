@@ -13,7 +13,7 @@ export class CategoryService {
   constructor(private _http: HttpClient,  @Inject(APP_CONFIG) private config: AppConfig) { }
 
   public getAll() {
-    return this._http.get<Category[]>(`${this.config.apiEndpoint}/category`)
+    return this._http.get<any>(`${this.config.apiEndpoint}/category`)
     .pipe(map(response => {
       return response.items;
     }));

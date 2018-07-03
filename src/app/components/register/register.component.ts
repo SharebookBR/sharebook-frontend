@@ -37,7 +37,6 @@ export class RegisterComponent implements OnInit {
     if (this.formGroup.valid) {
       this._scUser.register(this.formGroup.value).subscribe(
         data => {
-          console.log(data)
          if(data.success || data.authenticated) {
           this._scAlert.success('Registro realizado com sucesso', true);
           this._router.navigate(['/']);
