@@ -92,9 +92,8 @@ export class ListComponent implements OnInit {
   onCustom(event) {
     if (event.action === 'delete') {
       this._scBook.delete(event.data.id);
-    }
-    else {
-
+    } else {
+      console.log('teste');
     }
   }
 }
