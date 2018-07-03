@@ -37,8 +37,13 @@ export class FormComponent implements OnInit {
   get freightOption(): any { return this.formGroup.get('freightOption'); }
 
   ngOnInit() {
-    this.freightOptions = this._scBook.getFreightOptions();
-    this.categories = this._scCategory.getAll();
+    this._scBook.getFreightOptions().subscribe(data =>
+      this.freightOptions = data
+    );
+
+    this._scCategory.getAll().subscribe(data =>
+      this.categories = data
+    );
   }
 
   onAddBook() {

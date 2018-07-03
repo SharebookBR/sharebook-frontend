@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { fakeBackendProvider } from './core/helpers';
 
 import { HomeComponent } from './components/home/home.component';
+import { QuemSomosComponent } from './components/quem-somos/quem-somos.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
@@ -33,6 +34,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     AppComponent,
     BookFormComponent,
     HomeComponent,
+    QuemSomosComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
@@ -57,12 +59,11 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     AuthenticationService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
 
     // provider used to create fake backend
-   // fakeBackendProvider
+    // fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {}

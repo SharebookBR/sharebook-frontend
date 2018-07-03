@@ -7,6 +7,7 @@ import { ListComponent as BookListComponent } from '../components/book/list/list
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
     path: 'book/list',
     component: BookListComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'quem-somos',
+    component: QuemSomosComponent
   },
   {
     path: 'register',
@@ -42,4 +47,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
