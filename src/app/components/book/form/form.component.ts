@@ -52,8 +52,8 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onChangeFieldFreightOption(option) {
-    this.freightOption.setValue({value: option});
+  onChangeFieldFreightOption(freightOption) {
+    this.freightOption.setValue(freightOption);
   }
 
   onConvertImageToBase64(event) {
