@@ -17,6 +17,7 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
+  isSaved: boolean;
 
   constructor(
     private _scBook: BookService,
@@ -34,8 +35,6 @@ export class FormComponent implements OnInit {
     });
   }
 
-  get freightOption(): any { return this.formGroup.get('freightOption'); }
-
   ngOnInit() {
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
@@ -48,12 +47,14 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      this._scBook.create(this.formGroup.value).subscribe();
+      this._scBook.create(this.formGroup.value).subscribe(resp =>
+        console.log(resp)
+      );
     }
   }
 
   onChangeFieldFreightOption(freightOption) {
-    this.freightOption.setValue(freightOption);
+    this.formGroup.controls['freightOption'].setValue(freightOption);
   }
 
   onConvertImageToBase64(event) {

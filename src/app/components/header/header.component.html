@@ -18,20 +18,21 @@
 <div class="row navbar-link">
   <div class="col-md-12">
     <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="col-6">
+      <div class="col-5">
         <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
       </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="col-md-6 links">
+      <div class="col-md-7 links">
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="nav">
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/">Início</a>
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
             <a class="nav-item nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
+            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/list">Painel</a>
             <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
             <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
           </div>
