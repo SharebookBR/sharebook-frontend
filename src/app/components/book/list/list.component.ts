@@ -13,7 +13,10 @@ export class ListComponent implements OnInit {
   books: LocalDataSource;
   settings: any;
 
-  constructor(private _scBook: BookService, private _sanitizer: DomSanitizer) {
+  constructor(
+    private _scBook: BookService,
+    private _sanitizer: DomSanitizer,
+    private _router: Router) {
   }
 
   getCheckBoxTable(value: boolean = false) {
@@ -114,7 +117,7 @@ export class ListComponent implements OnInit {
         }
       });
     } else {
-      console.log('teste');
+      this._router.navigate(['book/form']);
     }
   }
 }

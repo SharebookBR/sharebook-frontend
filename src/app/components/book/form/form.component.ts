@@ -17,6 +17,7 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
+  isSaved: boolean;
 
   constructor(
     private _scBook: BookService,
@@ -46,7 +47,9 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      this._scBook.create(this.formGroup.value).subscribe();
+      this._scBook.create(this.formGroup.value).subscribe(resp =>
+        console.log(resp)
+      );
     }
   }
 

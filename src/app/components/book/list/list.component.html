@@ -1,18 +1,18 @@
 <div class="container" style="padding: 80px 0 80px 0">
-    <div class="row justify-content-end" style="margin-bottom: 10px">
-      <div class="col-3">
-        <input #search 
-          class="form-control" 
-          type="text" placeholder="Search..." 
-          (change)="onSearch(search.value)"
-        >
-      </div>
+  <div class="row justify-content-end" style="margin-bottom: 10px">
+    <div class="col-3">
+      <input #search 
+        class="form-control" 
+        type="text" placeholder="Search..." 
+        (change)="onSearch(search.value)"
+      >
     </div>
-    <ng2-smart-table 
-      class="table" 
-      [settings]="settings" 
-      [source]="books"
-      (custom)="onCustom($event)"
-    >
-    </ng2-smart-table>
+  </div>
+  <ng2-smart-table 
+    class="table" 
+    [settings]="settings" 
+    [source]="books"
+    (custom)="onCustom($event)"
+  >
+  </ng2-smart-table>
 </div>
