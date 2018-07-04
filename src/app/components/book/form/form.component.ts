@@ -30,38 +30,33 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       image: ['', [Validators.required]],
       imageBytes: [this._formBuilder.array([])],
-      freightOption: _formBuilder.group({
-        value: new FormControl('', [Validators.required])
-      }),
+      freightOption: ['', [Validators.required]],
     });
   }
 
   get freightOption(): any { return this.formGroup.get('freightOption'); }
 
   ngOnInit() {
-   this._scBook.getFreightOptions().subscribe(
-      data => {
-        this.freightOptions = data;
-    });
+    this._scBook.getFreightOptions().subscribe(data =>
+      this.freightOptions = data
+    );
 
-    this._scCategory.getAll().subscribe(
-      data => {
-        this.categories = data;
-      }
+    this._scCategory.getAll().subscribe(data =>
+      this.categories = data
     );
   }
 
-  addBook() {
+  onAddBook() {
     if (this.formGroup.valid) {
       this._scBook.create(this.formGroup.value).subscribe();
     }
   }
 
-  changeFieldFreightOption(option) {
-    this.freightOption.setValue({value: option});
+  onChangeFieldFreightOption(freightOption) {
+    this.freightOption.setValue(freightOption);
   }
 
-  convertImageToBase64(event) {
+  onConvertImageToBase64(event) {
     if (event.target.value) {
       fileUpload(event).then(({base64}) => {
         const control = <FormArray>this.formGroup.controls['imageBytes'];

@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
-import { FreightOptions } from '../../models/freightOptions';
 import { map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
@@ -14,7 +13,7 @@ export class BookService {
   constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) { }
 
   public getAll() {
-    return this._http.get<Book[]>(`${this.config.apiEndpoint}`);
+    return this._http.get<Book[]>(`${this.config.apiEndpoint}/book`);
   }
 
   public create(book: Book) {
@@ -22,15 +21,15 @@ export class BookService {
   }
 
   public getById(bookId: number) {
-    return this._http.get<Book>(`${this.config.apiEndpoint}/${bookId}`);
+    return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
   public update(book: Book) {
-    return this._http.put<Book>(`${this.config.apiEndpoint}`, book);
+    return this._http.put<Book>(`${this.config.apiEndpoint}/book`, book);
   }
 
   public delete(bookId: number) {
-    return this._http.delete(`${this.config.apiEndpoint}/${bookId}`);
+    return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
   public getFreightOptions() {

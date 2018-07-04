@@ -9,5 +9,5 @@ export class Book {
   image: string;
   approved: true;
   categoryId: number;
-  freightOption: FreightOptions;
+  freightOption: string;
 }
