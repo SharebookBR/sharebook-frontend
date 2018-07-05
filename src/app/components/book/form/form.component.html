@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" class="container form-horizontal" style="padding: 80px 0 80px 0" (ngSubmit)="addBook()">
+<form [formGroup]="formGroup" class="container form-horizontal" style="padding: 80px 0 80px 0" (ngSubmit)="onAddBook()">
   <div style="padding: 40px 40px 40px 40px">
     <h1 class="text-center display-4">Quero doar um livro</h1>
     <div class="form-row">
@@ -52,7 +52,7 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" formControlName="image" (change)="convertImageToBase64($event)">
+            <input type="file" class="custom-file-input" formControlName="image" (change)="onConvertImageToBase64($event)">
             <label class="custom-file-label" for="image" *ngIf="!formGroup.controls['image'].valid">
               Selecionar imagem da capa do livro
             </label>
@@ -67,15 +67,27 @@
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-3" formGroupName="freightOption">
-          <label class="col-form-label" for="value">Vc pagaria o frete? ❤️</label>
+        <div class="form-group col-md-6 offset-md-3 mb-3">
+          <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
           <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
+
             <label *ngFor="let option of freightOptions" class="btn btn-outline-secondary form-control" (click)="changeFieldFreightOption(option.value)">
               <input type="radio" name="value" formControlName="value"> {{option.text}}
             </label>
           </div>
           <div *ngIf="freightOption.controls['value'].touched && !freightOption.controls['value'].valid">
             <small class="form-text text-danger" *ngIf="freightOption.controls['value'].hasError('required')">
+
+            <label 
+              *ngFor="let option of freightOptions" 
+              class="btn btn-outline-secondary form-control" 
+              (click)="onChangeFieldFreightOption(option.value)">
+              <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
+            </label>
+          </div>
+          <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">  
+            <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">  
+
               Escolha uma opções de frete.
             </small>
           </div>
