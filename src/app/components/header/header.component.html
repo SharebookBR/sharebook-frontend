@@ -1,65 +1,48 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<!--TOPO DO SITE-->
 
-<!--The content below is only a placeholder and can be replaced.-->
-<nav class="navbar  navbar-light bg-light">
-  <div class="container icons">
-    <div class="col-md-12 text-right">
-      <img src="assets/img/baixe.png" alt="baixe o app" id="baixe">
-      <img src="assets/img/store.png" alt="aple store e google store" id="store">
-      <img src="assets/img/iconfacebook.png" alt="facebook" id="facebook">
-      <div *ngIf="userLogged">
-        Seja bem-vindo, {{shareBookUser.name}}
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+  <a class="navbar-brand" href="#">
+    <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link hvr-underline-from-center" routerLink="/">Início
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
+      </li>
+      <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
+      <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
+    </ul>
+    <div *ngIf="userLogged">
+      Seja bem-vindo, {{shareBookUser.name}}
     </div>
   </div>
 </nav>
 
-<!--TOPO DO SITE-->
-<div class="row navbar-link">
-  <div class="col-md-12">
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="col-5">
-        <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
-      </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="col-md-7 links">
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="nav">
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/">Início</a>
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
-            <a class="nav-item nav-link hvr-underline-from-center" routerLink="/book/list">Painel</a>
-            <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
-            <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-</div>
-
-
 <!--JUMBOTRON COM INSERÇAO DE IMAGEM DO TOPO-->
 
 <div class="jumbotron">
-  <div class="col-md-12">
-    <img src="assets/img/find.png" alt="busca" width="21%" id="find">
-  </div>
-  <form class="form-inline">
-    <div class="form-group mb-2">
-      <label for="staticSearch" class="sr-onlyd"></label>
-      <input type="text" readonly class="form-control-plaintext" id="staticSearch" value="">
-    </div>
-    <div class="form-group mx-sm-3 mb-2">
-      <label for="inputSearch" class="sr-only"></label>
+  <div id="find">
+    <img src="../../../assets/img/find.png" alt="busca">
+    <form id="form">
       <input type="text" class="form-control" id="inputSearch" placeholder="">
-    </div>
-    <button type="submit" class="btn btn-primary mb-2 submit_btn">OK</button>
-  </form>
+      <button type="submit" class="btn btn-primary mb-2 submit_btn">OK</button>
+    </form>
+  </div>
 </div>
 
 <!--NAVBAR COM BOTOES PERSONALIZADOS-->
@@ -67,6 +50,7 @@
 
 <div class="container" id="button_container">
   <img src="assets/img/navbtn.png" alt="" id="navbtn">
+  
 
   <ul class="nav justify-content-center" id="buttons">
     <li class="nav-item">
