@@ -36,7 +36,7 @@
     background-size: cover;
   }
   #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
+    background-image: url("/assets/img/Vantagens_title.png");
     background-repeat: no-repeat;
     background-size: cover;
     margin-top: 3rem;
@@ -96,7 +96,7 @@
 }
 
 #vantagens_full {
-  background-image: url("/assets/Vantagens_title.png");
+  background-image: url("/assets/img/Vantagens_title.png");
   background-repeat: no-repeat;
   margin-top: 3rem;
   margin-left: 4rem;

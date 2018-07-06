@@ -68,28 +68,21 @@
         </div>
 
         <div class="form-group col-md-6 offset-md-3 mb-3">
-          <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-
-            <label *ngFor="let option of freightOptions" class="btn btn-outline-secondary form-control" (click)="changeFieldFreightOption(option.value)">
-              <input type="radio" name="value" formControlName="value"> {{option.text}}
-            </label>
-          </div>
-          <div *ngIf="freightOption.controls['value'].touched && !freightOption.controls['value'].valid">
-            <small class="form-text text-danger" *ngIf="freightOption.controls['value'].hasError('required')">
-
-              <label *ngFor="let option of freightOptions" class="btn btn-outline-secondary form-control" (click)="changeFieldFreightOption(option.value)">
+            <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
+            <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
+              <label 
+                *ngFor="let option of freightOptions" 
+                class="btn btn-outline-secondary form-control" 
+                (click)="onChangeFieldFreightOption(option.value)">
                 <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
               </label>
-            </small>
-          </div>
-          <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">
-
-              Escolha uma opções de frete.
-            </small>
-          </div>
-        </div>
+            </div>
+            <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">  
+              <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">  
+                Escolha uma opções de frete.
+              </small>  
+            </div>
+          </div>        
 
         <div class="form-group col-md-6 offset-md-3">
           <div class="text-center">
