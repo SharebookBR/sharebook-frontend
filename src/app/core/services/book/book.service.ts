@@ -21,7 +21,6 @@ export class BookService {
   }
 
   public getById(bookId: string) {
-    console.log(bookId)
     return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
