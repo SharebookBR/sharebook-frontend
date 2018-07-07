@@ -20,6 +20,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'book/form/:id',
+    component: BookFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'book/list',
     component: BookListComponent,
     canActivate: [AuthGuard]

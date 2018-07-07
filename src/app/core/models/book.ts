@@ -1,7 +1,7 @@
 import { FreightOptions } from './freightOptions';
 
 export class Book {
-  id: number;
+  id: string;
   userId: number;
   title: string;
   author: string;

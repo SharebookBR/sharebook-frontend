@@ -39,6 +39,10 @@ export class ListComponent implements OnInit {
       mode: 'inline',
       hideSubHeader: true,
       columns: {
+        id: {
+          title: 'id',
+          filter: false
+        },
         title: {
           title: 'Titulo',
           filter: false
@@ -117,7 +121,7 @@ export class ListComponent implements OnInit {
         }
       });
     } else {
-      this._router.navigate(['book/form']);
+      this._router.navigate([`book/form/${event.data.id}`]);
     }
   }
 }

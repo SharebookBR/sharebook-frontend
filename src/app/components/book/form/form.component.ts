@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import fileUpload from 'fuctbase64';
+import { ActivatedRoute } from '@angular/router';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
+import { Book } from '../../../core/models/book';
 
 @Component({
   selector: 'app-form',
@@ -22,10 +24,11 @@ export class FormComponent implements OnInit {
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
-    private _formBuilder: FormBuilder
-  ) {
+    private _formBuilder: FormBuilder,
+    private _activatedRoute: ActivatedRoute) {
 
     this.formGroup = _formBuilder.group({
+      id: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
@@ -33,6 +36,20 @@ export class FormComponent implements OnInit {
       imageBytes: [this._formBuilder.array([])],
       freightOption: ['', [Validators.required]],
     });
+
+    this.getBookSaved();
+  }
+
+  getBookSaved() {
+    let id = '';
+    this._activatedRoute.params.subscribe((param) => id = param.id);
+    if (id) {
+      this._scBook.getById(id).subscribe(x =>
+        console.log(x)
+      );
+    }
+
+    // this.formGroup.setValue(book);
   }
 
   ngOnInit() {
