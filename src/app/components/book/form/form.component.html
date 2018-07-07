@@ -68,27 +68,31 @@
         </div>
 
         <div class="form-group col-md-6 offset-md-3 mb-3">
-          <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            <label 
-              *ngFor="let option of freightOptions" 
-              class="btn btn-outline-secondary form-control" 
-              (click)="onChangeFieldFreightOption(option.value)">
-              <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
-            </label>
-          </div>
-          <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">  
-            <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">  
-              Escolha uma opções de frete.
-            </small>  
-          </div>
-        </div>
+            <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
+            <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
+              <label 
+                *ngFor="let option of freightOptions" 
+                class="btn btn-outline-secondary form-control" 
+                (click)="onChangeFieldFreightOption(option.value)">
+                <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
+              </label>
+            </div>
+            <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">  
+              <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">  
+                Escolha uma opções de frete.
+              </small>  
+            </div>
+          </div>        
 
         <div class="form-group col-md-6 offset-md-3">
           <div class="text-center">
             <input type="submit" class="btn btn-primary" value="Doar este livro" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
           </div>
         </div>
+
+
+
+
       </div>
     </div>
   </div>

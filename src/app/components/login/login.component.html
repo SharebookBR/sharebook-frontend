@@ -5,7 +5,12 @@
       <div class="col">
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="email">E-mail</label>
-          <input formControlName="email" type="text" class="form-control">
+          <div class="input-group">
+            <input formControlName="email" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-envelope-square"></i>
+            </div>
+          </div>          
 
           <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
@@ -22,7 +27,12 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="password">Senha</label>
-          <input formControlName="password" type="password" class="form-control">
+          <div class="input-group">
+            <input formControlName="password" type="password" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-unlock-alt"></i>
+            </div>
+          </div>          
 
           <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">

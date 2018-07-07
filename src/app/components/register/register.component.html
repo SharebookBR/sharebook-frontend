@@ -3,10 +3,17 @@
     <h1 class="text-center display-4">Registro</h1>
     <div class="form-row">
       <div class="col">
+
+
+
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="name">Nome</label>
-          <input formControlName="name" name="name" type="text" class="form-control">
-
+          <div class="input-group">
+            <input formControlName="name" name="name" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-address-book"></i>
+            </div>
+          </div>
           <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
               Nome obrigatório.
@@ -22,7 +29,12 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="email">E-mail</label>
-          <input formControlName="email" type="text" class="form-control">
+          <div class="input-group">
+            <input formControlName="email" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-envelope-square"></i>
+            </div>
+          </div>
 
           <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
@@ -39,7 +51,12 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="password">Senha</label>
-          <input formControlName="password" type="password" class="form-control">
+          <div class="input-group">
+            <input formControlName="password" type="password" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-unlock-alt"></i>
+            </div>
+          </div>
 
           <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
@@ -56,7 +73,12 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="passwordSalt">Confirmar Senha</label>
-          <input formControlName="passwordSalt" type="password" class="form-control">
+          <div class="input-group">
+            <input formControlName="passwordSalt" type="password" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-unlock-alt"></i>
+            </div>
+          </div>
 
           <div *ngIf="formGroup.controls['passwordSalt'].touched && !formGroup.controls['passwordSalt'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('required')">
@@ -72,8 +94,23 @@
         </div>
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
+          <label class="col-form-label" for="phone">DDD + Telefone</label>
+          <div class="input-group">
+            <input formControlName="phone" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-whatsapp"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="linkedin">LinkedIn</label>
-          <input formControlName="linkedin" type="text" class="form-control">
+          <div class="input-group">
+            <input formControlName="linkedin" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-linkedin"></i>
+            </div>
+          </div>
 
           <!--div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('required')">
@@ -90,7 +127,12 @@
 
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="cep">CEP</label>
-          <input formControlName="cep" type="text" class="form-control">
+          <div class="input-group">
+            <input formControlName="cep" type="text" class="form-control">
+            <div class="input-group-addon append">
+              <i class="fa fa-map-marker"></i>
+            </div>
+          </div>
 
           <div *ngIf="formGroup.controls['cep'].touched && !formGroup.controls['cep'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('required')">
