@@ -97,7 +97,7 @@ html {
     display: none !important;
   }
   #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
+    background-image: url("/assets/img/Vantagens_title.png");
     background-repeat: no-repeat;
     margin-top: 3rem;
     margin-left: 4rem;
@@ -486,7 +486,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     display: none;
   }
   #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
+    background-image: url("/assets/img/Vantagens_title.png");
     background-repeat: no-repeat;
     margin-top: 3rem;
     margin-left: 4rem;
