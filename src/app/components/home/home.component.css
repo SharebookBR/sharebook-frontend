@@ -1,115 +1,399 @@
-@media screen and (max-width: 320px) {
-  html {
-    background-image: url("/assets/Rectangle 1 copy.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  #destaques {
-    padding-top: -10rem;
-  }
-  #fundo_full {
-    display: none !important;
-  }
-  .carousel {
-    display: none;
-  }
-  #como_funciona {
-    background-image: url("/assets/Como Funciona.png");
-    background-repeat: no-repeat;
-    height: 6rem;
-    margin-left: 2rem;
-    margin-top: 3rem;
-  }
-  #como_fazer {
-    color: #495057;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-style: initial;
-    font-weight: 500;
-    margin-top: 2rem;
-    text-align: center;
-    padding: 1rem;
-    margin-left: -3rem;
-  }
-  #destaques {
-    background-image: url("/assets/");
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  #vantagens_full {
-    background-image: url("/assets/Vantagens_title.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-top: 3rem;
-    margin-left: 4rem;
-    padding-top: 3rem;
-    color: #495057;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-style: initial;
-    font-weight: 500;
-    text-align: center;
-    padding-right: 4rem;
-  }
-  #banner_livros {
-    margin-bottom: -4rem;
-  }
+/*
+ jumbotron
+               */
+
+.container-jumbotron {
+  padding: 0;
 }
 
-#destaque {
-  text-align: center;
-  margin-top: 10rem;
-  margin-left: 58rem;
-}
-
-.card {
-  display: -webkit-inline-box;
-  margin: 1rem;
-}
-
-.carousel {
-  margin-bottom: -4.4rem;
+.jumbotron {
+  background-image: url("src/assets/img/banner.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 410px;
+  z-index: -6;
+  margin-left: -12rem;
   margin-top: 6rem;
 }
 
-#vantagens {
-  padding-top: 4rem;
+#find {
+  margin-top: 12.5rem;
+  float: right;
+  -webkit-transition: width 1s;
+  -webkit-transition-delay: 1s;
+  transition: width 1s;
+  transition-delay: 1s;
+  width: 335px;
 }
 
-#banner_livros {
-  padding-top: 4rem;
+.form-control {
+  display: block;
+  width: 250px !important;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 15px 15px;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  margin-left: -0.3rem;
+  margin-left: 0rem;
 }
 
-#informativo {
-  margin-top: -36rem;
-  margin-left: -10rem;
+#form {
+  margin-top: -4rem;
+  margin-left: 2rem;
+  position: relative;
+  width: 250px;
 }
 
-#como_fazer {
+.submit_btn {
+  margin-right: -18rem;
+  margin-left: 14.5rem;
+  margin-top: -3.59rem;
+  height: 38px;
+  background-color: #fff;
+  border: none;
+  color: #302d59;
+  font-style: italic;
+  font-weight: 500;
+  border-radius: 0 15px 15px 0;
+  z-index: 3;
+}
+
+/* 
+  nav-buttons 
+                   */
+
+.button_container {
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+#navbtn {
+  max-width: 100%;
+  height: auto;
+  margin-top: -5.3rem;
+  display: block;
+  /* float: right; */
+}
+
+#button_container {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-auto-rows: max-content;
+}
+
+#btn_1:hover,
+#btn_2:hover,
+#btn_3:hover,
+#btn_4:hover,
+#btn_5:hover,
+#btn_6:hover,
+#btn_7:hover,
+#btn_8:hover,
+#btn_9:hover,
+#btn_10:hover {
+  color: #fff;
+  cursor: pointer;
+  transform: scale(1);
+  box-shadow: 0px 5px 15px 0.1px grey;
+}
+
+#btn_1 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_2 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_3 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_4 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn4.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_5 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn5.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_6 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn6.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_7 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn7.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_8 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn8.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_9 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn9.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+#btn_10 {
+  height: 65px;
+  width: 70px;
+  border: none;
+  cursor: pointer;
+  background-image: url("src/assets/img/btn10.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-radius: 15px 15px 15px 15px;
+  margin: 0.3rem;
+}
+
+/* book covers */
+
+.book-covers {
+  margin-bottom: 5rem;
+}
+
+.figure {
+  margin: 1rem;
+}
+
+#book-covers {
+  margin: 1rem;
+}
+
+/*carousel*/
+
+.container-carousel {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+  margin-bottom: -8.5rem;
+}
+
+#btn-previous {
+  border-radius: 100px 100px 100px 100px;
+  height: 50px;
+  width: 50px;
+  border: none;
+  background-color: black;
+  cursor: pointer;
+}
+
+#btn-next {
+  border-radius: 100px 100px 100px 100px;
+  height: 50px;
+  width: 50px;
+  border: none;
+  background-color: black;
+  cursor: pointer;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-bottom: -12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 15%;
+  color: #fff;
+  text-align: center;
+  opacity: .5;
+}
+
+.carousel-control-next-icon {
+  margin-bottom: -3px;
+  margin-left: 7px;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  margin-top: 3px;
+  margin-right: 4px;
+}
+
+/*how it works*/
+
+.how-it-works {
+  -webkit-box-pack: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+  margin-top: 5rem;
+}
+
+@media (min-width: 360px) and (orientation: landscape) {
+  .background-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width:441px) {
+  .full-background {
+    display: none !important;
+  }
+}
+
+@media (max-width:524px) {
+  .full-background {
+    display: none;
+  }
+}
+
+@media (max-width:640px) {
+  .full-background {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
+
+@media (min-width:768px) {
+  .background-mobile {
+    display: none;
+  }
+}
+
+@media (min-width:1024px) and (orientation: landscape) {
+  .full-background {
+    background: url("src/assets/img/fundoazul.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
+
+#how {
   color: #495057;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-style: initial;
-  font-size: 1.4em;
   font-weight: 500;
   margin-top: 2rem;
   text-align: center;
   padding: 1rem;
-  margin-left: -3rem;
 }
 
-#vantagens_full {
-  background-image: url("/assets/Vantagens_title.png");
-  background-repeat: no-repeat;
-  margin-top: 3rem;
-  margin-left: 4rem;
-  padding-top: 1rem;
+/*benefits*/
+
+#do-good {
   color: #495057;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-style: initial;
-  font-size: 1.4em;
   font-weight: 500;
+  margin-top: 2rem;
   text-align: center;
-  padding-right: 4rem;
+  padding: 1rem;
 }
 
-#banner_livros {
-  margin-bottom: -4rem;
+@media(min-width:1224px) {
+  .container-benefits {
+    display: none;
+  }
+}
+
+@media(max-width:1224px) {
+  .container-benefits-full-background {
+    display: none;
+  }
 }
