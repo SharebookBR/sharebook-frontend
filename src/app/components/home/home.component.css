@@ -7,7 +7,7 @@
 }
 
 .jumbotron {
-  background-image: url("src/assets/img/banner.png");
+  background-image: url("assets/img/banner.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 410px;
@@ -111,7 +111,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn1.png");
+  background-image: url("assets/img/btn1.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -137,7 +137,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn3.png");
+  background-image: url("assets/img/btn3.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -150,7 +150,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn4.png");
+  background-image: url("assets/img/btn4.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -163,7 +163,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn5.png");
+  background-image: url("assets/img/btn5.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -176,7 +176,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn6.png");
+  background-image: url("assets/img/btn6.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -189,7 +189,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn7.png");
+  background-image: url("assets/img/btn7.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -202,7 +202,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn8.png");
+  background-image: url("assets/img/btn8.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -215,7 +215,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn9.png");
+  background-image: url("assets/img/btn9.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -228,7 +228,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("src/assets/img/btn10.png");
+  background-image: url("assets/img/btn10.png");
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -356,7 +356,7 @@
 
 @media (min-width:1024px) and (orientation: landscape) {
   .full-background {
-    background: url("src/assets/img/fundoazul.png") no-repeat center center;
+    background: url("assets/img/fundoazul.png") no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
