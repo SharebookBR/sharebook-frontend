@@ -1,5 +1,11 @@
 {
   "editor.tabSize": 2,
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true,
+  "javascript.preferences.quoteStyle": "single",
+  "files.encoding": "utf8",
   "files.eol": "\n",
-  "files.encoding": "utf8"
+  "editor.detectIndentation": false,
+  "prettier.tabWidth": 2,
+  "prettier.printWidth": 120
 }

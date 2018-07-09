@@ -1,25 +1,9 @@
-#footer {
+.container-footer {
   margin-top: 8rem;
-  background: url("/assets/img/footer.png") no-repeat;
+  padding-bottom: 4rem;
+  background: url("assets/img/footer.png") no-repeat;
   background-size: cover;
-  height: 30rem;
-}
-
-#submit_button_footer {
-  z-index: 1;
-  background-size: cover;
-  height: 40px;
-  padding-left: 2rem;
-  margin-top: 8px;
-  margin-left: -5px;
-  color: #fff;
-  background: #ffcc00 url(/assets/img/ok_yellow.png);
-  border-color: #ffcc00;
-}
-
-#informativo {
-  margin-top: 8rem;
-  margin-bottom: 2rem;
+  height: auto;
 }
 
 #face_store {
@@ -27,9 +11,26 @@
   margin-right: -1rem;
 }
 
-@media (min-width: 280px) {
-  .form-inline .form-control {
-    display: inline-block;
-    width: 200px;
-  }
+#informativo {
+  margin-top: 8rem;
+}
+
+.form-group {
+  display: block;
+}
+
+#inputSubscribe {
+  float: left;
+}
+
+.btn-warning {
+  z-index: 1;
+  background-size: cover;
+  height: 40px;
+  padding-left: 2rem;
+  margin-left: -20px;
+  color: #fff;
+  background: #ffcc00 url("assets/img/ok_yellow.png");
+  border-color: #ffcc00;
+  display: block;
 }
