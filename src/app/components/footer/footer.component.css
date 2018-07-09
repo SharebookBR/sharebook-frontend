@@ -1,7 +1,7 @@
 .container-footer {
   margin-top: 8rem;
   padding-bottom: 4rem;
-  background: url("src/assets/img/footer.png") no-repeat;
+  background: url("assets/img/footer.png") no-repeat;
   background-size: cover;
   height: auto;
 }
@@ -30,7 +30,7 @@
   padding-left: 2rem;
   margin-left: -20px;
   color: #fff;
-  background: #ffcc00 url("src/assets/img/ok_yellow.png");
+  background: #ffcc00 url("assets/img/ok_yellow.png");
   border-color: #ffcc00;
   display: block;
 }
