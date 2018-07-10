@@ -1,37 +1,36 @@
-<!--TOPO DO SITE-->
+ <!--navbar-fixed-->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <a class="navbar-brand" href="#">
-    <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item ">
-        <a class="nav-link hvr-underline-from-center" routerLink="/">Início
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
-      </li>
-      <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
-      <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
-    </ul>
-    <div *ngIf="userLogged">
-      Seja bem-vindo, {{shareBookUser.name}}
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="#">
+      <img src="assets/img/logo.png" alt="logotipo" id="logotipo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item ">
+          <a class="nav-link hvr-underline-from-center" routerLink="/">Início
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Doe um Livro</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link hvr-underline-from-center" routerLink="/book/form">Apoie o projeto</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
+        </li>
+        <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
+        <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
+      </ul>
+      <div *ngIf="userLogged">
+        Seja bem-vindo, {{shareBookUser.name}}
+      </div>
     </div>
-  </div>
-</nav>
-
-<!-- para afastar o miolo do menu. -->
-<div style="width: 100%; height: 100px;"></div>
+  </nav>
+</div>
