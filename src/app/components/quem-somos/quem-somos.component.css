@@ -10,3 +10,7 @@ p {
 .flex-container .card {
   margin: 6px;
 }
+
+.card {
+  width: 200px;
+}
