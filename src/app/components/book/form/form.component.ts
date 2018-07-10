@@ -42,14 +42,14 @@ export class FormComponent implements OnInit {
     this._activatedRoute.params.subscribe((param) => id = param.id);
     if (id) {
       this._scBook.getById(id).subscribe(x => {
-          const foo = { 
+          const foo = {
             id: x.id,
             title: x.title,
             author: x.author,
             categoryId: x.categoryId,
             freightOption: x.freightOption,
           };
-          console.log(foo)
+          console.log(foo);
 
           this.formGroup.setValue(foo);
         }
