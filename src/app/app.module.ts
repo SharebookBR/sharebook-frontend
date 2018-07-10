@@ -17,6 +17,8 @@ import { FormComponent as BookFormComponent } from './components/book/form/form.
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './core/directives/alert/alert.component';
+import { PanelComponent } from './components/panel/panel.component';
+import { AccountComponent } from './components/account/account.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
@@ -40,7 +42,9 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     RegisterComponent,
     LoginComponent,
     AlertComponent,
-    ListComponent
+    ListComponent,
+    PanelComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
