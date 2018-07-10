@@ -8,6 +8,7 @@ import { CategoryService } from '../../../core/services/category/category.servic
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { Book } from '../../../core/models/book';
+import { tap } from '../../../../../node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-form',
@@ -32,20 +33,26 @@ export class FormComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
-      image: ['', [Validators.required]],
-      imageBytes: [this._formBuilder.array([])],
       freightOption: ['', [Validators.required]],
     });
-
-    this.getBookSaved();
   }
 
   getBookSaved() {
     let id = '';
     this._activatedRoute.params.subscribe((param) => id = param.id);
     if (id) {
-      this._scBook.getById(id).subscribe(x =>
-        console.log(x)
+      this._scBook.getById(id).subscribe(x => {
+          const foo = { 
+            id: x.id,
+            title: x.title,
+            author: x.author,
+            categoryId: x.categoryId,
+            freightOption: x.freightOption,
+          };
+          console.log(foo)
+
+          this.formGroup.setValue(foo);
+        }
       );
     }
 
@@ -60,6 +67,8 @@ export class FormComponent implements OnInit {
     this._scCategory.getAll().subscribe(data =>
       this.categories = data
     );
+
+    this.getBookSaved();
   }
 
   onAddBook() {
