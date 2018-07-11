@@ -1,4 +1,4 @@
- <!--navbar-fixed-->
+<!--navbar-fixed-->
 
 <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -25,8 +25,13 @@
         <li class="nav-item ">
           <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos">Quem somos</a>
         </li>
-        <a *ngIf="!userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
-        <a *ngIf="userLogged" class="nav-item nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
+        <li class="nav-item ">
+          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel">Meu Painel</a>
+        </li>        
+        <li class="nav-item ">
+          <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
+          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
+        </li>
       </ul>
       <div *ngIf="userLogged">
         Seja bem-vindo, {{shareBookUser.name}}
