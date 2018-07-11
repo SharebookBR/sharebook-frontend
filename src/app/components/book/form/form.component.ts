@@ -74,7 +74,7 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      console.log(this.formGroup.value)
+      console.log(this.formGroup.value);
       if (!this.formGroup.value.id) {
         this._scBook.create(this.formGroup.value).subscribe(resp =>
           console.log(resp)
