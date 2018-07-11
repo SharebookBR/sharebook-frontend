@@ -39,10 +39,6 @@ export class ListComponent implements OnInit {
       mode: 'inline',
       hideSubHeader: true,
       columns: {
-        id: {
-          title: 'id',
-          filter: false
-        },
         title: {
           title: 'Titulo',
           filter: false
@@ -51,12 +47,14 @@ export class ListComponent implements OnInit {
           title: 'Autor',
           filter: false
         },
-        name: {
+        user: {
           title: 'Doador',
+          valuePrepareFunction: data => data.name,
           filter: false
         },
         phone: {
           title: 'Telefone',
+          valuePrepareFunction: data => data.phone,
           filter: false
         },
         approved: {

@@ -1,6 +1,7 @@
 img {
   height: 280px;
   width: 220px;
+  margin-top: 60px
 }
 
 select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
