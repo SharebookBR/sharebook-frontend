@@ -6,6 +6,8 @@ import { FormComponent as BookFormComponent } from '../components/book/form/form
 import { ListComponent as BookListComponent } from '../components/book/list/list.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
+import { PanelComponent } from '../components/panel/panel.component';
+import { AccountComponent } from '../components/account/account.component';
 import { AuthGuard } from './guards/auth.guard';
 import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
 
@@ -40,6 +42,14 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'panel',
+    component: PanelComponent
+  },
+  {
+    path: 'account',
+    component: AccountComponent
   },
   // otherwise redirect to home
   {

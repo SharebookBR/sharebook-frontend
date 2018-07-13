@@ -1,30 +1,8 @@
 .fixed-top {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 999 !important;
-  margin-top: -2.5rem;
-  padding-top: 4rem;
   background-color: #fff !important;
   border-bottom: 10px solid rgba(43, 128, 213, 0.1);
 }
 
-.sticky-top {
-  z-index: 0 !important;
-}
-
-.col-6 {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 50%;
-  flex: 0 0 50%;
-  max-width: 30%;
-}
-
-#logotipo {
-  margin-top: -2rem;
-  margin-left: 8rem;
-}
 
 .nav>a> {
   color: #495057;
@@ -48,57 +26,6 @@
   font-weight: 600;
 }
 
-.links {
-  margin-top: -1.7rem;
-  margin-left: 11rem;
-  padding: 1rem;
-}
-
 .navbar-toggler {
   border: none !important;
-}
-
-@media screen and (min-width: 320px) {
-  /* #vantagens_full {
-    display: inherit;
-  } */
-  #como_fazer {
-    display: inherit;
-  }
-  .links {
-    margin-top: 0important;
-    margin-left: 0 !Important;
-    padding: 1rem;
-  }
-}
-
-@media screen and (min-width:294px) {
-  #como_fazer {
-    display: inherit;
-  }
-  .links {
-    margin-top: 0important;
-    margin-left: 0 !Important;
-    padding: 1rem;
-  }
-}
-
-@media screen and (min-width: 318px) and (max-width: 427px) {
-  #logotipo {
-    margin-left: -1rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .navbar-expand-lg .navbar-collapse {
-    display: -webkit-box !important;
-    display: -ms-flexbox !important;
-    display: flex !important;
-    -ms-flex-preferred-size: auto;
-    flex-basis: auto;
-    color: #495057;
-    font-size: 0.90em;
-    font-style: italic;
-    font-weight: 600;
-  }
 }
