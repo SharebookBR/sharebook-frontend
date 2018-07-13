@@ -27,7 +27,7 @@
         </li>
         <li class="nav-item ">
           <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel">Meu Painel</a>
-        </li>        
+        </li>
         <li class="nav-item ">
           <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login">Entrar</a>
           <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
@@ -39,3 +39,6 @@
     </div>
   </nav>
 </div>
+
+<!-- para afastar o miolo do menu. -->
+<div style="width: 100%; height: 118px;"></div>

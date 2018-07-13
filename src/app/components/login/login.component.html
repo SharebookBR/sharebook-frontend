@@ -1,57 +1,55 @@
-<form [formGroup]="formGroup" class="container form-horizontal" style="padding: 80px 0 80px 0" (ngSubmit)="loginUser()">
-  <div style="padding: 40px 40px 40px 40px">
-    <h1 class="text-center display-4">Login</h1>
-    <div class="form-row">
-      <div class="col">
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="email">E-mail</label>
-          <div class="input-group">
-            <input formControlName="email" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-envelope-square"></i>
-            </div>
-          </div>          
-
-          <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
-              E-mail obrigatório.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
-              O e-mail deve conter no mínimo 3 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
-              O e-mail deve conter no máximo 50 caracteres.
-            </small>
+<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="loginUser()">
+  <h1 class="text-center display-4">Login</h1>
+  <div class="form-row">
+    <div class="col">
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="email">E-mail</label>
+        <div class="input-group">
+          <input formControlName="email" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-envelope-square"></i>
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="password">Senha</label>
-          <div class="input-group">
-            <input formControlName="password" type="password" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-unlock-alt"></i>
-            </div>
-          </div>          
+        <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
+            E-mail obrigatório.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
+            O e-mail deve conter no mínimo 3 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
+            O e-mail deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
 
-          <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
-              Senha obrigatória.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
-              A senha deve conter no mínimo 6 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength') ">
-              A senha deve conter no máximo 50 caracteres.
-            </small>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="password">Senha</label>
+        <div class="input-group">
+          <input formControlName="password" type="password" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-unlock-alt"></i>
           </div>
-        </div>        
+        </div>
 
-        <div class="form-group col-md-6 offset-md-3">
-          <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="Login" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
-            <a [routerLink]="['/register']" class="btn btn-link">Registrar</a>
-          </div>
+        <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
+            Senha obrigatória.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
+            A senha deve conter no mínimo 6 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength') ">
+            A senha deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3">
+        <div class="text-center">
+          <input type="submit" class="btn btn-primary" value="Login" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <a [routerLink]="['/register']" class="btn btn-link">Registrar</a>
         </div>
       </div>
     </div>
