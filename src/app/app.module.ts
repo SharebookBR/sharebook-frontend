@@ -11,6 +11,7 @@ import { fakeBackendProvider } from './core/helpers';
 
 import { HomeComponent } from './components/home/home.component';
 import { QuemSomosComponent } from './components/quem-somos/quem-somos.component';
+import { ApoieProjetoComponent } from './components/apoie-projeto/apoie-projeto.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
@@ -37,6 +38,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     BookFormComponent,
     HomeComponent,
     QuemSomosComponent,
+    ApoieProjetoComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
