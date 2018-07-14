@@ -45,11 +45,13 @@ const routes: Routes = [
   },
   {
     path: 'panel',
-    component: PanelComponent
+    component: PanelComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'account',
-    component: AccountComponent
+    component: AccountComponent,
+    canActivate: [AuthGuard]
   },
   // otherwise redirect to home
   {
