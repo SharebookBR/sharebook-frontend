@@ -1,0 +1,14 @@
+form i.fa {
+  position: absolute;
+  top: 6px;
+  left: 20px;
+  color: #2098D1;
+  font-size: 22px;
+  z-index: 9999;
+}
+
+.form-control {
+  position: relative;
+ padding-left: 45px !important;
+
+}
