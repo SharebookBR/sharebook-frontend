@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
       passwordSalt: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
       phone: ['', []],
       linkedin: ['', []],
-      cep: ['', [Validators.required]]
+      postalCode: ['', [Validators.required]]
     });
   }
 
