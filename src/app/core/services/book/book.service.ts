@@ -20,7 +20,7 @@ export class BookService {
     return this._http.post<Book>(`${this.config.apiEndpoint}/book`, book);
   }
 
-  public getById(bookId: number) {
+  public getById(bookId: string) {
     return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 

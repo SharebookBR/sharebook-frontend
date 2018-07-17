@@ -47,12 +47,14 @@ export class ListComponent implements OnInit {
           title: 'Autor',
           filter: false
         },
-        name: {
+        user: {
           title: 'Doador',
+          valuePrepareFunction: data => data.name,
           filter: false
         },
         phone: {
           title: 'Telefone',
+          valuePrepareFunction: data => data.phone,
           filter: false
         },
         approved: {
@@ -117,7 +119,7 @@ export class ListComponent implements OnInit {
         }
       });
     } else {
-      this._router.navigate(['book/form']);
+      this._router.navigate([`book/form/${event.data.id}`]);
     }
   }
 }

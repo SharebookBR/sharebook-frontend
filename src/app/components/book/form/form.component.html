@@ -1,8 +1,16 @@
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
   <h1 class="text-center display-4">Quero doar um livro</h1>
   <div class="form-row">
+    <div class="col-3">
+      <img 
+        [src]="formGroup.value.imageBytes.length
+        ? formGroup.value.imageBytes
+        : formGroup.value.imageUrl ? formGroup.value.imageUrl : 'assets/img/img-placeholder.png'" 
+        class="img-thumbnail "
+      />
+    </div>
     <div class="col">
-      <div class="form-group col-md-6 offset-md-3 mb-2">
+      <div class="form-group col-md-8">
         <label class="col-form-label" for="title">Título do livro</label>
         <input formControlName="title" name="title" type="text" class="form-control">
 
@@ -19,7 +27,7 @@
         </div>
       </div>
 
-      <div class="form-group col-md-6 offset-md-3 mb-2">
+      <div class="form-group col-md-8">
         <label class="col-form-label" for="author">Autor</label>
         <input formControlName="author" type="text" class="form-control">
 
@@ -36,7 +44,7 @@
         </div>
       </div>
 
-      <div class="form-group col-md-6 offset-md-3 mb-4">
+      <div class="form-group col-md-8 mb-4">
         <label class="col-form-label" for="categoryId">Categoria</label>
         <select class="form-control" formControlName="categoryId">
           <option value=""></option>
@@ -48,47 +56,53 @@
           </small>
         </div>
       </div>
-
-      <div class="form-group col-md-6 offset-md-3 mb-2">
+        
+      <div class="form-group col-md-8">
         <div class="custom-file">
-          <input type="file" class="custom-file-input" formControlName="image" (change)="onConvertImageToBase64($event)">
-          <label class="custom-file-label" for="image" *ngIf="!formGroup.controls['image'].valid">
+          <input type="file" class="custom-file-input" (change)="onConvertImageToBase64($event)">
+          <label class="custom-file-label" for="imageUrl" *ngIf="!formGroup.controls['imageUrl'].valid">
             Selecionar imagem da capa do livro
           </label>
-          <label class="custom-file-label" for="image" *ngIf="formGroup.controls['image'].valid">
-            {{formGroup.value.image}}
+          <label class="custom-file-label" for="imageUrl" *ngIf="formGroup.controls['imageUrl'].valid">
+            {{formGroup.value.imageUrl}}
           </label>
         </div>
-        <div *ngIf="formGroup.controls['image'].touched && !formGroup.controls['image'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['image'].hasError('required')">
+        <div *ngIf="!formGroup.controls['imageUrl'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['imageUrl'].hasError('required')">
+            Selecione a capa do livro.
+          </small>
+        </div>
+        <div *ngIf="formGroup.controls['imageUrl'].touched && !formGroup.controls['imageUrl'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['imageUrl'].hasError('required')">
             Selecione a capa do livro.
           </small>
         </div>
       </div>
 
-      <div class="form-group col-md-6 offset-md-3 mb-3">
+      <div class="form-group col-md-8">
         <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
         <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-          <label *ngFor="let option of freightOptions" class="btn btn-outline-secondary form-control" (click)="onChangeFieldFreightOption(option.value)">
+          <label 
+            *ngFor="let option of freightOptions" 
+            [ngClass]="(formGroup.value.freightOption === option.value) 
+              ? 'btn btn-outline-secondary form-control active' 
+              : 'btn btn-outline-secondary form-control'"
+            (click)="onChangeFieldFreightOption(option.value)">
             <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
           </label>
         </div>
-        <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">
+        <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">  
+          <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">  
             Escolha uma opções de frete.
-          </small>
+          </small>  
         </div>
-      </div>
+      </div>        
 
-      <div class="form-group col-md-6 offset-md-3">
+      <div class="form-group col-md-8">
         <div class="text-center">
           <input type="submit" class="btn btn-primary" value="Doar este livro" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
         </div>
       </div>
-
-
-
-
     </div>
   </div>
 </form>

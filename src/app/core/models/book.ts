@@ -1,12 +1,12 @@
 import { FreightOptions } from './freightOptions';
 
 export class Book {
-  id: number;
+  id: string;
   userId: number;
   title: string;
   author: string;
   imageBytes: any[];
-  image: string;
+  imageUrl: string;
   approved: true;
   categoryId: number;
   freightOption: string;

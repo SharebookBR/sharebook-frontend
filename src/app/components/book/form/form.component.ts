@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import fileUpload from 'fuctbase64';
+import { ActivatedRoute } from '@angular/router';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -22,20 +22,45 @@ export class FormComponent implements OnInit {
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
-    private _formBuilder: FormBuilder
-  ) {
+    private _formBuilder: FormBuilder,
+    private _activatedRoute: ActivatedRoute) {
 
     this.formGroup = _formBuilder.group({
+      id: '',
+      userId: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
-      image: ['', [Validators.required]],
-      imageBytes: [this._formBuilder.array([])],
       freightOption: ['', [Validators.required]],
+      imageBytes: [''],
+      imageUrl: ['', [Validators.required]],
     });
   }
 
+  getBookSaved() {
+    let id = '';
+    this._activatedRoute.params.subscribe((param) => id = param.id);
+    if (id) {
+      this._scBook.getById(id).subscribe(x => {
+          const foo = {
+            id: x.id,
+            userId: x.userId,
+            title: x.title,
+            author: x.author,
+            categoryId: x.categoryId,
+            freightOption: x.freightOption,
+            imageBytes: '',
+            imageUrl: x.imageUrl
+          };
+          this.formGroup.setValue(foo);
+        }
+      );
+    }
+  }
+
   ngOnInit() {
+    this.formGroup.patchValue({ userId: this.getUserLogged().userId });
+
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
     );
@@ -43,26 +68,48 @@ export class FormComponent implements OnInit {
     this._scCategory.getAll().subscribe(data =>
       this.categories = data
     );
+
+    this.getBookSaved();
   }
 
   onAddBook() {
     if (this.formGroup.valid) {
-      this._scBook.create(this.formGroup.value).subscribe(resp =>
-        console.log(resp)
-      );
+      console.log(this.formGroup.value);
+      if (!this.formGroup.value.id) {
+        this._scBook.create(this.formGroup.value).subscribe(resp =>
+          console.log(resp)
+        );
+      } else {
+        this._scBook.update(this.formGroup.value).subscribe(resp =>
+          console.log(resp)
+        );
+      }
     }
   }
 
-  onChangeFieldFreightOption(freightOption) {
+  getUserLogged() {
+    if (localStorage.getItem('shareBookUser')) {
+      return JSON.parse(localStorage.getItem('shareBookUser'));
+    }
+  }
+
+  onChangeFieldFreightOption(freightOption: string) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
   }
 
-  onConvertImageToBase64(event) {
-    if (event.target.value) {
-      fileUpload(event).then(({base64}) => {
-        const control = <FormArray>this.formGroup.controls['imageBytes'];
-        control.setValue(base64);
-      });
+  onConvertImageToBase64(event: any) {
+
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      const image = event.target.value;
+
+      reader.readAsDataURL(event.target.files[0]);
+      this.formGroup.controls['imageUrl'].setValue(image);
+
+      // tslint:disable-next-line:no-shadowed-variable
+      reader.onload = event => {
+        this.formGroup.controls['imageBytes'].setValue(event.target['result']);
+      };
     }
   }
 }
