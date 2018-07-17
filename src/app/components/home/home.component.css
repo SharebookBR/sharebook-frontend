@@ -7,13 +7,12 @@
 }
 
 .jumbotron {
-  background-image: url("../../../assets/img/banner.png");
+  background-image: url('../../../assets/img/banner.png');
   background-repeat: no-repeat;
   background-size: cover;
   height: 410px;
   z-index: -6;
   margin-left: -12rem;
-  margin-top: 6rem;
 }
 
 #find {
@@ -29,7 +28,7 @@
 .form-control {
   display: block;
   width: 250px !important;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
   color: #495057;
@@ -37,7 +36,7 @@
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 15px 15px;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin-left: -0.3rem;
   margin-left: 0rem;
 }
@@ -111,7 +110,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn1.png");
+  background-image: url('../../../assets/img/btn1.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -124,7 +123,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn2.png");
+  background-image: url('../../../assets/img/btn2.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -137,7 +136,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn3.png");
+  background-image: url('../../../assets/img/btn3.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -150,7 +149,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn4.png");
+  background-image: url('../../../assets/img/btn4.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -163,7 +162,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn5.png");
+  background-image: url('../../../assets/img/btn5.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -176,7 +175,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn6.png");
+  background-image: url('../../../assets/img/btn6.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -189,7 +188,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn7.png");
+  background-image: url('../../../assets/img/btn7.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -202,7 +201,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn8.png");
+  background-image: url('../../../assets/img/btn8.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -215,7 +214,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn9.png");
+  background-image: url('../../../assets/img/btn9.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -228,7 +227,7 @@
   width: 70px;
   border: none;
   cursor: pointer;
-  background-image: url("../../../assets/img/btn10.png");
+  background-image: url('../../../assets/img/btn10.png');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
@@ -298,7 +297,7 @@
   width: 15%;
   color: #fff;
   text-align: center;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .carousel-control-next-icon {
@@ -327,19 +326,19 @@
   }
 }
 
-@media (max-width:441px) {
+@media (max-width: 441px) {
   .full-background {
     display: none !important;
   }
 }
 
-@media (max-width:524px) {
+@media (max-width: 524px) {
   .full-background {
     display: none;
   }
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .full-background {
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -348,15 +347,15 @@
   }
 }
 
-@media (min-width:768px) {
+@media (min-width: 768px) {
   .background-mobile {
     display: none;
   }
 }
 
-@media (min-width:1024px) and (orientation: landscape) {
+@media (min-width: 1024px) and (orientation: landscape) {
   .full-background {
-    background: url("../../../assets/img/fundoazul.png") no-repeat center center;
+    background: url('../../../assets/img/fundoazul.png') no-repeat center center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -386,13 +385,13 @@
   padding: 1rem;
 }
 
-@media(min-width:1224px) {
+@media (min-width: 1224px) {
   .container-benefits {
     display: none;
   }
 }
 
-@media(max-width:1224px) {
+@media (max-width: 1224px) {
   .container-benefits-full-background {
     display: none;
   }

@@ -10,6 +10,7 @@ import { PanelComponent } from '../components/panel/panel.component';
 import { AccountComponent } from '../components/account/account.component';
 import { AuthGuard } from './guards/auth.guard';
 import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
+import { ApoieProjetoComponent } from '../components/apoie-projeto/apoie-projeto.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'quem-somos',
     component: QuemSomosComponent
+  },
+  {
+    path: 'apoie-projeto',
+    component: ApoieProjetoComponent
   },
   {
     path: 'register',

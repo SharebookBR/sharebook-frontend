@@ -1,118 +1,115 @@
-<form [formGroup]="formGroup" class="container form-horizontal" style="padding: 80px 0 80px 0" (ngSubmit)="registerUser()">
-  <div style="padding: 40px 40px 40px 40px">
-    <h1 class="text-center display-4">Registro</h1>
-    <div class="form-row">
-      <div class="col">
+<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="registerUser()">
+  <h1 class="text-center display-4">Registro</h1>
+  <div class="form-row">
+    <div class="col">
 
-
-
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="name">Nome</label>
-          <div class="input-group">
-            <input formControlName="name" name="name" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-address-book"></i>
-            </div>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="name">Nome</label>
+        <div class="input-group">
+          <input formControlName="name" name="name" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-address-book"></i>
           </div>
-          <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
-              Nome obrigatório.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
-              O nome deve conter no mínimo 3 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength') ">
-              O nome deve conter no máximo 50 caracteres.
-            </small>
+        </div>
+        <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
+            Nome obrigatório.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
+            O nome deve conter no mínimo 3 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength') ">
+            O nome deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="email">E-mail</label>
+        <div class="input-group">
+          <input formControlName="email" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-envelope-square"></i>
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="email">E-mail</label>
-          <div class="input-group">
-            <input formControlName="email" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-envelope-square"></i>
-            </div>
-          </div>
+        <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
+            E-mail obrigatório.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
+            O e-mail deve conter no mínimo 3 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
+            O e-mail deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
 
-          <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
-              E-mail obrigatório.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
-              O e-mail deve conter no mínimo 3 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
-              O e-mail deve conter no máximo 50 caracteres.
-            </small>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="password">Senha</label>
+        <div class="input-group">
+          <input formControlName="password" type="password" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-unlock-alt"></i>
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="password">Senha</label>
-          <div class="input-group">
-            <input formControlName="password" type="password" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-unlock-alt"></i>
-            </div>
-          </div>
+        <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
+            Senha obrigatória.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
+            A senha deve conter no mínimo 6 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength') ">
+            A senha deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
 
-          <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
-              Senha obrigatória.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
-              A senha deve conter no mínimo 6 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength') ">
-              A senha deve conter no máximo 50 caracteres.
-            </small>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="passwordSalt">Confirmar Senha</label>
+        <div class="input-group">
+          <input formControlName="passwordSalt" type="password" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-unlock-alt"></i>
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="passwordSalt">Confirmar Senha</label>
-          <div class="input-group">
-            <input formControlName="passwordSalt" type="password" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-unlock-alt"></i>
-            </div>
-          </div>
+        <div *ngIf="formGroup.controls['passwordSalt'].touched && !formGroup.controls['passwordSalt'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('required')">
+            Confirmação de senha obrigatória.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('minlength')">
+            A confirmação de senha deve conter no mínimo 6 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('maxlength') ">
+            A confirmação de senha deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
 
-          <div *ngIf="formGroup.controls['passwordSalt'].touched && !formGroup.controls['passwordSalt'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('required')">
-              Confirmação de senha obrigatória.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('minlength')">
-              A confirmação de senha deve conter no mínimo 6 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['passwordSalt'].hasError('maxlength') ">
-              A confirmação de senha deve conter no máximo 50 caracteres.
-            </small>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="phone">DDD + Telefone</label>
+        <div class="input-group">
+          <input formControlName="phone" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-whatsapp"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="linkedin">LinkedIn</label>
+        <div class="input-group">
+          <input formControlName="linkedin" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-linkedin"></i>
           </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="phone">DDD + Telefone</label>
-          <div class="input-group">
-            <input formControlName="phone" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-whatsapp"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="linkedin">LinkedIn</label>
-          <div class="input-group">
-            <input formControlName="linkedin" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-linkedin"></i>
-            </div>
-          </div>
-
-          <!--div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
+        <!--div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('required')">
               LinkedIn é obrigatório.
             </small>
@@ -123,120 +120,36 @@
               O LinkedIn deve conter no máximo 50 caracteres.
             </small>
           </div-->
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="postalCode">CEP</label>
+        <div class="input-group">
+          <input formControlName="postalCode" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
         </div>
 
-        <div class="form-group col-md-6 offset-md-3 mb-2">
-          <label class="col-form-label" for="cep">CEP</label>
-          <div class="input-group">
-            <input formControlName="cep" type="text" class="form-control">
-            <div class="input-group-addon append">
-              <i class="fa fa-map-marker"></i>
-            </div>
-          </div>
-
-          <div *ngIf="formGroup.controls['cep'].touched && !formGroup.controls['cep'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('required')">
-              CEP obrigatório.
-            </small>
-            <!--small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('minlength')">
+        <div *ngIf="formGroup.controls['postalCode'].touched && !formGroup.controls['postalCode'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('required')">
+            CEP obrigatório.
+          </small>
+          <!--small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('minlength')">
               O CEP deve conter no mínimo 3 caracteres.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['cep'].hasError('maxlength') ">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('maxlength') ">
               O CEP deve conter no máximo 50 caracteres.
             </small-->
-          </div>
         </div>
+      </div>
 
-        <div class="form-group col-md-6 offset-md-3">
-          <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="Registrar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
-            <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
-          </div>
+      <div class="form-group col-md-6 offset-md-3">
+        <div class="text-center">
+          <input type="submit" class="btn btn-primary" value="Registrar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
         </div>
       </div>
     </div>
   </div>
 </form>
-
-<!--
-<br>
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      <form>
-        <div class="form-group row">
-          <label for="name" class="col-4 col-form-label">Nome</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-address-book"></i>
-              </div>
-              <input id="name" name="name" type="text" required="required" class="form-control here">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="email" class="col-4 col-form-label">E-mail</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-envelope"></i>
-              </div>
-              <input id="email" name="email" type="text" class="form-control here" required="required">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="password" class="col-4 col-form-label">Senha</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-key"></i>
-              </div>
-              <input id="password" name="password" type="password" class="form-control here" required="required">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="password2" class="col-4 col-form-label">Confirmar Senha</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-key"></i>
-              </div>
-              <input id="password2" name="password2" type="password" required="required" class="form-control here">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="linkedin" class="col-4 col-form-label">LinkedIn</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-linkedin"></i>
-              </div>
-              <input id="linkedin" name="linkedin" type="text" class="form-control here">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="cep" class="col-4 col-form-label">CEP</label>
-          <div class="col-8">
-            <div class="input-group">
-              <div class="input-group-addon">
-                <i class="fa fa-map-marker"></i>
-              </div>
-              <input id="cep" name="cep" type="text" class="form-control here">
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary">Cadastrar</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
--->
