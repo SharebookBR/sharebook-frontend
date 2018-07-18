@@ -14,3 +14,7 @@ p {
 .card {
   width: 200px;
 }
+
+.card-text {
+  text-align: left;
+}
