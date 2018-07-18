@@ -7,7 +7,7 @@ export class Book {
   author: string;
   imageBytes: any[];
   imageUrl: string;
-  approved: true;
+  approved: boolean;
   categoryId: number;
   freightOption: string;
 }

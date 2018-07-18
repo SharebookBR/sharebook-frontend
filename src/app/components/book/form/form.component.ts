@@ -19,6 +19,11 @@ export class FormComponent implements OnInit {
   categories: Category[] = [];
   isSaved: boolean;
 
+  userId: string;
+  userProfile: string;
+  buttonSaveLabel: string;
+  pageTitle: string;
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
@@ -34,32 +39,24 @@ export class FormComponent implements OnInit {
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
       imageUrl: ['', [Validators.required]],
+      approved: false,
     });
   }
 
-  getBookSaved() {
-    let id = '';
-    this._activatedRoute.params.subscribe((param) => id = param.id);
-    if (id) {
-      this._scBook.getById(id).subscribe(x => {
-          const foo = {
-            id: x.id,
-            userId: x.userId,
-            title: x.title,
-            author: x.author,
-            categoryId: x.categoryId,
-            freightOption: x.freightOption,
-            imageBytes: '',
-            imageUrl: x.imageUrl
-          };
-          this.formGroup.setValue(foo);
-        }
-      );
-    }
-  }
-
   ngOnInit() {
-    this.formGroup.patchValue({ userId: this.getUserLogged().userId });
+
+    const { userId, profile } = this.getUserLogged();
+
+    this.userProfile = profile;
+    this.formGroup.patchValue({ userId: userId });
+
+    if (this.userProfile === 'User') {
+      this.buttonSaveLabel = 'Doar este livro';
+      this.pageTitle = 'Quero doar um livro';
+    } else {
+      this.buttonSaveLabel = 'Salvar';
+      this.pageTitle = 'Editar livro';
+    }
 
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
@@ -70,6 +67,29 @@ export class FormComponent implements OnInit {
     );
 
     this.getBookSaved();
+  }
+
+  getBookSaved() {
+    let id = '';
+    this._activatedRoute.params.subscribe((param) => id = param.id);
+
+    if (this.userProfile === 'Administrator') {
+      this._scBook.getById(id).subscribe(x => {
+          const foo = {
+            id: x.id,
+            userId: x.userId,
+            title: x.title,
+            author: x.author,
+            categoryId: x.categoryId,
+            freightOption: x.freightOption,
+            imageBytes: '',
+            imageUrl: x.imageUrl,
+            approved: x.approved
+          };
+          this.formGroup.setValue(foo);
+        }
+      );
+    }
   }
 
   onAddBook() {
@@ -95,6 +115,10 @@ export class FormComponent implements OnInit {
 
   onChangeFieldFreightOption(freightOption: string) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
+  }
+
+  onChangeFieldApproved(approved: boolean) {
+    this.formGroup.controls['approved'].setValue(approved);
   }
 
   onConvertImageToBase64(event: any) {

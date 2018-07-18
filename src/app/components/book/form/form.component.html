@@ -1,5 +1,5 @@
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
-  <h1 class="text-center display-4">Quero doar um livro</h1>
+  <h1 class="text-center display-4">{{pageTitle}}</h1>
   <div class="form-row">
     <div class="col-3">
       <img 
@@ -98,9 +98,35 @@
         </div>
       </div>        
 
+      <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator'">
+        <label class="col-form-label" for="approved">Situação do livro</label>
+        <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
+          <label 
+            [ngClass]="(formGroup.value.approved === false) 
+              ? 'btn btn-outline-info form-control active' 
+              : 'btn btn-outline-info form-control'"
+            (click)="onChangeFieldApproved('false')">
+            <input type="radio" name="approved" formControlName="approved"> Não visível
+          </label>
+          <label 
+            [ngClass]="(formGroup.value.approved === true) 
+              ? 'btn btn-outline-info form-control active' 
+              : 'btn btn-outline-info form-control'"
+            (click)="onChangeFieldApproved('true')">
+            <input type="radio" name="approved" formControlName="approved"> Visível
+          </label>
+        </div>
+      </div>    
+
       <div class="form-group col-md-8">
         <div class="text-center">
-          <input type="submit" class="btn btn-primary" value="Doar este livro" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <input 
+            type="submit" 
+            class="btn btn-primary" 
+            [value]="buttonSaveLabel" 
+            style="padding-left: 50px; padding-right: 50px" 
+            [disabled]="!formGroup.valid"
+          >
         </div>
       </div>
     </div>
