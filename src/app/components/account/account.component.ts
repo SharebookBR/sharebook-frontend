@@ -55,7 +55,6 @@ export class AccountComponent implements OnInit {
     if (this.formGroup.valid) {
       this._scUser.update(this.getUserLogged().userId, this.formGroup.value).subscribe(
         data => {
-          console.log(data);
           if (data.success || data.authenticated) {
            this._scAlert.success('Registro atualizado com sucesso', true);
            this._router.navigate(['/panel']);
