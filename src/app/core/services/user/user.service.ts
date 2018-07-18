@@ -37,8 +37,8 @@ export class UserService {
       }));
     }
 
-    update(updateUserVM: UpdateUserVM) {
-        return this._http.post(`${this.config.apiEndpoint}/Account/Update`, updateUserVM);
+    update(id: number, updateUserVM: UpdateUserVM) {
+        return this._http.post<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
     }
 
     delete(id: number) {

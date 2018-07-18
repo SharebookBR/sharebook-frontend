@@ -1,3 +1,14 @@
-.container {
-  margin-top: 150px;
+form i.fa {
+  position: absolute;
+  top: 8px;
+  left: 15px;
+  color: #2098D1;
+  font-size: 22px;
+  z-index: 99;
+}
+
+.form-control {
+  position: relative;
+ padding-left: 45px !important;
+
 }

@@ -1,3 +1,111 @@
-<h1 class="text-center display-4">Minha Conta</h1>
+<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="updateUser()">
+  <h1 class="text-center display-4">Registro</h1>
+  <div class="form-row">
+    <div class="col">
 
-<p align="center">Em construção.</p>
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="name">Nome</label>
+        <div class="input-group">
+          <input formControlName="name" name="name" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-address-book"></i>
+          </div>
+        </div>
+        <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
+            Nome obrigatório.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
+            O nome deve conter no mínimo 3 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength') ">
+            O nome deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="email">E-mail</label>
+        <div class="input-group">
+          <input formControlName="email" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-envelope-square"></i>
+          </div>
+        </div>
+
+        <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
+            E-mail obrigatório.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
+            O e-mail deve conter no mínimo 3 caracteres.
+          </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
+            O e-mail deve conter no máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="phone">DDD + Telefone</label>
+        <div class="input-group">
+          <input formControlName="phone" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-whatsapp"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="linkedin">LinkedIn</label>
+        <div class="input-group">
+          <input formControlName="linkedin" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-linkedin"></i>
+          </div>
+        </div>
+
+        <!--div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('required')">
+              LinkedIn é obrigatório.
+            </small>
+            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('minlength')">
+              O LinkedIn deve conter no mínimo 3 caracteres.
+            </small>
+            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('maxlength') ">
+              O LinkedIn deve conter no máximo 50 caracteres.
+            </small>
+          </div-->
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="postalCode">CEP</label>
+        <div class="input-group">
+          <input formControlName="postalCode" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+
+        <div *ngIf="formGroup.controls['postalCode'].touched && !formGroup.controls['postalCode'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('required')">
+            CEP obrigatório.
+          </small>
+          <!--small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('minlength')">
+              O CEP deve conter no mínimo 3 caracteres.
+            </small>
+            <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('maxlength') ">
+              O CEP deve conter no máximo 50 caracteres.
+            </small-->
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3">
+        <div class="text-center">
+          <input type="submit" class="btn btn-primary" value="Atualizar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <a [routerLink]="['/panel']" class="btn btn-link">Cancelar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
