@@ -6,6 +6,7 @@ import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-form',
@@ -27,6 +28,7 @@ export class FormComponent implements OnInit {
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
+    private _scUser: UserService,
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute) {
 
@@ -92,6 +94,20 @@ export class FormComponent implements OnInit {
     }
   }
 
+  ngOnInit() {
+    this.formGroup.patchValue({ userId: this._scUser.getLoggedUserFromLocalStorage().userId });
+
+    this._scBook.getFreightOptions().subscribe(data =>
+      this.freightOptions = data
+    );
+
+    this._scCategory.getAll().subscribe(data =>
+      this.categories = data
+    );
+
+    this.getBookSaved();
+  }
+
   onAddBook() {
     if (this.formGroup.valid) {
       console.log(this.formGroup.value);
@@ -104,12 +120,6 @@ export class FormComponent implements OnInit {
           console.log(resp)
         );
       }
-    }
-  }
-
-  getUserLogged() {
-    if (localStorage.getItem('shareBookUser')) {
-      return JSON.parse(localStorage.getItem('shareBookUser'));
     }
   }
 

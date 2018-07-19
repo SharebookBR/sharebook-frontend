@@ -38,7 +38,7 @@ export class UserService {
     }
 
     update(id: number, updateUserVM: UpdateUserVM) {
-        return this._http.post<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
     }
 
     delete(id: number) {
@@ -53,12 +53,10 @@ export class UserService {
         return this._subject.asObservable();
     }
 
-    public getProfile() {
-        return [
-            new Profile(1, 'USER'),
-            new Profile(2, 'ADMIN'),
-        ];
-        // return this._http.get<Profile[]>(`${API_URL}/Account/Profile`);
+    getLoggedUserFromLocalStorage() {
+      if (localStorage.getItem('shareBookUser')) {
+        return JSON.parse(localStorage.getItem('shareBookUser'));
+      }
+      return;
     }
-
 }

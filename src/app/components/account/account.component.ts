@@ -33,7 +33,7 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._subscription = this._scUser.getById(this.getUserLogged().userId).subscribe(updateUserVM => {
+    this._subscription = this._scUser.getById(this._scUser.getLoggedUserFromLocalStorage().userId).subscribe(updateUserVM => {
       const foo = {
         name: updateUserVM.name,
         email: updateUserVM.email,
@@ -45,26 +45,20 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  getUserLogged() {
-    if (localStorage.getItem('shareBookUser')) {
-      return JSON.parse(localStorage.getItem('shareBookUser'));
-    }
-  }
-
   updateUser() {
     if (this.formGroup.valid) {
-      this._scUser.update(this.getUserLogged().userId, this.formGroup.value).subscribe(
+      this._scUser.update(this._scUser.getLoggedUserFromLocalStorage().userId, this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-           this._scAlert.success('Registro atualizado com sucesso', true);
-           this._router.navigate(['/panel']);
+            this._scAlert.success('Registro atualizado com sucesso', true);
+            this._router.navigate(['/panel']);
           } else {
-           this._scAlert.error(data.messages[0]);
+            this._scAlert.error(data.messages[0]);
           }
-         },
-         error => {
-           this._scAlert.error(error);
-         }
+        },
+        error => {
+          this._scAlert.error(error);
+        }
       );
     }
   }
