@@ -38,7 +38,7 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageUrl: ['', [Validators.required]],
+      imageName: ['', [Validators.required]],
       approved: false,
     });
   }
@@ -73,7 +73,7 @@ export class FormComponent implements OnInit {
     let id = '';
     this._activatedRoute.params.subscribe((param) => id = param.id);
 
-    if (this.userProfile === 'Administrator') {
+    if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
           const foo = {
             id: x.id,
@@ -83,7 +83,7 @@ export class FormComponent implements OnInit {
             categoryId: x.categoryId,
             freightOption: x.freightOption,
             imageBytes: '',
-            imageUrl: x.imageUrl,
+            imageName: x.imageName,
             approved: x.approved
           };
           this.formGroup.setValue(foo);
@@ -128,11 +128,12 @@ export class FormComponent implements OnInit {
       const image = event.target.value;
 
       reader.readAsDataURL(event.target.files[0]);
-      this.formGroup.controls['imageUrl'].setValue(image);
+      this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
-        this.formGroup.controls['imageBytes'].setValue(event.target['result']);
+        const img = event.target['result'].split(',');
+        this.formGroup.controls['imageBytes'].setValue(img[1]);
       };
     }
   }
