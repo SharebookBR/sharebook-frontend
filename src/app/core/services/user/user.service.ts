@@ -38,7 +38,7 @@ export class UserService {
     }
 
     update(id: number, updateUserVM: UpdateUserVM) {
-        return this._http.post<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
     }
 
     delete(id: number) {
