@@ -7,6 +7,7 @@ import { CategoryService } from '../../../core/services/category/category.servic
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -30,7 +31,8 @@ export class FormComponent implements OnInit {
     private _scCategory: CategoryService,
     private _scUser: UserService,
     private _formBuilder: FormBuilder,
-    private _activatedRoute: ActivatedRoute) {
+    private _activatedRoute: ActivatedRoute,
+    private _scAlert: AlertService) {
 
     this.formGroup = _formBuilder.group({
       id: '',
@@ -47,7 +49,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
 
-    const { userId, profile } = this.getUserLogged();
+    const { userId, profile } = this._scUser.getLoggedUserFromLocalStorage();
 
     this.userProfile = profile;
     this.formGroup.patchValue({ userId: userId });
@@ -92,20 +94,6 @@ export class FormComponent implements OnInit {
         }
       );
     }
-  }
-
-  ngOnInit() {
-    this.formGroup.patchValue({ userId: this._scUser.getLoggedUserFromLocalStorage().userId });
-
-    this._scBook.getFreightOptions().subscribe(data =>
-      this.freightOptions = data
-    );
-
-    this._scCategory.getAll().subscribe(data =>
-      this.categories = data
-    );
-
-    this.getBookSaved();
   }
 
   onAddBook() {
