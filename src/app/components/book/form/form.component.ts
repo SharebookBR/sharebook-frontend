@@ -20,6 +20,11 @@ export class FormComponent implements OnInit {
   categories: Category[] = [];
   isSaved: boolean;
 
+  userId: string;
+  userProfile: string;
+  buttonSaveLabel: string;
+  pageTitle: string;
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
@@ -35,14 +40,42 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageUrl: ['', [Validators.required]],
+      imageName: ['', [Validators.required]],
+      approved: false,
     });
+  }
+
+  ngOnInit() {
+
+    const { userId, profile } = this.getUserLogged();
+
+    this.userProfile = profile;
+    this.formGroup.patchValue({ userId: userId });
+
+    if (this.userProfile === 'User') {
+      this.buttonSaveLabel = 'Doar este livro';
+      this.pageTitle = 'Quero doar um livro';
+    } else {
+      this.buttonSaveLabel = 'Salvar';
+      this.pageTitle = 'Editar livro';
+    }
+
+    this._scBook.getFreightOptions().subscribe(data =>
+      this.freightOptions = data
+    );
+
+    this._scCategory.getAll().subscribe(data =>
+      this.categories = data
+    );
+
+    this.getBookSaved();
   }
 
   getBookSaved() {
     let id = '';
     this._activatedRoute.params.subscribe((param) => id = param.id);
-    if (id) {
+
+    if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
           const foo = {
             id: x.id,
@@ -52,7 +85,8 @@ export class FormComponent implements OnInit {
             categoryId: x.categoryId,
             freightOption: x.freightOption,
             imageBytes: '',
-            imageUrl: x.imageUrl
+            imageName: x.imageName,
+            approved: x.approved
           };
           this.formGroup.setValue(foo);
         }
@@ -93,6 +127,10 @@ export class FormComponent implements OnInit {
     this.formGroup.controls['freightOption'].setValue(freightOption);
   }
 
+  onChangeFieldApproved(approved: boolean) {
+    this.formGroup.controls['approved'].setValue(approved);
+  }
+
   onConvertImageToBase64(event: any) {
 
     if (event.target.files && event.target.files[0]) {
@@ -100,11 +138,12 @@ export class FormComponent implements OnInit {
       const image = event.target.value;
 
       reader.readAsDataURL(event.target.files[0]);
-      this.formGroup.controls['imageUrl'].setValue(image);
+      this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
-        this.formGroup.controls['imageBytes'].setValue(event.target['result']);
+        const img = event.target['result'].split(',');
+        this.formGroup.controls['imageBytes'].setValue(img[1]);
       };
     }
   }
