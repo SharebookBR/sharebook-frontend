@@ -3,6 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-list',
@@ -16,7 +17,8 @@ export class ListComponent implements OnInit {
   constructor(
     private _scBook: BookService,
     private _sanitizer: DomSanitizer,
-    private _router: Router) {
+    private _router: Router,
+    private _scAlert: AlertService) {
   }
 
   getCheckBoxTable(value: boolean = false) {
@@ -116,6 +118,7 @@ export class ListComponent implements OnInit {
       this._scBook.delete(event.data.id).subscribe(resp => {
         if (resp['success']) {
           this.books.remove(event.data);
+          this._scAlert.success('Registro removido com sucesso.');
         }
       });
     } else {
