@@ -1,3 +1,20 @@
-.container {
-  margin-top: 150px;
+p {
+  text-align: justify;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-container .card {
+  margin: 6px;
+}
+
+.card {
+  width: 200px;
+}
+
+.card-text {
+  text-align: left;
 }

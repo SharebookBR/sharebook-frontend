@@ -1,25 +1,24 @@
 <div class="container">
-  <div class="card-deck w-50">
-    <div class="card img-fluid" style="width:50px">
+    <div class="flex-container">
 
-      <img class="card-img-top" src="../../../assets/img/reading.svg" alt="Card image" style="width:100%">
+    <div *ngIf="isAdmin" class="card">
       <a href="/book/list" title="Editar livros">
-        <div class="card-img-overlay">
-          <!--h4 class="card-title">Livros</h4-->
-          <!--p class="card-text">Some example text some example text. </p-->
-          <!--a href="#" class="btn btn-primary">See Profile</a-->
-        </div>
+        <img class="card-img-top" src="../../../assets/img/reading.svg" alt="Card image" style="width:100%">
       </a>
+      <div class="card-body">
+        <h5 class="card-title">Gerenciar Livros</h5>
+        <p class="card-text">Esta função permite gerenciar os livros para doação.</p>
+      </div>
     </div>
-    <div class="card img-fluid" style="width:50px">
-      <img class="card-img-top" src="../../../assets/img/avatar.svg" alt="Card image" style="width:100%">
+
+    <div class="card">
       <a href="/account" title="Editar perfil">
-        <div class="card-img-overlay">
-          <!--h4 class="card-title">Perfil</h4-->
-          <!--p class="card-text">Some example text some example text. </p-->
-          <!--a href="#" class="btn btn-primary">See Profile</a-->
-        </div>
+        <img class="card-img-top" src="../../../assets/img/avatar.svg" alt="Card image" style="width:100%">
       </a>
+      <div class="card-body">
+        <h5 class="card-title">Editar Perfil</h5>
+        <p class="card-text">Esta função permite editar seus dados pessoais.</p>
+      </div>
     </div>
   </div>
 </div>
