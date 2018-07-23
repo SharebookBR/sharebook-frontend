@@ -19,8 +19,8 @@ export class HeaderComponent implements OnInit {
   constructor(private _scUser: UserService) {
 
     // if has shareBookUser, set value to variables
-    if (localStorage.getItem('shareBookUser')) {
-      this.shareBookUser = JSON.parse(localStorage.getItem('shareBookUser'));
+    if (this._scUser.getLoggedUserFromLocalStorage()) {
+      this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
       this.userLogged = true;
     }
 

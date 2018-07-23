@@ -7,6 +7,6 @@ export class User {
   password: string;
   passwordSalt: string;
   linkedin: string;
-  cep: string;
+  postalCode: string;
   profile: Profile;
 }

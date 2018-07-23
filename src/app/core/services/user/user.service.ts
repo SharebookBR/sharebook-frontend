@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../../models/user';
+import { UpdateUserVM } from '../../models/updateUserVM';
 import { Profile } from '../../models/profile';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
@@ -20,7 +21,7 @@ export class UserService {
     }
 
     getById(id: number) {
-        return this._http.get(`${this.config.apiEndpoint}/users/` + id);
+        return this._http.get<UpdateUserVM>(`${this.config.apiEndpoint}/Account/UserById/` + id);
     }
 
     register(user: User) {
@@ -36,12 +37,12 @@ export class UserService {
       }));
     }
 
-    update(user: User) {
-        return this._http.put(`${this.config.apiEndpoint}/users/` + user.id, user);
+    update(id: number, updateUserVM: UpdateUserVM) {
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
     }
 
     delete(id: number) {
-        return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
+        // return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
     }
 
     setLoggedUser(user: User) {
@@ -52,12 +53,10 @@ export class UserService {
         return this._subject.asObservable();
     }
 
-    public getProfile() {
-        return [
-            new Profile(1, 'USER'),
-            new Profile(2, 'ADMIN'),
-        ];
-        // return this._http.get<Profile[]>(`${API_URL}/Account/Profile`);
+    getLoggedUserFromLocalStorage() {
+      if (localStorage.getItem('shareBookUser')) {
+        return JSON.parse(localStorage.getItem('shareBookUser'));
+      }
+      return;
     }
-
 }

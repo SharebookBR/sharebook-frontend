@@ -6,6 +6,8 @@ import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
+import { UserService } from '../../../core/services/user/user.service';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -19,11 +21,18 @@ export class FormComponent implements OnInit {
   categories: Category[] = [];
   isSaved: boolean;
 
+  userId: string;
+  userProfile: string;
+  buttonSaveLabel: string;
+  pageTitle: string;
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
+    private _scUser: UserService,
     private _formBuilder: FormBuilder,
-    private _activatedRoute: ActivatedRoute) {
+    private _activatedRoute: ActivatedRoute,
+    private _scAlert: AlertService) {
 
     this.formGroup = _formBuilder.group({
       id: '',
@@ -33,33 +42,25 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageUrl: ['', [Validators.required]],
+      imageName: ['', [Validators.required]],
+      approved: false,
     });
   }
 
-  getBookSaved() {
-    let id = '';
-    this._activatedRoute.params.subscribe((param) => id = param.id);
-    if (id) {
-      this._scBook.getById(id).subscribe(x => {
-          const foo = {
-            id: x.id,
-            userId: x.userId,
-            title: x.title,
-            author: x.author,
-            categoryId: x.categoryId,
-            freightOption: x.freightOption,
-            imageBytes: '',
-            imageUrl: x.imageUrl
-          };
-          this.formGroup.setValue(foo);
-        }
-      );
-    }
-  }
-
   ngOnInit() {
-    this.formGroup.patchValue({ userId: this.getUserLogged().userId });
+
+    const { userId, profile } = this._scUser.getLoggedUserFromLocalStorage();
+
+    this.userProfile = profile;
+    this.formGroup.patchValue({ userId: userId });
+
+    if (this.userProfile === 'User') {
+      this.buttonSaveLabel = 'Doar este livro';
+      this.pageTitle = 'Quero doar um livro';
+    } else {
+      this.buttonSaveLabel = 'Salvar';
+      this.pageTitle = 'Editar livro';
+    }
 
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
@@ -70,6 +71,29 @@ export class FormComponent implements OnInit {
     );
 
     this.getBookSaved();
+  }
+
+  getBookSaved() {
+    let id = '';
+    this._activatedRoute.params.subscribe((param) => id = param.id);
+
+    if (this.userProfile === 'Administrator' && id) {
+      this._scBook.getById(id).subscribe(x => {
+          const foo = {
+            id: x.id,
+            userId: x.userId,
+            title: x.title,
+            author: x.author,
+            categoryId: x.categoryId,
+            freightOption: x.freightOption,
+            imageBytes: '',
+            imageName: x.imageName,
+            approved: x.approved
+          };
+          this.formGroup.setValue(foo);
+        }
+      );
+    }
   }
 
   onAddBook() {
@@ -87,14 +111,12 @@ export class FormComponent implements OnInit {
     }
   }
 
-  getUserLogged() {
-    if (localStorage.getItem('shareBookUser')) {
-      return JSON.parse(localStorage.getItem('shareBookUser'));
-    }
-  }
-
   onChangeFieldFreightOption(freightOption: string) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
+  }
+
+  onChangeFieldApproved(approved: boolean) {
+    this.formGroup.controls['approved'].setValue(approved);
   }
 
   onConvertImageToBase64(event: any) {
@@ -104,11 +126,12 @@ export class FormComponent implements OnInit {
       const image = event.target.value;
 
       reader.readAsDataURL(event.target.files[0]);
-      this.formGroup.controls['imageUrl'].setValue(image);
+      this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
-        this.formGroup.controls['imageBytes'].setValue(event.target['result']);
+        const img = event.target['result'].split(',');
+        this.formGroup.controls['imageBytes'].setValue(img[1]);
       };
     }
   }
