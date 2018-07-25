@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../core/services/book/book.service';
+import { Book } from '../../core/models/book';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  top15NewBooks: Book[] = [];
 
-  constructor() { }
+  constructor(private _scBook: BookService) {}
 
   ngOnInit() {
+    this._scBook.getTop15NewBooks().subscribe(data => (this.top15NewBooks = data));
   }
-
 }
