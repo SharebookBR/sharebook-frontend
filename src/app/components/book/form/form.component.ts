@@ -19,12 +19,13 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
-  isSaved: boolean;
+  isSaved: Boolean;
 
   userId: string;
   userProfile: string;
   buttonSaveLabel: string;
   pageTitle: string;
+  isLoading: Boolean = false;
 
   constructor(
     private _scBook: BookService,
@@ -98,14 +99,24 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
+      this.isLoading = true;
       console.log(this.formGroup.value);
+
       if (!this.formGroup.value.id) {
-        this._scBook.create(this.formGroup.value).subscribe(resp =>
-          console.log(resp)
+        this._scBook.create(this.formGroup.value).subscribe(resp => {
+            console.log(resp);
+            this.isSaved = true;
+            this.pageTitle = 'Obrigado por ajudar <3.';
+            this.isLoading = false;
+          }
         );
       } else {
-        this._scBook.update(this.formGroup.value).subscribe(resp =>
-          console.log(resp)
+        this._scBook.update(this.formGroup.value).subscribe(resp => {
+            console.log(resp);
+            this.isSaved = true;
+            this.pageTitle = 'Registro atualizado';
+            this.isLoading = false;
+          }
         );
       }
     }

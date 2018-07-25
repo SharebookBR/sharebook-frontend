@@ -30,8 +30,10 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._scBook.getAll().subscribe(resp =>
-      this.books =  new LocalDataSource(resp['items'])
+    this._scBook.getAll().subscribe(resp => {
+        console.log(resp)
+        this.books =  new LocalDataSource(resp['items']);
+      }
     );
 
     const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
@@ -51,12 +53,12 @@ export class ListComponent implements OnInit {
         },
         user: {
           title: 'Doador',
-          valuePrepareFunction: data => data.name,
+          valuePrepareFunction: data => data ? data.name : '',
           filter: false
         },
         phone: {
           title: 'Telefone',
-          valuePrepareFunction: data => data.phone,
+          valuePrepareFunction: data => data ? data.phone : '',
           filter: false
         },
         approved: {
