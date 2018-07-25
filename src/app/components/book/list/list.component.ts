@@ -31,7 +31,6 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this._scBook.getAll().subscribe(resp => {
-        console.log(resp)
         this.books =  new LocalDataSource(resp['items']);
       }
     );
