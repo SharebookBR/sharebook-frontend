@@ -37,11 +37,8 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
             E-mail obrigatório.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
-            O e-mail deve conter no mínimo 3 caracteres.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
-            O e-mail deve conter no máximo 50 caracteres.
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern') ">
+            O e-mail deve ser um e-mail válido.
           </small>
         </div>
       </div>
@@ -54,6 +51,12 @@
             <i class="fa fa-whatsapp"></i>
           </div>
         </div>
+
+        <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
+            Telefone deve estar no formato (99) 99999-9999
+          </small>
+        </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -65,17 +68,11 @@
           </div>
         </div>
 
-        <!--div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('required')">
-              LinkedIn é obrigatório.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('minlength')">
-              O LinkedIn deve conter no mínimo 3 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('maxlength') ">
-              O LinkedIn deve conter no máximo 50 caracteres.
-            </small>
-          </div-->
+        <div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('pattern')">
+            O LinkedIn deve ser uma URL para o seu perfil no LinkedIn.
+          </small>
+        </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -91,12 +88,9 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('required')">
             CEP obrigatório.
           </small>
-          <!--small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('minlength')">
-              O CEP deve conter no mínimo 3 caracteres.
-            </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('maxlength') ">
-              O CEP deve conter no máximo 50 caracteres.
-            </small-->
+          <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('pattern')">
+            CEP deve estar no formato 99999-999.
+          </small>
         </div>
       </div>
 
