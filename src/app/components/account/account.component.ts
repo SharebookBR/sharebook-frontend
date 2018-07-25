@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { UserService } from '../../core/services/user/user.service';
 import { AlertService } from '../../core/services/alert/alert.service';
+import * as AppConst from '../../core/utils/app.const';
 
 @Component({
   selector: 'app-account',
@@ -25,10 +26,10 @@ export class AccountComponent implements OnInit {
 
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      phone: ['', []],
-      linkedin: ['', []],
-      postalCode: ['', [Validators.required]]
+      email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+      phone: ['', [Validators.pattern(AppConst.phonePattern)]],
+      linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
+      postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]]
     });
   }
 
