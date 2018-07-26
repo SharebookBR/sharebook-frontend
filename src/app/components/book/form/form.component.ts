@@ -21,7 +21,6 @@ export class FormComponent implements OnInit {
   categories: Category[] = [];
   isSaved: Boolean;
 
-  userId: string;
   userProfile: string;
   buttonSaveLabel: string;
   pageTitle: string;
@@ -37,7 +36,6 @@ export class FormComponent implements OnInit {
 
     this.formGroup = _formBuilder.group({
       id: '',
-      userId: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
@@ -50,10 +48,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
 
-    const { userId, profile } = this._scUser.getLoggedUserFromLocalStorage();
-
-    this.userProfile = profile;
-    this.formGroup.patchValue({ userId: userId });
+    this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
 
     if (this.userProfile === 'User') {
       this.buttonSaveLabel = 'Doar este livro';
@@ -82,7 +77,6 @@ export class FormComponent implements OnInit {
       this._scBook.getById(id).subscribe(x => {
           const bookForUpdate = {
             id: x.id,
-            userId: x.userId,
             title: x.title,
             author: x.author,
             categoryId: x.categoryId,
@@ -130,10 +124,7 @@ export class FormComponent implements OnInit {
 
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
-      const image = event.target.value;
-
       reader.readAsDataURL(event.target.files[0]);
-      //this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
