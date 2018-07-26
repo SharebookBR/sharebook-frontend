@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../../models/user';
 import { UpdateUserVM } from '../../models/updateUserVM';
+import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
 import { Profile } from '../../models/profile';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
@@ -39,6 +40,10 @@ export class UserService {
 
     update(id: number, updateUserVM: UpdateUserVM) {
         return this._http.put<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
+    }
+
+    changePassword(changePasswordUserVM: ChangePasswordUserVM) {
+      return this._http.put<any>(`${this.config.apiEndpoint}/Account/ChangePassword/`, changePasswordUserVM);
     }
 
     delete(id: number) {
