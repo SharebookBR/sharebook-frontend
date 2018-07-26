@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardUser } from './guards/auth.guard.user';
+import { AuthGuardAdmin } from './guards/auth.guard.admin';
 
 import { HomeComponent } from '../components/home/home.component';
 import { FormComponent as BookFormComponent } from '../components/book/form/form.component';
@@ -8,7 +10,6 @@ import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
 import { AccountComponent } from '../components/account/account.component';
-import { AuthGuard } from './guards/auth.guard';
 import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
 import { ApoieProjetoComponent } from '../components/apoie-projeto/apoie-projeto.component';
 
@@ -20,17 +21,17 @@ const routes: Routes = [
   {
     path: 'book/form',
     component: BookFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuardUser]
   },
   {
     path: 'book/form/:id',
     component: BookFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuardAdmin]
   },
   {
     path: 'book/list',
     component: BookListComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuardAdmin]
   },
   {
     path: 'quem-somos',
@@ -51,12 +52,12 @@ const routes: Routes = [
   {
     path: 'panel',
     component: PanelComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuardUser]
   },
   {
     path: 'account',
     component: AccountComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuardUser]
   },
   // otherwise redirect to home
   {
