@@ -19,12 +19,12 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
-  isSaved: boolean;
+  isSaved: Boolean;
 
-  userId: string;
   userProfile: string;
   buttonSaveLabel: string;
   pageTitle: string;
+  isLoading: Boolean = false;
 
   constructor(
     private _scBook: BookService,
@@ -36,7 +36,6 @@ export class FormComponent implements OnInit {
 
     this.formGroup = _formBuilder.group({
       id: '',
-      userId: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
@@ -49,10 +48,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
 
-    const { userId, profile } = this._scUser.getLoggedUserFromLocalStorage();
-
-    this.userProfile = profile;
-    this.formGroup.patchValue({ userId: userId });
+    this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
 
     if (this.userProfile === 'User') {
       this.buttonSaveLabel = 'Doar este livro';
@@ -79,9 +75,8 @@ export class FormComponent implements OnInit {
 
     if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
-          const foo = {
+          const bookForUpdate = {
             id: x.id,
-            userId: x.userId,
             title: x.title,
             author: x.author,
             categoryId: x.categoryId,
@@ -90,7 +85,7 @@ export class FormComponent implements OnInit {
             imageName: x.imageName,
             approved: x.approved
           };
-          this.formGroup.setValue(foo);
+          this.formGroup.setValue(bookForUpdate);
         }
       );
     }
@@ -98,14 +93,20 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      console.log(this.formGroup.value);
+      this.isLoading = true;
       if (!this.formGroup.value.id) {
-        this._scBook.create(this.formGroup.value).subscribe(resp =>
-          console.log(resp)
+        this._scBook.create(this.formGroup.value).subscribe(resp => {
+            this.isSaved = true;
+            this.pageTitle = 'Obrigado por ajudar <3.';
+            this.isLoading = false;
+          }
         );
       } else {
-        this._scBook.update(this.formGroup.value).subscribe(resp =>
-          console.log(resp)
+        this._scBook.update(this.formGroup.value).subscribe(resp => {
+            this.isSaved = true;
+            this.pageTitle = 'Registro atualizado';
+            this.isLoading = false;
+          }
         );
       }
     }
@@ -123,10 +124,7 @@ export class FormComponent implements OnInit {
 
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
-      const image = event.target.value;
-
       reader.readAsDataURL(event.target.files[0]);
-      this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {

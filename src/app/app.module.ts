@@ -20,7 +20,9 @@ import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
-import { AuthGuard } from './core/guards/auth.guard';
+import { AuthGuardUser } from './core/guards/auth.guard.user';
+import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
+
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
@@ -58,14 +60,15 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     Ng2SmartTableModule
   ],
   providers: [
-    AuthGuard,
+    AuthGuardUser,
     BookService,
     CategoryService,
     AlertService,
     AuthenticationService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    AuthGuardAdmin
 
     // provider used to create fake backend
     // fakeBackendProvider

@@ -25,7 +25,7 @@ export class BookService {
   }
 
   public update(book: Book) {
-    return this._http.put<Book>(`${this.config.apiEndpoint}/book`, book);
+    return this._http.put<Book>(`${this.config.apiEndpoint}/book/${book.id}`, book);
   }
 
   public delete(bookId: number) {
