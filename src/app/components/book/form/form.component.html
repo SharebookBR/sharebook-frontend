@@ -1,7 +1,15 @@
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
-  <div *ngIf="isSaved">
-    <h1 class="text-center display-4">{{pageTitle}}</h1>
+  
+  <div *ngIf="isSaved" class="text-center">
+    <h1 class="display-4">{{pageTitle}}</h1>
+    <a href="/book/form" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Doar mais um 
+      <i class="fa fa-heart"></i>
+    </a>
+    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0"> 
+      Vejá os ultimos livros doados 
+    </a>
   </div>
+
   <div *ngIf="!isSaved">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
     <div class="form-row">
@@ -63,18 +71,13 @@
           
         <div class="form-group col-md-8">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" (change)="onConvertImageToBase64($event)">
+            <input type="file" class="custom-file-input" formControlName="imageName" (change)="onConvertImageToBase64($event)">
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
               Selecionar imagem da capa do livro
             </label>
             <label class="custom-file-label" for="imageName" *ngIf="formGroup.controls['imageName'].valid">
               {{formGroup.value.imageName}}
             </label>
-          </div>
-          <div *ngIf="!formGroup.controls['imageName'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('required')">
-              Selecione a capa do livro.
-            </small>
           </div>
           <div *ngIf="formGroup.controls['imageName'].touched && !formGroup.controls['imageName'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('required')">

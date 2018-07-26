@@ -80,7 +80,7 @@ export class FormComponent implements OnInit {
 
     if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
-          const foo = {
+          const bookForUpdate = {
             id: x.id,
             userId: x.userId,
             title: x.title,
@@ -91,7 +91,7 @@ export class FormComponent implements OnInit {
             imageName: x.imageName,
             approved: x.approved
           };
-          this.formGroup.setValue(foo);
+          this.formGroup.setValue(bookForUpdate);
         }
       );
     }
@@ -100,11 +100,8 @@ export class FormComponent implements OnInit {
   onAddBook() {
     if (this.formGroup.valid) {
       this.isLoading = true;
-      console.log(this.formGroup.value);
-
       if (!this.formGroup.value.id) {
         this._scBook.create(this.formGroup.value).subscribe(resp => {
-            console.log(resp);
             this.isSaved = true;
             this.pageTitle = 'Obrigado por ajudar <3.';
             this.isLoading = false;
@@ -112,7 +109,6 @@ export class FormComponent implements OnInit {
         );
       } else {
         this._scBook.update(this.formGroup.value).subscribe(resp => {
-            console.log(resp);
             this.isSaved = true;
             this.pageTitle = 'Registro atualizado';
             this.isLoading = false;
@@ -137,7 +133,7 @@ export class FormComponent implements OnInit {
       const image = event.target.value;
 
       reader.readAsDataURL(event.target.files[0]);
-      this.formGroup.controls['imageName'].setValue(image);
+      //this.formGroup.controls['imageName'].setValue(image);
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
