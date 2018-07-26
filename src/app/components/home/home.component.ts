@@ -9,10 +9,12 @@ import { Book } from '../../core/models/book';
 })
 export class HomeComponent implements OnInit {
   top15NewBooks: Book[] = [];
+  random15NewBooks: Book[] = [];
 
   constructor(private _scBook: BookService) {}
 
   ngOnInit() {
     this._scBook.getTop15NewBooks().subscribe(data => (this.top15NewBooks = data));
+    this._scBook.getRandom15Books().subscribe(data => (this.random15NewBooks = data));
   }
 }

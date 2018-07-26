@@ -77,9 +77,11 @@
   <h1 class="text-center display-4">Livros em destaque</h1>
   <div class="row justify-content-center book-covers">
 
-    <figure class="figure">
-      <img src="assets/img/rectangle.png" class="figure-img img-fluid rounded" alt="Capa do livro">
-      <figcaption class="figure-caption text-center">NOME DO LIVRO</figcaption>
+    <figure class="figure" *ngFor="let book of random15NewBooks">
+      <div>
+        <img src="{{book.imageUrl}}" class="figure-img img-fluid rounded" alt="{{book.title}}">
+      </div>
+      <figcaption class="figure-caption text-center">{{book.title}}</figcaption>
     </figure>
 
   </div>
