@@ -243,6 +243,19 @@
 
 .figure {
   margin: 1rem;
+  max-width: 170px;
+}
+
+.figure div {
+  width: 170px;
+  height: 230px;
+  text-align: center;
+  border: 1px dotted #e6e6e6;
+}
+
+.figure div img {
+  max-height: 230px;
+  max-width: 170px;
 }
 
 #book-covers {

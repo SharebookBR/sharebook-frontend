@@ -25,6 +25,11 @@ const routes: Routes = [
     canActivate: [AuthGuardUser]
   },
   {
+    path: 'livros/doar',
+    component: BookFormComponent,
+    canActivate: [AuthGuardUser]
+  },
+  {
     path: 'book/form/:id',
     component: BookFormComponent,
     canActivate: [AuthGuardAdmin]

@@ -10,10 +10,18 @@ import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 })
 export class BookService {
   // TODO TypicodeInterceptor
-  constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) { }
+  constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
 
   public getAll() {
     return this._http.get<Book[]>(`${this.config.apiEndpoint}/book`);
+  }
+
+  public getTop15NewBooks() {
+    return this._http.get<Book[]>(`${this.config.apiEndpoint}/book/Top15NewBooks`);
+  }
+
+  public getRandom15Books() {
+    return this._http.get<Book[]>(`${this.config.apiEndpoint}/book/Random15Books`);
   }
 
   public create(book: Book) {
@@ -33,9 +41,10 @@ export class BookService {
   }
 
   public getFreightOptions() {
-    return this._http.get<any>(`${this.config.apiEndpoint}/book/freightOptions`)
-      .pipe(map(response => {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/freightOptions`).pipe(
+      map(response => {
         return response;
-    }));
+      })
+    );
   }
 }
