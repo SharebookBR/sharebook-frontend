@@ -6,7 +6,7 @@
       <i class="fa fa-heart"></i>
     </a>
     <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0">
-      Vejá os ultimos livros doados
+      Veja os ultimos livros doados.
     </a>
   </div>
 
@@ -118,7 +118,12 @@
 
         <div class="form-group col-md-8">
           <div class="text-center" [hidden]="isLoading">
-            <input type="submit" class="btn btn-primary" [value]="buttonSaveLabel" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
+            <input 
+              type="submit" 
+              class="btn btn-primary" 
+              [value]="buttonSaveLabel" 
+              style="padding-left: 50px; padding-right: 50px" 
+              [disabled]="!formGroup.valid"
               [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
           </div>
           <div class="text-center" [hidden]="!isLoading">
