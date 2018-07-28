@@ -21,8 +21,8 @@ export class UserService {
         return this._http.get<User[]>(`${this.config.apiEndpoint}/users`);
     }
 
-    getById(id: number) {
-        return this._http.get<UpdateUserVM>(`${this.config.apiEndpoint}/Account/UserById/` + id);
+    getUserData() {
+        return this._http.get<UpdateUserVM>(`${this.config.apiEndpoint}/Account`);
     }
 
     register(user: User) {
@@ -38,8 +38,8 @@ export class UserService {
       }));
     }
 
-    update(id: number, updateUserVM: UpdateUserVM) {
-        return this._http.put<any>(`${this.config.apiEndpoint}/Account/Update/` + id, updateUserVM);
+    update(updateUserVM: UpdateUserVM) {
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account`, updateUserVM);
     }
 
     changePassword(changePasswordUserVM: ChangePasswordUserVM) {
