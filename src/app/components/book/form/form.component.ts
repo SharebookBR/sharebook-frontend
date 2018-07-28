@@ -34,6 +34,8 @@ export class FormComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService) {
 
+    this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
+
     this.formGroup = _formBuilder.group({
       id: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -41,15 +43,14 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageName: ['', [Validators.required]],
+      imageName: ['', this.userProfile === 'User' && [Validators.required]],
       approved: false,
+      imageUrl: '',
+      imageSlug: '',
     });
   }
 
   ngOnInit() {
-
-    this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
-
     if (this.userProfile === 'User') {
       this.buttonSaveLabel = 'Doar este livro';
       this.pageTitle = 'Quero doar um livro';
@@ -82,8 +83,10 @@ export class FormComponent implements OnInit {
             categoryId: x.categoryId,
             freightOption: x.freightOption,
             imageBytes: '',
-            imageName: x.imageName,
-            approved: x.approved
+            imageName: null,
+            approved: x.approved,
+            imageUrl: x.imageUrl,
+            imageSlug: x.imageSlug,
           };
           this.formGroup.setValue(bookForUpdate);
         }

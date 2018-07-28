@@ -34,7 +34,7 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._subscription = this._scUser.getById(this._scUser.getLoggedUserFromLocalStorage().userId).subscribe(updateUserVM => {
+    this._subscription = this._scUser.getUserData().subscribe(updateUserVM => {
       const foo = {
         name: updateUserVM.name,
         email: updateUserVM.email,
@@ -48,7 +48,7 @@ export class AccountComponent implements OnInit {
 
   updateUser() {
     if (this.formGroup.valid) {
-      this._scUser.update(this._scUser.getLoggedUserFromLocalStorage().userId, this.formGroup.value).subscribe(
+      this._scUser.update(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._scAlert.success('Registro atualizado com sucesso', true);
