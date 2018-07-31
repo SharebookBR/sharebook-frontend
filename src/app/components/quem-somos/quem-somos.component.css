@@ -15,7 +15,7 @@ p {
   width: 200px;
 }
 
-.rounded-list ol 
+.rounded-list 
 {
 counter-reset:li; /* Initiate a counter */
 margin-left:0; /* Remove the default left margin */
