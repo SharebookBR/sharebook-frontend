@@ -7,5 +7,6 @@
   "files.eol": "\n",
   "editor.detectIndentation": false,
   "prettier.tabWidth": 2,
-  "prettier.printWidth": 120
+  "prettier.printWidth": 120,
+  "editor.formatOnSave": false
 }
