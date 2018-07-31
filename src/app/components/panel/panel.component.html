@@ -3,22 +3,32 @@
 
     <div *ngIf="isAdmin" class="card">
       <a href="/book/list" title="Editar livros">
-        <img class="card-img-top" src="../../../assets/img/reading.svg" alt="Card image" style="width:100%">
+        <img class="card-img-top" src="../../../assets/img/library.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
       </a>
       <div class="card-body">
-        <h5 class="card-title">Gerenciar Livros</h5>
-        <p class="card-text">Esta função permite gerenciar os livros para doação.</p>
+        <h5 class="card-title" style="text-align: center">Gerenciar Livros</h5>
+        <!--p class="card-text">Esta função permite gerenciar os livros para doação.</p-->
       </div>
     </div>
 
     <div class="card">
       <a href="/account" title="Editar perfil">
-        <img class="card-img-top" src="../../../assets/img/avatar.svg" alt="Card image" style="width:100%">
+        <img class="card-img-top" src="../../../assets/img/learning.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
       </a>
       <div class="card-body">
-        <h5 class="card-title">Editar Perfil</h5>
-        <p class="card-text">Esta função permite editar seus dados pessoais.</p>
+        <h5 class="card-title" style="text-align: center">Editar Perfil</h5>
+        <!--p class="card-text">Esta função permite editar seus dados pessoais.</p-->
       </div>
     </div>
+
+    <div class="card">
+      <a href="/change-password" title="Mudar senha">
+        <img class="card-img-top" src="../../../assets/img/padlock.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
+      </a>
+      <div class="card-body">
+        <h5 class="card-title" style="text-align: center">Mudar Senha</h5>
+        <!--p class="card-text">Esta função permite mudar a sua senha.</p-->
+      </div>
+    </div>    
   </div>
 </div>

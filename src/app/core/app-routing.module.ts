@@ -12,6 +12,7 @@ import { PanelComponent } from '../components/panel/panel.component';
 import { AccountComponent } from '../components/account/account.component';
 import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
 import { ApoieProjetoComponent } from '../components/apoie-projeto/apoie-projeto.component';
+import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,11 @@ const routes: Routes = [
   {
     path: 'account',
     component: AccountComponent,
+    canActivate: [AuthGuardUser]
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
     canActivate: [AuthGuardUser]
   },
   // otherwise redirect to home

@@ -20,6 +20,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
@@ -48,7 +49,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     AlertComponent,
     ListComponent,
     PanelComponent,
-    AccountComponent
+    AccountComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
