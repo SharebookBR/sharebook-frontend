@@ -14,3 +14,43 @@ p {
 .card {
   width: 200px;
 }
+
+.rounded-list ol 
+{
+counter-reset:li; /* Initiate a counter */
+margin-left:0; /* Remove the default left margin */
+padding-left:0; /* Remove the default left padding */
+}
+
+/* item  */
+.rounded-list li
+{
+position:relative; /* Create a positioning context */
+list-style:none; /* Disable the normal item numbering */
+background:#f6f6f6; /* Item background color */
+margin:0; /* Give each list item a left margin to make room for the numbers */
+padding-left: 15px; /* Add some spacing around the content */
+padding-bottom:0px;
+padding-top:0px;
+}
+
+/* number  */
+.rounded-list li p:before
+{
+content: counter(li); 
+counter-increment: li; 
+position: absolute; 
+left: -1.3em;
+top: 50%;
+
+/* number background */
+background: #87ceeb; 
+height: 2em;
+width: 2em;
+margin-top: -1em;
+line-height: 1.5em;
+border: .3em solid #fff;
+text-align: center;
+font-weight: bold;
+border-radius: 2em;
+}
