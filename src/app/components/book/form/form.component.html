@@ -2,11 +2,18 @@
 
   <div *ngIf="isSaved" class="text-center">
     <h1 class="display-4">{{pageTitle}}</h1>
-    <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Doar mais um
-      <i class="fa fa-heart"></i>
-    </a>
+    <div *ngIf="userProfile === 'User'">
+      <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Doar mais um
+        <i class="fa fa-heart"></i>
+      </a>
+    </div>
+    <div *ngIf="userProfile === 'Administrator'">
+      <a routerLink="/book/list" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> 
+        Voltar ao Painel
+      </a>
+    </div>
     <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0">
-      Veja os ultimos livros doados.
+      Veja os ultimos livros doados
     </a>
   </div>
 
@@ -101,7 +108,7 @@
           </div>
         </div>
 
-        <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator'">
+        <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator' && itsEditMode">
           <label class="col-form-label" for="approved">Situação do livro</label>
           <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
             <label [ngClass]="(formGroup.value.approved === false) 

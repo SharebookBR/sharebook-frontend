@@ -25,6 +25,7 @@ export class FormComponent implements OnInit {
   buttonSaveLabel: string;
   pageTitle: string;
   isLoading: Boolean = false;
+  itsEditMode: Boolean = false;
 
   constructor(
     private _scBook: BookService,
@@ -51,7 +52,9 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userProfile === 'User') {
+    this.getBookSaved();
+
+    if (this.userProfile === 'User' || !this.itsEditMode) {
       this.buttonSaveLabel = 'Doar este livro';
       this.pageTitle = 'Quero doar um livro';
     } else {
@@ -66,13 +69,12 @@ export class FormComponent implements OnInit {
     this._scCategory.getAll().subscribe(data =>
       this.categories = data
     );
-
-    this.getBookSaved();
   }
 
   getBookSaved() {
     let id = '';
     this._activatedRoute.params.subscribe((param) => id = param.id);
+    this.itsEditMode = !!id;
 
     if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
