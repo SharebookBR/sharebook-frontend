@@ -52,4 +52,4 @@ http://dev.sharebook.com.br/swagger/
 
 ## HTML Responsivo original - Bootstrap 4
 
-http://devfrontend.com.br/siteteste.html
+http://www.devfrontend.com.br/models/sharebook-original/index.html
