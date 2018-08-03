@@ -56,11 +56,8 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
             Senha obrigatória.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
-            A senha deve conter no mínimo 6 caracteres.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength') ">
-            A senha deve conter no máximo 50 caracteres.
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('pattern')">
+            A senha não atende os requisitos. Mínimo oito caracteres, um caractere especial, um caractere numérico e uma letra em maiúsculo.
           </small>
         </div>
       </div>

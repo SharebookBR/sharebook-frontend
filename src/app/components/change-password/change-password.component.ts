@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { AlertService } from '../../core/services/alert/alert.service';
 import { PasswordValidation } from '../../core/utils/passwordValidation';
+import * as AppConst from '../../core/utils/app.const';
 
 @Component({
   selector: 'app-change-password',
@@ -22,8 +23,8 @@ export class ChangePasswordComponent implements OnInit {
     private _formBuilder: FormBuilder
   ) {
     this.formGroup = _formBuilder.group({
-      oldPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
-      newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
+      oldPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
       confirmPassword: ['', [Validators.required]]
     }, {
       validator: PasswordValidation.MatchPassword
