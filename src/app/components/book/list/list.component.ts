@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertService } from '../../../core/services/alert/alert.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { DonateComponent } from '../donate/donate.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
@@ -18,7 +21,8 @@ export class ListComponent implements OnInit {
     private _scBook: BookService,
     private _sanitizer: DomSanitizer,
     private _router: Router,
-    private _scAlert: AlertService) {
+    private _scAlert: AlertService,
+    private _modalService: NgbModal) {
   }
 
   getCheckBoxTable(value: boolean = false) {
@@ -31,12 +35,13 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this._scBook.getAll().subscribe(resp => {
-        this.books =  new LocalDataSource(resp['items']);
-      }
+      this.books = new LocalDataSource(resp['items']);
+    }
     );
 
     const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
     const btnEdit = '<span class="btn btn-info btn-sm"> <i class="fa fa-edit"></i> </span>';
+    const btnDonate = '<span class="btn btn-warning btn-sm"> <i class="fa fa-book"></i> </span>';
 
     this.settings = {
       mode: 'inline',
@@ -82,6 +87,10 @@ export class ListComponent implements OnInit {
             name: 'delete',
             title: btnDelete,
           },
+          {
+            name: 'donate',
+            title: btnDonate,
+          },
         ],
         position: 'right', // left|right
       },
@@ -122,6 +131,8 @@ export class ListComponent implements OnInit {
           this._scAlert.success('Registro removido com sucesso.');
         }
       });
+    } if (event.action === 'donate') {
+      this._modalService.open(DonateComponent, {backdropClass: 'light-blue-backdrop', centered: true});
     } else {
       this._router.navigate([`book/form/${event.data.id}`]);
     }

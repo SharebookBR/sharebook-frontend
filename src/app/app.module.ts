@@ -33,7 +33,9 @@ import { AlertService } from './core/services/alert/alert.service';
 
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
+import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     ListComponent,
     PanelComponent,
     AccountComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    DonateComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,9 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     FormsModule,
     ReactiveFormsModule,
     AppConfigModule,
-    Ng2SmartTableModule
+    Ng2SmartTableModule,
+    NgbModule.forRoot(),
+    NgbModalModule
   ],
   providers: [
     AuthGuardUser,
@@ -75,6 +80,9 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     // provider used to create fake backend
     // fakeBackendProvider
   ],
+  entryComponents: [
+    DonateComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
