@@ -47,4 +47,8 @@ export class BookService {
       })
     );
   }
+
+  public getGranteeUsersByBookId(bookId: number) {
+    return this._http.get(`${this.config.apiEndpoint}/book/GranteeUsersByBookId/${bookId}`);
+  }
 }
