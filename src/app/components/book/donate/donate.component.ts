@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LocalDataSource } from 'ng2-smart-table';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 import { BookService } from '../../../core/services/book/book.service';
+import { DonateBookUser } from '../../../core/models/donateBookUser';
 
 
 @Component({
@@ -15,10 +17,20 @@ export class DonateComponent implements OnInit {
   donateUsers: LocalDataSource;
   settings: any;
   isLoading: Boolean = true;
+  showNote: Boolean = false;
+  selectedDonatedUser: any;
+  myNote: String;
+  formGroup: FormGroup;
+  donateBookUser: DonateBookUser;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private _scBook: BookService) {
+    private _scBook: BookService,
+    private _formBuilder: FormBuilder) {
+
+    this.formGroup = _formBuilder.group({
+      myNote: ['', [Validators.required]]
+    });
   }
 
   ngOnInit() {
@@ -40,20 +52,7 @@ export class DonateComponent implements OnInit {
         email: {
           title: 'E-mail',
           filter: false
-        },
-        /*linkedin: {
-          title: 'LinkedIn',
-          filter: false
-        },
-        phone: {
-          title: 'Telefone',
-          valuePrepareFunction: data => data ? data.phone : '',
-          filter: false
-        },
-        postalCode: {
-          title: 'Cep',
-          filter: false
-        }*/
+        }
       },
       actions: {
         delete: false,
@@ -74,7 +73,29 @@ export class DonateComponent implements OnInit {
   onCustom(event) {
     if (event.action === 'donate') {
       console.log(event.data.name);
+      this.selectedDonatedUser = event.data;
+      this.showNote = true;
+      const foo = {
+        myNote: ''
+      };
+      this.formGroup.setValue(foo);
     }
+  }
+
+  onCancelNote() {
+    this.showNote = false;
+  }
+
+  onDonate() {
+    this.donateBookUser = new DonateBookUser();
+    this.donateBookUser.userId = this.selectedDonatedUser.id;
+    this.donateBookUser.note = this.formGroup.value.myNote;
+
+    this.isLoading = true;
+
+    this._scBook.donateBookUser(this.bookId, this.donateBookUser).subscribe(resp => {
+      this.isLoading = false;
+    });
   }
 
 }
