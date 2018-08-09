@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
+import { DonateBookUser } from '../../models/donateBookUser';
 import { map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
@@ -48,7 +49,11 @@ export class BookService {
     );
   }
 
-  public getGranteeUsersByBookId(bookId: number) {
+  public getGranteeUsersByBookId(bookId: string) {
     return this._http.get(`${this.config.apiEndpoint}/book/GranteeUsersByBookId/${bookId}`);
+  }
+
+  public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
+    return this._http.put<Book>(`${this.config.apiEndpoint}/book/${bookId}`, donateBookUser);
   }
 }
