@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,6 @@ import { DonateComponent } from '../donate/donate.component';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
@@ -132,7 +131,8 @@ export class ListComponent implements OnInit {
         }
       });
     } if (event.action === 'donate') {
-      this._modalService.open(DonateComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+      const modalRef = this._modalService.open(DonateComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+      modalRef.componentInstance.bookId = event.data.id;
     } else {
       this._router.navigate([`book/form/${event.data.id}`]);
     }
