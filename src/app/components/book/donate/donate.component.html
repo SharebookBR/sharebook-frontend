@@ -1,11 +1,15 @@
 <div class="modal-header">
-  <h4 class="modal-title">Hi there!</h4>
+  <h4 class="modal-title">Escolher Vencedor da Doação!</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <p>Hello, {{name}}!</p>
+  <ng2-smart-table class="table" [settings]="settings" [source]="donateUsers" (custom)="onCustom($event)">
+  </ng2-smart-table>
+  <div class="text-center" [hidden]="!isLoading">
+      <i class="fa fa-spinner fa-spin"></i> Aguarde...
+    </div>  
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
