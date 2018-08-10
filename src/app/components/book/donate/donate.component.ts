@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class DonateComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private _scBook: BookService,
+    private _scAlert: AlertService,
     private _formBuilder: FormBuilder) {
 
     this.formGroup = _formBuilder.group({
@@ -93,9 +95,21 @@ export class DonateComponent implements OnInit {
 
     this.isLoading = true;
 
-    this._scBook.donateBookUser(this.bookId, this.donateBookUser).subscribe(resp => {
-      this.isLoading = false;
-    });
+    this._scBook.donateBookUser(this.bookId, this.donateBookUser).subscribe(
+      resp => {
+        if (!resp.success) {
+          this._scAlert.error(resp.messages[0]);
+        } else {
+          this.activeModal.close();
+          this._scAlert.success(resp.successMessage);
+        }
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+        this._scAlert.error(error);
+      }
+    );
   }
 
 }
