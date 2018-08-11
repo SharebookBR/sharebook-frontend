@@ -4,7 +4,7 @@ import { BookService } from '../../../core/services/book/book.service';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertService } from '../../../core/services/alert/alert.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 
 @Component({
@@ -54,14 +54,14 @@ export class ListComponent implements OnInit {
           title: 'Autor',
           filter: false
         },
-        user: {
+        donor: {
           title: 'Doador',
-          valuePrepareFunction: data => data ? data.name : '',
+          valuePrepareFunction: data => data ? data : '',
           filter: false
         },
-        phone: {
+        phoneDonor: {
           title: 'Telefone',
-          valuePrepareFunction: data => data ? data.phone : '',
+          valuePrepareFunction: data => data ? data : '',
           filter: false
         },
         approved: {
@@ -80,15 +80,15 @@ export class ListComponent implements OnInit {
         custom: [
           {
             name: 'edit',
-            title: btnEdit,
+            title: btnEdit
           },
           {
             name: 'delete',
-            title: btnDelete,
+            title: btnDelete
           },
           {
             name: 'donate',
-            title: btnDonate,
+            title: btnDonate
           },
         ],
         position: 'right', // left|right
@@ -111,11 +111,11 @@ export class ListComponent implements OnInit {
           search: query
         },
         {
-          field: 'name',
+          field: 'donor',
           search: query
         },
         {
-          field: 'phone',
+          field: 'phoneDonor',
           search: query
         }
       ], false);
@@ -131,8 +131,12 @@ export class ListComponent implements OnInit {
         }
       });
     } if (event.action === 'donate') {
-      const modalRef = this._modalService.open(DonateComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-      modalRef.componentInstance.bookId = event.data.id;
+      if (event.data.approved) {
+        alert('Livro já doado!');
+      } else {
+        const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalRef.componentInstance.bookId = event.data.id;
+      }
     } else {
       this._router.navigate([`book/form/${event.data.id}`]);
     }
