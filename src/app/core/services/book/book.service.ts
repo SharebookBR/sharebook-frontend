@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
+import { BooksVM } from '../../models/booksVM';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map } from 'rxjs/operators';
 
@@ -14,7 +15,7 @@ export class BookService {
   constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
 
   public getAll() {
-    return this._http.get<Book[]>(`${this.config.apiEndpoint}/book`);
+    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book`);
   }
 
   public getTop15NewBooks() {
