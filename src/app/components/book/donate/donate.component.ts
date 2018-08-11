@@ -74,7 +74,6 @@ export class DonateComponent implements OnInit {
 
   onCustom(event) {
     if (event.action === 'donate') {
-      console.log(event.data.name);
       this.selectedDonatedUser = event.data;
       this.showNote = true;
       const foo = {
