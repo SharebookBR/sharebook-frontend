@@ -15,6 +15,7 @@ import { ApoieProjetoComponent } from './components/apoie-projeto/apoie-projeto.
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
+import { DetailsComponent as BookDetailComponent } from './components/book/details/details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './core/directives/alert/alert.component';
@@ -41,6 +42,7 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     AppComponent,
     BookFormComponent,
+    BookDetailComponent,
     HomeComponent,
     QuemSomosComponent,
     ApoieProjetoComponent,

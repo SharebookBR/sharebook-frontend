@@ -6,6 +6,7 @@ import { AuthGuardAdmin } from './guards/auth.guard.admin';
 import { HomeComponent } from '../components/home/home.component';
 import { FormComponent as BookFormComponent } from '../components/book/form/form.component';
 import { ListComponent as BookListComponent } from '../components/book/list/list.component';
+import { DetailsComponent as BookDetailComponent } from '../components/book/details/details.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
@@ -38,6 +39,10 @@ const routes: Routes = [
     path: 'book/list',
     component: BookListComponent,
     canActivate: [AuthGuardAdmin]
+  },
+  {
+    path: 'book/details/:id',
+    component: BookDetailComponent
   },
   {
     path: 'quem-somos',
