@@ -65,7 +65,9 @@
 
     <figure class="figure" *ngFor="let book of top15NewBooks">
       <div>
-        <img src="{{book.imageUrl}}" class="figure-img img-fluid rounded" alt="{{book.title}}">
+          <a href="/book/details/{{book.id}}" title="Detalhes do Livro">
+            <img src="{{book.imageUrl}}" class="figure-img img-fluid rounded" alt="{{book.title}}">
+          </a>
       </div>
       <figcaption class="figure-caption text-center">{{book.title}}</figcaption>
     </figure>
@@ -77,7 +79,9 @@
 
     <figure class="figure" *ngFor="let book of random15NewBooks">
       <div>
-        <img src="{{book.imageUrl}}" class="figure-img img-fluid rounded" alt="{{book.title}}">
+          <a href="/book/details/{{book.id}}" title="Detalhes do Livro">
+            <img src="{{book.imageUrl}}" class="figure-img img-fluid rounded" alt="{{book.title}}">
+          </a>
       </div>
       <figcaption class="figure-caption text-center">{{book.title}}</figcaption>
     </figure>
