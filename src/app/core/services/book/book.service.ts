@@ -15,7 +15,7 @@ export class BookService {
   constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
 
   public getAll() {
-    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book`);
+    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/100`);
   }
 
   public getTop15NewBooks() {
