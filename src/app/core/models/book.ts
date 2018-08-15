@@ -1,3 +1,5 @@
+import { Category } from './category';
+
 export class Book {
   id: string;
   userId: number;
@@ -10,4 +12,5 @@ export class Book {
   approved: boolean;
   categoryId: number;
   freightOption: string;
+  category: Category;
 }
