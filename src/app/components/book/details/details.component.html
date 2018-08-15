@@ -1,48 +1,26 @@
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequestBook()">
-
+<div class="container form-horizontal">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
     <div class="form-row">
       <div class="col-3">
-        <img [src]="formGroup.value.imageBytes.length
-          ? 'data:image/png;base64,' + formGroup.value.imageBytes
-          : formGroup.value.imageUrl ? formGroup.value.imageUrl : 'assets/img/img-placeholder.png'" 
+        <img [src]="bookInfo.imageBytes?.length
+          ? 'data:image/png;base64,' + bookInfo.imageBytes
+          : bookInfo.imageUrl ? bookInfo.imageUrl : 'assets/img/img-placeholder.png'" 
           class="img-thumbnail "
         />
       </div>
       <div class="col">
-        <div class="form-group col-md-8">
-          <label class="col-form-label" for="title">Título do livro</label>
-          <input formControlName="title" name="title" type="text" class="form-control" maxlength="50">
-        </div>
+        <p><b>Título do livro:</b><br/>{{bookInfo.title}}</p>
+        <p><b>Autor:</b><br/>{{bookInfo.author}}</p>
+        <p><b>Categoria:</b><br/>{{bookInfo.category?.name}}</p>
+        <p><b>Doador paga o frete?</b><br/>{{bookInfo.freightOption}}</p>
 
-        <div class="form-group col-md-8">
-          <label class="col-form-label" for="author">Autor</label>
-          <input formControlName="author" type="text" class="form-control" maxlength="50">
-        </div>
-
-        <div class="form-group col-md-8 mb-4">
-          <label class="col-form-label" for="categoryId">Categoria</label>
-          <select class="form-control" formControlName="categoryId">
-            <option value=""></option>
-            <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
-          </select>
-        </div>
-
-        <div class="form-group col-md-8" *ngIf="userProfile">
-          <label class="col-form-label" for="freightOption">Doador paga pelo frete?</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            <label *ngFor="let option of freightOptions" [ngClass]="(formGroup.value.freightOption === option.value) 
-                ? 'btn btn-outline-secondary form-control active' 
-                : 'btn btn-outline-secondary form-control'">
-              <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
-            </label>
-          </div>
-        </div>
         <div class="form-group col-md-8">
           <div class="modal-footer">
-            <input type="submit" *ngIf="userProfile" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
-              [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
-              <a [routerLink]="['/home']" class="btn btn-link">Cancelar</a>
+            <input type="button" *ngIf="userProfile" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px"
+              (click)="onRequestBook()">
+            <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px"
+              (click)="onLoginBook()">
+            <a [routerLink]="['/home']" class="btn btn-link">Cancelar</a>
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> Aguarde...
@@ -50,4 +28,4 @@
         </div>        
       </div>
     </div>
-  </form>
+  </div>
