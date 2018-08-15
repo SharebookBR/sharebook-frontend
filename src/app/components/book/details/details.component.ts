@@ -22,6 +22,7 @@ export class DetailsComponent implements OnInit {
   userProfile: string;
   pageTitle: string;
   isLoading: Boolean = false;
+  isSaved: Boolean;
   authenticated: Boolean = false;
 
   bookInfo: Book = new Book();
@@ -76,15 +77,16 @@ export class DetailsComponent implements OnInit {
     this._scBook.requestBook(this.bookInfo.id).subscribe(resp => {
       this.pageTitle = 'Aguarde a aprovação da doação!';
       this.isLoading = false;
-      if (resp.success) {
+      /*if (resp.success) {
         this._scAlert.success(resp.successMessage, true);
       } else {
         this._scAlert.error(resp.messages[0]);
-      }
+      }*/
+      this.isSaved = true;
     },
-    error => {
+    /*error => {
       this._scAlert.error(error);
-    }
+    }*/
     );
   }
 

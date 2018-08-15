@@ -1,6 +1,13 @@
 <div class="container form-horizontal">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
-    <div class="form-row">
+
+    <div *ngIf="isSaved" class="text-center">
+      <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0">
+        Página inicial
+      </a>
+    </div>
+  
+    <div *ngIf="!isSaved" class="form-row">
       <div class="col-3">
         <img [src]="bookInfo.imageBytes?.length
           ? 'data:image/png;base64,' + bookInfo.imageBytes
