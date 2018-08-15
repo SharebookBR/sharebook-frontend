@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ImageResult, ResizeOptions } from 'ng2-imageupload';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -27,13 +29,20 @@ export class FormComponent implements OnInit {
   isLoading: Boolean = false;
   itsEditMode: Boolean = false;
 
+  src: string;
+  resizeOptions: ResizeOptions = {
+      resizeMaxHeight: 600,
+      resizeMaxWidth: 600
+  };
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
     private _scUser: UserService,
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
-    private _scAlert: AlertService) {
+    private _scAlert: AlertService,
+    private _sanitizer: DomSanitizer) {
 
     this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
 
@@ -125,17 +134,17 @@ export class FormComponent implements OnInit {
     this.formGroup.controls['approved'].setValue(approved);
   }
 
-  onConvertImageToBase64(event: any) {
+  onConvertImageToBase64(imageResult: ImageResult) {
 
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
+    this.src = imageResult.resized
+            && imageResult.resized.dataURL
+            || imageResult.dataURL;
 
-      // tslint:disable-next-line:no-shadowed-variable
-      reader.onload = event => {
-        const img = event.target['result'].split(',');
-        this.formGroup.controls['imageBytes'].setValue(img[1]);
-      };
-    }
+    console.log(imageResult.dataURL.length);
+    console.log(' --->>> ');
+    console.log(imageResult.resized.dataURL.length);
+    console.log(this.src);
+
+    this.formGroup.controls['imageBytes'].setValue(this._sanitizer.bypassSecurityTrustHtml(this.src));
   }
 }

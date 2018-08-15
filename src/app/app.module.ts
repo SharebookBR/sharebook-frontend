@@ -5,6 +5,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ImageUploadModule } from 'ng2-imageupload';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -66,7 +67,8 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     AppConfigModule,
     Ng2SmartTableModule,
     NgbModule.forRoot(),
-    NgbModalModule
+    NgbModalModule,
+    ImageUploadModule
   ],
   providers: [
     AuthGuardUser,
