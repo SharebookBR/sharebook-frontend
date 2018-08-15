@@ -31,8 +31,8 @@ export class FormComponent implements OnInit {
 
   src: string;
   resizeOptions: ResizeOptions = {
-      resizeMaxHeight: 600,
-      resizeMaxWidth: 600
+    resizeMaxHeight: 600,
+    resizeMaxWidth: 600
   };
 
   constructor(
@@ -87,20 +87,20 @@ export class FormComponent implements OnInit {
 
     if (this.userProfile === 'Administrator' && id) {
       this._scBook.getById(id).subscribe(x => {
-          const bookForUpdate = {
-            id: x.id,
-            title: x.title,
-            author: x.author,
-            categoryId: x.categoryId,
-            freightOption: x.freightOption,
-            imageBytes: '',
-            imageName: null,
-            approved: x.approved,
-            imageUrl: x.imageUrl,
-            imageSlug: x.imageSlug,
-          };
-          this.formGroup.setValue(bookForUpdate);
-        }
+        const bookForUpdate = {
+          id: x.id,
+          title: x.title,
+          author: x.author,
+          categoryId: x.categoryId,
+          freightOption: x.freightOption,
+          imageBytes: '',
+          imageName: null,
+          approved: x.approved,
+          imageUrl: x.imageUrl,
+          imageSlug: x.imageSlug,
+        };
+        this.formGroup.setValue(bookForUpdate);
+      }
       );
     }
   }
@@ -110,17 +110,17 @@ export class FormComponent implements OnInit {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
         this._scBook.create(this.formGroup.value).subscribe(resp => {
-            this.isSaved = true;
-            this.pageTitle = 'Obrigado por ajudar <3.';
-            this.isLoading = false;
-          }
+          this.isSaved = true;
+          this.pageTitle = 'Obrigado por ajudar <3.';
+          this.isLoading = false;
+        }
         );
       } else {
         this._scBook.update(this.formGroup.value).subscribe(resp => {
-            this.isSaved = true;
-            this.pageTitle = 'Registro atualizado';
-            this.isLoading = false;
-          }
+          this.isSaved = true;
+          this.pageTitle = 'Registro atualizado';
+          this.isLoading = false;
+        }
         );
       }
     }
@@ -137,14 +137,15 @@ export class FormComponent implements OnInit {
   onConvertImageToBase64(imageResult: ImageResult) {
 
     this.src = imageResult.resized
-            && imageResult.resized.dataURL
-            || imageResult.dataURL;
+      && imageResult.resized.dataURL
+      || imageResult.dataURL;
 
-    console.log(imageResult.dataURL.length);
-    console.log(' --->>> ');
-    console.log(imageResult.resized.dataURL.length);
-    console.log(this.src);
+    const reader = new FileReader();
+    reader.readAsDataURL(imageResult.file);
 
-    this.formGroup.controls['imageBytes'].setValue(this._sanitizer.bypassSecurityTrustHtml(this.src));
+    reader.onload = event => {
+      const img = this.src.split(',');
+      this.formGroup.controls['imageBytes'].setValue(img[1]);
+    };
   }
 }
