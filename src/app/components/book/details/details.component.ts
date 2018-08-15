@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -8,6 +7,7 @@ import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
+import { Book } from '../../../core/models/book';
 
 @Component({
   selector: 'app-details',
@@ -16,37 +16,29 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 })
 export class DetailsComponent implements OnInit {
 
-  formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
 
   userProfile: string;
   pageTitle: string;
   isLoading: Boolean = false;
+  isSaved: Boolean;
   authenticated: Boolean = false;
+
+  bookInfo: Book = new Book();
+  categoryName: string;
 
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
     private _scUser: UserService,
-    private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
-    private _scAlert: AlertService) {
+    private _scAlert: AlertService,
+    private router: Router) {
 
     if (this._scUser.getLoggedUserFromLocalStorage()) {
       this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
     }
-
-    this.formGroup = _formBuilder.group({
-      id: '',
-      title: [{ value: '', disabled: true }],
-      author: [{ value: '', disabled: true }],
-      categoryId: [{ value: '', disabled: true }],
-      freightOption: [''],
-      imageBytes: [''],
-      imageUrl: '',
-      imageSlug: ''
-    });
   }
 
   ngOnInit() {
@@ -57,38 +49,22 @@ export class DetailsComponent implements OnInit {
 
     if (this.userProfile) {
       this.pageTitle = 'Tenho interesse na doação?';
-
-      this._scBook.getFreightOptions().subscribe(data =>
-        this.freightOptions = data
-      );
     } else {
       this.pageTitle = 'Detalhes do Livro';
     }
 
-    this._scCategory.getAll().subscribe(data =>
-      this.categories = data
-    );
-
   }
 
   getBookSaved() {
-    let id = '';
-    this._activatedRoute.params.subscribe((param) => id = param.id);
+    let slug = '';
+    this._activatedRoute.params.subscribe((param) => slug = param.slug);
 
-    if (this.userProfile && id) {
-      this._scBook.getById(id).subscribe(x => {
-        const bookForUpdate = {
-          id: x.id,
-          title: x.title,
-          author: x.author,
-          categoryId: x.categoryId,
-          freightOption: x.freightOption,
-          imageBytes: '',
-          imageUrl: x.imageUrl,
-          imageSlug: x.imageSlug
-        };
-        this.formGroup.setValue(bookForUpdate);
+    if (this.userProfile && slug) {
+      this._scBook.getBySlug(slug).subscribe(x => {
+
+        this.bookInfo = x;
         this.isLoading = false;
+
       }
       );
     } else {
@@ -97,22 +73,25 @@ export class DetailsComponent implements OnInit {
   }
 
   onRequestBook() {
-    if (this.formGroup.valid) {
-      this.isLoading = true;
-      this._scBook.requestBook(this.formGroup.value.id).subscribe(resp => {
-        this.pageTitle = 'Aguarde a aprovação da doação!';
-        this.isLoading = false;
-        if (resp.success) {
-          this._scAlert.success(resp.successMessage, true);
-        } else {
-          this._scAlert.error(resp.messages[0]);
-        }
-      },
-      error => {
-        this._scAlert.error(error);
-      }
-      );
-    }
+    this.isLoading = true;
+    this._scBook.requestBook(this.bookInfo.id).subscribe(resp => {
+      this.pageTitle = 'Aguarde a aprovação da doação!';
+      this.isLoading = false;
+      /*if (resp.success) {
+        this._scAlert.success(resp.successMessage, true);
+      } else {
+        this._scAlert.error(resp.messages[0]);
+      }*/
+      this.isSaved = true;
+    },
+    /*error => {
+      this._scAlert.error(error);
+    }*/
+    );
+  }
+
+  onLoginBook() {
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }});
   }
 
   onConvertImageToBase64(event: any) {
@@ -124,7 +103,7 @@ export class DetailsComponent implements OnInit {
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = event => {
         const img = event.target['result'].split(',');
-        this.formGroup.controls['imageBytes'].setValue(img[1]);
+        this.bookInfo.imageBytes = img[1];
       };
     }
   }

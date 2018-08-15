@@ -34,6 +34,10 @@ export class BookService {
     return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
+  public getBySlug(bookSlug: string) {
+    return this._http.get<Book>(`${this.config.apiEndpoint}/book/Slug/${bookSlug}`);
+  }
+
   public update(book: Book) {
     return this._http.put<Book>(`${this.config.apiEndpoint}/book/${book.id}`, book);
   }

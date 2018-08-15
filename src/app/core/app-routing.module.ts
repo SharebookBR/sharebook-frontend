@@ -41,7 +41,7 @@ const routes: Routes = [
     canActivate: [AuthGuardAdmin]
   },
   {
-    path: 'book/details/:id',
+    path: 'livros/:slug',
     component: BookDetailComponent
   },
   {
