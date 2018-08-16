@@ -19,11 +19,11 @@
         <p><b>Título do livro:</b><br/>{{bookInfo.title}}</p>
         <p><b>Autor:</b><br/>{{bookInfo.author}}</p>
         <p><b>Categoria:</b><br/>{{bookInfo.category?.name}}</p>
-        <p><b>Doador paga o frete?</b><br/>{{bookInfo.freightOption}}</p>
+        <p><b>Doador paga o frete?</b><br/>{{freightName}}</p>
 
         <div class="form-group col-md-8">
-          <div class="modal-footer">
-            <input type="button" *ngIf="userProfile" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px"
+          <div class="modal-footer" [hidden]="isLoading">
+            <input type="button" *ngIf="userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px"
               (click)="onRequestBook()">
             <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px"
               (click)="onLoginBook()">
