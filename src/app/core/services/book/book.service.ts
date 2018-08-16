@@ -66,4 +66,8 @@ export class BookService {
     return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/${bookId}`, null);
   }
 
+  public getRequested(bookId: string) {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/Requested/${bookId}`);
+  }
+
 }
