@@ -24,9 +24,11 @@ export class DetailsComponent implements OnInit {
   isLoading: Boolean = false;
   isSaved: Boolean;
   authenticated: Boolean = false;
+  requested: Boolean = false;
 
   bookInfo: Book = new Book();
   categoryName: string;
+  freightName: string;
 
   constructor(
     private _scBook: BookService,
@@ -59,12 +61,27 @@ export class DetailsComponent implements OnInit {
     let slug = '';
     this._activatedRoute.params.subscribe((param) => slug = param.slug);
 
-    if (this.userProfile && slug) {
+    if (slug) {
       this._scBook.getBySlug(slug).subscribe(x => {
 
-        this.bookInfo = x;
-        this.isLoading = false;
+        this._scBook.getFreightOptions().subscribe(data => {
+          this.freightOptions = data;
 
+          const name = this.freightOptions.find(obj => obj.value.toString() === x.freightOption.toString());
+          this.freightName = name.text;
+
+          this.bookInfo = x;
+
+          this._scBook.getRequested(x.id).subscribe(requested => {
+            this.requested = requested.value.bookRequested;
+            if (requested.value.bookRequested) {
+              this.pageTitle = 'Aguarde a aprovação da doação!';
+            }
+
+            this.isLoading = false;
+          });
+        }
+        );
       }
       );
     } else {
@@ -77,21 +94,21 @@ export class DetailsComponent implements OnInit {
     this._scBook.requestBook(this.bookInfo.id).subscribe(resp => {
       this.pageTitle = 'Aguarde a aprovação da doação!';
       this.isLoading = false;
-      /*if (resp.success) {
-        this._scAlert.success(resp.successMessage, true);
+      if (resp.success) {
+        // this._scAlert.success(resp.successMessage, true);
+        this.isSaved = true;
       } else {
         this._scAlert.error(resp.messages[0]);
-      }*/
-      this.isSaved = true;
+      }
     },
-    /*error => {
-      this._scAlert.error(error);
-    }*/
+      error => {
+        this._scAlert.error(error);
+      }
     );
   }
 
   onLoginBook() {
-    this.router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }});
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
   }
 
   onConvertImageToBase64(event: any) {
