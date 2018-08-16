@@ -72,14 +72,18 @@ export class DetailsComponent implements OnInit {
 
           this.bookInfo = x;
 
-          this._scBook.getRequested(x.id).subscribe(requested => {
-            this.requested = requested.value.bookRequested;
-            if (requested.value.bookRequested) {
-              this.pageTitle = 'Aguarde a aprovação da doação!';
-            }
+          if (this.userProfile) {
+            this._scBook.getRequested(x.id).subscribe(requested => {
+              this.requested = requested.value.bookRequested;
+              if (requested.value.bookRequested) {
+                this.pageTitle = 'Aguarde a aprovação da doação!';
+              }
 
+              this.isLoading = false;
+            });
+          } else {
             this.isLoading = false;
-          });
+          }
         }
         );
       }
