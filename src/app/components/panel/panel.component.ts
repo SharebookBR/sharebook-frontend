@@ -15,8 +15,8 @@ export class PanelComponent implements OnInit {
 
   ngOnInit() {
 
-    const { profile } = this._scUser.getLoggedUserFromLocalStorage();
-    this.isAdmin = (profile === 'Administrator') ? true : false;
+    this._scUser.getProfile().subscribe(({ profile }) =>
+      this.isAdmin = (profile === 'Administrator') ? true : false
+    );
   }
-
 }

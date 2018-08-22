@@ -27,15 +27,15 @@ export class UserService {
 
     register(user: User) {
         return this._http.post<any>(`${this.config.apiEndpoint}/Account/Register`, user)
-        .pipe(map(response => {
-          // login successful if there's a jwt token in the response
-          if (response.success || response.authenticated) {
-              // store user details and jwt token in local storage to keep user logged in between page refreshes
-              localStorage.setItem('shareBookUser', JSON.stringify(response));
-              this.setLoggedUser(response);
-          }
-          return response;
-      }));
+            .pipe(map(response => {
+                // login successful if there's a jwt token in the response
+                if (response.success || response.authenticated) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('shareBookUser', JSON.stringify(response));
+                    this.setLoggedUser(response);
+                }
+                return response;
+            }));
     }
 
     update(updateUserVM: UpdateUserVM) {
@@ -43,7 +43,7 @@ export class UserService {
     }
 
     changePassword(changePasswordUserVM: ChangePasswordUserVM) {
-      return this._http.put<any>(`${this.config.apiEndpoint}/Account/ChangePassword/`, changePasswordUserVM);
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account/ChangePassword/`, changePasswordUserVM);
     }
 
     delete(id: number) {
@@ -59,9 +59,13 @@ export class UserService {
     }
 
     getLoggedUserFromLocalStorage() {
-      if (localStorage.getItem('shareBookUser')) {
-        return JSON.parse(localStorage.getItem('shareBookUser'));
-      }
-      return;
+        if (localStorage.getItem('shareBookUser')) {
+            return JSON.parse(localStorage.getItem('shareBookUser'));
+        }
+        return;
+    }
+
+    getProfile() {
+        return this._http.get<Profile>(`${this.config.apiEndpoint}/account/profile`);
     }
 }

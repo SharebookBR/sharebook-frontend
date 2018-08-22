@@ -35,16 +35,23 @@ export class FormComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService) {
 
-    this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
+    this.createFormGroup();
 
-    this.formGroup = _formBuilder.group({
+    this._scUser.getProfile().subscribe(({ profile }) => {
+      this.userProfile = profile;
+      this.createFormGroup();
+    });
+  }
+
+  createFormGroup() {
+    this.formGroup = this._formBuilder.group({
       id: '',
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageName: ['', this.userProfile === 'User' && [Validators.required]],
+      imageName: ['', () => this.userProfile === 'User' && [Validators.required]],
       approved: false,
       imageUrl: '',
       imageSlug: '',
