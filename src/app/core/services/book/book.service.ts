@@ -15,7 +15,7 @@ export class BookService {
   constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
 
   public getAll() {
-    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book`);
+    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/100`);
   }
 
   public getTop15NewBooks() {
@@ -32,6 +32,10 @@ export class BookService {
 
   public getById(bookId: string) {
     return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
+  }
+
+  public getBySlug(bookSlug: string) {
+    return this._http.get<Book>(`${this.config.apiEndpoint}/book/Slug/${bookSlug}`);
   }
 
   public update(book: Book) {
@@ -57,4 +61,13 @@ export class BookService {
   public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
     return this._http.put<any>(`${this.config.apiEndpoint}/book/Donate/${bookId}`, donateBookUser);
   }
+
+  public requestBook(bookId: string) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/${bookId}`, null);
+  }
+
+  public getRequested(bookId: string) {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/Requested/${bookId}`);
+  }
+
 }

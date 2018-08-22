@@ -131,7 +131,7 @@ export class ListComponent implements OnInit {
         }
       });
     } if (event.action === 'donate') {
-      if (event.data.approved) {
+      if (event.data.donated) {
         alert('Livro já doado!');
       } else {
         const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });

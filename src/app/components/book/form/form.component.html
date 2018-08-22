@@ -77,7 +77,7 @@
 
         <div class="form-group col-md-8">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" formControlName="imageName" (change)="onConvertImageToBase64($event)">
+            <input type="file" class="custom-file-input" formControlName="imageName" imageUpload (imageSelected)="onConvertImageToBase64($event)" [resizeOptions]="resizeOptions">
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
               Selecionar imagem da capa do livro
             </label>
