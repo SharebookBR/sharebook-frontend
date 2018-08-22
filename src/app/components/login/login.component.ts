@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import { AlertService } from '../../core/services/alert/alert.service';
-import * as AppConst from '../../core/utils/app.const';
 
 @Component({
   selector: 'app-form',
@@ -25,7 +24,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.formGroup = _formBuilder.group({
       email: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      password: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
+      password: ['', [Validators.required]],
     });
   }
 
