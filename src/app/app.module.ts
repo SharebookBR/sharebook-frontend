@@ -32,6 +32,7 @@ import { CategoryService } from './core/services/category/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
 import { UserService } from './core/services/user/user.service';
 import { AlertService } from './core/services/alert/alert.service';
+import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
 
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
@@ -76,6 +77,7 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     CategoryService,
     AlertService,
     AuthenticationService,
+    GoogleAnalyticsService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -89,4 +91,6 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
+ }
