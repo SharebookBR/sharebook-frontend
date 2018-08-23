@@ -44,12 +44,20 @@ export class FormComponent implements OnInit {
     private _scAlert: AlertService,
     private _sanitizer: DomSanitizer) {
 
+    /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
+  }
 
-    this._scUser.getProfile().subscribe(({ profile }) => {
-      this.userProfile = profile;
-      this.createFormGroup();
-    });
+  ngOnInit() {
+    this.findProfile();
+
+    this._scBook.getFreightOptions().subscribe(data =>
+      this.freightOptions = data
+    );
+
+    this._scCategory.getAll().subscribe(data =>
+      this.categories = data
+    );
   }
 
   createFormGroup() {
@@ -67,9 +75,16 @@ export class FormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.getBookSaved();
+  findProfile() {
+    this._scUser.getProfile().subscribe(({ profile }) => {
+      this.userProfile = profile;
+      this.createFormGroup();
+      this.getBookSaved();
+      this.buildFormsLabels();
+    });
+  }
 
+  buildFormsLabels() {
     if (this.userProfile === 'User' || !this.itsEditMode) {
       this.buttonSaveLabel = 'Doar este livro';
       this.pageTitle = 'Quero doar um livro';
@@ -77,14 +92,6 @@ export class FormComponent implements OnInit {
       this.buttonSaveLabel = 'Salvar';
       this.pageTitle = 'Editar livro';
     }
-
-    this._scBook.getFreightOptions().subscribe(data =>
-      this.freightOptions = data
-    );
-
-    this._scCategory.getAll().subscribe(data =>
-      this.categories = data
-    );
   }
 
   getBookSaved() {
