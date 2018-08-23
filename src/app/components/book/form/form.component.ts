@@ -68,7 +68,7 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageName: [''],
+      imageName: ['', this.userProfile === 'User' && [Validators.required]],
       approved: false,
       imageUrl: '',
       imageSlug: '',
