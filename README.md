@@ -12,7 +12,7 @@ https://join.slack.com/t/sharebookworkspace/shared_invite/enQtMzQ2Nzc5OTk3MDc4LT
 
 - Se apresente. Nome, cidade, profissão, e principais habilidades.
 - Pergunte sobre as tarefas em aberto.
-- Troque uma ideia com o time técnico. Comente como planeja solucionar. Ouça os conselhos dos devs mais experientes. Esse alinhamento eh super importante pra aumentar significativamente as chances do seu PULL REQUEST ser aprovado depois.
+- Troque uma ideia com o time técnico. Comente como planeja solucionar. Ouça os conselhos dos devs mais experientes. Esse alinhamento é super importante pra aumentar significativamente as chances do seu PULL REQUEST ser aprovado depois.
 
 ## 3 - FAÇA PARTE DA EQUIPE NO TRELLO
 
