@@ -27,7 +27,7 @@ export class BookService {
   }
 
   public create(book: Book) {
-    return this._http.post<Book>(`${this.config.apiEndpoint}/book`, book);
+    return this._http.post<any>(`${this.config.apiEndpoint}/book`, book);
   }
 
   public getById(bookId: string) {

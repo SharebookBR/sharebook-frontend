@@ -124,8 +124,13 @@ export class FormComponent implements OnInit {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
         this._scBook.create(this.formGroup.value).subscribe(resp => {
-          this.isSaved = true;
-          this.pageTitle = 'Obrigado por ajudar <3.';
+          if (resp.success) {
+            this.isSaved = true;
+            this._scAlert.success('Livro cadastrado com sucesso!');
+            this.pageTitle = 'Obrigado por ajudar <3.';
+          } else {
+            this._scAlert.error(resp.messages[0]);
+          }
           this.isLoading = false;
         }
         );
