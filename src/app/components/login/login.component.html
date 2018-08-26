@@ -5,7 +5,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
-          <input formControlName="email" type="text" class="form-control">
+          <input formControlName="email" id="txtEmail" type="text" class="form-control">
           <div class="input-group-addon append">
             <i class="fa fa-envelope-square"></i>
           </div>
@@ -27,7 +27,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="password">Senha</label>
         <div class="input-group">
-          <input formControlName="password" type="password" class="form-control">
+          <input formControlName="password" id="txtPassword" type="password" class="form-control">
           <div class="input-group-addon append">
             <i class="fa fa-unlock-alt"></i>
           </div>
@@ -48,7 +48,7 @@
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input type="submit" class="btn btn-primary" value="Login" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <input type="submit" id="btnLogin" class="btn btn-primary" value="Login" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
           <a [routerLink]="['/register']" class="btn btn-link">Registrar</a>
         </div>
       </div>

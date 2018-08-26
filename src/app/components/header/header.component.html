@@ -33,7 +33,7 @@
           <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login">Sair</a>
         </li>
       </ul>
-      <div *ngIf="userLogged">
+      <div *ngIf="userLogged" id= "welcomeUser">
         Seja bem-vindo, {{shareBookUser.name}}
       </div>
     </div>
