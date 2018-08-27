@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { User } from '../../core/models/user';
@@ -10,8 +10,6 @@ import { UserService } from '../../core/services/user/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  // variavel para selecionar o div do menu via DOM
-  @ViewChild('menu') menu: ElementRef;
 
   private _subscription: Subscription;
 
@@ -33,13 +31,5 @@ export class HeaderComponent implements OnInit {
       this.shareBookUser = shareBookUser;
       this.userLogged = !!this.shareBookUser;
     });
-  }
-
-  /* metodo que verifica se o menu tem classe show e a remove em caso possitivo
-  metodo é chamado ao click de cada link do menu */
-  showHideMenu() {
-    if (this.menu.nativeElement.classList.contains('show')) {
-      this.menu.nativeElement.classList.remove('show');
-    }
   }
 }
