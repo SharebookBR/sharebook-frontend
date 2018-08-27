@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { User } from '../../core/models/user';
@@ -10,6 +10,9 @@ import { UserService } from '../../core/services/user/user.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
+  // variavel apra selecionar o menu via DOM
+  @ViewChild('menu') menu: ElementRef;
 
   private _subscription: Subscription;
 
@@ -31,5 +34,12 @@ export class HeaderComponent implements OnInit {
       this.shareBookUser = shareBookUser;
       this.userLogged = !!this.shareBookUser;
     });
+  }
+
+  // metodo que desativa o menu ao clicar em um link
+  showHideMenu() {
+    if (this.menu.nativeElement.classList.contains('show')) {
+      this.menu.nativeElement.classList.toggle('show');
+    }
   }
 }
