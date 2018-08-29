@@ -15,13 +15,10 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
             E-mail obrigatório.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('minlength')">
-            O e-mail deve conter no mínimo 3 caracteres.
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern') ">
+            O e-mail deve ser um e-mail válido.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('maxlength') ">
-            O e-mail deve conter no máximo 200 caracteres.
-          </small>
-        </div>
+        </div>        
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
