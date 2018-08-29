@@ -63,8 +63,8 @@ export class FormComponent implements OnInit {
   createFormGroup() {
     this.formGroup = this._formBuilder.group({
       id: '',
-      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
