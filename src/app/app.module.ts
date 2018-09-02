@@ -39,6 +39,7 @@ import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     Ng2SmartTableModule,
     NgbModule.forRoot(),
     NgbModalModule,
-    ImageUploadModule
+    ImageUploadModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     AuthGuardUser,
