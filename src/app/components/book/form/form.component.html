@@ -20,7 +20,7 @@
   <div *ngIf="!isSaved">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
     <div class="form-row">
-      <div class="col-3">
+      <div class="col-3 thumbnail-container">
         <img [src]="formGroup.value.imageBytes.length
           ? 'data:image/png;base64,' + formGroup.value.imageBytes
           : formGroup.value.imageUrl ? formGroup.value.imageUrl : 'assets/img/img-placeholder.png'" 
