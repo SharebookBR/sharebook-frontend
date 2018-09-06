@@ -44,17 +44,8 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.isLoading = true;
-
     this.getBookSaved();
-
-    if (this.userProfile) {
-      this.pageTitle = 'Tenho interesse na doação?';
-    } else {
-      this.pageTitle = 'Detalhes do Livro';
-    }
-
   }
 
   getBookSaved() {
@@ -71,21 +62,17 @@ export class DetailsComponent implements OnInit {
           this.freightName = name.text;
 
           this.bookInfo = x;
+          this.pageTitle = this.bookInfo.title;
 
           if (this.userProfile) {
             this._scBook.getRequested(x.id).subscribe(requested => {
               this.requested = requested.value.bookRequested;
-              if (requested.value.bookRequested) {
-                this.pageTitle = 'Aguarde a aprovação da doação!';
-              }
-
-              this.isLoading = false;
+              this.isLoading = false;        
             });
           } else {
             this.isLoading = false;
           }
-        }
-        );
+        });
       }
       );
     } else {
