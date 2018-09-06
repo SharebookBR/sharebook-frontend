@@ -67,7 +67,7 @@ export class DetailsComponent implements OnInit {
           if (this.userProfile) {
             this._scBook.getRequested(x.id).subscribe(requested => {
               this.requested = requested.value.bookRequested;
-              this.isLoading = false;        
+              this.isLoading = false;
             });
           } else {
             this.isLoading = false;
