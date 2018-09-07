@@ -28,6 +28,7 @@
               (click)="onRequestBook()">
             <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px"
               (click)="onLoginBook()">
+            <a [routerLink]="['/home']" class="btn btn-link" id="cancelButton">Cancelar</a>
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> Aguarde...

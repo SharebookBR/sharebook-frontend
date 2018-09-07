@@ -1,6 +1,11 @@
-@media (max-width: 416px) {
+@media (max-width: 418px) {
   .img-thumbnail {
     min-height: 220px; 
-    min-width: 320px
+    min-width: 320px;
+  }
+}
+@media (max-width: 538px) {
+  #cancelButton {
+    display: none;
   }
 }
