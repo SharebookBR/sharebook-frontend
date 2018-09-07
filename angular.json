@@ -60,7 +60,6 @@
               "vendorChunk": false,
               "buildOptimizer": true
             }
-
           }
         },
         "serve": {
@@ -139,5 +138,10 @@
       }
     }
   },
-  "defaultProject": "angular"
+  "defaultProject": "angular",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

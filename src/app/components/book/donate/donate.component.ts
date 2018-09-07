@@ -11,7 +11,7 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 @Component({
   selector: 'app-donate',
   templateUrl: './donate.component.html',
-  styleUrls: ['./donate.component.css']
+  styleUrls: ['./donate.component.scss']
 })
 export class DonateComponent implements OnInit {
   @Input() bookId;
