@@ -5,7 +5,7 @@ import { Book } from '../../core/models/book';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   top15NewBooks: Book[] = [];
