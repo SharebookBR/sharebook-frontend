@@ -3,13 +3,14 @@
 }
 
 .thumbnail-container {
-  height: 30vh;
+  max-height: 40vh;
+  max-width: 15vw;
   padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(231, 241, 251);
+  background-color: rgba(0, 0, 0, .05);
 }
 
 .img-thumbnail {
@@ -19,4 +20,20 @@
 
 select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
   border: 1px solid red;
+}
+
+@media (max-width: 600px) {
+
+  .form-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col {
+    flex-basis: unset;
+  }
+
+  .thumbnail-container {
+    max-width: 30vw;
+  }
 }
