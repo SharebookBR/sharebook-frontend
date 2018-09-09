@@ -39,6 +39,7 @@ import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     PanelComponent,
     AccountComponent,
     ChangePasswordComponent,
-    DonateComponent
+    DonateComponent,
+    ContactUsComponent
   ],
   imports: [
     BrowserModule,
