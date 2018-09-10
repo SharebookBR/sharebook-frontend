@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { ImageResult, ResizeOptions } from 'ng2-imageupload';
 import { DomSanitizer } from '@angular/platform-browser';
-
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
+
 
 @Component({
   selector: 'app-form',

@@ -1,3 +1,112 @@
-<p>
-  contact-us works!
-</p>
+<div class="container">
+  <h1 class="text-center display-4">Fale Conosco</h1>
+  <!-- <p class="text-center display-7">Informe sobre o problema que está ocorrendo e logo entraremos em contato!</p> -->
+
+  <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onContactUs()">
+    
+  
+    <div *ngIf="!isSaved">
+      <h1 class="text-center display-4">{{pageTitle}}</h1>
+      <div class="form-row">
+        <div class="col-3">
+          <img src="https://compass-ssl.microsoft.com/assets/e5/ed/e5edb1cb-7af1-45be-b3be-d9adcebaf86f.svg?n=contact_us_3people.svg"   class="img-thumbnail "
+          />
+        </div>
+        <div class="col">
+            <div class="form-group col-md-6 offset-md-3 mb-2">
+                <p class="text-center display-7">Informe sobre o problema que está ocorrendo e logo entraremos em contato!</p> 
+              </div>
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+            <label class="col-form-label" for="name">Nome</label>
+            <div class="input-group">
+              <input formControlName="name" name="name" type="text" class="form-control">
+              <div class="input-group-addon append">
+                <i class="fa fa-address-book"></i>
+              </div>
+            </div>
+            <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
+              <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
+                Nome obrigatório.
+              </small>
+              <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
+                O nome deve conter no mínimo 3 caracteres.
+              </small>
+              <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength') ">
+                O nome deve conter no máximo 200 caracteres.
+              </small>
+            </div>
+          </div>
+  
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+            <label class="col-form-label" for="email">E-mail</label>
+            <div class="input-group">
+              <input formControlName="email" type="text" class="form-control">
+              <div class="input-group-addon append">
+                <i class="fa fa-envelope-square"></i>
+              </div>
+            </div>
+    
+            <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
+              <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
+                E-mail obrigatório.
+              </small>
+              <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern') ">
+                O e-mail deve ser um e-mail válido.
+              </small>          
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+            <label class="col-form-label" for="phone">DDD + Telefone</label>
+            <div class="input-group">
+              <input formControlName="phone" type="text" class="form-control">
+              <div class="input-group-addon append">
+                <i class="fa fa-whatsapp"></i>
+              </div>
+            </div>
+    
+            <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
+              <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
+                Telefone deve estar no formato (99) 99999-9999
+              </small>
+            </div>        
+          </div>
+
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+            <label class="col-form-label" for="message">Mensagem</label>
+            <div class="input-group">
+              <!-- <textarea formControlName="message" name="message" class="form-control"> -->
+                  <textarea  formControlName="message"  name="message" class="form-control" rows="5" id="comment"></textarea>
+              <div class="input-group-addon append">
+                <i class="fa fa-paper-plane"></i>
+              </div>
+            </div>
+            <div *ngIf="formGroup.controls['message'].touched && !formGroup.controls['message'].valid">
+              <small class="form-text text-danger" *ngIf="formGroup.controls['message'].hasError('required')">
+                Menssagem obrigatória
+              </small>
+              <small class="form-text text-danger" *ngIf="formGroup.controls['message'].hasError('minlength')">
+                A menssagem deve conter no mínimo 50 caracteres.
+              </small>
+              <small class="form-text text-danger" *ngIf="formGroup.controls['message'].hasError('maxlength') ">
+                A menssagem deve conter no máximo 512 caracteres.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+              <div class="input-group">
+                <input type="submit" class="btn btn-primary" value="Enviar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+              </div>
+            </div>
+      
+          <div class="form-group col-md-8">
+            <div class="text-center" [hidden]="!isLoading">
+              <i class="fa fa-spinner fa-spin"></i> Aguarde...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>

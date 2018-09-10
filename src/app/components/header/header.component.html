@@ -30,6 +30,9 @@
           <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel" (click)="showHideMenu()">Meu Painel</a>
         </li>
         <li class="nav-item ">
+          <a class="nav-link hvr-underline-from-center" routerLink="/contact-us" (click)="showHideMenu()">Fale Conosco</a>
+        </li>
+        <li class="nav-item ">
           <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login" (click)="showHideMenu()">Entrar</a>
           <a *ngIf="userLogged" class="nav-link hvr-underline-from-center"  routerLink="/login" (click)="showHideMenu()">Sair</a>
         </li>
