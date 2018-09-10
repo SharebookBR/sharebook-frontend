@@ -18,7 +18,9 @@ export class AppComponent implements OnInit {
     if (user) {
       const expiration = moment(user.expiration).utc();
       const now = moment().utc();
-      if(now.isAfter(expiration)) localStorage.setItem(this.localStorageUserKey, null);
+      if (now.isAfter(expiration)) {
+        localStorage.setItem(this.localStorageUserKey, null);
+      }
     }
   }
 }
