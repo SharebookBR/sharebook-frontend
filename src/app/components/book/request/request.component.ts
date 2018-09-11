@@ -48,7 +48,7 @@ export class RequestComponent implements OnInit {
 
     // TODO: call API
 
-    this.lastError = 'Ocorreu um erro ao solicitar. xpto'
+    this.lastError = 'Ocorreu um erro ao solicitar. xpto';
     this.state = 'request-success';
 
     // this._scBook.requestBook(this.bookId).subscribe(resp => {
