@@ -36,4 +36,9 @@ select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
   .thumbnail-container {
     max-width: 30vw;
   }
+
+  .img-thumbnail {
+    min-height: 220px; 
+    min-width: 320px;
+  }
 }
