@@ -9,6 +9,9 @@ import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
 import { Book } from '../../../core/models/book';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RequestComponent } from '../request/request.component';
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -36,7 +39,8 @@ export class DetailsComponent implements OnInit {
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService,
-    private router: Router) {
+    private router: Router,
+    private _modalService: NgbModal) {
 
     if (this._scUser.getLoggedUserFromLocalStorage()) {
       this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
@@ -81,21 +85,8 @@ export class DetailsComponent implements OnInit {
   }
 
   onRequestBook() {
-    this.isLoading = true;
-    this._scBook.requestBook(this.bookInfo.id).subscribe(resp => {
-      this.pageTitle = 'Aguarde a aprovação da doação!';
-      this.isLoading = false;
-      if (resp.success) {
-        // this._scAlert.success(resp.successMessage, true);
-        this.isSaved = true;
-      } else {
-        this._scAlert.error(resp.messages[0]);
-      }
-    },
-      error => {
-        this._scAlert.error(error);
-      }
-    );
+    const modalRef = this._modalService.open(RequestComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+    modalRef.componentInstance.bookId = this.bookInfo.id;
   }
 
   onLoginBook() {

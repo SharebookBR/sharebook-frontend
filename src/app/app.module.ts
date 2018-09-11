@@ -40,6 +40,7 @@ import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMaskModule } from 'ngx-mask';
+import { RequestComponent } from './components/book/request/request.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { NgxMaskModule } from 'ngx-mask';
     PanelComponent,
     AccountComponent,
     ChangePasswordComponent,
-    DonateComponent
+    DonateComponent,
+    RequestComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,8 @@ import { NgxMaskModule } from 'ngx-mask';
     // fakeBackendProvider
   ],
   entryComponents: [
-    DonateComponent
+    DonateComponent,
+    RequestComponent
   ],
   bootstrap: [AppComponent]
 })
