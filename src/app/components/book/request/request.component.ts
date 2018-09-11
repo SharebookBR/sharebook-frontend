@@ -24,7 +24,7 @@ export class RequestComponent implements OnInit {
   formGroup: FormGroup;
   donateBookUser: DonateBookUser;
 
-  state: string = 'loading'; //loading, form, error
+  state = 'loading'; // loading, form, error
   lastError: string;
 
   constructor(
@@ -43,9 +43,9 @@ export class RequestComponent implements OnInit {
   }
 
   onRequest() {
-    
+
     this.state = 'loading';
-    
+
     // TODO: call API
 
     this.lastError = 'Ocorreu um erro ao solicitar. xpto'
