@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment-timezone';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import * as moment from 'moment';
 })
 export class AppComponent implements OnInit {
   localStorageUserKey = 'shareBookUser';
+  defaultTimeZone = environment.defaultTimeZone;
 
   ngOnInit() {
     this.checkTokenValidity();
@@ -16,8 +18,8 @@ export class AppComponent implements OnInit {
   checkTokenValidity() {
     const user = JSON.parse(localStorage.getItem(this.localStorageUserKey));
     if (user) {
-      const expiration = moment(user.expiration).utc();
-      const now = moment().utc();
+      const expiration = moment(user.expiration).tz(this.defaultTimeZone);
+      const now = moment();
       if (now.isAfter(expiration)) {
         localStorage.setItem(this.localStorageUserKey, null);
       }
