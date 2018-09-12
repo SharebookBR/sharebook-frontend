@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: `http://dev.sharebook.com.br/api`,
-  defaultTimeZone: `America/Los_Angeles`
+  apiEndpoint: `http://dev.sharebook.com.br/api`
 };
 
 /*

@@ -9,7 +9,6 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
   localStorageUserKey = 'shareBookUser';
-  defaultTimeZone = environment.defaultTimeZone;
 
   ngOnInit() {
     this.checkTokenValidity();
@@ -18,7 +17,7 @@ export class AppComponent implements OnInit {
   checkTokenValidity() {
     const user = JSON.parse(localStorage.getItem(this.localStorageUserKey));
     if (user) {
-      const expiration = moment(user.expiration).tz(this.defaultTimeZone);
+      const expiration = moment(user.expiration);
       const now = moment();
       if (now.isAfter(expiration)) {
         localStorage.setItem(this.localStorageUserKey, null);
