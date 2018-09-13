@@ -62,8 +62,12 @@ export class BookService {
     return this._http.put<any>(`${this.config.apiEndpoint}/book/Donate/${bookId}`, donateBookUser);
   }
 
-  public requestBook(bookId: string) {
-    return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/${bookId}`, null);
+  public requestBook(bookId: string, reason: string) {
+    let request = {
+      "BookId": bookId,
+      "Reason": reason
+    }
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/`, request);
   }
 
   public getRequested(bookId: string) {

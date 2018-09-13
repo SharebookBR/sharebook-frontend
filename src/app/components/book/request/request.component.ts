@@ -45,26 +45,21 @@ export class RequestComponent implements OnInit {
   onRequest() {
 
     this.state = 'loading';
+    let reason = this.formGroup.value.myNote;
+    this._scBook.requestBook(this.bookId, reason).subscribe(resp => {
 
-    // TODO: call API
-
-    this.lastError = 'Ocorreu um erro ao solicitar. xpto';
-    this.state = 'request-success';
-
-    // this._scBook.requestBook(this.bookId).subscribe(resp => {
-    //   this.pageTitle = 'Aguarde a aprovação da doação!';
-    //   this.isLoading = false;
-    //   if (resp.success) {
-    //     // this._scAlert.success(resp.successMessage, true);
-    //     this.isSaved = true;
-    //   } else {
-    //     this._scAlert.error(resp.messages[0]);
-    //   }
-    // },
-    //   error => {
-    //     this._scAlert.error(error);
-    //   }
-    // );
+      if (resp.success) {
+        this.state = 'request-success';
+      } else {
+        this.lastError = resp.messages[0];
+        this.state = 'request-error';
+      }
+    },
+      error => {
+        this.lastError = error;
+        this.state = 'request-error';
+      }
+    );
 
   }
 
