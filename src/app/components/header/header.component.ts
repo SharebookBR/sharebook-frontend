@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   userLogged = false;
   shareBookUser = new User();
 
-  constructor(private _scUser: UserService, private _scAuthentication: AuthenticationService,) {
+  constructor(private _scUser: UserService, private _scAuthentication: AuthenticationService) {
 
     // if has shareBookUser, set value to variables
     if (this._scUser.getLoggedUserFromLocalStorage()) {

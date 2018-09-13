@@ -88,18 +88,16 @@ export class DetailsComponent implements OnInit {
     const modalRef = this._modalService.open(RequestComponent, { backdropClass: 'light-blue-backdrop', centered: true });
 
     modalRef.result.then((result) => {
-      if(result == 'Success'){
+      if (result === 'Success') {
         this.requested = true;
       }
     }, (reason) => {
-      if(reason == 'Success'){
+      if (reason === 'Success') {
         this.requested = true;
       }
     });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
-
-    
   }
 
   onLoginBook() {

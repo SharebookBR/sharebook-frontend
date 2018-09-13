@@ -63,10 +63,10 @@ export class BookService {
   }
 
   public requestBook(bookId: string, reason: string) {
-    let request = {
-      "BookId": bookId,
-      "Reason": reason
-    }
+    const request = {
+      'BookId': bookId,
+      'Reason': reason
+    };
     return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/`, request);
   }
 

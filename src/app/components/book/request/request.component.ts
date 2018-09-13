@@ -45,7 +45,7 @@ export class RequestComponent implements OnInit {
   onRequest() {
 
     this.state = 'loading';
-    let reason = this.formGroup.value.myNote;
+    const reason = this.formGroup.value.myNote;
     this._scBook.requestBook(this.bookId, reason).subscribe(resp => {
 
       if (resp.success) {
