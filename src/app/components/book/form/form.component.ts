@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ImageResult, ResizeOptions } from 'ng2-imageupload';
+import { Ng2ImgMaxService } from 'ng2-img-max';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -30,10 +30,6 @@ export class FormComponent implements OnInit {
   itsEditMode: Boolean = false;
 
   src: string;
-  resizeOptions: ResizeOptions = {
-    resizeMaxHeight: 600,
-    resizeMaxWidth: 600
-  };
 
   constructor(
     private _scBook: BookService,
@@ -42,7 +38,7 @@ export class FormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService,
-    private _sanitizer: DomSanitizer) {
+    private _ng2ImgMaxService: Ng2ImgMaxService) {
 
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
@@ -153,18 +149,25 @@ export class FormComponent implements OnInit {
     this.formGroup.controls['approved'].setValue(approved);
   }
 
-  onConvertImageToBase64(imageResult: ImageResult) {
+  onConvertImageToBase64(file: any) {
 
-    this.src = imageResult.resized
-      && imageResult.resized.dataURL
-      || imageResult.dataURL;
+    if (file.target.files && file.target.files[0]) {
 
-    const reader = new FileReader();
-    reader.readAsDataURL(imageResult.file);
+      this.isLoading = true;
 
-    reader.onload = event => {
-      const img = this.src.split(',');
-      this.formGroup.controls['imageBytes'].setValue(img[1]);
-    };
+      this._ng2ImgMaxService.resize([file.target.files[0]], 2000, 1000).subscribe((result) => {
+      // this._ng2ImgMaxService.compressImage(file.target.files[0], 0.150).subscribe((result) => { // compressImage didn´t work at iPhone
+        const reader = new FileReader();
+        reader.readAsDataURL(result);
+
+        reader.onload = event => {
+          this.src = <string>reader.result;
+          const img = this.src.split(',');
+          this.formGroup.controls['imageBytes'].setValue(img[1]);
+          this.isLoading = false;
+        };
+      });
+
+    }
   }
 }

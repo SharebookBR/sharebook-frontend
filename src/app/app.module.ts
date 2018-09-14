@@ -5,7 +5,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
+import { Ng2ImgMaxModule } from 'ng2-img-max';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -72,7 +72,7 @@ import { RequestComponent } from './components/book/request/request.component';
     Ng2SmartTableModule,
     NgbModule.forRoot(),
     NgbModalModule,
-    ImageUploadModule,
+    Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
   ],
   providers: [
