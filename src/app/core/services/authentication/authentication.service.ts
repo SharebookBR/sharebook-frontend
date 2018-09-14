@@ -14,6 +14,7 @@ export class AuthenticationService {
       private router: Router,
       private _user: UserService,
       @Inject(APP_CONFIG) private config: AppConfig) { }
+      private _localStorageUserKey = 'shareBookUser';
 
     login(email: string, password: string) {
         return this.http.post<any>(`${this.config.apiEndpoint}/Account/Login/`, { email: email, password: password })
@@ -31,12 +32,12 @@ export class AuthenticationService {
 
     logout() {
       // remove user from local storage to log user out
-      localStorage.removeItem('shareBookUser');
+      localStorage.removeItem(this._localStorageUserKey);
       this._user.setLoggedUser(null);
     }
 
     checkTokenValidity() {
-      const user = JSON.parse(localStorage.getItem('shareBookUser'));
+      const user = JSON.parse(localStorage.getItem(this._localStorageUserKey));
       if (user) {
         const expiration = moment(user.expiration);
         const now = moment();
