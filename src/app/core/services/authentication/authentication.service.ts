@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import moment from 'moment-timezone';
 
 import { UserService } from '../user/user.service';
 
@@ -13,6 +14,7 @@ export class AuthenticationService {
       private router: Router,
       private _user: UserService,
       @Inject(APP_CONFIG) private config: AppConfig) { }
+      private _localStorageUserKey = 'shareBookUser';
 
     login(email: string, password: string) {
         return this.http.post<any>(`${this.config.apiEndpoint}/Account/Login/`, { email: email, password: password })
@@ -29,8 +31,19 @@ export class AuthenticationService {
     }
 
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('shareBookUser');
-        this._user.setLoggedUser(null);
+      // remove user from local storage to log user out
+      localStorage.removeItem(this._localStorageUserKey);
+      this._user.setLoggedUser(null);
+    }
+
+    checkTokenValidity() {
+      const user = JSON.parse(localStorage.getItem(this._localStorageUserKey));
+      if (user) {
+        const expiration = moment(user.expiration);
+        const now = moment();
+        if (now.isAfter(expiration)) {
+          this.logout();
+        }
+      }
     }
 }
