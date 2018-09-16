@@ -41,6 +41,8 @@ import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { RecaptchaModule } from 'ng-recaptcha';
+import {RecaptchaFormsModule} from 'ng-recaptcha/forms';
 
 
 @NgModule({
@@ -73,7 +75,9 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     Ng2SmartTableModule,
     NgbModule.forRoot(),
     NgbModalModule,
-    ImageUploadModule
+    ImageUploadModule,
+    RecaptchaModule.forRoot(),
+    RecaptchaFormsModule
   ],
   providers: [
     AuthGuardUser,

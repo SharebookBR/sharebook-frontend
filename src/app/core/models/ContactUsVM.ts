@@ -1,5 +1,4 @@
-export class ContactUsVW {
-  id: number;
+export class ContactUsVM   {
   name: string;
   email: string;
   phone: string;

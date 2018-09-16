@@ -86,14 +86,16 @@
                 Menssagem obrigatória
               </small>
               <small class="form-text text-danger" *ngIf="formGroup.controls['message'].hasError('minlength')">
-                A menssagem deve conter no mínimo 50 caracteres.
+                A menssagem deve conter no mínimo 20 caracteres.
               </small>
               <small class="form-text text-danger" *ngIf="formGroup.controls['message'].hasError('maxlength') ">
                 A menssagem deve conter no máximo 512 caracteres.
               </small>
             </div>
           </div>
-
+          <div class="form-group col-md-6 offset-md-3 mb-2">
+              <re-captcha  formControlName="recaptchaReactive" (resolved)="resolved($event)" siteKey="6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3"></re-captcha>
+            </div>
           <div class="form-group col-md-6 offset-md-3 mb-2">
               <div class="input-group">
                 <input type="submit" class="btn btn-primary" value="Enviar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
