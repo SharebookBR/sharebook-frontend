@@ -13,16 +13,12 @@ import { RecaptchaModule } from 'ng-recaptcha';
 
 
 export class ContactUsComponent implements OnInit {
-
-  formGroup : FormGroup;
+  formGroup: FormGroup;
   isSaved: Boolean;
   isLoading: Boolean = false;
   pageTitle: string;
 
-  constructor(private _formBuilder: FormBuilder,
-    private _scContactUs : ContactUsService,
-    private _scAlert : AlertService
-  ) {
+  constructor(private _formBuilder: FormBuilder, private _scContactUs: ContactUsService, private _scAlert: AlertService) {
     this.createFormGroup();
    }
 
@@ -37,14 +33,13 @@ export class ContactUsComponent implements OnInit {
       message: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(512)]],
       recaptchaReactive: new FormControl(null, Validators.required)
     });
-   
   }
 
   onContactUs() {
     if (this.formGroup.valid) {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
-        this._scContactUs.contactUs(this.formGroup.value,"").subscribe(resp => {
+        this._scContactUs.contactUs(this.formGroup.value, '').subscribe(resp => {
           if (resp.success) {
             this.isSaved = true;
             this._scAlert.success('Mensagem enviada com sucesso!');
@@ -53,9 +48,8 @@ export class ContactUsComponent implements OnInit {
             this._scAlert.error(resp.messages[0]);
           }
           this.isLoading = false;
-        }
-        );
-      } 
+        });
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: `http://localhost:50708/api`
+  apiEndpoint: `http://dev.sharebook.com.br/api`
 };
 
 /*
