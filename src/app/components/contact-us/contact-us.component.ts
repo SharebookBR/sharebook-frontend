@@ -39,7 +39,7 @@ export class ContactUsComponent implements OnInit {
     if (this.formGroup.valid) {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
-        this._scContactUs.contactUs(this.formGroup.value, '').subscribe(resp => {
+        this._scContactUs.contactUs(this.formGroup.value).subscribe(resp => {
           if (resp.success) {
             this.isSaved = true;
             this._scAlert.success('Mensagem enviada com sucesso!');
