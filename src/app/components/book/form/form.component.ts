@@ -165,7 +165,7 @@ export class FormComponent implements OnInit {
     if (!imageResult.error) {
 
       this.isLoading = true;
-      this.isLoadingMessage = "Processando imagem...";
+      this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
 
       this._ng2ImgMaxService.resize([imageResult.file], 2000, 10000).subscribe((result) => {
