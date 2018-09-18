@@ -27,6 +27,7 @@ export class FormComponent implements OnInit {
   buttonSaveLabel: string;
   pageTitle: string;
   isLoading: Boolean = false;
+  isLoadingMessage: string;
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
 
@@ -122,6 +123,7 @@ export class FormComponent implements OnInit {
         this._scAlert.error('Selecionar imagem da capa do livro.');
       } else {
         this.isLoading = true;
+        this.isLoadingMessage = 'Aguarde...';
         if (!this.formGroup.value.id) {
           if (!this.formGroup.value.imageName) {
             this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
@@ -163,6 +165,7 @@ export class FormComponent implements OnInit {
     if (!imageResult.error) {
 
       this.isLoading = true;
+      this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
 
       this._ng2ImgMaxService.resize([imageResult.file], 2000, 10000).subscribe((result) => {
