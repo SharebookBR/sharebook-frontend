@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ImageResult } from 'ng2-imageupload';
 import { Ng2ImgMaxService } from 'ng2-img-max';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -28,6 +28,7 @@ export class FormComponent implements OnInit {
   pageTitle: string;
   isLoading: Boolean = false;
   itsEditMode: Boolean = false;
+  isImageLoaded: Boolean = false;
 
   src: string;
 
@@ -64,7 +65,7 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageName: ['', this.userProfile === 'User' && [Validators.required]],
+      imageName: [''], // , this.userProfile === 'User' && [Validators.required]],
       approved: false,
       imageUrl: '',
       imageSlug: '',
@@ -117,26 +118,34 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      this.isLoading = true;
-      if (!this.formGroup.value.id) {
-        this._scBook.create(this.formGroup.value).subscribe(resp => {
-          if (resp.success) {
-            this.isSaved = true;
-            this._scAlert.success('Livro cadastrado com sucesso!');
-            this.pageTitle = 'Obrigado por ajudar <3.';
-          } else {
-            this._scAlert.error(resp.messages[0]);
-          }
-          this.isLoading = false;
-        }
-        );
+      if (this.userProfile === 'User' && !this.isImageLoaded) {
+        this._scAlert.error('Selecionar imagem da capa do livro.');
       } else {
-        this._scBook.update(this.formGroup.value).subscribe(resp => {
-          this.isSaved = true;
-          this.pageTitle = 'Registro atualizado';
-          this.isLoading = false;
+        this.isLoading = true;
+        if (!this.formGroup.value.id) {
+          if (!this.formGroup.value.imageName) {
+            this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
+          }
+
+          this._scBook.create(this.formGroup.value).subscribe(resp => {
+            if (resp.success) {
+              this.isSaved = true;
+              this._scAlert.success('Livro cadastrado com sucesso!');
+              this.pageTitle = 'Obrigado por ajudar.';
+            } else {
+              this._scAlert.error(resp.messages[0]);
+            }
+            this.isLoading = false;
+          }
+          );
+        } else {
+          this._scBook.update(this.formGroup.value).subscribe(resp => {
+            this.isSaved = true;
+            this.pageTitle = 'Registro atualizado';
+            this.isLoading = false;
+          }
+          );
         }
-        );
       }
     }
   }
@@ -149,14 +158,14 @@ export class FormComponent implements OnInit {
     this.formGroup.controls['approved'].setValue(approved);
   }
 
-  onConvertImageToBase64(file: any) {
+  onConvertImageToBase64(imageResult: ImageResult) {
 
-    if (file.target.files && file.target.files[0]) {
+    if (!imageResult.error) {
 
       this.isLoading = true;
+      this.isImageLoaded = true;
 
-      this._ng2ImgMaxService.resize([file.target.files[0]], 2000, 1000).subscribe((result) => {
-      // this._ng2ImgMaxService.compressImage(file.target.files[0], 0.150).subscribe((result) => { // compressImage didn´t work at iPhone
+      this._ng2ImgMaxService.resize([imageResult.file], 2000, 10000).subscribe((result) => {
         const reader = new FileReader();
         reader.readAsDataURL(result);
 
@@ -167,7 +176,10 @@ export class FormComponent implements OnInit {
           this.isLoading = false;
         };
       });
-
+    } else {
+      this.formGroup.controls['imageName'].setErrors({ InvalidExtension: true });
+      this.formGroup.controls['imageBytes'].setValue('');
+      this.isImageLoaded = false;
     }
   }
 }
