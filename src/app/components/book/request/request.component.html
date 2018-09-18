@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">Quanto você quer esse livro?</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cancel')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -20,7 +20,7 @@
     <div class="alert alert-success" role="alert">
         Seu pedido foi efetuado com sucesso.
     </div>
-    <p>Agora é só aguardar e boa sorte! Geralmente uma doação leva de 5 até 15 dias. Pra dar tempo de todos terem chance.</p>
+    <p>Agora é só aguardar. Geralmente uma doação leva de 5 até 15 dias, para dar tempo de todos terem chance. Boa sorte!</p>
   </div>
 
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state=='form'">
@@ -41,7 +41,7 @@
   <div class="modal-footer">
     <input type="submit" class="btn btn-primary" value="Quero esse livro." style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
       [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cancel')">Cancelar</button>
   </div>
 
 </form>
@@ -49,7 +49,7 @@
 <div *ngIf="state!='form'">
   
   <div class="modal-footer">
-    <input type="button" class="btn btn-primary" value="Ok. Obrigado." style="padding-left: 50px; padding-right: 50px" *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Cross click')">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+    <input type="button" class="btn btn-primary" value="Ok. Obrigado." style="padding-left: 50px; padding-right: 50px" *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Success')">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cancel')" *ngIf="state!='request-success'">Cancelar</button>
   </div>
 </div>
