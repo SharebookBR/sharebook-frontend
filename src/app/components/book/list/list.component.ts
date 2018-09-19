@@ -48,25 +48,30 @@ export class ListComponent implements OnInit {
       columns: {
         title: {
           title: 'Titulo',
-          filter: false
+          filter: false,
+          width: '20%'
         },
         author: {
           title: 'Autor',
-          filter: false
+          filter: false,
+          width: '20%'
         },
         donor: {
           title: 'Doador',
           valuePrepareFunction: data => data ? data : '',
-          filter: false
+          filter: false,
+          width: '20%'
         },
         phoneDonor: {
           title: 'Telefone',
           valuePrepareFunction: data => data ? data : '',
-          filter: false
+          filter: false,
+          width: '20%'
         },
         approved: {
           title: 'Visível',
           filter: false,
+          width: '5%',
           type: 'html',
           valuePrepareFunction: value =>
             this._sanitizer.bypassSecurityTrustHtml(this.getCheckBoxTable(value)),
@@ -91,8 +96,11 @@ export class ListComponent implements OnInit {
             title: btnDonate
           },
         ],
-        position: 'right', // left|right
+        position: 'right' // left|right
       },
+      attr: {
+        class: 'table table-bordered'
+      }
     };
   }
 
