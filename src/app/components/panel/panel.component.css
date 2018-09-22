@@ -18,3 +18,8 @@ p {
 .card-text {
   text-align: left;
 }
+
+.panel-item {
+  width: 50%; 
+  margin-top: 20px
+}

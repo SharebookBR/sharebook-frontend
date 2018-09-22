@@ -24,9 +24,10 @@ import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
+
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
-
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
@@ -61,7 +62,8 @@ import { RequestComponent } from './components/book/request/request.component';
     AccountComponent,
     ChangePasswordComponent,
     DonateComponent,
-    RequestComponent
+    RequestComponent,
+    RequestedsComponent
   ],
   imports: [
     BrowserModule,
