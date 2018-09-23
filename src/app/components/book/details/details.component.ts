@@ -9,6 +9,9 @@ import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
 import { Book } from '../../../core/models/book';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RequestComponent } from '../request/request.component';
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -36,7 +39,8 @@ export class DetailsComponent implements OnInit {
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService,
-    private router: Router) {
+    private router: Router,
+    private _modalService: NgbModal) {
 
     if (this._scUser.getLoggedUserFromLocalStorage()) {
       this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
@@ -44,17 +48,8 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.isLoading = true;
-
     this.getBookSaved();
-
-    if (this.userProfile) {
-      this.pageTitle = 'Tenho interesse na doação?';
-    } else {
-      this.pageTitle = 'Detalhes do Livro';
-    }
-
   }
 
   getBookSaved() {
@@ -71,21 +66,17 @@ export class DetailsComponent implements OnInit {
           this.freightName = name.text;
 
           this.bookInfo = x;
+          this.pageTitle = this.bookInfo.title;
 
           if (this.userProfile) {
             this._scBook.getRequested(x.id).subscribe(requested => {
               this.requested = requested.value.bookRequested;
-              if (requested.value.bookRequested) {
-                this.pageTitle = 'Aguarde a aprovação da doação!';
-              }
-
               this.isLoading = false;
             });
           } else {
             this.isLoading = false;
           }
-        }
-        );
+        });
       }
       );
     } else {
@@ -94,21 +85,19 @@ export class DetailsComponent implements OnInit {
   }
 
   onRequestBook() {
-    this.isLoading = true;
-    this._scBook.requestBook(this.bookInfo.id).subscribe(resp => {
-      this.pageTitle = 'Aguarde a aprovação da doação!';
-      this.isLoading = false;
-      if (resp.success) {
-        // this._scAlert.success(resp.successMessage, true);
-        this.isSaved = true;
-      } else {
-        this._scAlert.error(resp.messages[0]);
+    const modalRef = this._modalService.open(RequestComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+
+    modalRef.result.then((result) => {
+      if (result === 'Success') {
+        this.requested = true;
       }
-    },
-      error => {
-        this._scAlert.error(error);
+    }, (reason) => {
+      if (reason === 'Success') {
+        this.requested = true;
       }
-    );
+    });
+
+    modalRef.componentInstance.bookId = this.bookInfo.id;
   }
 
   onLoginBook() {

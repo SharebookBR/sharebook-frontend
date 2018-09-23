@@ -1,12 +1,45 @@
-img {
-  min-height: 220px;
-  min-width: 230px;
+.form-row {
+  align-items: center;
+}
 
-  height: 300px;
-  width: 230px;
-  margin-top: 60px;
+.figure {
+  margin: 1rem;
+  max-width: 170px;
+}
+
+.figure div {
+  width: 170px;
+  height: 230px;
+  text-align: center;
+  border: 1px dotted #e6e6e6;
+}
+
+.figure div img {
+  max-height: 230px;
+  max-width: 170px;
 }
 
 select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
   border: 1px solid red;
+}
+
+@media (max-width: 600px) {
+
+  .form-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col {
+    flex-basis: unset;
+  }
+
+  .thumbnail-container {
+    max-width: 30vw;
+  }
+
+  .img-thumbnail {
+    min-height: 220px; 
+    min-width: 320px;
+  }
 }

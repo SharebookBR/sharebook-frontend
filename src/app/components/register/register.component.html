@@ -84,7 +84,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-          <input formControlName="phone" type="text" class="form-control">
+          <input formControlName="phone" type="text" class="form-control" [dropSpecialCharacters]="false" mask="(99) 99999-9999">
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
@@ -116,7 +116,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" type="text" class="form-control">
+          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="99999-999" class="form-control">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>

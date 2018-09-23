@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { ImageResult, ResizeOptions } from 'ng2-imageupload';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Ng2ImgMaxService } from 'ng2-img-max';
+
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
@@ -27,13 +29,11 @@ export class FormComponent implements OnInit {
   buttonSaveLabel: string;
   pageTitle: string;
   isLoading: Boolean = false;
+  isLoadingMessage: string;
   itsEditMode: Boolean = false;
+  isImageLoaded: Boolean = false;
 
   src: string;
-  resizeOptions: ResizeOptions = {
-    resizeMaxHeight: 600,
-    resizeMaxWidth: 600
-  };
 
   constructor(
     private _scBook: BookService,
@@ -42,7 +42,7 @@ export class FormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _scAlert: AlertService,
-    private _sanitizer: DomSanitizer) {
+    private _ng2ImgMaxService: Ng2ImgMaxService) {
 
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
@@ -68,7 +68,7 @@ export class FormComponent implements OnInit {
       categoryId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
-      imageName: ['', this.userProfile === 'User' && [Validators.required]],
+      imageName: [''], // , this.userProfile === 'User' && [Validators.required]],
       approved: false,
       imageUrl: '',
       imageSlug: '',
@@ -121,26 +121,35 @@ export class FormComponent implements OnInit {
 
   onAddBook() {
     if (this.formGroup.valid) {
-      this.isLoading = true;
-      if (!this.formGroup.value.id) {
-        this._scBook.create(this.formGroup.value).subscribe(resp => {
-          if (resp.success) {
-            this.isSaved = true;
-            this._scAlert.success('Livro cadastrado com sucesso!');
-            this.pageTitle = 'Obrigado por ajudar <3.';
-          } else {
-            this._scAlert.error(resp.messages[0]);
-          }
-          this.isLoading = false;
-        }
-        );
+      if (this.userProfile === 'User' && !this.isImageLoaded) {
+        this._scAlert.error('Selecionar imagem da capa do livro.');
       } else {
-        this._scBook.update(this.formGroup.value).subscribe(resp => {
-          this.isSaved = true;
-          this.pageTitle = 'Registro atualizado';
-          this.isLoading = false;
+        this.isLoading = true;
+        this.isLoadingMessage = 'Aguarde...';
+        if (!this.formGroup.value.id) {
+          if (!this.formGroup.value.imageName) {
+            this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
+          }
+
+          this._scBook.create(this.formGroup.value).subscribe(resp => {
+            if (resp.success) {
+              this.isSaved = true;
+              this._scAlert.success('Livro cadastrado com sucesso!');
+              this.pageTitle = 'Obrigado por ajudar.';
+            } else {
+              this._scAlert.error(resp.messages[0]);
+            }
+            this.isLoading = false;
+          }
+          );
+        } else {
+          this._scBook.update(this.formGroup.value).subscribe(resp => {
+            this.isSaved = true;
+            this.pageTitle = 'Registro atualizado';
+            this.isLoading = false;
+          }
+          );
         }
-        );
       }
     }
   }
@@ -155,16 +164,27 @@ export class FormComponent implements OnInit {
 
   onConvertImageToBase64(imageResult: ImageResult) {
 
-    this.src = imageResult.resized
-      && imageResult.resized.dataURL
-      || imageResult.dataURL;
+    if (!imageResult.error) {
 
-    const reader = new FileReader();
-    reader.readAsDataURL(imageResult.file);
+      this.isLoading = true;
+      this.isLoadingMessage = 'Processando imagem...';
+      this.isImageLoaded = true;
 
-    reader.onload = event => {
-      const img = this.src.split(',');
-      this.formGroup.controls['imageBytes'].setValue(img[1]);
-    };
+      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000).subscribe((result) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(result);
+
+        reader.onload = event => {
+          this.src = <string>reader.result;
+          const img = this.src.split(',');
+          this.formGroup.controls['imageBytes'].setValue(img[1]);
+          this.isLoading = false;
+        };
+      });
+    } else {
+      this.formGroup.controls['imageName'].setErrors({ InvalidExtension: true });
+      this.formGroup.controls['imageBytes'].setValue('');
+      this.isImageLoaded = false;
+    }
   }
 }

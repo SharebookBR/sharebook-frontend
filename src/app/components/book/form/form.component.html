@@ -20,11 +20,11 @@
   <div *ngIf="!isSaved">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
     <div class="form-row">
-      <div class="col-3">
+      <div class="col-3 figure">
         <img [src]="formGroup.value.imageBytes.length
           ? 'data:image/png;base64,' + formGroup.value.imageBytes
           : formGroup.value.imageUrl ? formGroup.value.imageUrl : 'assets/img/img-placeholder.png'" 
-          class="img-thumbnail "
+          class="figure-img img-fluid rounded"
         />
       </div>
       <div class="col">
@@ -77,7 +77,7 @@
 
         <div class="form-group col-md-8">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" formControlName="imageName" imageUpload (imageSelected)="onConvertImageToBase64($event)" [resizeOptions]="resizeOptions">
+            <input type="file" class="custom-file-input" formControlName="imageName" imageUpload (imageSelected)="onConvertImageToBase64($event)" [allowedExtensions]="['jpg','jpeg','png']">
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
               Selecionar imagem da capa do livro
             </label>
@@ -86,10 +86,15 @@
             </label>
           </div>
           <div *ngIf="formGroup.controls['imageName'].touched && !formGroup.controls['imageName'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('required')">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('InvalidExtension') ">
+              Arquivo de imagem com extensão inválida (jpg, jpeg, png).
+            </small>                      
+          </div>
+          <div *ngIf="!formGroup.controls['imageName'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('InvalidImage')">
               Selecione a capa do livro.
             </small>
-          </div>
+          </div>          
         </div>
 
         <div class="form-group col-md-8">
@@ -136,7 +141,7 @@
             <a [routerLink]="['/book/list']" class="btn btn-link">Cancelar</a>
           </div>
           <div class="text-center" [hidden]="!isLoading">
-            <i class="fa fa-spinner fa-spin"></i> Aguarde...
+            <i class="fa fa-spinner fa-spin"></i> {{isLoadingMessage}}
           </div>
         </div>
       </div>

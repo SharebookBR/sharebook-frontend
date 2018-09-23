@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
+import { Ng2ImgMaxModule } from 'ng2-img-max';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -23,9 +24,11 @@ import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
+
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
-import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
@@ -43,6 +46,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { NgxMaskModule } from 'ngx-mask';
+import { RequestComponent } from './components/book/request/request.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +67,9 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     AccountComponent,
     ChangePasswordComponent,
     DonateComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    RequestComponent,
+    RequestedsComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +83,9 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     NgbModalModule,
     ImageUploadModule,
     RecaptchaModule.forRoot(),
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    Ng2ImgMaxModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     AuthGuardUser,
@@ -95,7 +104,8 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     // fakeBackendProvider
   ],
   entryComponents: [
-    DonateComponent
+    DonateComponent,
+    RequestComponent
   ],
   bootstrap: [AppComponent]
 })

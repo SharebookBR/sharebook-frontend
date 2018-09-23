@@ -1,34 +1,41 @@
-<div class="container">
-  <h1 class="text-center display-4">Painel</h1>
-  <div class="flex-container">
+<div class="container text-center">
+  <h1 class="display-4">Painel</h1>
+  <div class="flex-container justify-content-center">
     <div *ngIf="isAdmin" class="card">
-      <a href="/book/list" title="Editar livros">
-        <img class="card-img-top" src="../../../assets/img/library.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
+      <a routerLink="/book/list" title="Editar livros">
+        <img class="card-img-top panel-item" src="../../../assets/img/library.svg" alt="Card image">
       </a>
       <div class="card-body">
-        <h5 class="card-title" style="text-align: center">Gerenciar Livros</h5>
+        <h5 class="card-title">Gerenciar Livros</h5>
         <!--p class="card-text">Esta função permite gerenciar os livros para doação.</p-->
       </div>
     </div>
 
     <div class="card">
-      <a href="/account" title="Editar perfil">
-        <img class="card-img-top" src="../../../assets/img/learning.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
+      <a routerLink="/account" title="Editar perfil">
+        <img class="card-img-top panel-item" src="../../../assets/img/learning.svg" alt="Card image">
       </a>
       <div class="card-body">
-        <h5 class="card-title" style="text-align: center">Editar Perfil</h5>
-        <!--p class="card-text">Esta função permite editar seus dados pessoais.</p-->
+        <h5 class="card-title">Editar Perfil</h5>
       </div>
     </div>
 
     <div class="card">
-      <a href="/change-password" title="Mudar senha">
-        <img class="card-img-top" src="../../../assets/img/padlock.svg" alt="Card image" style="width:70%; margin-left: 30px; margin-top: 10px">
+      <a routerLink="/change-password" title="Mudar senha">
+        <img class="card-img-top panel-item" src="../../../assets/img/padlock.svg" alt="Card image">
       </a>
       <div class="card-body">
-        <h5 class="card-title" style="text-align: center">Mudar Senha</h5>
-        <!--p class="card-text">Esta função permite mudar a sua senha.</p-->
+        <h5 class="card-title">Mudar Senha</h5>
       </div>
-    </div>    
+    </div>
+    
+    <div class="card">
+      <a routerLink="/book/requesteds" title="Meus pedidos">
+        <img class="card-img-top panel-item" src="../../../assets/img/person_book.png" alt="Card image">
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Meus pedidos</h5>
+      </div>
+    </div>
   </div>
 </div>
