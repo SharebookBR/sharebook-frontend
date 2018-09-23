@@ -14,7 +14,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 
 export class ContactUsComponent implements OnInit {
   formGroup: FormGroup;
-  isSaved: Boolean;
+  isSent: Boolean;
   isLoading: Boolean = false;
   pageTitle: string;
 
@@ -41,7 +41,7 @@ export class ContactUsComponent implements OnInit {
       if (!this.formGroup.value.id) {
         this._scContactUs.contactUs(this.formGroup.value).subscribe(resp => {
           if (resp.success) {
-            this.isSaved = true;
+            this.isSent = true;
             this._scAlert.success('Mensagem enviada com sucesso!');
             this.pageTitle = 'Obrigado por entrar em contato! ^^ ';
           } else {

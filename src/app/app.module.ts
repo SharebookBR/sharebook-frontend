@@ -42,8 +42,7 @@ import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecaptchaModule } from 'ng-recaptcha';
-import {RecaptchaFormsModule} from 'ng-recaptcha/forms';
-
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @NgModule({
   declarations: [
@@ -102,5 +101,4 @@ import {RecaptchaFormsModule} from 'ng-recaptcha/forms';
 })
 export class AppModule {
   constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
-
  }

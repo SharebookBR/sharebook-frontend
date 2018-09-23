@@ -9,7 +9,6 @@ import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
 import { Book } from '../../../core/models/book';
 
-
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
