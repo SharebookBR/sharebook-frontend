@@ -75,14 +75,14 @@ export class DetailsComponent implements OnInit {
           }
         });
       }
-      , err => { 
+      , err => {
         console.error(err);
-        this.pageTitle = 'Ops... Não encontramos esse livro :/'
-        this.state = 'not-found'
+        this.pageTitle = 'Ops... Não encontramos esse livro :/';
+        this.state = 'not-found';
       });
     } else {
-      this.pageTitle = 'Ops... Não encontramos esse livro :/'
-      this.state = 'not-found'
+      this.pageTitle = 'Ops... Não encontramos esse livro :/';
+      this.state = 'not-found';
     }
   }
 
