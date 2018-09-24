@@ -33,7 +33,7 @@
             
             <input type="button" *ngIf="available && userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px" (click)="onRequestBook()">
             
-            <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px" (click)="onLoginBook()">
+            <input type="button" *ngIf="available && !userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px" (click)="onLoginBook()">
               <a [routerLink]="['/home']" class="btn btn-link" id="cancelButton">Cancelar</a>
           </div>
         </div>        
