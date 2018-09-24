@@ -1,13 +1,17 @@
 <div class="container form-horizontal">
     <h1 class="text-center display-4">{{pageTitle}}</h1>
 
-    <div *ngIf="isSaved" class="text-center">
+    <div *ngIf="state == 'not-found'" class="text-center">
       <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0">
-        Página inicial
+        Voltar para página inicial.
       </a>
     </div>
+
+    <div class="text-center" *ngIf="state == 'loading'">
+      <i class="fa fa-spinner fa-spin"></i> Aguarde...
+    </div>
   
-    <div *ngIf="!isSaved" class="form-row">
+    <div class="form-row" *ngIf="state == 'ready'">
       <div class="col-3">
         <img [src]="bookInfo.imageBytes?.length
           ? 'data:image/png;base64,' + bookInfo.imageBytes
@@ -22,17 +26,16 @@
         <p><b>Doador paga o frete?</b><br/>{{freightName}}</p>
 
         <div class="form-group col-md-8">
-          <div class="modal-footer" [hidden]="isLoading">
+          <div class="modal-footer">
             <span class="badge badge-success mr-auto" *ngIf="requested">Você já solicitou. Aguarde e boa sorte!</span>
-            <input type="button" *ngIf="userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px"
-              (click)="onRequestBook()">
-            <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px"
-              (click)="onLoginBook()">
-            <a [routerLink]="['/home']" class="btn btn-link" id="cancelButton">Cancelar</a>
+
+            <span class="badge badge-danger mr-auto" *ngIf="!requested && !available">Não disponível.</span>
+            
+            <input type="button" *ngIf="available && userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px" (click)="onRequestBook()">
+            
+            <input type="button" *ngIf="!userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px" (click)="onLoginBook()">
+              <a [routerLink]="['/home']" class="btn btn-link" id="cancelButton">Cancelar</a>
           </div>
-          <div class="text-center" [hidden]="!isLoading">
-            <i class="fa fa-spinner fa-spin"></i> Aguarde...
-          </div>          
         </div>        
       </div>
     </div>

@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { BookService } from '../../../core/services/book/book.service';
-import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
-import { AlertService } from '../../../core/services/alert/alert.service';
 import { Book } from '../../../core/models/book';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -24,10 +22,10 @@ export class DetailsComponent implements OnInit {
 
   userProfile: string;
   pageTitle: string;
-  isLoading: Boolean = false;
-  isSaved: Boolean;
+  state = 'loading';
   authenticated: Boolean = false;
   requested: Boolean = false;
+  available: Boolean = false;
 
   bookInfo: Book = new Book();
   categoryName: string;
@@ -35,10 +33,8 @@ export class DetailsComponent implements OnInit {
 
   constructor(
     private _scBook: BookService,
-    private _scCategory: CategoryService,
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
-    private _scAlert: AlertService,
     private router: Router,
     private _modalService: NgbModal) {
 
@@ -48,11 +44,11 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoading = true;
-    this.getBookSaved();
+    this.state = 'loading';
+    this.getBook();
   }
 
-  getBookSaved() {
+  getBook() {
     let slug = '';
     this._activatedRoute.params.subscribe((param) => slug = param.slug);
 
@@ -67,20 +63,26 @@ export class DetailsComponent implements OnInit {
 
           this.bookInfo = x;
           this.pageTitle = this.bookInfo.title;
+          this.available = this.bookInfo.approved;
 
           if (this.userProfile) {
             this._scBook.getRequested(x.id).subscribe(requested => {
               this.requested = requested.value.bookRequested;
-              this.isLoading = false;
+              this.state = 'ready';
             });
           } else {
-            this.isLoading = false;
+            this.state = 'ready';
           }
         });
       }
-      );
+      , err => { 
+        console.error(err);
+        this.pageTitle = 'Ops... Não encontramos esse livro :/'
+        this.state = 'not-found'
+      });
     } else {
-      this.isLoading = false;
+      this.pageTitle = 'Ops... Não encontramos esse livro :/'
+      this.state = 'not-found'
     }
   }
 
