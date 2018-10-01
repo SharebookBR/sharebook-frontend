@@ -35,7 +35,7 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { UserService } from './core/services/user/user.service';
 import { AlertService } from './core/services/alert/alert.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
-import { CepService } from './core/services/cep/cep.service';
+import { AddressService } from './core/services/address/address.service';
 
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
@@ -87,7 +87,7 @@ import { RequestComponent } from './components/book/request/request.component';
     AlertService,
     AuthenticationService,
     GoogleAnalyticsService,
-    CepService,
+    AddressService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
