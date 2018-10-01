@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ImageResult } from 'ng2-imageupload';
+import { ImageResult, ResizeOptions } from 'ng2-imageupload';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -10,6 +11,7 @@ import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
+
 
 @Component({
   selector: 'app-form',
