@@ -22,7 +22,9 @@ export class ContactUsComponent implements OnInit {
     this.createFormGroup();
    }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // TODO: receber mensagem por query string, pra integrar com outras pages.
+  }
 
   createFormGroup() {
     this.formGroup = this._formBuilder.group({
