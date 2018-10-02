@@ -8,7 +8,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
         const shareBookUser = JSON.parse(localStorage.getItem('shareBookUser'));
-        if (shareBookUser && shareBookUser.accessToken) {
+        if (shareBookUser && shareBookUser.accessToken && !request.url.startsWith('https://viacep.com.br/ws/')) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${shareBookUser.accessToken}`
