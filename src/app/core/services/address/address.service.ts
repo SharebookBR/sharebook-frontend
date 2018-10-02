@@ -15,15 +15,15 @@ export class AddressService {
       .map(data => this.resultado = this.convertResponseToAddress(data));
   }
 
-  private convertResponseToAddress(addressNaResposta): Address {
+  private convertResponseToAddress(addressResponse): Address {
     const address = new Address();
 
-    address.PostalCode   = addressNaResposta.cep;
-    address.Street       = addressNaResposta.logradouro;
-    address.Complement   = addressNaResposta.complemento;
-    address.Neighborhood = addressNaResposta.bairro;
-    address.City         = addressNaResposta.localidade;
-    address.State        = addressNaResposta.uf;
+    address.PostalCode   = addressResponse.cep;
+    address.Street       = addressResponse.logradouro;
+    address.Complement   = addressResponse.complemento;
+    address.Neighborhood = addressResponse.bairro;
+    address.City         = addressResponse.localidade;
+    address.State        = addressResponse.uf;
     return address;
   }
 }
