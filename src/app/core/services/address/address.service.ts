@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { Address } from '../../models/address';
+import * as AppConst from '../../../core/utils/app.const';
 
 @Injectable()
 export class AddressService {
@@ -11,7 +12,7 @@ export class AddressService {
 
   getAddressByPostalCode(cep: string) {
     return this.http
-      .get(`https://viacep.com.br/ws/${cep}/json/`)
+      .get(AppConst.postalCodeWebService + `${cep}/json/`)
       .map(data => this.resultado = this.convertResponseToAddress(data));
   }
 
