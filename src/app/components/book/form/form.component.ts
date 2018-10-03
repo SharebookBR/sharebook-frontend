@@ -187,4 +187,13 @@ export class FormComponent implements OnInit {
       this.isImageLoaded = false;
     }
   }
+
+  showFreightPopover(p) {
+    const freight = this.formGroup.controls['freightOption'].value;
+    if (freight === 'WithoutFreight') {
+      p.open();
+    } else {
+      p.close();
+    }
+  }
 }
