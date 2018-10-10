@@ -25,9 +25,11 @@ import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
+import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
+
 import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
@@ -36,12 +38,15 @@ import { UserService } from './core/services/user/user.service';
 import { AlertService } from './core/services/alert/alert.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
 import { AddressService } from './core/services/address/address.service';
+import { ContactUsService } from './core/services/contact-us/contact-us.service';
 
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 
@@ -63,6 +68,7 @@ import { RequestComponent } from './components/book/request/request.component';
     AccountComponent,
     ChangePasswordComponent,
     DonateComponent,
+    ContactUsComponent,
     RequestComponent,
     RequestedsComponent
   ],
@@ -77,6 +83,8 @@ import { RequestComponent } from './components/book/request/request.component';
     NgbModule.forRoot(),
     NgbModalModule,
     ImageUploadModule,
+    RecaptchaModule.forRoot(),
+    RecaptchaFormsModule,
     Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
   ],
@@ -86,6 +94,7 @@ import { RequestComponent } from './components/book/request/request.component';
     CategoryService,
     AlertService,
     AuthenticationService,
+    ContactUsService,
     GoogleAnalyticsService,
     AddressService,
     UserService,
