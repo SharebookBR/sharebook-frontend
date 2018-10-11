@@ -76,13 +76,13 @@ export class RegisterComponent implements OnInit {
       .subscribe((address: Address) => {
 
         this.address = address;
-        this.address.Country = 'Brasil';
-        this.formGroup.controls['street'].setValue(this.address.Street);
-        this.formGroup.controls['complement'].setValue(this.address.Complement);
-        this.formGroup.controls['neighborhood'].setValue(this.address.Neighborhood);
-        this.formGroup.controls['city'].setValue(this.address.City);
-        this.formGroup.controls['state'].setValue(this.address.State);
-        this.formGroup.controls['country'].setValue(this.address.Country);
+        this.address.country = 'Brasil';
+        this.formGroup.controls['street'].setValue(this.address.street);
+        this.formGroup.controls['complement'].setValue(this.address.complement);
+        this.formGroup.controls['neighborhood'].setValue(this.address.neighborhood);
+        this.formGroup.controls['city'].setValue(this.address.city);
+        this.formGroup.controls['state'].setValue(this.address.state);
+        this.formGroup.controls['country'].setValue(this.address.country);
         this.isGettingAddress = false;
 
       });

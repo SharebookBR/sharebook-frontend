@@ -1,7 +1,9 @@
+import { Address } from './address';
+
 export class UpdateUserVM {
   name: string;
   email: string;
   linkedin: string;
-  postalCode: string;
+  address: Address;
   phone: string;
 }

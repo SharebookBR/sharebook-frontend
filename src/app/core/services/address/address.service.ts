@@ -19,12 +19,12 @@ export class AddressService {
   private convertResponseToAddress(addressResponse): Address {
     const address = new Address();
 
-    address.PostalCode   = addressResponse.cep;
-    address.Street       = addressResponse.logradouro;
-    address.Complement   = addressResponse.complemento;
-    address.Neighborhood = addressResponse.bairro;
-    address.City         = addressResponse.localidade;
-    address.State        = addressResponse.uf;
+    address.postalCode   = addressResponse.cep;
+    address.street       = addressResponse.logradouro;
+    address.complement   = addressResponse.complemento;
+    address.neighborhood = addressResponse.bairro;
+    address.city         = addressResponse.localidade;
+    address.state        = addressResponse.uf;
     return address;
   }
 }

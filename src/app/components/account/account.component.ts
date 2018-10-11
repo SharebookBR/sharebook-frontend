@@ -34,14 +34,16 @@ export class AccountComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
       phone: ['', [Validators.pattern(AppConst.phonePattern)]],
       linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
-      postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
-      street: ['', [Validators.required]],
-      number: ['', [Validators.required]],
-      complement: [''],
-      neighborhood: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]]
+      Address: _formBuilder.group({
+        postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
+        street: ['', [Validators.required]],
+        number: ['', [Validators.required]],
+        complement: [''],
+        neighborhood: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        state: ['', [Validators.required]],
+        country: ['', [Validators.required]]
+      })
     });
   }
 
@@ -52,14 +54,16 @@ export class AccountComponent implements OnInit {
         email: updateUserVM.email,
         phone: updateUserVM.phone,
         linkedin: updateUserVM.linkedin,
-        postalCode: updateUserVM.postalCode,
-        street: '',
-        number: '',
-        complement: '',
-        neighborhood: '',
-        city: '',
-        state: '',
-        country: ''
+        Address: {
+          postalCode: updateUserVM.address.postalCode,
+          street: updateUserVM.address.street,
+          number: updateUserVM.address.number,
+          complement: updateUserVM.address.complement,
+          neighborhood: updateUserVM.address.neighborhood,
+          city: updateUserVM.address.city,
+          state: updateUserVM.address.state,
+          country: updateUserVM.address.country
+        }
       };
       this.formGroup.setValue(foo);
     });
@@ -91,13 +95,13 @@ export class AccountComponent implements OnInit {
       .subscribe((address: Address) => {
 
         this.address = address;
-        this.address.Country = 'Brasil';
-        this.formGroup.controls['street'].setValue(this.address.Street);
-        this.formGroup.controls['complement'].setValue(this.address.Complement);
-        this.formGroup.controls['neighborhood'].setValue(this.address.Neighborhood);
-        this.formGroup.controls['city'].setValue(this.address.City);
-        this.formGroup.controls['state'].setValue(this.address.State);
-        this.formGroup.controls['country'].setValue(this.address.Country);
+        this.address.country = 'Brasil';
+        this.formGroup['controls'].Address['controls'].street.setValue(this.address.street);
+        this.formGroup['controls'].Address['controls'].complement.setValue(this.address.complement);
+        this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood);
+        this.formGroup['controls'].Address['controls'].city.setValue(this.address.city);
+        this.formGroup['controls'].Address['controls'].state.setValue(this.address.state);
+        this.formGroup['controls'].Address['controls'].country.setValue(this.address.country);
         this.isGettingAddress = false;
 
       });
