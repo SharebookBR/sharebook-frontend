@@ -88,11 +88,11 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup.controls['Address'].controls['postalCode'].touched && !formGroup.controls['Address'].controls['postalCode'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['postalCode'].hasError('required')">
+          <div *ngIf="formGroup['controls'].Address['controls'].postalCode.touched && !formGroup['controls'].Address['controls'].postalCode.valid">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].postalCode.hasError('required')">
               CEP obrigatório.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['postalCode'].hasError('pattern')">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].postalCode.hasError('pattern')">
               CEP deve estar no formato 99999-999.
             </small>
           </div>
@@ -107,8 +107,8 @@
             </div>
           </div>
           
-          <div *ngIf="formGroup.controls['Address'].controls['street'].touched && !formGroup.controls['Address'].controls['street'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['street'].hasError('required')">
+          <div *ngIf="formGroup['controls'].Address['controls'].street.touched && !formGroup['controls'].Address['controls'].street.valid">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].street.hasError('required')">
               Endereço obrigatório.
             </small>
           </div>
@@ -123,8 +123,8 @@
             </div>
           </div>
           
-          <div *ngIf="formGroup.controls['Address'].controls['number'].touched && !formGroup.controls['Address'].controls['number'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['number'].hasError('required')">
+          <div *ngIf="formGroup['controls'].Address['controls'].number.touched && !formGroup['controls'].Address['controls'].number.valid">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].number.hasError('required')">
               Número obrigatório.
             </small>
           </div>
@@ -149,8 +149,8 @@
             </div>
           </div>
           
-          <div *ngIf="formGroup.controls['Address'].controls['neighborhood'].touched && !formGroup.controls['Address'].controls['neighborhood'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['neighborhood'].hasError('required')">
+          <div *ngIf="formGroup['controls'].Address['controls'].neighborhood.touched && !formGroup['controls'].Address['controls'].neighborhood.valid">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].neighborhood.hasError('required')">
               Bairro obrigatório.
             </small>
           </div>
@@ -165,8 +165,8 @@
             </div>
           </div>
           
-          <div *ngIf="formGroup.controls['Address'].controls['city'].touched && !formGroup.controls['Address'].controls['city'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['city'].hasError('required')">
+          <div *ngIf="formGroup['controls'].Address['controls'].city.touched && !formGroup['controls'].Address['controls'].city.valid">
+            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].city.hasError('required')">
               Cidade obrigatório.
             </small>
           </div>
@@ -181,8 +181,8 @@
               </div>
             </div>
             
-            <div *ngIf="formGroup.controls['Address'].controls['country'].touched && !formGroup.controls['Address'].controls['country'].valid">
-              <small class="form-text text-danger" *ngIf="formGroup.controls['Address'].controls['country'].hasError('required')">
+            <div *ngIf="formGroup['controls'].Address['controls'].country.touched && !formGroup['controls'].Address['controls'].country.valid">
+              <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].country.hasError('required')">
                 País obrigatório.
               </small>
             </div>
