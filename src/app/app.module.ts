@@ -37,6 +37,7 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { UserService } from './core/services/user/user.service';
 import { AlertService } from './core/services/alert/alert.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
+import { AddressService } from './core/services/address/address.service';
 import { ContactUsService } from './core/services/contact-us/contact-us.service';
 
 import { AppConfigModule } from './app-config.module';
@@ -95,6 +96,7 @@ import { RequestComponent } from './components/book/request/request.component';
     AuthenticationService,
     ContactUsService,
     GoogleAnalyticsService,
+    AddressService,
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

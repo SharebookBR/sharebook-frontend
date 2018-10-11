@@ -116,9 +116,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="99999-999" class="form-control">
-          <div class="input-group-addon append">
+          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="99999-999" class="form-control" (blur)="getAddressByPostalCode($event.target.value)">
+          <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>
+          </div>
+          <div [hidden]="!isGettingAddress" [hidden]="!isGettingAddress">
+            <i class="fa fa-spinner fa-spin"></i>
           </div>
         </div>
 
@@ -131,6 +134,112 @@
           </small>
         </div>
       </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="street">Logradouro</label>
+        <div class="input-group">
+          <input formControlName="street" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-road"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['street'].touched && !formGroup.controls['street'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['street'].hasError('required')">
+            Endereço obrigatório.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="number">Número</label>
+        <div class="input-group">
+          <input formControlName="number" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['number'].touched && !formGroup.controls['number'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['number'].hasError('required')">
+            Número obrigatório.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="complement">Complemento</label>
+        <div class="input-group">
+          <input formControlName="complement" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="neighborhood">Bairro</label>
+        <div class="input-group">
+          <input formControlName="neighborhood" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['neighborhood'].touched && !formGroup.controls['neighborhood'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['neighborhood'].hasError('required')">
+            Bairro obrigatório.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="city">Cidade</label>
+        <div class="input-group">
+          <input formControlName="city" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['city'].touched && !formGroup.controls['city'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['city'].hasError('required')">
+            Cidade obrigatório.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="state">Estado</label>
+        <div class="input-group">
+          <input formControlName="state" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-map-marker"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['state'].touched && !formGroup.controls['state'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['state'].hasError('required')">
+            Estado obrigatório.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="country">País</label>
+        <div class="input-group">
+          <input formControlName="country" type="text" class="form-control">
+          <div class="input-group-addon append">
+            <i class="fa fa-globe"></i>
+          </div>
+        </div>
+        
+        <div *ngIf="formGroup.controls['country'].touched && !formGroup.controls['country'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['country'].hasError('required')">
+            País obrigatório.
+          </small>
+        </div>
+      </div>      
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
