@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import * as AppConst from '../../core/utils/app.const';
 import { ContactUsService } from '../../core/services/contact-us/contact-us.service';
 import { AlertService } from '../../core/services/alert/alert.service';
-import { RecaptchaModule } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-contact-us',
