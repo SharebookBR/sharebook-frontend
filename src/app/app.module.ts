@@ -25,6 +25,7 @@ import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
+import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
@@ -70,7 +71,9 @@ import { RequestComponent } from './components/book/request/request.component';
     DonateComponent,
     ContactUsComponent,
     RequestComponent,
-    RequestedsComponent
+    RequestedsComponent,
+    ContactUsComponent,
+    DonationsComponent
   ],
   imports: [
     BrowserModule,

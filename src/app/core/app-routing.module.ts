@@ -16,6 +16,7 @@ import { ApoieProjetoComponent } from '../components/apoie-projeto/apoie-projeto
 import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 import { ContactUsComponent } from '../components/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
+import { DonationsComponent } from '../components/book/donations/donations.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: 'book/requesteds',
     component: RequestedsComponent,
+    canActivate: [AuthGuardUser]
+  },
+  {
+    path: 'book/donations',
+    component: DonationsComponent,
     canActivate: [AuthGuardUser]
   },
   {

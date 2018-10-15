@@ -13,11 +13,11 @@ export class RequestedsComponent implements OnInit {
   tableSettings: any;
 
   constructor(
-    private bookService: BookService
+    private _bookService: BookService
   ) { }
 
   ngOnInit() {
-    this.bookService.getRequestedBooks().subscribe(resp => {
+    this._bookService.getRequestedBooks().subscribe(resp => {
       this.requestedBooks = resp;
       this.addBadgeToStatusColumn();
     });
@@ -29,7 +29,7 @@ export class RequestedsComponent implements OnInit {
           width: '45%'
         },
         author: {
-          title: 'Author',
+          title: 'Autor',
           width: '30%'
         },
         status: {
