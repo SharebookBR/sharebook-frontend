@@ -77,4 +77,8 @@ export class BookService {
   public getRequestedBooks() {
     return this._http.get<any>(`${this.config.apiEndpoint}/book/MyRequests`);
   }
+
+  public getDonatedBooks() {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/MyDonations`);
+  }
 }
