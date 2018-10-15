@@ -59,8 +59,15 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
             }
-
           }
         },
         "serve": {
@@ -71,7 +78,10 @@
           "configurations": {
             "production": {
               "browserTarget": "angular:build:production"
-            }
+            },
+            "local": {
+              "browserTarget": "angular:build:local"
+            }            
           }
         },
         "extract-i18n": {

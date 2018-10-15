@@ -20,6 +20,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-local": "ng serve --configuration=local",
     "build-dev": "ng build",
     "build-stg": "ng build --configuration=stage",
     "build-prod": "ng build --configuration=production",

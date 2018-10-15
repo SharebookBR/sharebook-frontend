@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   apiEndpoint: `http://dev.sharebook.com.br/api`,
-  // apiEndpoint: `http://localhost:50708/api`,
   backendTimeZone: `America/Los_Angeles`
 };
 
