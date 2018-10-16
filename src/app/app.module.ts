@@ -46,7 +46,7 @@ import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
@@ -103,8 +103,8 @@ import { RequestComponent } from './components/book/request/request.component';
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings },
     AuthGuardAdmin
-
     // provider used to create fake backend
     // fakeBackendProvider
   ],
