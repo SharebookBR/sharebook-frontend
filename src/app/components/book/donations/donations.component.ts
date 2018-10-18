@@ -30,8 +30,8 @@ export class DonationsComponent implements OnInit {
           width: '50%'
         },
         totalInterested: {
-          title: 'Interessados',
-          width: '15%'
+          title: 'Total de interessados',
+          width: '20%'
         },
         daysInShowcase: {
           title: 'Dias na vitrine',
@@ -39,7 +39,7 @@ export class DonationsComponent implements OnInit {
         },
         status: {
           title: 'Status',
-          width: '20%',
+          width: '15%',
           type: 'html',
           valuePrepareFunction: value =>
             this._sanitizer.bypassSecurityTrustHtml(`<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`),
