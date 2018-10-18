@@ -1,5 +1,5 @@
 export enum BookRequestStatus {
   DONATED = 'DOADO',
-  REFUSED = 'RECUSADO',
+  REFUSED = 'NÃO FOI DESSA VEZ',
   AWAITING_ACTION = 'AGUARDANDO AÇÃO'
 }
