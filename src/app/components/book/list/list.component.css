@@ -12,6 +12,10 @@
 :host /deep/ ng2-smart-table table tr td{
   font-size:0.9em;
   word-break: break-all;
-  }
+}
   
-  
+
+:host /deep/ ng2-smart-table ng2-smart-table-pager .ng2-smart-pagination[_ngcontent-c6] .page-link-prev,
+:host /deep/ ng2-smart-table ng2-smart-table-pager .ng2-smart-pagination[_ngcontent-c6] .page-link-next {
+  font-size: inherit;
+}
