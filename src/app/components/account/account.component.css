@@ -7,7 +7,24 @@ form i.fa {
   z-index: 99;
 }
 
+form i.fa-white {
+  position: inherit;
+  color: #ffffff;
+  z-index: 99;    
+}
+
 .form-control {
   position: relative;
   padding-left: 45px !important;
+}
+
+/* Style buttons */
+.btn-cep {
+  background-color: #2098D1;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn-cep:hover {
+  background-color: #00284f;
 }

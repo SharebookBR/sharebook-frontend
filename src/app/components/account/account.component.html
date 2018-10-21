@@ -80,6 +80,7 @@
           <label class="col-form-label" for="postalCode">CEP</label>
           <div class="input-group">
             <input formControlName="postalCode" [dropSpecialCharacters]="false" mask="99999-999" type="text" class="form-control" (blur)="getAddressByPostalCode($event.target.value)">
+            <button class="btn btn-cep" (click)="onGetAddressByPostalCode(); false"><i class="fa-white fa fa-repeat"></i></button>
             <div class="input-group-addon append" [hidden]="isGettingAddress">
               <i class="fa fa-map-marker"></i>
             </div>
