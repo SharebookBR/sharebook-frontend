@@ -30,6 +30,7 @@ export class RequestComponent implements OnInit {
   addressLine02: String;
   addressLine03: String;
   finishDate: Date;
+  modalTitle: String;
 
   state = 'loading'; // loading, form, error
   lastError: string;
@@ -49,6 +50,8 @@ export class RequestComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'form';
+    this.modalTitle = 'Quanto você quer esse livro?';
+
     this._scUser.getUserData().subscribe(updateUserVM => {
       this.addressLine01 = updateUserVM.address.street + ',' + updateUserVM.address.number + ' ' + updateUserVM.address.complement;
       this.addressLine02 = updateUserVM.address.neighborhood + ' - ' + updateUserVM.address.city + ' - ' + updateUserVM.address.state;
@@ -67,14 +70,17 @@ export class RequestComponent implements OnInit {
 
       if (resp.success) {
         this.state = 'request-success';
+        this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
       } else {
         this.lastError = resp.messages[0];
         this.state = 'request-error';
+        this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
       }
     },
       error => {
         this.lastError = error;
         this.state = 'request-error';
+        this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
       }
     );
 
