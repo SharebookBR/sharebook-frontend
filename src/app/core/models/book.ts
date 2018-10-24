@@ -13,4 +13,5 @@ export class Book {
   categoryId: number;
   freightOption: string;
   category: Category;
+  creationDate: Date;
 }
