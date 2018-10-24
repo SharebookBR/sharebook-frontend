@@ -20,7 +20,12 @@
     <div class="alert alert-success" role="alert">
         Seu pedido foi efetuado com sucesso.
     </div>
-    <p>Agora é só aguardar. Geralmente uma doação leva de 5 até 15 dias, para dar tempo de todos terem chance. Boa sorte!</p>
+    <p>A listagem do interessados será enviada para o doador no dia {{finishDate |  date:'dd/MM/yyyy'}}. Boa sorte!</p><br>
+    <p>Endereço de entrega:</p>
+    <p>{{addressLine01}}</p>
+    <p>{{addressLine02}}</p>
+    <p>{{addressLine03}}</p><br>
+    <p><b>O endereço de entrega acima está correto?</b></p>
   </div>
 
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state=='form'">
@@ -49,7 +54,8 @@
 <div *ngIf="state!='form'">
   
   <div class="modal-footer">
-    <input type="button" class="btn btn-primary" value="Ok. Obrigado." style="padding-left: 50px; padding-right: 50px" *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Success')">
+    <input type="button" class="btn btn-primary" value="Tudo certo. Obrigado." style="padding-left: 50px; padding-right: 50px" *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Success')">
+    <input type="button" class="btn btn-warning" value="Atualizar endereço" *ngIf="state=='request-success'"  (click)="updateAddress();activeModal.dismiss('Success')">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cancel')" *ngIf="state!='request-success'">Cancelar</button>
   </div>
 </div>
