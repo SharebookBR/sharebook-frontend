@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Quanto você quer esse livro?</h4>
+  <h4 class="modal-title">{{modalTitle}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cancel')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -20,7 +20,9 @@
     <div class="alert alert-success" role="alert">
         Seu pedido foi efetuado com sucesso.
     </div>
-    <p>Agora é só aguardar. Geralmente uma doação leva de 5 até 15 dias, para dar tempo de todos terem chance. Boa sorte!</p>
+    <p>A listagem do interessados será enviada para o doador no dia {{finishDate |  date:'dd/MM/yyyy'}}. Boa sorte!</p><br>
+    <p><b>O endereço de entrega abaixo está correto?</b></p>
+    <p>{{addressLine01}}<br>{{addressLine02}}<br>{{addressLine03}}</p>
   </div>
 
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state=='form'">
@@ -49,7 +51,18 @@
 <div *ngIf="state!='form'">
   
   <div class="modal-footer">
-    <input type="button" class="btn btn-primary" value="Ok. Obrigado." style="padding-left: 50px; padding-right: 50px" *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Success')">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cancel')" *ngIf="state!='request-success'">Cancelar</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <input type="button" class="btn btn-primary btn-block" value="Tudo certo. Obrigado." *ngIf="state=='request-success'"  (click)="activeModal.dismiss('Success')">
+        </div>
+        <div class="col-lg-6">
+          <input type="button" class="btn btn-warning btn-block" value="Atualizar endereço" *ngIf="state=='request-success'"  (click)="updateAddress();activeModal.dismiss('Success')">
+        </div>
+        <div class="col-lg-6">
+          <button type="button" class="btn btn-outline-dark btn-block" (click)="activeModal.dismiss('Cancel')" *ngIf="state!='request-success'">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

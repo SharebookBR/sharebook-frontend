@@ -87,6 +87,10 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  onGetAddressByPostalCode() {
+    this.getAddressByPostalCode(this.formGroup['controls'].Address['controls'].postalCode.value);
+  }
+
   getAddressByPostalCode(postalCode: string) {
 
     this.isGettingAddress = true;
