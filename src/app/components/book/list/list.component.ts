@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AlertService } from '../../../core/services/alert/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
+import { DirectiveAst } from '@angular/compiler';
 
 @Component({
   selector: 'app-list',
@@ -131,6 +132,12 @@ export class ListComponent implements OnInit {
   }
 
   onCustom(event) {
+
+    // Verificando ação de deletar!
+    // Criar janela modal para confirmar exclusão antes da chamada da ação direta
+    // Confirmar onde se encontra a chamada da ação!
+    // -> Erisvaldo Correia
+
     if (event.action === 'delete') {
       this._scBook.delete(event.data.id).subscribe(resp => {
         if (resp['success']) {
