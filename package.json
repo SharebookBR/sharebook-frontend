@@ -25,9 +25,11 @@
     "build-stg": "ng build --configuration=stage",
     "build-prod": "ng build --configuration=production",
     "test": "ng test",
+    "test-single": "ng test --watch=false --progress",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prepush": "ng lint"
+    "precommit": "npm run lint && npm run test-single",
+    "prepush": "npm run lint && npm run test-single && npm run build-prod"
   },
   "private": true,
   "dependencies": {
