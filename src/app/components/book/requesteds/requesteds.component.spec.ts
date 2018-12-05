@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RequestedsComponent } from './requesteds.component';
+
+import { AppConfigModule } from '../../../app-config.module';
 
 describe('RequestedsComponent', () => {
   let component: RequestedsComponent;
@@ -8,7 +12,15 @@ describe('RequestedsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequestedsComponent ]
+      declarations: [
+        RequestedsComponent
+      ],
+      imports: [
+        Ng2SmartTableModule,
+        AppConfigModule,
+        FormsModule,
+        ReactiveFormsModule
+      ]
     })
     .compileComponents();
   }));
