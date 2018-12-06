@@ -2,11 +2,16 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { AddressService } from './address.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
-describe('Service: Cep', () => {
+describe('AddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AddressService]
+      providers: [
+        AddressService,
+        HttpClient,
+        HttpHandler
+      ],
     });
   });
 

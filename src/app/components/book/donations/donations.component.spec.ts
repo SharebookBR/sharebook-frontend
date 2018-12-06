@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { DonationsComponent } from './donations.component';
+
+import { AppConfigModule } from '../../../app-config.module';
 
 describe('DonationsComponent', () => {
   let component: DonationsComponent;
@@ -8,7 +11,13 @@ describe('DonationsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DonationsComponent ]
+      declarations: [
+        DonationsComponent
+      ],
+      imports: [
+        Ng2SmartTableModule,
+        AppConfigModule
+      ]
     })
     .compileComponents();
   }));

@@ -1,11 +1,20 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { CategoryService } from './category.service';
+import { AppConfigModule } from '../../../app-config.module';
 
 describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CategoryService]
+      imports: [
+        AppConfigModule
+      ],
+      providers: [
+        CategoryService,
+        HttpClient,
+        HttpHandler
+      ]
     });
   });
 
