@@ -72,6 +72,7 @@ export class FormComponent implements OnInit {
       approved: false,
       imageUrl: '',
       imageSlug: '',
+      synopsis: ['', [Validators.maxLength(2000)]],
     });
   }
 
@@ -112,6 +113,7 @@ export class FormComponent implements OnInit {
           approved: x.approved,
           imageUrl: x.imageUrl,
           imageSlug: x.imageSlug,
+          synopsis: !!x.synopsis ? x.synopsis : ''
         };
         this.formGroup.setValue(bookForUpdate);
       }
