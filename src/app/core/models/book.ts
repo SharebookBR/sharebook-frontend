@@ -14,4 +14,5 @@ export class Book {
   freightOption: string;
   category: Category;
   creationDate: Date;
+  synopsis: string;
 }

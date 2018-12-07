@@ -121,6 +121,17 @@
 
         </div>
 
+        <div class="form-group col-md-8">
+          <label class="col-form-label" for="synopsis">Sinópse</label>
+          <textarea formControlName="synopsis" type="text" class="form-control" maxlength="2000" style="height: 300px;"></textarea>
+
+          <div *ngIf="formGroup.controls['synopsis'].touched && !formGroup.controls['synopsis'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['synopsis'].hasError('maxlength') ">
+              A sinópse deve conter no máximo 2000 caracteres.
+            </small>
+          </div>
+        </div>
+
         <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator' && itsEditMode">
           <label class="col-form-label" for="approved">Situação do livro</label>
           <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
