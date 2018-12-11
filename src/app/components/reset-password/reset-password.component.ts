@@ -34,7 +34,6 @@ export class ResetPasswordComponent implements OnInit {
     if (this.formGroup.valid) {
       this._scUser.resetPassword(this.formGroup.value.email).subscribe(
         data => {
-          console.log(data.successMessage);
           if (data.success || data.authenticated) {
             alert(data.successMessage);
             this._router.navigate(['/panel']);
