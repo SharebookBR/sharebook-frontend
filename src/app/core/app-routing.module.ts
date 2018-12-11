@@ -14,6 +14,7 @@ import { AccountComponent } from '../components/account/account.component';
 import { QuemSomosComponent } from '../components/quem-somos/quem-somos.component';
 import { ApoieProjetoComponent } from '../components/apoie-projeto/apoie-projeto.component';
 import { ChangePasswordComponent } from '../components/change-password/change-password.component';
+import { ResetPasswordComponent } from '../components/reset-password/reset-password.component'
 import { ContactUsComponent } from '../components/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
@@ -87,6 +88,10 @@ const routes: Routes = [
     path: 'change-password',
     component: ChangePasswordComponent,
     canActivate: [AuthGuardUser]
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
   },
   {
     path: 'contact-us',
