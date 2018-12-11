@@ -46,6 +46,10 @@ export class UserService {
         return this._http.put<any>(`${this.config.apiEndpoint}/Account/ChangePassword/`, changePasswordUserVM);
     }
 
+    resetPassword(email: String) {
+      return this._http.post<any>(`${this.config.apiEndpoint}/Account/ForgotMyPassword/` + email, null);
+    }
+
     delete(id: number) {
         // return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
     }

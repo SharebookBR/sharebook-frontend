@@ -24,6 +24,7 @@ import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
@@ -68,6 +69,7 @@ import { RequestComponent } from './components/book/request/request.component';
     PanelComponent,
     AccountComponent,
     ChangePasswordComponent,
+    ResetPasswordComponent,
     DonateComponent,
     ContactUsComponent,
     RequestComponent,
