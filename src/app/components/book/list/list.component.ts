@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { Router } from '@angular/router';
@@ -134,9 +134,6 @@ export class ListComponent implements OnInit {
   onCustom(event) {
 
     // Verificando ação de deletar!
-    // Criar janela modal para confirmar exclusão antes da chamada da ação direta
-    // Confirmar onde se encontra a chamada da ação!
-    // -> Erisvaldo Correia
 
     if (event.action === 'delete') {
       this._scBook.delete(event.data.id).subscribe(resp => {
