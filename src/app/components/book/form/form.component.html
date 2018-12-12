@@ -1,4 +1,5 @@
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
+  <input formControlName="userId" type="hidden">
 
   <div *ngIf="isSaved" class="text-center">
     <h1 class="display-4">{{pageTitle}}</h1>
