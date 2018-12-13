@@ -50,6 +50,10 @@ export class UserService {
       return this._http.post<any>(`${this.config.apiEndpoint}/Account/ForgotMyPassword/` + email, null);
     }
 
+    ChangeUserPasswordByEmailAndHashCode(email: String) {
+      return this._http.post<any>(`${this.config.apiEndpoint}/Account/ChangeUserPasswordByEmailAndHashCode/`, null);
+    }
+
     delete(id: number) {
         // return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
     }
