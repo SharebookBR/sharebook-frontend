@@ -51,6 +51,8 @@ import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recap
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
+import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
 @NgModule({
   declarations: [
@@ -75,10 +77,11 @@ import { RequestComponent } from './components/book/request/request.component';
     RequestComponent,
     RequestedsComponent,
     ContactUsComponent,
-    DonationsComponent
+    DonationsComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
-    BrowserModule,
+  BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -103,6 +106,7 @@ import { RequestComponent } from './components/book/request/request.component';
     GoogleAnalyticsService,
     AddressService,
     UserService,
+    ConfirmationDialogService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings },
@@ -112,7 +116,8 @@ import { RequestComponent } from './components/book/request/request.component';
   ],
   entryComponents: [
     DonateComponent,
-    RequestComponent
+    RequestComponent,
+    ConfirmationDialogComponent
   ],
   bootstrap: [AppComponent]
 })
