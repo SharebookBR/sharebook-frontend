@@ -9,6 +9,7 @@ import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
+import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
 import { AlertService } from '../../../core/services/alert/alert.service';
 
@@ -35,6 +36,8 @@ export class FormComponent implements OnInit {
 
   src: string;
 
+  shareBookUser = new User();
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
@@ -51,6 +54,10 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.findProfile();
 
+    if (this._scUser.getLoggedUserFromLocalStorage()) {
+      this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
+    }
+
     this._scBook.getFreightOptions().subscribe(data =>
       this.freightOptions = data
     );
@@ -66,7 +73,7 @@ export class FormComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       categoryId: ['', [Validators.required]],
-      // userId: ['', [Validators.required]],
+      userId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
       imageName: [''], // , this.userProfile === 'User' && [Validators.required]],
@@ -108,7 +115,7 @@ export class FormComponent implements OnInit {
           title: x.title,
           author: x.author,
           categoryId: x.categoryId,
-          // userId: x.userId,
+          userId: x.userId,
           freightOption: x.freightOption,
           imageBytes: '',
           imageName: null,
@@ -121,6 +128,12 @@ export class FormComponent implements OnInit {
       }
       );
     }
+
+    // ao doar um livro, o userId é do usuário logado.
+    if (!this.itsEditMode) {
+      this.formGroup.get('userId').setValue(this.shareBookUser['userId']);
+    }
+
   }
 
   onAddBook() {
