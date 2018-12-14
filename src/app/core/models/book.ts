@@ -14,5 +14,8 @@ export class Book {
   freightOption: string;
   category: Category;
   creationDate: Date;
+  chooseDate: Date;
   synopsis: string;
 }
+
+// - TODO: Adequar o model para ficar igual ao do Backend

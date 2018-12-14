@@ -17,7 +17,7 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 })
 export class RequestComponent implements OnInit {
   @Input() bookId;
-  @Input() creationDate;
+  @Input() chooseDate;
   donateUsers: LocalDataSource;
   settings: any;
   isLoading: Boolean = true;
@@ -58,8 +58,8 @@ export class RequestComponent implements OnInit {
       this.addressLine02 = updateUserVM.address.neighborhood + ' - ' + updateUserVM.address.city + ' - ' + updateUserVM.address.state;
       this.addressLine03 = 'CEP: ' + updateUserVM.address.postalCode + ' - ' + updateUserVM.address.country;
 
-      this.finishDate = new Date(this.creationDate);
-      this.finishDate.setDate(this.finishDate.getDate() + 5);
+      this.finishDate = new Date(this.chooseDate);
+      this.finishDate.setDate(this.finishDate.getDate());
     });
   }
 
