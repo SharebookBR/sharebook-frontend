@@ -134,6 +134,7 @@ export class ListComponent implements OnInit {
 
   onCustom(event) {
     if (event.action === 'delete') {
+      // chamada do modal de confirmação antes de efetuar a ação do delete
       this.confirmationDialogService.confirm('Atenção!', 'Confirma a exclusão do Livro?')
         .then((confirmed) => {
           if (confirmed) {
@@ -145,8 +146,7 @@ export class ListComponent implements OnInit {
             });
           }
         });
-    }
-    if (event.action === 'donate') {
+    } else if (event.action === 'donate') {
       if (event.data.donated) {
         alert('Livro já doado!');
       } else {
