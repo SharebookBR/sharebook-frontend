@@ -95,7 +95,7 @@ const routes: Routes = [
     component: ResetPasswordComponent
   },
   {
-    path: 'ForgotPassword/:token',
+    path: 'ForgotPassword/:hashCodePassword',
     component: ForgotPasswordComponent
   },
   {

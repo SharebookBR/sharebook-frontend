@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
     private _scAlert: AlertService
   ) {
     this.formGroup = _formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+      hashCodePassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
       confirmPassword: ['', [Validators.required]]
     }, {
@@ -33,16 +33,22 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    let token = '';
-    this._activatedRoute.params.subscribe((param) => token = param.token);
-    console.log(token);
+    let hashCodePassword = '';
+    this._activatedRoute.params.subscribe((param) => hashCodePassword = param.hashCodePassword);
+
+    const changeUserPasswordByHashCodeVM = {
+      hashCodePassword: hashCodePassword,
+      newPassword: '',
+      confirmPassword: ''
+    };
+
+    this.formGroup.setValue(changeUserPasswordByHashCodeVM);
   }
 
   changePassword() {
     if (this.formGroup.valid) {
-      this._scUser.ChangeUserPasswordByEmailAndHashCode(this.formGroup.value).subscribe(
+      this._scUser.changeUserPasswordByHashCode(this.formGroup.value).subscribe(
         data => {
-          console.log(data);
           if (data.success || data.authenticated) {
             this._scAlert.success('Senha atualizada com sucesso', true);
             this._router.navigate(['/login']);
