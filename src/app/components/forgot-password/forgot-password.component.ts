@@ -34,15 +34,18 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit() {
     let hashCodePassword = '';
-    this._activatedRoute.params.subscribe((param) => hashCodePassword = param.hashCodePassword);
+    this._activatedRoute.params.subscribe((param) => {
+      hashCodePassword = param.hashCodePassword;
 
-    const changeUserPasswordByHashCodeVM = {
-      hashCodePassword: hashCodePassword,
-      newPassword: '',
-      confirmPassword: ''
-    };
+      const changeUserPasswordByHashCodeVM = {
+        hashCodePassword: hashCodePassword,
+        newPassword: '',
+        confirmPassword: ''
+      };
 
-    this.formGroup.setValue(changeUserPasswordByHashCodeVM);
+      this.formGroup.setValue(changeUserPasswordByHashCodeVM);
+    });
+
   }
 
   changePassword() {
