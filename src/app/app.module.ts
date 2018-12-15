@@ -25,6 +25,7 @@ import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
@@ -72,6 +73,7 @@ import { ConfirmationDialogService } from './core/services/confirmation-dialog/c
     AccountComponent,
     ChangePasswordComponent,
     ResetPasswordComponent,
+    ForgotPasswordComponent,
     DonateComponent,
     ContactUsComponent,
     RequestComponent,

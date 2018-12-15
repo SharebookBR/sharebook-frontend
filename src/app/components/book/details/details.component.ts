@@ -35,7 +35,7 @@ export class DetailsComponent implements OnInit {
     private _scBook: BookService,
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
-    private router: Router,
+    private _router: Router,
     private _modalService: NgbModal) {
 
     if (this._scUser.getLoggedUserFromLocalStorage()) {
@@ -100,11 +100,11 @@ export class DetailsComponent implements OnInit {
     });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
-    modalRef.componentInstance.creationDate = this.bookInfo.creationDate;
+    modalRef.componentInstance.chooseDate = this.bookInfo.chooseDate;
   }
 
   onLoginBook() {
-    this.router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+    this._router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
   }
 
   onConvertImageToBase64(event: any) {

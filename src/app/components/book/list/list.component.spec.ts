@@ -8,6 +8,7 @@ import { ListComponent } from './list.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { AlertService } from '../../../core/services/alert/alert.service';
+import { ConfirmationDialogService } from '../../../core/services/confirmation-dialog/confirmation-dialog.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -28,7 +29,8 @@ describe('ListComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        AlertService
+        AlertService,
+        ConfirmationDialogService
       ]
     })
     .compileComponents();

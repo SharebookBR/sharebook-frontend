@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { UpdateUserVM } from '../../models/updateUserVM';
 import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
+import { ChangeUserPasswordByHashCodeVM } from '../../models/ChangeUserPasswordByHashCodeVM';
 import { Profile } from '../../models/profile';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
@@ -48,6 +49,10 @@ export class UserService {
 
     resetPassword(email: String) {
       return this._http.post<any>(`${this.config.apiEndpoint}/Account/ForgotMyPassword/` + email, null);
+    }
+
+    changeUserPasswordByHashCode(changeUserPasswordByHashCodeVM: ChangeUserPasswordByHashCodeVM) {
+      return this._http.put<any>(`${this.config.apiEndpoint}/Account/ChangeUserPasswordByHashCode/`, changeUserPasswordByHashCodeVM);
     }
 
     delete(id: number) {
