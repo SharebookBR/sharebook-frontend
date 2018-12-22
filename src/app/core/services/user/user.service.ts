@@ -23,7 +23,7 @@ export class UserService {
     }
 
     getUserData() {
-        return this._http.get<UpdateUserVM>(`${this.config.apiEndpoint}/Account`);
+        return this._http.get<User>(`${this.config.apiEndpoint}/Account`);
     }
 
     register(user: User) {
