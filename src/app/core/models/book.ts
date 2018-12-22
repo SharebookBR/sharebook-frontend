@@ -1,21 +1,23 @@
 import { Category } from './category';
+import { User } from './user';
 
 export class Book {
-  id: string;
-  userId: number;
   title: string;
   author: string;
+  slug: string;
   imageBytes: string;
-  imageName: string;
-  imageUrl: string;
   imageSlug: string;
-  approved: boolean;
-  categoryId: number;
   freightOption: string;
+  userId: string;
+  categoryId: string;
+  user: User;
   category: Category;
-  creationDate: Date;
+  approved: boolean;
+  // bookUsers
+  imageUrl: string;
+  imageName: string;
   chooseDate: Date;
   synopsis: string;
+  id: string;
+  creationDate: Date;
 }
-
-// - TODO: Adequar o model para ficar igual ao do Backend

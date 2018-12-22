@@ -9,6 +9,7 @@ import { Book } from '../../../core/models/book';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestComponent } from '../request/request.component';
+import { User } from 'src/app/core/models/user';
 
 @Component({
   selector: 'app-details',
@@ -27,9 +28,12 @@ export class DetailsComponent implements OnInit {
   requested: Boolean = false;
   available: Boolean = false;
 
+  myUser: User = new User();
   bookInfo: Book = new Book();
   categoryName: string;
   freightName: string;
+  freightAlert: boolean;
+  freightAlertMessage: string;
 
   constructor(
     private _scBook: BookService,
@@ -45,7 +49,14 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'loading';
-    this.getBook();
+    this.getMyUser();
+  }
+
+  getMyUser() {
+    this._scUser.getUserData().subscribe(x => {
+      this.myUser = x;
+      this.getBook();
+    });
   }
 
   getBook() {
@@ -64,6 +75,32 @@ export class DetailsComponent implements OnInit {
           this.bookInfo = x;
           this.pageTitle = this.bookInfo.title;
           this.available = this.bookInfo.approved;
+
+          switch (x.freightOption.toString()) {
+            case 'City': {
+              if (this.bookInfo.user.address.city !== this.myUser.address.city) {
+                this.freightAlert = true;
+                this.freightAlertMessage = 'O doador paga o frete somente para a cidade de origem';
+              }
+              break;
+            }
+            case 'State': {
+              if (this.bookInfo.user.address.state !== this.myUser.address.state) {
+                this.freightAlert = true;
+                this.freightAlertMessage = 'O doador paga o frete somente para o estado de origem';
+              }
+              break;
+            }
+            case 'WithoutFreight': {
+              this.freightAlert = true;
+              this.freightAlertMessage = 'O doador NÃO paga pelo frete';
+              break;
+            }
+            default: {
+              this.freightAlert = false;
+              this.freightAlertMessage = '';
+            }
+          }
 
           if (this.userProfile) {
             this._scBook.getRequested(x.id).subscribe(requested => {
