@@ -10,6 +10,7 @@ import { DetailsComponent } from './details.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { UserService } from '../../../core/services/user/user.service';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 
 describe('DetailsComponent', () => {
   let component: DetailsComponent;
@@ -28,6 +29,7 @@ describe('DetailsComponent', () => {
       ],
       providers: [
         UserService,
+        AuthenticationService,
         HttpClient,
         HttpHandler
       ]
