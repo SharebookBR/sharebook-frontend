@@ -20,7 +20,7 @@ https://trello.com/invite/sharebook6/928f21ef82592b5edafde06f171d338b
 
 ### 3.2 - PEGUE UMA TAREFA NO TRELLO.
 
-- https://trello.com/b/YoIL8NKf/front-end
+- https://trello.com/b/QTdWPYhl/sharebook
 - Coloque no seu nome e mova para DOING.
 
 ## 4 - GITHUB
