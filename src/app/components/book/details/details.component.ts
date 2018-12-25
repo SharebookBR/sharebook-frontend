@@ -10,6 +10,7 @@ import { Book } from '../../../core/models/book';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestComponent } from '../request/request.component';
 import { User } from 'src/app/core/models/user';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-details',
@@ -34,22 +35,28 @@ export class DetailsComponent implements OnInit {
   freightName: string;
   freightAlert: boolean;
   freightAlertMessage: string;
+  daysToChoose: number;
 
   constructor(
     private _scBook: BookService,
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    private _modalService: NgbModal) {
+    private _modalService: NgbModal,
+    private _scAuthentication: AuthenticationService) {
 
-    if (this._scUser.getLoggedUserFromLocalStorage()) {
-      this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
-    }
+    this._scAuthentication.checkTokenValidity();
   }
 
   ngOnInit() {
     this.state = 'loading';
-    this.getMyUser();
+    if (this._scUser.getLoggedUserFromLocalStorage()) {
+      this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
+      this.getMyUser();
+    } else {
+      this.getBook();
+    }
+
   }
 
   getMyUser() {
@@ -75,30 +82,36 @@ export class DetailsComponent implements OnInit {
           this.bookInfo = x;
           this.pageTitle = this.bookInfo.title;
           this.available = this.bookInfo.approved;
+          const chooseDate = Math.floor(new Date(this.bookInfo.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          switch (x.freightOption.toString()) {
-            case 'City': {
-              if (this.bookInfo.user.address.city !== this.myUser.address.city) {
-                this.freightAlert = true;
-                this.freightAlertMessage = 'O doador paga o frete somente para a cidade de origem';
+          this.daysToChoose = chooseDate - todayDate;
+
+          if (this.myUser.id) {
+            switch (x.freightOption.toString()) {
+              case 'City': {
+                if (this.bookInfo.user.address.city !== this.myUser.address.city) {
+                  this.freightAlert = true;
+                  this.freightAlertMessage = 'O doador paga o frete somente para a cidade de origem';
+                }
+                break;
               }
-              break;
-            }
-            case 'State': {
-              if (this.bookInfo.user.address.state !== this.myUser.address.state) {
-                this.freightAlert = true;
-                this.freightAlertMessage = 'O doador paga o frete somente para o estado de origem';
+              case 'State': {
+                if (this.bookInfo.user.address.state !== this.myUser.address.state) {
+                  this.freightAlert = true;
+                  this.freightAlertMessage = 'O doador paga o frete somente para o estado de origem';
+                }
+                break;
               }
-              break;
-            }
-            case 'WithoutFreight': {
-              this.freightAlert = true;
-              this.freightAlertMessage = 'O doador NÃO paga pelo frete';
-              break;
-            }
-            default: {
-              this.freightAlert = false;
-              this.freightAlertMessage = '';
+              case 'WithoutFreight': {
+                this.freightAlert = true;
+                this.freightAlertMessage = 'O doador NÃO paga pelo frete';
+                break;
+              }
+              default: {
+                this.freightAlert = false;
+                this.freightAlertMessage = '';
+              }
             }
           }
 
