@@ -17,7 +17,6 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 })
 export class RequestComponent implements OnInit {
   @Input() bookId;
-  @Input() bookChooseDate;
   donateUsers: LocalDataSource;
   settings: any;
   isLoading: Boolean = true;
@@ -29,7 +28,6 @@ export class RequestComponent implements OnInit {
   addressLine01: String;
   addressLine02: String;
   addressLine03: String;
-  chooseDate: Date;
   modalTitle: String;
 
   state = 'loading'; // loading, form, error
@@ -57,9 +55,6 @@ export class RequestComponent implements OnInit {
         ((!updateUserVM.address.complement) ? '' : updateUserVM.address.complement);
       this.addressLine02 = updateUserVM.address.neighborhood + ' - ' + updateUserVM.address.city + ' - ' + updateUserVM.address.state;
       this.addressLine03 = 'CEP: ' + updateUserVM.address.postalCode + ' - ' + updateUserVM.address.country;
-
-      this.chooseDate = new Date(this.bookChooseDate);
-      this.chooseDate.setDate(this.chooseDate.getDate());
     });
   }
 
