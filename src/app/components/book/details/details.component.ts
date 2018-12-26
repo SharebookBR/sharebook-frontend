@@ -36,6 +36,7 @@ export class DetailsComponent implements OnInit {
   freightAlert: boolean;
   freightAlertMessage: string;
   daysToChoose: number;
+  chooseDateInfo: string;
 
   constructor(
     private _scBook: BookService,
@@ -86,6 +87,7 @@ export class DetailsComponent implements OnInit {
           const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
           this.daysToChoose = chooseDate - todayDate;
+          this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
           if (this.myUser.id) {
             switch (x.freightOption.toString()) {
