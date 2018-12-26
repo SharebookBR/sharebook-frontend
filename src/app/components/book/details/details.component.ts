@@ -150,7 +150,6 @@ export class DetailsComponent implements OnInit {
     });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
-    modalRef.componentInstance.chooseDate = this.bookInfo.chooseDate;
   }
 
   onLoginBook() {
