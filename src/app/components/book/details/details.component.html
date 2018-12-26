@@ -26,7 +26,7 @@
         <p><b>Quando será anunciado o ganhador desse livro?</b><br/>{{chooseDateInfo}}</p>
         <p><b>Doador paga o frete?</b><br/>{{freightName}}<b *ngIf="!!freightAlert"> ({{freightAlertMessage}})</b></p>
         <p><b>Local de Origem</b><br/>{{bookInfo.user.address.city}} - {{bookInfo.user.address.state}}</p>
-        <p *ngIf="!!bookInfo.synopsis"><b>Sinópse:</b><br/>{{bookInfo.synopsis}}</p>
+        <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap;"><b>Sinópse:</b><br/>{{bookInfo.synopsis}}</p>
 
         <div class="form-group col-md-8">
           <div class="modal-footer">
