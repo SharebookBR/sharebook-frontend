@@ -76,6 +76,19 @@
           </div>
         </div>
 
+        <div class="form-group col-md-8 mb-4" *ngIf="userProfile === 'Administrator' && itsEditMode">
+          <label class="col-form-label" for="userIdFacilitator">Facilitador</label>
+          <select class="form-control" formControlName="userIdFacilitator">
+            <option value=""></option>
+            <option *ngFor="let facilitator of facilitators" value="{{facilitator.id}}">{{facilitator.name}}</option>
+          </select>
+          <div *ngIf="formGroup.controls['userIdFacilitator'].touched && !formGroup.controls['userIdFacilitator'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['userIdFacilitator'].hasError('required')">
+              Informe o facilitador do livro.
+            </small>
+          </div>
+        </div>        
+
         <div class="form-group col-md-8">
           <div class="custom-file">
             <input type="file" class="custom-file-input" formControlName="imageName" imageUpload (imageSelected)="onConvertImageToBase64($event)" [allowedExtensions]="['jpg','jpeg','png']">

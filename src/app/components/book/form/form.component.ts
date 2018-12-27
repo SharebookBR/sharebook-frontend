@@ -24,6 +24,7 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
+  facilitators: User[] = [];
   isSaved: Boolean;
 
   userProfile: string;
@@ -65,6 +66,10 @@ export class FormComponent implements OnInit {
     this._scCategory.getAll().subscribe(data =>
       this.categories = data
     );
+
+    this._scUser.getAllFacilitators().subscribe(data =>
+      this.facilitators = data
+    );
   }
 
   createFormGroup() {
@@ -73,6 +78,7 @@ export class FormComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       categoryId: ['', [Validators.required]],
+      userIdFacilitator: ['', [Validators.required]],
       userId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
@@ -115,6 +121,7 @@ export class FormComponent implements OnInit {
           title: x.title,
           author: x.author,
           categoryId: x.categoryId,
+          userIdFacilitator: x.userIdFacilitator,
           userId: x.userId,
           freightOption: x.freightOption,
           imageBytes: '',
