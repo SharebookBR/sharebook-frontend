@@ -77,4 +77,8 @@ export class UserService {
     getProfile() {
         return this._http.get<Profile>(`${this.config.apiEndpoint}/account/profile`);
     }
+
+    getAllFacilitators() {
+      return this._http.get<User[]>(`${this.config.apiEndpoint}/Account/ListFacilitators`);
+    }
 }

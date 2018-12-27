@@ -11,6 +11,8 @@ export class Book {
   userId: string;
   categoryId: string;
   user: User;
+  userIdFacilitator: string;
+  userFacilitator: User;
   category: Category;
   approved: boolean;
   // bookUsers
