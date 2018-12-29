@@ -7,6 +7,7 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list',
@@ -37,6 +38,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this._scBook.getAll().subscribe(resp => {
       this.books = new LocalDataSource(resp['items']);
+      this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
     }
     );
 
@@ -48,6 +50,12 @@ export class ListComponent implements OnInit {
       mode: 'inline',
       hideSubHeader: true,
       columns: {
+        creationDate: {
+          title: 'Inclusão',
+          valuePrepareFunction: data => data ? new DatePipe('en-US').transform(data, 'dd/MM/yyyy') : '',
+          filter: false,
+          width: '10%'
+        },
         title: {
           title: 'Titulo',
           filter: false,
@@ -56,25 +64,30 @@ export class ListComponent implements OnInit {
         author: {
           title: 'Autor',
           filter: false,
-          width: '15%'
+          width: '10%'
         },
         donor: {
           title: 'Doador',
           valuePrepareFunction: data => data ? data : '',
           filter: false,
-          width: '15%'
+          width: '10%'
         },
         phoneDonor: {
           title: 'Telefone',
           valuePrepareFunction: data => data ? data : '',
           filter: false,
-          width: '15%'
+          width: '13%'
         },
         facilitator: {
           title: 'Facilitador',
           valuePrepareFunction: data => data ? data : '',
           filter: false,
-          width: '15%'
+          width: '10%'
+        },
+        status: {
+          title: 'Status',
+          filter: false,
+          width: '10%'
         },
         approved: {
           title: 'Visível',
@@ -132,6 +145,14 @@ export class ListComponent implements OnInit {
         },
         {
           field: 'phoneDonor',
+          search: query
+        },
+        {
+          field: 'facilitator',
+          search: query
+        },
+        {
+          field: 'status',
           search: query
         }
       ], false);
