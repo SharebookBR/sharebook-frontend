@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       categoryId: ['', [Validators.required]],
-      userIdFacilitator: ['', [Validators.required]],
+      userIdFacilitator: [''],
       userId: ['', [Validators.required]],
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
@@ -121,7 +121,7 @@ export class FormComponent implements OnInit {
           title: x.title,
           author: x.author,
           categoryId: x.categoryId,
-          userIdFacilitator: x.userIdFacilitator,
+          userIdFacilitator: !!x.userIdFacilitator ? x.userIdFacilitator : null,
           userId: x.userId,
           freightOption: x.freightOption,
           imageBytes: '',
@@ -131,6 +131,7 @@ export class FormComponent implements OnInit {
           imageSlug: x.imageSlug,
           synopsis: !!x.synopsis ? x.synopsis : ''
         };
+        this.formGroup.get('userIdFacilitator').setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
         this.formGroup.setValue(bookForUpdate);
       }
       );
