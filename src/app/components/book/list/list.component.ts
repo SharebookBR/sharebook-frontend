@@ -56,19 +56,25 @@ export class ListComponent implements OnInit {
         author: {
           title: 'Autor',
           filter: false,
-          width: '20%'
+          width: '15%'
         },
         donor: {
           title: 'Doador',
           valuePrepareFunction: data => data ? data : '',
           filter: false,
-          width: '20%'
+          width: '15%'
         },
         phoneDonor: {
           title: 'Telefone',
           valuePrepareFunction: data => data ? data : '',
           filter: false,
-          width: '20%'
+          width: '15%'
+        },
+        facilitator: {
+          title: 'Facilitador',
+          valuePrepareFunction: data => data ? data : '',
+          filter: false,
+          width: '15%'
         },
         approved: {
           title: 'Visível',
