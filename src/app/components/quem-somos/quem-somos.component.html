@@ -4,170 +4,17 @@
     pro time! Conheça alguns dos maiores contribuidores do projeto.</p>
 
   <div class="flex-container">
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/raffa.jpg" alt="Card image cap">
+    <div *ngFor="let contributor of contributors" class="card">
+      <img class="card-img-top" [src]="contributor.image" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Raffaello Damgaard</h5>
-        <p class="card-text">Product Owner</p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://www.github.com/raffacabofrio/" class="card-link" target="_blank">Github</a>
+        <h5 class="card-title">{{contributor.name}}</h5>
+        <p class="card-text">{{contributor.position}}</p>
+        <a *ngFor="let link of contributor.links" 
+          [href]="link.url" 
+          class="card-link" target="_blank">{{link.content}}</a>
       </div>
     </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/vagner.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Vagner Nunes</h5>
-        <p class="card-text">Product Advisor</p>
-
-        <a href="https://www.linkedin.com/in/vnunes/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/daniel.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Daniel Aloísio</h5>
-        <p class="card-text">Backend Developer/ Architect</p>
-
-        <a href="https://www.linkedin.com/in/daniel-alo%C3%ADsio-oliveira-da-silva-06242291/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/danielaloisio" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/cussa.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Cussa Mitre</h5>
-        <p class="card-text">Lead Developer</p>
-
-        <a href="https://www.linkedin.com/in/cussa/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/Cussa" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/walter.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Walter Vinicius</h5>
-        <p class="card-text">Fullstack Developer</p>
-
-        <a href="https://www.linkedin.com/in/walter-cardoso-aab682a8/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/walter-lopes" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/pedro_moreira.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Pedro Moreira</h5>
-        <p class="card-text">Designer</p>
-
-        <a href="https://www.linkedin.com/in/pedro-moreira-91369933/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/mauricio.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Mauricio Carlezzo</h5>
-        <p class="card-text">FrontEnd Developer</p>
-
-        <a href="https://www.linkedin.com/in/maur%C3%ADcio-carlezzo-34a93480/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/carlezzo" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/antero.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">William Pavei Antero</h5>
-        <p class="card-text">Frontend Developer</p>
-
-        <a href="https://www.linkedin.com/in/wantero/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/wantero" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/everton.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Everton de Jesus</h5>
-        <p class="card-text">FrontEnd Developer</p>
-
-        <a href="https://www.linkedin.com/in/everton-de-jesus-01295413b/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/Everton1982" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/caique.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Caíque Valin</h5>
-        <p class="card-text">FrontEnd Developer</p>
-
-        <a href="https://www.linkedin.com/in/caiquevallim/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/caiquevallim" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/erisvaldo.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Erisvaldo Correia</h5>
-        <p class="card-text">FrontEnd Developer</p>
-
-        <a href="https://www.linkedin.com/in/erisvaldo-correia-46574850/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/ErisvaldoCorreia" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/engeziellithon.jpeg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Engeziellithon Vieira</h5>
-        <p class="card-text">QA Analyst</p>
-
-        <a href="https://www.linkedin.com/in/engeziellithondev/" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://github.com/engeziellithon" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/pedrohyvo.jpeg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Pedro Hyvo</h5>
-        <p class="card-text">QA Engineer</p>
-
-        <a href="https://www.linkedin.com/in/pedrohyvo" class="card-link" target="_blank">Linkedin</a>
-        <a href="https://www.github.com/pedrohyvo" class="card-link" target="_blank">Github</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/ratton.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Marcelo Ratton</h5>
-        <p class="card-text">Technical Advisor</p>
-
-        <a href="https://www.linkedin.com/in/rattones/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/top_contributors/kira.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Gislaine Oliveira</h5>
-        <p class="card-text">Project Advisor</p>
-
-        <a href="https://www.linkedin.com/in/gislaine-oliveira-a12952b8/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
   </div>
-
 
   <h1>História</h1>
 
