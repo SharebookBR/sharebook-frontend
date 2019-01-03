@@ -17,7 +17,7 @@ export class RequestedsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._bookService.getRequestedBooks(1, 100).subscribe(resp => {
+    this._bookService.getRequestedBooks(1, 9999).subscribe(resp => {
       this.requestedBooks = resp.items;
       this.addBadgeToStatusColumn();
     });
