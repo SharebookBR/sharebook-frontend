@@ -104,6 +104,15 @@ export class ContributorsService {
         ]
       },
       {
+        image: 'assets/img/top_contributors/max.jpg',
+        name: 'Max Gomes',
+        position: 'Mobile Developer',
+        links: [
+          {url: 'https://www.linkedin.com/in/maxgomes92/', content: 'Linkedin'},
+          {url: 'https://github.com/maxgomes92', content: 'Github'}
+        ]
+      },
+      {
         image: 'assets/img/top_contributors/engeziellithon.jpeg',
         name: 'Engeziellithon Vieira',
         position: 'QA Analyst',
