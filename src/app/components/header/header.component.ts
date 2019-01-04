@@ -20,7 +20,10 @@ export class HeaderComponent implements OnInit {
   userLogged = false;
   shareBookUser = new User();
 
-  constructor(private _scUser: UserService, private _scAuthentication: AuthenticationService) {
+  constructor(private _scUser: UserService,
+              private _scAuthentication: AuthenticationService) {
+
+    this._scAuthentication.checkTokenValidity();
 
     // if has shareBookUser, set value to variables
     if (this._scUser.getLoggedUserFromLocalStorage()) {
@@ -35,7 +38,7 @@ export class HeaderComponent implements OnInit {
       this.shareBookUser = shareBookUser;
       this.userLogged = !!this.shareBookUser;
     });
-    this._scAuthentication.checkTokenValidity();
+
   }
 
   // metodo que desativa o menu ao clicar em um link
