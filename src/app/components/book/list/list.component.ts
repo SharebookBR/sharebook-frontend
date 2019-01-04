@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
 import { DatePipe } from '@angular/common';
+import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-list',
@@ -42,57 +43,68 @@ export class ListComponent implements OnInit {
     }
     );
 
+    // Carrega Status do ENUM BookDonationStatus
+    const myBookDonationStatus = new Array();
+    Object.keys(BookDonationStatus).forEach(key => {
+      myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
+    });
+
     const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
     const btnEdit = '<span class="btn btn-info btn-sm"> <i class="fa fa-edit"></i> </span>';
     const btnDonate = '<span class="btn btn-warning btn-sm"> <i class="fa fa-book"></i> </span>';
 
     this.settings = {
-      mode: 'inline',
-      hideSubHeader: true,
       columns: {
         creationDate: {
           title: 'Inclusão',
           valuePrepareFunction: data => data ? new DatePipe('en-US').transform(data, 'dd/MM/yyyy') : '',
-          filter: false,
           width: '10%'
         },
         title: {
           title: 'Titulo',
-          filter: false,
           width: '20%'
         },
         author: {
           title: 'Autor',
-          filter: false,
           width: '10%'
         },
         donor: {
           title: 'Doador',
           valuePrepareFunction: data => data ? data : '',
-          filter: false,
           width: '10%'
         },
         phoneDonor: {
           title: 'Telefone',
           valuePrepareFunction: data => data ? data : '',
-          filter: false,
           width: '13%'
         },
         facilitator: {
           title: 'Facilitador',
           valuePrepareFunction: data => data ? data : '',
-          filter: false,
           width: '10%'
         },
         status: {
           title: 'Status',
-          filter: false,
+          filter: {
+            type: 'list',
+            config: {
+              selectText: 'Selecionar...',
+              list: myBookDonationStatus,
+            },
+          },
           width: '10%'
         },
         approved: {
           title: 'Visível',
-          filter: false,
           width: '5%',
+          filter: {
+            type: 'checkbox',
+            config: {
+              true: 'true',
+              false: 'false',
+              resetText: 'limpar',
+            },
+          },
           type: 'html',
           valuePrepareFunction: value =>
             this._sanitizer.bypassSecurityTrustHtml(this.getCheckBoxTable(value)),
@@ -123,40 +135,6 @@ export class ListComponent implements OnInit {
         class: 'table table-bordered'
       }
     };
-  }
-
-  onSearch(query: string = '') {
-    if (!query) {
-      this.books.reset();
-    } else {
-      this.books.setFilter([
-        // fields we want to include in the search
-        {
-          field: 'title',
-          search: query
-        },
-        {
-          field: 'author',
-          search: query
-        },
-        {
-          field: 'donor',
-          search: query
-        },
-        {
-          field: 'phoneDonor',
-          search: query
-        },
-        {
-          field: 'facilitator',
-          search: query
-        },
-        {
-          field: 'status',
-          search: query
-        }
-      ], false);
-    }
   }
 
   onCustom(event) {

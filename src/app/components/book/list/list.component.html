@@ -1,10 +1,5 @@
 <div class="container">
   <h1 class="text-center display-4">Gerenciar Livros</h1>
-  <div class="row justify-content-end" style="margin-bottom: 10px">
-    <div class="col-3">
-      <input #search class="form-control" type="text" placeholder="Search..." (change)="onSearch(search.value)">
-    </div>
-  </div>
   <ng2-smart-table class="table" [settings]="settings" [source]="books" (custom)="onCustom($event)">
   </ng2-smart-table>
 </div>
