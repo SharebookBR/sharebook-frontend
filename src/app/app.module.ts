@@ -55,6 +55,9 @@ import { RequestComponent } from './components/book/request/request.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
+import {RouteReuseStrategy} from '@angular/router';
+import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -112,6 +115,7 @@ import { ConfirmationDialogService } from './core/services/confirmation-dialog/c
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings },
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     AuthGuardAdmin
     // provider used to create fake backend
     // fakeBackendProvider
