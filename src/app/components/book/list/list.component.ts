@@ -59,15 +59,16 @@ export class ListComponent implements OnInit {
       const myBookArray = new Array();
       resp['items'].forEach(items => {
         myBookArray.push({
+          id: items.id,
           creationDate: items.creationDate,
           chooseDate:   items.chooseDate,
           title: items.title  + '<br>' +
                  items.author + '<br>' +
                  items.totalInterested + ' interessado(s)<br>' +
                  items.daysInShowcase + ' dia(s) na vitrine',
-          users: items.donor + '<br>' +
-                 '' + '<br>' +
-                 items.facilitator,
+          users: items.donor  + '<br>' +
+                 (!!items.winner ? items.winner : '') + '<br>' +
+                 (!!items.facilitator ? items.facilitator : ''),
           status: items.status,
           donated: items.donated
         });
