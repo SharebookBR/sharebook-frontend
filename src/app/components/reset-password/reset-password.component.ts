@@ -32,7 +32,7 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPassword() {
     if (this.formGroup.valid) {
-      this._scUser.resetPassword(this.formGroup.value.email).subscribe(
+      this._scUser.resetPassword(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
             alert(data.successMessage);
