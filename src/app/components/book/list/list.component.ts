@@ -28,18 +28,54 @@ export class ListComponent implements OnInit {
     private confirmationDialogService: ConfirmationDialogService) {
   }
 
-  getCheckBoxTable(value: boolean = false) {
-    if (value) {
-      return '<input type="checkbox" disabled checked>';
+  getHtmlForCell(value: string, row: any) {
+    if (!!row.donated) {
+      return '<font color="green">' + value + '</font>';
+    } else if (!!row.chooseDate) {
+      // Coloca o chooseDate para as 23:59:59 do dia da escolha
+      const myChooseDate = new Date(new Date(row.chooseDate).getFullYear(),
+                                    new Date(row.chooseDate).getMonth(),
+                                    new Date(row.chooseDate).getDate(),
+                                    23, 39, 59, 59);
+      // Coloca o today para as 23:59:59 do dia
+      const myTodayDate  = new Date(new Date().getFullYear(),
+                                    new Date().getMonth(),
+                                    new Date().getDate(),
+                                    23, 39, 59, 59);
+      if (myChooseDate.getTime() < myTodayDate.getTime()) {
+        return '<font color="red">' + value + '</font>';
+      } else if (myChooseDate.getTime() === myTodayDate.getTime()) {
+        return '<font color="orange">' + value + '</font>';
+      } else {
+        return '<font>' + value + '</font>';
+      }
     } else {
-      return '<input type="checkbox" disabled>';
+      return '';
     }
   }
 
   ngOnInit() {
     this._scBook.getAll().subscribe(resp => {
-      this.books = new LocalDataSource(resp['items']);
+      const myBookArray = new Array();
+      resp['items'].forEach(items => {
+        myBookArray.push({
+          id: items.id,
+          creationDate: items.creationDate,
+          chooseDate:   items.chooseDate,
+          title: items.title  + '<br>' +
+                 items.author + '<br>' +
+                 items.totalInterested + ' interessado(s)<br>' +
+                 items.daysInShowcase + ' dia(s) na vitrine',
+          users: items.donor  + '<br>' +
+                 (!!items.winner ? items.winner : '') + '<br>' +
+                 (!!items.facilitator ? items.facilitator : ''),
+          status: items.status,
+          donated: items.donated
+        });
+      });
+      this.books = new LocalDataSource(myBookArray);
       this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
+
     }
     );
 
@@ -57,34 +93,42 @@ export class ListComponent implements OnInit {
       columns: {
         creationDate: {
           title: 'Inclusão',
-          valuePrepareFunction: data => data ? new DatePipe('en-US').transform(data, 'dd/MM/yyyy') : '',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return this.getHtmlForCell(new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'), row);
+          },
+          width: '10%'
+        },
+        chooseDate: {
+          title: 'Escolha',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return this.getHtmlForCell(new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'), row);
+          },
           width: '10%'
         },
         title: {
-          title: 'Titulo',
-          width: '20%'
+          title: 'Título / Autor / Total Interessados / Dias na Vitrine',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return this.getHtmlForCell(cell, row);
+          },
+          width: '30%',
         },
-        author: {
-          title: 'Autor',
-          width: '10%'
-        },
-        donor: {
-          title: 'Doador',
-          valuePrepareFunction: data => data ? data : '',
-          width: '10%'
-        },
-        phoneDonor: {
-          title: 'Telefone',
-          valuePrepareFunction: data => data ? data : '',
-          width: '13%'
-        },
-        facilitator: {
-          title: 'Facilitador',
-          valuePrepareFunction: data => data ? data : '',
-          width: '10%'
+        users: {
+          title: 'Doador / Donatário / Facilitador',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return this.getHtmlForCell(cell, row);
+          },
+          width: '28%',
         },
         status: {
           title: 'Status',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return this.getHtmlForCell(cell, row);
+          },
           filter: {
             type: 'list',
             config: {
@@ -94,21 +138,6 @@ export class ListComponent implements OnInit {
           },
           width: '10%'
         },
-        approved: {
-          title: 'Visível',
-          width: '5%',
-          filter: {
-            type: 'checkbox',
-            config: {
-              true: 'true',
-              false: 'false',
-              resetText: 'limpar',
-            },
-          },
-          type: 'html',
-          valuePrepareFunction: value =>
-            this._sanitizer.bypassSecurityTrustHtml(this.getCheckBoxTable(value)),
-        }
       },
       actions: {
         delete: false,
