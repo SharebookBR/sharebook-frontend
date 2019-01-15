@@ -50,7 +50,7 @@ export class ListComponent implements OnInit {
         return '<font>' + value + '</font>';
       }
     } else {
-      return '';
+      return '<font>' + value + '</font>';
     }
   }
 
