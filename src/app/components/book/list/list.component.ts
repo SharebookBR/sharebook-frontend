@@ -85,9 +85,12 @@ export class ListComponent implements OnInit {
       myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
     });
 
-    const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
-    const btnEdit = '<span class="btn btn-info btn-sm"> <i class="fa fa-edit"></i> </span>';
-    const btnDonate = '<span class="btn btn-warning btn-sm"> <i class="fa fa-book"></i> </span>';
+    const btnDelete = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar Livro">' +
+                      ' <i class="fa fa-trash"></i> </span>';
+    const btnEdit   = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
+                      ' <i class="fa fa-edit"></i> </span>';
+    const btnDonate = '<span class="btn btn-warning btn-sm"  data-toggle="tooltip" title="Escolher Donatário">' +
+                      ' <i class="fa fa-book"></i> </span>';
 
     this.settings = {
       columns: {
