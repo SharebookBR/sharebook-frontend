@@ -18,6 +18,8 @@ import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 export class ListComponent implements OnInit {
   books: LocalDataSource;
   settings: any;
+  myBookArray = Array();
+  isLoading: boolean;
 
   constructor(
     private _scBook: BookService,
@@ -54,11 +56,14 @@ export class ListComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  getAllBooks() {
+
+    this.isLoading = true;
+
     this._scBook.getAll().subscribe(resp => {
-      const myBookArray = new Array();
+      this.myBookArray = new Array();
       resp['items'].forEach(items => {
-        myBookArray.push({
+        this.myBookArray.push({
           id: items.id,
           creationDate: items.creationDate,
           chooseDate:   items.chooseDate,
@@ -73,11 +78,16 @@ export class ListComponent implements OnInit {
           donated: items.donated
         });
       });
-      this.books = new LocalDataSource(myBookArray);
-      this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
-
+      this.books.load(this.myBookArray);
+      this.isLoading = false;
     }
     );
+  }
+
+  ngOnInit() {
+    this.getAllBooks();
+    this.books = new LocalDataSource(this.myBookArray);
+    this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
@@ -85,9 +95,12 @@ export class ListComponent implements OnInit {
       myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
     });
 
-    const btnDelete = '<span class="btn btn-danger btn-sm"> <i class="fa fa-trash"></i> </span>';
-    const btnEdit = '<span class="btn btn-info btn-sm"> <i class="fa fa-edit"></i> </span>';
-    const btnDonate = '<span class="btn btn-warning btn-sm"> <i class="fa fa-book"></i> </span>';
+    const btnDelete = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar Livro">' +
+                      ' <i class="fa fa-trash"></i> </span>&nbsp;';
+    const btnEdit   = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
+                      ' <i class="fa fa-edit"></i> </span>&nbsp;';
+    const btnDonate = '<span class="btn btn-warning btn-sm" data-toggle="tooltip" title="Escolher Donatário">' +
+                      ' <i class="fa fa-book"></i> </span>&nbsp;';
 
     this.settings = {
       columns: {
@@ -169,26 +182,41 @@ export class ListComponent implements OnInit {
   onCustom(event) {
     if (event.action === 'delete') {
       // chamada do modal de confirmação antes de efetuar a ação do delete
-      this.confirmationDialogService.confirm('Atenção!', 'Confirma a exclusão do Livro?')
-        .then((confirmed) => {
-          if (confirmed) {
-            this._scBook.delete(event.data.id).subscribe(resp => {
-              if (resp['success']) {
-                this.books.remove(event.data);
-                this._scAlert.success('Registro removido com sucesso.');
-              }
-            });
-          }
-        });
+      if (event.data.donated) {
+        alert('Livro já doado!');
+      } else {
+        this.confirmationDialogService.confirm('Atenção!', 'Confirma a exclusão do Livro?')
+          .then((confirmed) => {
+            if (confirmed) {
+              this._scBook.delete(event.data.id).subscribe(resp => {
+                if (resp['success']) {
+                  this.books.remove(event.data);
+                  this._scAlert.success('Registro removido com sucesso.');
+                }
+              });
+            }
+          });
+        }
     } else if (event.action === 'donate') {
       if (event.data.donated) {
         alert('Livro já doado!');
       } else {
         const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modalRef.componentInstance.bookId = event.data.id;
+
+        modalRef.result.then((data) => {
+          if (data === 'ok') {
+            this.reloadData();
+          }
+        });
       }
     } else {
       this._router.navigate([`book/form/${event.data.id}`]);
     }
+  }
+
+  reloadData() {
+    this.getAllBooks();
+    this.books.refresh();
   }
 }

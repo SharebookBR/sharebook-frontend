@@ -99,7 +99,7 @@ export class DonateComponent implements OnInit {
         if (!resp.success) {
           this._scAlert.error(resp.messages[0]);
         } else {
-          this.activeModal.close();
+          this.activeModal.close('ok');
           this._scAlert.success(resp.successMessage);
         }
         this.isLoading = false;
