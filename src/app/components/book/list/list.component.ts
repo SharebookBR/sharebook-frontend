@@ -78,8 +78,7 @@ export class ListComponent implements OnInit {
           donated: items.donated
         });
       });
-      this.books = new LocalDataSource(this.myBookArray);
-      this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
+      this.books.load(this.myBookArray);
       this.isLoading = false;
     }
     );
@@ -87,6 +86,8 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.getAllBooks();
+    this.books = new LocalDataSource(this.myBookArray);
+    this.books.setSort([{field: 'creationDate', direction: 'desc'}]);
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
