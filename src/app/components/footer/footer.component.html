@@ -49,17 +49,8 @@
         <h5 class="text-uppercase">Github</h5>
 
         <ul class="list-unstyled">
-          <li>
-            <a href="https://github.com/SharebookBR/backend" target="_blank">Backend</a>
-          </li>
-          <li>
-            <a href="https://github.com/SharebookBR/frontend" target="_blank">Frontend</a>
-          </li>
-          <li>
-            <a href="https://github.com/SharebookBR/qa" target="_blank">QA</a>
-          </li>
-          <li>
-            <a href="https://github.com/SharebookBR/mobile" target="_blank">Mobile</a>
+          <li *ngFor="let link of repositoriesLinks">
+            <a [href]="link.url" target="_blank">{{link.content}}</a>
           </li>
         </ul>
 
