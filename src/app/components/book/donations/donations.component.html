@@ -1,7 +1,13 @@
-<div class="container mt-5 table-responsive">
-  <ng2-smart-table [settings]="tableSettings" [source]="donatedBooks"></ng2-smart-table>
+<div class="container">
+  <h1 class="text-center display-4">Minhas Doações</h1>
+  <div [hidden]="!isLoading">
+    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
+  </div>
+  <div class="container mt-5 table-responsive" [hidden]="isLoading">
+    <ng2-smart-table [settings]="tableSettings" [source]="donatedBooks"></ng2-smart-table>
 
-  <p class="mt-2">
-    <a routerLink="/panel" class="btn btn-link">Voltar</a>
-  </p>
+    <p class="mt-2">
+      <a routerLink="/panel" class="btn btn-link">Voltar</a>
+    </p>
+  </div>
 </div>

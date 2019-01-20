@@ -12,6 +12,7 @@ export class DonationsComponent implements OnInit {
 
   donatedBooks = new Array<any>();
   tableSettings: any;
+  isLoading: boolean;
 
   constructor(
     private _bookService: BookService,
@@ -19,8 +20,12 @@ export class DonationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.isLoading = true;
+
     this._bookService.getDonatedBooks().subscribe(resp => {
       this.donatedBooks = resp;
+      this.isLoading = false;
     });
 
     this.tableSettings = {

@@ -11,15 +11,20 @@ export class RequestedsComponent implements OnInit {
 
   requestedBooks = new Array<any>();
   tableSettings: any;
+  isLoading: boolean;
 
   constructor(
     private _bookService: BookService
   ) { }
 
   ngOnInit() {
+
+    this.isLoading = true;
+
     this._bookService.getRequestedBooks(1, 9999).subscribe(resp => {
       this.requestedBooks = resp.items;
       this.addBadgeToStatusColumn();
+      this.isLoading = false;
     });
 
     this.tableSettings = {
