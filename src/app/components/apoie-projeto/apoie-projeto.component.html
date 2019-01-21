@@ -5,52 +5,18 @@
 
   <div class="flex-container">
 
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/dotnet.jpg" alt="Card image cap">
+    <div class="card" *ngFor="let technology of technologies">
+      <img class="card-img-top" [src]="technology.image" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Backend</h5>
-        <p class="card-text">.Net core 2.x, C#, SQL Server, Web api</p>
-
-        <a href="https://github.com/SharebookBR/backend" class="card-link" target="_blank">Github</a>
-        <a href="https://trello.com/b/QTdWPYhl/sharebook" class="card-link" target="_blank">Trello</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/angular.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Frontend</h5>
-        <p class="card-text">Angular 6, Bootstrap 4, HTML 5</p>
-
-        <a href="https://github.com/SharebookBR/frontend" class="card-link" target="_blank">Github</a>
-        <a href="https://trello.com/b/QTdWPYhl/sharebook" class="card-link" target="_blank">Trello</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/ionic.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Mobile</h5>
-        <p class="card-text">Cordova, Ionic, Angular
-          <br>
+        <h5 class="card-title">{{technology.title}}</h5>
+        <p class="card-text">
+          <span [innerHTML]="technology.text"></span>
         </p>
-
-        <a href="https://github.com/SharebookBR/mobile" class="card-link" target="_blank">Github</a>
-        <a href="https://trello.com/b/uTc3JDOz/mobile" class="card-link" target="_blank">Trello</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/qa.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">QA</h5>
-        <p class="card-text">C#, xUnit, Selenium
-          <br>
-          <br>
-        </p>
-
-        <a href="https://github.com/SharebookBR/qa" class="card-link" target="_blank">Github</a>
-        <a href="https://trello.com/b/QTdWPYhl/sharebook" class="card-link" target="_blank">Trello</a>
+        
+        <a *ngFor="let link of technology.links" 
+        [href]="link.url"
+        class="card-link"
+        target="_blank">{{link.content}}</a>
       </div>
     </div>
 
@@ -58,55 +24,16 @@
     <p>Nós temos um monte de ferramentas legais pra esse trabalho colaborativo. SLACK, TRELLO, GITHUB. Tudo integrado e bem
       explicado, fácil de entender.</p>
 
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/slack.jpg" alt="Card image cap">
+    <div class="card" *ngFor="let tool of tools">
+      <img class="card-img-top" [src]="tool.image" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Slack</h5>
-        <p class="card-text">Comunicação, colaboração e integração. Uma das ferramentas favoritas dos devs.</p>
+        <h5 class="card-title">{{tool.title}}</h5>
+        <p class="card-text">{{tool.text}}</p>
 
-        <a href="https://join.slack.com/t/sharebookworkspace/shared_invite/enQtMzQ2Nzc5OTk3MDc4LTZlMmJlMjA3NGE1NDczN2QxYzc2ZWZhM2UxMzFkMDIyYjliMGI3YzdlYzg2ZjZhYjQ2YWY1ZTUyZGViNzViOWQ"
-          class="card-link" target="_blank">Convite Slack</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/trello.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Trello</h5>
-        <p class="card-text">Chegou a hora de contribuir! Peque uma tarefa, coloque no seu nome e mova pra DOING.</p>
-
-        <a href="https://trello.com/invite/sharebook6/928f21ef82592b5edafde06f171d338b" class="card-link" target="_blank">Convite</a>
-        <a href="https://trello.com/b/QTdWPYhl/sharebook" class="card-link" target="_blank">Quadro</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/github.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Git Hub</h5>
-        <p class="card-text">Aqui nós temos o cuidado de ter um histórico educativo, onde cada commit conta uma estória.</p>
-
-        <a href="https://github.com/SharebookBR" class="card-link" target="_blank">Website</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/appveyor.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">AppVeyor</h5>
-        <p class="card-text">Solução fácil e amigável para integração e deploy contínuo. Integrado com Slack.</p>
-
-        <a href="https://www.appveyor.com/" class="card-link" target="_blank">Website</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/smarteraspnet.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Smarter ASP.NET</h5>
-        <p class="card-text">Hospedagem boa e barata pro seu App. Usando o link abaixo vc ajuda nosso projeto.</p>
-
-        <a href="http://www.SmarterASP.NET/index?r=raffacabofrio" class="card-link" target="_blank">Website</a>
+        <a *ngFor="let link of tool.links"
+          [href]="link.url"
+          class="card-link" 
+          target="_blank">{{link.content}}</a>
       </div>
     </div>
 
@@ -114,75 +41,19 @@
     <p>Não importa sua idade, experiência ou ramo de atividade. Temos certeza que você pode ajudar de alguma forma. Fale com
       o Raffaello pelo Linkedin para mais detalhes.</p>
 
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/business_plan.jpg" alt="Card image cap">
+    <div class="card" *ngFor="let career of careers">
+      <img class="card-img-top" [src]="career.image" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Business Plan</h5>
-        <p class="card-text">Estratégia, motivação, liderança.
-          <br/>
-          <br/>
-          <br/>
+        <h5 class="card-title">{{career.title}}</h5>
+        <p class="card-text">
+          <span [innerHTML]="career.text"></span>
         </p>
 
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
+        <a *ngFor="let link of career.links" 
+          [href]="link.url" 
+          class="card-link" 
+          target="_blank">{{link.content}}</a>
       </div>
     </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/marketing.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Marketing</h5>
-        <p class="card-text">Divulgação, patrocínio, parcerias, fidelização.
-          <br/>
-          <br/>
-        </p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/vendas.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Vendas</h5>
-        <p class="card-text">Tudo é venda, mesmo que não seja comercial. Ideias, engajamento.</p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/rh.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">RH</h5>
-        <p class="card-text">Engajamento do time. Motivação.
-          <br/>
-          <br/>
-          <br/>
-        </p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/juridico.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Jurídico</h5>
-        <p class="card-text">Que cuidados devemos tomar?</p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="card-img-top" src="assets/img/apoie-projeto/cientista_dados.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Data Science</h5>
-        <p class="card-text">Explorar. Apresentar. Prever.</p>
-
-        <a href="https://www.linkedin.com/in/raffacabofrio/" class="card-link" target="_blank">Linkedin</a>
-      </div>
-    </div>
-
+    
   </div>

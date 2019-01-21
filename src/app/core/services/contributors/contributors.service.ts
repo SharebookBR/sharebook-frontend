@@ -145,7 +145,7 @@ export class ContributorsService {
         links: [
           {url: 'https://www.linkedin.com/in/gislaine-oliveira-a12952b8/', content: 'Linkedin'}
         ]
-      }
+      },
     ];
 
     return contributors;

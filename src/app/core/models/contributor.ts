@@ -1,8 +1,6 @@
-import {Link} from './link';
+import {Card} from './card';
 
-export class Contributor {
-  image: string;
+export class Contributor extends Card {
   name: string;
   position: string;
-  links: Link[];
 }
