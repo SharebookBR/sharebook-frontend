@@ -1,9 +1,12 @@
 import { CardItem } from '../../models/card';
 
 export class CareersService {
-  linkedinUrl: string = 'https://www.linkedin.com/in/raffacabofrio/';
+  linkedinUrl: string;
 
   public getCareers(): CardItem[] {
+
+    this.linkedinUrl = 'https://www.linkedin.com/in/raffacabofrio/';
+
     const careers: CardItem[] = [
       {
         image: 'assets/img/apoie-projeto/business_plan.jpg',

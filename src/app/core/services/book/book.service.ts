@@ -6,6 +6,7 @@ import { DonateBookUser } from '../../models/donateBookUser';
 import { map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 
 @Injectable({
   providedIn: 'root'
@@ -80,5 +81,9 @@ export class BookService {
 
   public getDonatedBooks() {
     return this._http.get<any>(`${this.config.apiEndpoint}/book/MyDonations`);
+  }
+
+  public setTrackingNumber(bookId: string, trackingNumberBookVM: TrackingNumberBookVM) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/InformTrackingNumber/${bookId}`, trackingNumberBookVM);
   }
 }

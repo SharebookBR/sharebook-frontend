@@ -52,6 +52,7 @@ import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recap
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
+import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
@@ -83,7 +84,8 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     RequestedsComponent,
     ContactUsComponent,
     DonationsComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    TrackingComponent
   ],
   imports: [
   BrowserModule,
@@ -123,7 +125,8 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
   entryComponents: [
     DonateComponent,
     RequestComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    TrackingComponent
   ],
   bootstrap: [AppComponent]
 })

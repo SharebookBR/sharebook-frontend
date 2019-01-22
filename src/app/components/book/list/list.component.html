@@ -7,7 +7,7 @@
   <div [hidden]="!isLoading">
     <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
   </div>
-  <div [hidden]="isLoading">
+  <div class="container mt-5 table-responsive" [hidden]="isLoading">
     <ng2-smart-table class="table" [settings]="settings" [source]="books" (custom)="onCustom($event)">
     </ng2-smart-table>
   </div>
