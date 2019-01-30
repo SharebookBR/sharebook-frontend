@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         this._scAuthentication.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/panel';
 
   }
 
