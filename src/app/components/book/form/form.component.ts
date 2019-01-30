@@ -67,9 +67,6 @@ export class FormComponent implements OnInit {
       this.categories = data
     );
 
-    this._scUser.getAllFacilitators().subscribe(data =>
-      this.facilitators = data
-    );
   }
 
   createFormGroup() {
@@ -133,6 +130,7 @@ export class FormComponent implements OnInit {
         };
         this.formGroup.get('userIdFacilitator').setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
         this.formGroup.setValue(bookForUpdate);
+        this.getAllFacilitators();
       }
       );
     }
@@ -140,6 +138,7 @@ export class FormComponent implements OnInit {
     // ao doar um livro, o userId é do usuário logado.
     if (!this.itsEditMode) {
       this.formGroup.get('userId').setValue(this.shareBookUser['userId']);
+      this.getAllFacilitators();
     }
 
   }
@@ -220,5 +219,11 @@ export class FormComponent implements OnInit {
     } else {
       p.close();
     }
+  }
+
+  getAllFacilitators() {
+    this._scUser.getAllFacilitators(this.formGroup.get('userId').value).subscribe(data =>
+      this.facilitators = data
+    );
   }
 }
