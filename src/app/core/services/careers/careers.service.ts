@@ -9,7 +9,7 @@ export class CareersService {
 
     const careers: CardItem[] = [
       {
-        image: 'assets/img/apoie-projeto/business_plan.jpg',
+        image: 'assets/img/contribute-project/business_plan.jpg',
         title: 'Business Plan',
         text: 'Estratégia, motivação, liderança.<br/><br/><br/>',
         links: [
@@ -17,7 +17,7 @@ export class CareersService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/marketing.jpg',
+        image: 'assets/img/contribute-project/marketing.jpg',
         title: 'Marketing',
         text: 'Divulgação, patrocínio, parcerias, fidelização.<br/><br/>',
         links: [
@@ -25,7 +25,7 @@ export class CareersService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/vendas.jpg',
+        image: 'assets/img/contribute-project/vendas.jpg',
         title: 'Vendas',
         text: 'Tudo é venda, mesmo que não seja comercial. Ideias, engajamento.',
         links: [
@@ -33,7 +33,7 @@ export class CareersService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/rh.jpg',
+        image: 'assets/img/contribute-project/rh.jpg',
         title: 'RH',
         text: 'Engajamento do time. Motivação.<br/><br/><br/>',
         links: [
@@ -41,7 +41,7 @@ export class CareersService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/juridico.jpg',
+        image: 'assets/img/contribute-project/juridico.jpg',
         title: 'Jurídico',
         text: 'Que cuidados devemos tomar?',
         links: [
@@ -49,7 +49,7 @@ export class CareersService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/cientista_dados.jpg',
+        image: 'assets/img/contribute-project/cientista_dados.jpg',
         title: 'Data Science',
         text: 'Explorar. Apresentar. Prever.',
         links: [
