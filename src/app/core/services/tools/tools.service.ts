@@ -5,7 +5,7 @@ export class ToolsService {
   public getTools(): CardItem[] {
     const tools: CardItem[] = [
       {
-        image: 'assets/img/apoie-projeto/slack.jpg',
+        image: 'assets/img/contribute-project/slack.jpg',
         title: 'Slack',
         text: 'Comunicação, colaboração e integração. Uma das ferramentas favoritas dos devs.',
         links: [
@@ -14,7 +14,7 @@ export class ToolsService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/trello.jpg',
+        image: 'assets/img/contribute-project/trello.jpg',
         title: 'Trello',
         text: 'Chegou a hora de contribuir! Peque uma tarefa, coloque no seu nome e mova pra DOING.',
         links: [
@@ -23,7 +23,7 @@ export class ToolsService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/github.jpg',
+        image: 'assets/img/contribute-project/github.jpg',
         title: 'Git Hub',
         text: 'Aqui nós temos o cuidado de ter um histórico educativo, onde cada commit conta uma estória.',
         links: [
@@ -31,7 +31,7 @@ export class ToolsService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/appveyor.jpg',
+        image: 'assets/img/contribute-project/appveyor.jpg',
         title: 'AppVeyor',
         text: 'Solução fácil e amigável para integração e deploy contínuo. Integrado com Slack.',
         links: [
@@ -39,7 +39,7 @@ export class ToolsService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/smarteraspnet.jpg',
+        image: 'assets/img/contribute-project/smarteraspnet.jpg',
         title: 'Smarter ASP.NET',
         text: 'Hospedagem boa e barata pro seu App. Usando o link abaixo vc ajuda nosso projeto.',
         links: [

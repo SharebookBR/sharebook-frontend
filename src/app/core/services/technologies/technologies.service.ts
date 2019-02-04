@@ -6,7 +6,7 @@ export class TechnologiesService {
   public getTechnologies(): CardItem[] {
     const technologies: CardItem[] = [
       {
-        image: 'assets/img/apoie-projeto/dotnet.jpg',
+        image: 'assets/img/contribute-project/dotnet.jpg',
         title: 'Backend',
         text: '.Net core 2.x, C#, SQL Server, Web api',
         links: [
@@ -15,7 +15,7 @@ export class TechnologiesService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/angular.jpg',
+        image: 'assets/img/contribute-project/angular.jpg',
         title: 'Frontend',
         text: 'Angular 6, Bootstrap 4, HTML 5',
         links: [
@@ -24,7 +24,7 @@ export class TechnologiesService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/ionic.jpg',
+        image: 'assets/img/contribute-project/ionic.jpg',
         title: 'Mobile',
         text: 'Cordova, Ionic, Angular<br/>',
         links: [
@@ -33,7 +33,7 @@ export class TechnologiesService {
         ]
       },
       {
-        image: 'assets/img/apoie-projeto/qa.jpg',
+        image: 'assets/img/contribute-project/qa.jpg',
         title: 'QA',
         text: 'C#, xUnit, Selenium<br/><br/>',
         links: [

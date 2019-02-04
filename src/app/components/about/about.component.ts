@@ -4,14 +4,14 @@ import { Contributor } from 'src/app/core/models/contributor';
 import { ContributorsService } from 'src/app/core/services/contributors/contributors.service';
 
 @Component({
-  selector: 'app-quem-somos',
-  templateUrl: './quem-somos.component.html',
-  styleUrls: ['./quem-somos.component.css'],
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css'],
   providers: [
     ContributorsService
   ]
 })
-export class QuemSomosComponent implements OnInit {
+export class AboutComponent implements OnInit {
 
   contributors: Contributor[] = [];
 

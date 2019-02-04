@@ -6,16 +6,16 @@ import { ToolsService } from '../../core/services/tools/tools.service';
 import { CareersService } from '../../core/services/careers/careers.service';
 
 @Component({
-  selector: 'app-apoie-projeto',
-  templateUrl: './apoie-projeto.component.html',
-  styleUrls: ['./apoie-projeto.component.css'],
+  selector: 'app-contribute-project',
+  templateUrl: './contribute-project.component.html',
+  styleUrls: ['./contribute-project.component.css'],
   providers: [
     TechnologiesService,
     ToolsService,
     CareersService
   ]
 })
-export class ApoieProjetoComponent implements OnInit {
+export class ContributeProjectComponent implements OnInit {
 
   technologies: CardItem[] = [];
   tools: CardItem[] = [];

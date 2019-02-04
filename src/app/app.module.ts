@@ -12,8 +12,8 @@ import { Ng2ImgMaxModule } from 'ng2-img-max';
 import { fakeBackendProvider } from './core/helpers';
 
 import { HomeComponent } from './components/home/home.component';
-import { QuemSomosComponent } from './components/quem-somos/quem-somos.component';
-import { ApoieProjetoComponent } from './components/apoie-projeto/apoie-projeto.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContributeProjectComponent } from './components/contribute-project/contribute-project.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
@@ -65,8 +65,8 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     BookFormComponent,
     BookDetailComponent,
     HomeComponent,
-    QuemSomosComponent,
-    ApoieProjetoComponent,
+    AboutComponent,
+    ContributeProjectComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
