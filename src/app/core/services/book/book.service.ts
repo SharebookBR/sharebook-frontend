@@ -47,6 +47,10 @@ export class BookService {
     return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
+  public cancelDonation(bookId: number) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/cancel/${bookId}`, null);
+  }
+
   public getFreightOptions() {
     return this._http.get<any>(`${this.config.apiEndpoint}/book/freightOptions`).pipe(
       map(response => {
