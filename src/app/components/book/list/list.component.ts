@@ -95,7 +95,7 @@ export class ListComponent implements OnInit {
       myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
     });
 
-    const btnDelete = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar Livro">' +
+    const btnCancelDonation = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Cancelar Doação">' +
                       ' <i class="fa fa-trash"></i> </span>&nbsp;';
     const btnEdit   = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
                       ' <i class="fa fa-edit"></i> </span>&nbsp;';
@@ -163,8 +163,8 @@ export class ListComponent implements OnInit {
             title: btnEdit
           },
           {
-            name: 'delete',
-            title: btnDelete
+            name: 'CancelDonation',
+            title: btnCancelDonation
           },
           {
             name: 'donate',
@@ -180,18 +180,18 @@ export class ListComponent implements OnInit {
   }
 
   onCustom(event) {
-    if (event.action === 'delete') {
-      // chamada do modal de confirmação antes de efetuar a ação do delete
+    if (event.action === 'CancelDonation') {
+      // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
       if (event.data.donated) {
         alert('Livro já doado!');
       } else {
-        this.confirmationDialogService.confirm('Atenção!', 'Confirma a exclusão do Livro?')
+        this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?')
           .then((confirmed) => {
             if (confirmed) {
-              this._scBook.delete(event.data.id).subscribe(resp => {
+              this._scBook.cancelDonation(event.data.id).subscribe(resp => {
                 if (resp['success']) {
-                  this.books.remove(event.data);
-                  this._scAlert.success('Registro removido com sucesso.');
+                  this._scAlert.success('Doação cancelada com sucesso.');
+                  this.reloadData();
                 }
               });
             }
