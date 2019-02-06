@@ -90,4 +90,8 @@ export class BookService {
   public setTrackingNumber(bookId: string, trackingNumberBookVM: TrackingNumberBookVM) {
     return this._http.post<any>(`${this.config.apiEndpoint}/book/InformTrackingNumber/${bookId}`, trackingNumberBookVM);
   }
+
+  public setFacilitatorNotes(facilitatorNotes: any) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/AddFacilitatorNotes`, facilitatorNotes);
+  }
 }
