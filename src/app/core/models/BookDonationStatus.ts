@@ -3,5 +3,6 @@ export enum BookDonationStatus {
   WAITING_APPROVAL = 'Aguardando aprovação',
   AVAILABLE = 'Disponível',
   INVISIBLE = 'Invisível',
-  DONATED = 'Doado'
+  DONATED = 'Doado',
+  CANCELED = 'Cancelado'
 }

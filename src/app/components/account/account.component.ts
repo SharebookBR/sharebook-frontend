@@ -101,7 +101,6 @@ export class AccountComponent implements OnInit {
         this.address = address;
         this.address.country = 'Brasil';
         this.formGroup['controls'].Address['controls'].street.setValue(this.address.street);
-        this.formGroup['controls'].Address['controls'].complement.setValue(this.address.complement);
         this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood);
         this.formGroup['controls'].Address['controls'].city.setValue(this.address.city);
         this.formGroup['controls'].Address['controls'].state.setValue(this.address.state);
