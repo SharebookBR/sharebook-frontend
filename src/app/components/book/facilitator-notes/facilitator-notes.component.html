@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title">Informe o comentário do facilitador para o livro: {{bookTitle}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onTracking()">
+  <div class="modal-body">
+    <div class="text-center" [hidden]="!isLoading">
+      <i class="fa fa-spinner fa-spin"></i> Aguarde...
+    </div>
+    <div class="text-center" *ngIf="state=='request-error'">
+      <p>:/ ocorreu um erro.</p>
+      <div class="alert alert-danger" role="alert">
+          {{lastError}}
+      </div>
+    </div>    
+    <textarea formControlName="facilitatorNotes" name="facilitatorNotes" type="text" id="facilitatorNotes" class="md-textarea form-control" rows="3"
+      maxlength="2000"></textarea>
+    <div *ngIf="formGroup.controls['facilitatorNotes'].touched && !formGroup.controls['facilitatorNotes'].valid">
+      <small class="form-text text-danger" *ngIf="formGroup.controls['facilitatorNotes'].hasError('required')">
+        Informe o código de rastreio.
+      </small>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="Confirmar" style="padding-left: 50px; padding-right: 50px"
+      [disabled]="!formGroup.valid" [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+  </div>
+</form>
