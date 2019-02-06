@@ -100,7 +100,6 @@ export class DonationsComponent implements OnInit {
   }
 
   onCustom(event) {
-    console.log(event.data);
     switch (event.action) {
       case 'trackNumber': {
         if (!event.data.donated) {
