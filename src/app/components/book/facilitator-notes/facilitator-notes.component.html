@@ -1,8 +1,8 @@
 <div class="modal-header">
-  <h4 class="modal-title">Informe o comentário do facilitador para o livro: {{bookTitle}}</h4>
+  <h4 class="modal-title">Inclua novo comentário para o livro: {{bookTitle}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
-  </button>
+  </button>  
 </div>
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onTracking()">
   <div class="modal-body">
@@ -14,7 +14,9 @@
       <div class="alert alert-danger" role="alert">
           {{lastError}}
       </div>
-    </div>    
+    </div> 
+    <h5>Comentários:</h5>
+    <h6 *ngFor="let facilitatorNote of facilitatorNotes.split('\n')">{{ facilitatorNote }} </h6>
     <textarea formControlName="facilitatorNotes" name="facilitatorNotes" type="text" id="facilitatorNotes" class="md-textarea form-control" rows="3"
       maxlength="2000"></textarea>
     <div *ngIf="formGroup.controls['facilitatorNotes'].touched && !formGroup.controls['facilitatorNotes'].valid">

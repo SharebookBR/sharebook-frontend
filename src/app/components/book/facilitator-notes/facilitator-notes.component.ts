@@ -35,7 +35,7 @@ export class FacilitatorNotesComponent implements OnInit {
 
     const facilitatorNotesForUpdate = {
       bookId: this.bookId,
-      facilitatorNotes: !!this.facilitatorNotes ? this.facilitatorNotes : ''
+      facilitatorNotes: ''
     };
     this.formGroup.setValue(facilitatorNotesForUpdate);
 

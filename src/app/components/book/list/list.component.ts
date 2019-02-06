@@ -78,7 +78,7 @@ export class ListComponent implements OnInit {
                  (!!items.facilitator ? items.facilitator : ''),
           status: items.status,
           donated: items.donated,
-          facilitatorNotes: items.facilitatorNotes
+          facilitatorNotes: !!items.facilitatorNotes ? items.facilitatorNotes : ''
         });
       });
       this.books.load(this.myBookArray);
