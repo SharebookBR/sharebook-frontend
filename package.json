@@ -28,7 +28,8 @@
     "test-single": "ng test --watch=false --progress",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "prepush": "npm run lint && npm run build-prod"
   },
   "private": true,
   "dependencies": {
