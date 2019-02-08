@@ -33,15 +33,6 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/cussa.jpg',
-        name: 'Cussa Mitre',
-        position: 'Lead Developer',
-        links: [
-          {url: 'https://www.linkedin.com/in/cussa/', content: 'Linkedin'},
-          {url: 'https://github.com/Cussa', content: 'Github'}
-        ]
-      },
-      {
         image: 'assets/img/top_contributors/walter.jpg',
         name: 'Walter Vinicius',
         position: 'Fullstack Developer',
@@ -86,15 +77,6 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/caique.jpg',
-        name: 'Caíque Valin',
-        position: 'FrontEnd Developer',
-        links: [
-          {url: 'https://www.linkedin.com/in/caiquevallim/', content: 'Linkedin'},
-          {url: 'https://github.com/caiquevallim', content: 'Github'}
-        ]
-      },
-      {
         image: 'assets/img/top_contributors/erisvaldo.jpg',
         name: 'Erisvaldo Correia',
         position: 'FrontEnd Developer',
@@ -113,37 +95,11 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/engeziellithon.jpeg',
-        name: 'Engeziellithon Vieira',
-        position: 'QA Analyst',
-        links: [
-          {url: 'https://www.linkedin.com/in/engeziellithondev/', content: 'Linkedin'},
-          {url: 'https://github.com/engeziellithon', content: 'Github'}
-        ]
-      },
-      {
-        image: 'assets/img/top_contributors/pedrohyvo.jpeg',
-        name: 'Pedro Hyvo',
-        position: 'QA Engineer',
-        links: [
-          {url: 'https://www.linkedin.com/in/pedrohyvo', content: 'Linkedin'},
-          {url: 'https://www.github.com/pedrohyvo', content: 'Github'}
-        ]
-      },
-      {
         image: 'assets/img/top_contributors/ratton.jpg',
         name: 'Marcelo Ratton',
         position: 'Technical Advisor',
         links: [
           {url: 'https://www.linkedin.com/in/rattones/', content: 'Linkedin'}
-        ]
-      },
-      {
-        image: 'assets/img/top_contributors/kira.jpg',
-        name: 'Gislaine Oliveira',
-        position: 'Project Advisor',
-        links: [
-          {url: 'https://www.linkedin.com/in/gislaine-oliveira-a12952b8/', content: 'Linkedin'}
         ]
       },
     ];
