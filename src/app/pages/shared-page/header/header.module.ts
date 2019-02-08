@@ -1,3 +1,4 @@
+import { MenuNavigationService } from './../../../core/services/menu-navigation/menu-navigation.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { AuthenticationService } from './../../../core/services/authentication/authentication.service';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,8 @@ import { HeaderComponent } from './header.component';
   declarations: [HeaderComponent],
   providers: [
     UserService,
-    AuthenticationService
+    AuthenticationService,
+    MenuNavigationService
   ]
 })
 export class HeaderModule { }
