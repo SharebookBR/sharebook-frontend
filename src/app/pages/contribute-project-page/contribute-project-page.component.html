@@ -1,0 +1,59 @@
+<div class="container">
+  <h1 class="text-center display-4">Apoie o projeto</h1>
+  <p>Que tal nosso stack tecnológico? Combinação boa heim! Em cada repositório GITHUB tem uma explicação passo-a-passo de como
+    você fazer sua PRIMEIRA CONTRIBUIÇÃO no projeto. Bora?</p>
+
+  <div class="flex-container">
+
+    <div class="card" *ngFor="let technology of technologies">
+      <img class="card-img-top" [src]="technology.image" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{technology.title}}</h5>
+        <p class="card-text">
+          <span [innerHTML]="technology.text"></span>
+        </p>
+
+        <a *ngFor="let link of technology.links"
+        [href]="link.url"
+        class="card-link"
+        target="_blank">{{link.content}}</a>
+      </div>
+    </div>
+
+    <h1 class="text-center display-4">Ferramentas</h1>
+    <p>Nós temos um monte de ferramentas legais pra esse trabalho colaborativo. SLACK, TRELLO, GITHUB. Tudo integrado e bem
+      explicado, fácil de entender.</p>
+
+    <div class="card" *ngFor="let tool of tools">
+      <img class="card-img-top" [src]="tool.image" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{tool.title}}</h5>
+        <p class="card-text">{{tool.text}}</p>
+
+        <a *ngFor="let link of tool.links"
+          [href]="link.url"
+          class="card-link"
+          target="_blank">{{link.content}}</a>
+      </div>
+    </div>
+
+    <h1 class="text-center display-4">Precisamos da sua ajuda!</h1>
+    <p>Não importa sua idade, experiência ou ramo de atividade. Temos certeza que você pode ajudar de alguma forma. Fale com
+      o Raffaello pelo Linkedin para mais detalhes.</p>
+
+    <div class="card" *ngFor="let career of careers">
+      <img class="card-img-top" [src]="career.image" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{career.title}}</h5>
+        <p class="card-text">
+          <span [innerHTML]="career.text"></span>
+        </p>
+
+        <a *ngFor="let link of career.links"
+          [href]="link.url"
+          class="card-link"
+          target="_blank">{{link.content}}</a>
+      </div>
+    </div>
+
+  </div>

@@ -1,3 +1,6 @@
+import { FooterComponent } from './pages/shared-page/footer/footer.component';
+import { HeaderComponent } from './pages/shared-page/header/header.component';
+import { HomePageModule } from './pages/home-page/home-page.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -11,11 +14,6 @@ import { Ng2ImgMaxModule } from 'ng2-img-max';
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
 
-import { HomeComponent } from './components/home/home.component';
-import { AboutComponent } from './components/about/about.component';
-import { ContributeProjectComponent } from './components/contribute-project/contribute-project.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
 import { DetailsComponent as BookDetailComponent } from './components/book/details/details.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -28,7 +26,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
-import { ContactUsComponent } from './components/contact-us/contact-us.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -65,9 +62,6 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     AppComponent,
     BookFormComponent,
     BookDetailComponent,
-    HomeComponent,
-    AboutComponent,
-    ContributeProjectComponent,
     HeaderComponent,
     FooterComponent,
     RegisterComponent,
@@ -80,17 +74,15 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     ResetPasswordComponent,
     ForgotPasswordComponent,
     DonateComponent,
-    ContactUsComponent,
     RequestComponent,
     RequestedsComponent,
-    ContactUsComponent,
     DonationsComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
     FacilitatorNotesComponent
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -104,6 +96,7 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     RecaptchaFormsModule,
     Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
+    HomePageModule
   ],
   providers: [
     AuthGuardUser,

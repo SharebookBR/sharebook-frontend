@@ -1,0 +1,72 @@
+<div>&nbsp;</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue pt-4">
+
+  <!-- Footer Links -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase">Sharebook</h5>
+        <p>Aqui é o lugar para doar ou ganhar livros.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Páginas</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a routerLink="/quem-somos">Quem somos</a>
+          </li>
+          <li>
+            <a routerLink="/apoie-projeto">Apoie o projeto</a>
+          </li>
+          <li>
+            <a routerLink="/livros/doar">Doe um livro</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Github</h5>
+
+        <ul class="list-unstyled">
+          <li *ngFor="let link of repositoriesLinks">
+            <a [href]="link.url" target="_blank">{{link.content}}</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright? OpenSource! -->
+  <div class="footer-copyright text-center py-3">© 2018 Copyleft: sharebook.com.br
+  </div>
+  <!-- Copyright? OpenSource! -->
+
+</footer>
+<!-- Footer -->
