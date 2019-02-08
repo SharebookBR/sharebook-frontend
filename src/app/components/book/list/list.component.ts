@@ -9,6 +9,7 @@ import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
 import { DatePipe } from '@angular/common';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
+import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 
 @Component({
   selector: 'app-list',
@@ -67,6 +68,7 @@ export class ListComponent implements OnInit {
           id: items.id,
           creationDate: items.creationDate,
           chooseDate:   items.chooseDate,
+          bookTitle: items.title,
           title: items.title  + '<br>' +
                  items.author + '<br>' +
                  items.totalInterested + ' interessado(s)<br>' +
@@ -75,7 +77,8 @@ export class ListComponent implements OnInit {
                  (!!items.winner ? items.winner : '') + '<br>' +
                  (!!items.facilitator ? items.facilitator : ''),
           status: items.status,
-          donated: items.donated
+          donated: items.donated,
+          facilitatorNotes: !!items.facilitatorNotes ? items.facilitatorNotes : ''
         });
       });
       this.books.load(this.myBookArray);
@@ -95,12 +98,14 @@ export class ListComponent implements OnInit {
       myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
     });
 
-    const btnCancelDonation = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Cancelar Doação">' +
-                      ' <i class="fa fa-trash"></i> </span>&nbsp;';
-    const btnEdit   = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
-                      ' <i class="fa fa-edit"></i> </span>&nbsp;';
-    const btnDonate = '<span class="btn btn-warning btn-sm" data-toggle="tooltip" title="Escolher Donatário">' +
-                      ' <i class="fa fa-book"></i> </span>&nbsp;';
+    const btnCancelDonation   = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Cancelar Doação">' +
+                                ' <i class="fa fa-trash"></i> </span>&nbsp;';
+    const btnEdit             = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
+                                ' <i class="fa fa-edit"></i> </span>&nbsp;';
+    const btnDonate           = '<span class="btn btn-warning btn-sm" data-toggle="tooltip" title="Escolher Donatário">' +
+                                ' <i class="fa fa-book"></i> </span>&nbsp;';
+    const btnFacilitatorNotes = '<span class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Informar Código Rastreio">' +
+                                ' <i class="fa fa-truck"></i> </span>&nbsp;';
 
     this.settings = {
       columns: {
@@ -126,7 +131,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '30%',
+          width: '27%',
         },
         users: {
           title: 'Doador / Donatário / Facilitador',
@@ -134,7 +139,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '28%',
+          width: '27%',
         },
         status: {
           title: 'Status',
@@ -170,6 +175,10 @@ export class ListComponent implements OnInit {
             name: 'donate',
             title: btnDonate
           },
+          {
+            name: 'FacilitatorNotes',
+            title: btnFacilitatorNotes
+          }
         ],
         position: 'right' // left|right
       },
@@ -180,7 +189,8 @@ export class ListComponent implements OnInit {
   }
 
   onCustom(event) {
-    if (event.action === 'CancelDonation') {
+    switch (event.action) {
+      case 'CancelDonation': {
       // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
       if (event.data.donated) {
         alert('Livro já doado!');
@@ -197,21 +207,45 @@ export class ListComponent implements OnInit {
             }
           });
         }
-    } else if (event.action === 'donate') {
-      if (event.data.donated) {
-        alert('Livro já doado!');
-      } else {
-        const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalRef.componentInstance.bookId = event.data.id;
+        break;
+      }
+      case 'donate': {
+        if (event.data.donated) {
+          alert('Livro já doado!');
+        } else {
+          const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+          modalRef.componentInstance.bookId = event.data.id;
 
-        modalRef.result.then((data) => {
-          if (data === 'ok') {
+          modalRef.result.then((data) => {
+            if (data === 'ok') {
+              this.reloadData();
+            }
+          });
+        }
+        break;
+      }
+      case 'edit': {
+        this._router.navigate([`book/form/${event.data.id}`]);
+        break;
+      }
+      case 'FacilitatorNotes': {
+        const modalRef = this._modalService.open(FacilitatorNotesComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+
+        modalRef.result.then((result) => {
+          if (result === 'Success') {
+            this.reloadData();
+          }
+        }, (reason) => {
+          if (reason === 'Success') {
             this.reloadData();
           }
         });
+
+        modalRef.componentInstance.bookId           = event.data.id;
+        modalRef.componentInstance.bookTitle        = event.data.bookTitle;
+        modalRef.componentInstance.facilitatorNotes = event.data.facilitatorNotes;
+        break;
       }
-    } else {
-      this._router.navigate([`book/form/${event.data.id}`]);
     }
   }
 
