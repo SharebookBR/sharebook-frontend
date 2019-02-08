@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
+import { FacilitatorNotes } from '../../models/facilitatorNotes';
 
 @Injectable({
   providedIn: 'root'
@@ -89,5 +90,9 @@ export class BookService {
 
   public setTrackingNumber(bookId: string, trackingNumberBookVM: TrackingNumberBookVM) {
     return this._http.post<any>(`${this.config.apiEndpoint}/book/InformTrackingNumber/${bookId}`, trackingNumberBookVM);
+  }
+
+  public setFacilitatorNotes(facilitatorNotes: FacilitatorNotes) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/AddFacilitatorNotes`, facilitatorNotes);
   }
 }

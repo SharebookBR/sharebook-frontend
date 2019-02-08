@@ -1,0 +1,31 @@
+.fixed-top {
+  background-color: #fff !important;
+  border-bottom: 10px solid rgba(43, 128, 213, 0.1);
+}
+
+
+.nav>a> {
+  color: #495057;
+  font-size: 1.1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.navbar-link {
+  margin-top: 1.3rem;
+  z-index: 999;
+  height: 10px;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem;
+  color: #495057;
+  font-size: 1.1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.navbar-toggler {
+  border: none !important;
+}

@@ -1,3 +1,4 @@
+import { HomePageComponent } from './../pages/home-page/home-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardUser } from './guards/auth.guard.user';
@@ -23,7 +24,7 @@ import { AboutComponent } from '../components/about/about.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomePageComponent
   },
   {
     path: 'book/form',
@@ -61,11 +62,11 @@ const routes: Routes = [
   },
   {
     path: 'quem-somos',
-    component: AboutComponent
+    loadChildren: '../pages/about-page/about-page.module#AboutPageModule'
   },
   {
     path: 'apoie-projeto',
-    component: ContributeProjectComponent
+    loadChildren: '../pages/contribute-project-page/contribute-project-page.module#ContributeProjectPageModule'
   },
   {
     path: 'register',
@@ -100,7 +101,7 @@ const routes: Routes = [
   },
   {
     path: 'contact-us',
-    component: ContactUsComponent,
+    loadChildren: '../pages/contact-us-page/contact-us-page.module#ContactUsPageModule'
   },
   // otherwise redirect to home
   {
