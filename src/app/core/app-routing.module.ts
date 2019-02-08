@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardUser } from './guards/auth.guard.user';
 import { AuthGuardAdmin } from './guards/auth.guard.admin';
 
-import { HomeComponent } from '../components/home/home.component';
 import { FormComponent as BookFormComponent } from '../components/book/form/form.component';
 import { ListComponent as BookListComponent } from '../components/book/list/list.component';
 import { DetailsComponent as BookDetailComponent } from '../components/book/details/details.component';
@@ -12,14 +11,11 @@ import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
 import { AccountComponent } from '../components/account/account.component';
-import { ContributeProjectComponent } from '../components/contribute-project/contribute-project.component';
 import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 import { ResetPasswordComponent } from '../components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from '../components/forgot-password/forgot-password.component';
-import { ContactUsComponent } from '../components/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
-import { AboutComponent } from '../components/about/about.component';
 
 const routes: Routes = [
   {
