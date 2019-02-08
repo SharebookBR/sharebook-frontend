@@ -21,6 +21,24 @@ export class ContributorsService {
         ]
       },
       {
+        image: 'assets/img/top_contributors/antero.jpg',
+        name: 'William Pavei Antero',
+        position: 'Leader Frontend Developer',
+        links: [
+          {url: 'https://www.linkedin.com/in/wantero/', content: 'Linkedin'},
+          {url: 'https://github.com/wantero', content: 'Github'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/max.jpg',
+        name: 'Max Gomes',
+        position: 'Leader Mobile Developer',
+        links: [
+          {url: 'https://www.linkedin.com/in/maxgomes92/', content: 'Linkedin'},
+          {url: 'https://github.com/maxgomes92', content: 'Github'}
+        ]
+      },
+      {
         image: 'assets/img/top_contributors/daniel.jpg',
         name: 'Daniel Aloísio',
         position: 'Backend Developer/ Architect',
@@ -50,24 +68,6 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/mauricio.jpg',
-        name: 'Mauricio Carlezzo',
-        position: 'FrontEnd Developer',
-        links: [
-          {url: 'https://www.linkedin.com/in/maur%C3%ADcio-carlezzo-34a93480/', content: 'Linkedin'},
-          {url: 'https://github.com/carlezzo', content: 'Github'}
-        ]
-      },
-      {
-        image: 'assets/img/top_contributors/antero.jpg',
-        name: 'William Pavei Antero',
-        position: 'Frontend Developer',
-        links: [
-          {url: 'https://www.linkedin.com/in/wantero/', content: 'Linkedin'},
-          {url: 'https://github.com/wantero', content: 'Github'}
-        ]
-      },
-      {
         image: 'assets/img/top_contributors/everton.jpg',
         name: 'Everton de Jesus',
         position: 'FrontEnd Developer',
@@ -86,20 +86,46 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/max.jpg',
-        name: 'Max Gomes',
-        position: 'Mobile Developer',
-        links: [
-          {url: 'https://www.linkedin.com/in/maxgomes92/', content: 'Linkedin'},
-          {url: 'https://github.com/maxgomes92', content: 'Github'}
-        ]
-      },
-      {
         image: 'assets/img/top_contributors/ratton.jpg',
         name: 'Marcelo Ratton',
         position: 'Technical Advisor',
         links: [
           {url: 'https://www.linkedin.com/in/rattones/', content: 'Linkedin'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/rodrigo-barreto.jpg',
+        name: 'Rodrigo Barreto',
+        position: 'Facilitador',
+        links: [
+          {url: 'https://www.linkedin.com/in/rcbarreto/', content: 'Linkedin'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/davi-mattos.jpg',
+        name: 'Davi Mattos',
+        position: 'Leader UI/UX Designer',
+        links: [
+          {url: 'https://www.linkedin.com/in/davimattosdev/', content: 'Linkedin'},
+          {url: 'https://github.com/davimattos', content: 'Github'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/bruno-henn.jpg',
+        name: 'Bruno Henn',
+        position: 'Backend Developer',
+        links: [
+          {url: 'https://www.linkedin.com/in/bruno-henn/', content: 'Linkedin'},
+          {url: 'https://github.com/bhenn', content: 'Github'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/marcio-ferreira.jpg',
+        name: 'Marcio Ferreira',
+        position: 'Backend Developer',
+        links: [
+          {url: 'https://www.linkedin.com/in/marciojfsantos/', content: 'Linkedin'},
+          {url: 'https://github.com/marcios', content: 'Github'}
         ]
       },
     ];
