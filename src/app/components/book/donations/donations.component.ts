@@ -87,6 +87,8 @@ export class DonationsComponent implements OnInit {
         return 'light';
       case BookDonationStatus.DONATED:
         return 'success';
+      case BookDonationStatus.CANCELED:
+        return 'danger';
     }
   }
 
