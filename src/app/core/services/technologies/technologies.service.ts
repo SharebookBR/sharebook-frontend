@@ -40,6 +40,14 @@ export class TechnologiesService {
           {url: RepositoriesUrls.QA, content: 'Github'},
           {url: TrelloUrls.SHAREBOOK, content: 'Trello'}
         ]
+      },
+      {
+        image: 'assets/img/contribute-project/ui-ux.jpg',
+        title: 'UI/UX Design',
+        text: 'Personas, User Stories, MockFlow, Figma',
+        links: [
+          {url: RepositoriesUrls.UIUX, content: 'Github'}
+        ]
       }
     ];
 
