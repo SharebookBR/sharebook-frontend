@@ -1,0 +1,16 @@
+.card-img-top {
+  width: 100%;
+  max-height: 228px !important;
+  min-height: 228px !important;
+  object-fit: cover;
+}
+
+.card {
+  max-height: 330px;
+  min-height: 330px;
+}
+
+.card:hover {
+  cursor: pointer;
+  background-color: rgb(247, 252, 253);
+}

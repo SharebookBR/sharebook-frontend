@@ -56,6 +56,10 @@ const routes: Routes = [
     canActivate: [AuthGuardUser]
   },
   {
+    path: 'book/search',
+    loadChildren: '../components/book/search-results/search-results.module#SearchResultsModule'
+  },
+  {
     path: 'livros/:slug',
     component: BookDetailComponent
   },
