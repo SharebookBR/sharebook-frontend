@@ -14,7 +14,7 @@ export class SearchResultsComponent implements OnInit {
   public page: number;
   public items: number;
 
-  public books: any[] = [];
+  public books: any[];
 
   constructor(
     private _route: ActivatedRoute,
