@@ -48,7 +48,6 @@ export class SearchResultsComponent implements OnInit {
         (error: HttpErrorResponse) => {
           console.log('Algum erro ao buscar o parâmetro', error);
         }, () => {
-          console.log(this.books);
         }
     );
   }
