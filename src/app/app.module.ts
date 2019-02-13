@@ -59,6 +59,7 @@ import { ConfirmationDialogService } from './core/services/confirmation-dialog/c
 
 import {RouteReuseStrategy} from '@angular/router';
 import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+import { InputSearchModule } from './components/input-search/input-search.module';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     RecaptchaFormsModule,
     Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
+    InputSearchModule
   ],
   providers: [
     AuthGuardUser,

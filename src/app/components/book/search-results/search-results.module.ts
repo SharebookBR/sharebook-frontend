@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SearchResultsComponent } from './search-results.component';
 import { Routes, RouterModule } from '@angular/router';
 import { CardBookModule } from '../../card-book/card-book.module';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    CardBookModule
+    CardBookModule,
+    NgbPaginationModule
   ],
   declarations: [SearchResultsComponent]
 })

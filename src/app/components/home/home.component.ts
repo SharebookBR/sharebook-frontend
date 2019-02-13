@@ -13,26 +13,15 @@ export class HomeComponent implements OnInit {
 
   public top15NewBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
-  public searchForm: FormGroup;
+
 
   constructor(
-    private _scBook: BookService,
-    private fb: FormBuilder,
-    private _router: Router
+    private _scBook: BookService
   ) { }
 
   ngOnInit() {
     this._scBook.getTop15NewBooks().subscribe(data => (this.top15NewBooks = data));
     this._scBook.getRandom15Books().subscribe(data => (this.random15NewBooks = data));
-
-    this.searchForm = this.fb.group({
-      paramSearch: ['', [Validators.minLength(3)]]
-    });
-
-  }
-
-  public search(): void {
-    this._router.navigate(['/book/search', this.searchForm.value.paramSearch]);
   }
 
 

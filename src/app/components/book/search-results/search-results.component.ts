@@ -44,12 +44,33 @@ export class SearchResultsComponent implements OnInit {
       this.page,
       this.items
       ).subscribe(
-        (books: any[]) => this.books = books,
+        (books: any[]) => {
+          this.books = books;
+          console.log(this.books);
+        },
         (error: HttpErrorResponse) => {
           console.log('Algum erro ao buscar o parâmetro', error);
         }, () => {
         }
     );
   }
+
+  public togglePage(): void {
+    this._bookService.getFullSearch(
+      this.criteria,
+      this.page,
+      this.items
+      ).subscribe(
+        (books: any[]) => {
+          this.books = books;
+          console.log(this.books);
+        },
+        (error: HttpErrorResponse) => {
+          console.log('Algum erro ao buscar o parâmetro', error);
+        }, () => {
+        }
+    );
+  }
+
 
 }
