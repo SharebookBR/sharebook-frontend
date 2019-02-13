@@ -10,6 +10,7 @@ import { ConfirmationDialogService } from './../../../core/services/confirmation
 import { DatePipe } from '@angular/common';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
+import { TrackingComponent } from '../tracking/tracking.component';
 
 @Component({
   selector: 'app-list',
@@ -78,7 +79,8 @@ export class ListComponent implements OnInit {
                  (!!items.facilitator ? items.facilitator : ''),
           status: items.status,
           donated: items.donated,
-          facilitatorNotes: !!items.facilitatorNotes ? items.facilitatorNotes : ''
+          facilitatorNotes: !!items.facilitatorNotes ? items.facilitatorNotes : '',
+          trackingNumber: !!items.trackingNumber ? items.trackingNumber : ''
         });
       });
       this.books.load(this.myBookArray);
@@ -100,11 +102,13 @@ export class ListComponent implements OnInit {
 
     const btnCancelDonation   = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Cancelar Doação">' +
                                 ' <i class="fa fa-trash"></i> </span>&nbsp;';
-    const btnEdit             = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Editar Livro">' +
+    const btnEdit             = '<span class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar Livro">' +
                                 ' <i class="fa fa-edit"></i> </span>&nbsp;';
     const btnDonate           = '<span class="btn btn-warning btn-sm" data-toggle="tooltip" title="Escolher Donatário">' +
-                                ' <i class="fa fa-book"></i> </span>&nbsp;';
-    const btnFacilitatorNotes = '<span class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Informar Código Rastreio">' +
+                                ' <i class="fa fa-trophy"></i> </span>&nbsp;';
+    const btnFacilitatorNotes = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Informar Comentários">' +
+                                ' <i class="fa fa-sticky-note"></i> </span>&nbsp;';
+    const btnTrackNumber      = '<span class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Informar Código Rastreio">' +
                                 ' <i class="fa fa-truck"></i> </span>&nbsp;';
 
     this.settings = {
@@ -131,7 +135,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '27%',
+          width: '25%',
         },
         users: {
           title: 'Doador / Donatário / Facilitador',
@@ -139,7 +143,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '27%',
+          width: '25%',
         },
         status: {
           title: 'Status',
@@ -178,6 +182,10 @@ export class ListComponent implements OnInit {
           {
             name: 'FacilitatorNotes',
             title: btnFacilitatorNotes
+          },
+          {
+            name: 'trackNumber',
+            title: btnTrackNumber,
           }
         ],
         position: 'right' // left|right
@@ -192,8 +200,8 @@ export class ListComponent implements OnInit {
     switch (event.action) {
       case 'CancelDonation': {
       // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
-      if (event.data.donated) {
-        alert('Livro já doado!');
+      if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
+        alert('Livro já doado ou cancelado!');
       } else {
         this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?')
           .then((confirmed) => {
@@ -210,8 +218,8 @@ export class ListComponent implements OnInit {
         break;
       }
       case 'donate': {
-        if (event.data.donated) {
-          alert('Livro já doado!');
+        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
+          alert('Livro já doado ou cancelado!');
         } else {
           const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
           modalRef.componentInstance.bookId = event.data.id;
@@ -245,6 +253,28 @@ export class ListComponent implements OnInit {
         modalRef.componentInstance.bookTitle        = event.data.bookTitle;
         modalRef.componentInstance.facilitatorNotes = event.data.facilitatorNotes;
         break;
+      }
+      case 'trackNumber': {
+        if (!event.data.donated) {
+          alert('Livro deve estar como doado!');
+        } else {
+          const modalRef = this._modalService.open(TrackingComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+
+          modalRef.result.then((result) => {
+            if (result === 'Success') {
+              this.reloadData();
+            }
+          }, (reason) => {
+            if (reason === 'Success') {
+              this.reloadData();
+            }
+          });
+
+          modalRef.componentInstance.bookId         = event.data.id;
+          modalRef.componentInstance.bookTitle      = event.data.bookTitle;
+          modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+          break;
+        }
       }
     }
   }
