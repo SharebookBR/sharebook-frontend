@@ -2,12 +2,12 @@
   <h1>Seus resultados para <strong>{{ criteria }}</strong></h1>
   <section class="row">
     <div class="col-xs-12 col-md-12">
-      <p *ngIf="books.totalItems === 0">Nenhum resultado para sua pesquisa</p>
-      <p *ngIf="books.totalItems > 0">Legal! Achamos {{ books.totalItems }} para sua pesquisa</p>
+      <p *ngIf="books?.totalItems === 0">Nenhum resultado para sua pesquisa</p>
+      <p *ngIf="books?.totalItems > 0">Legal! Achamos {{ books.totalItems }} para sua pesquisa</p>
     </div>
   </section>
   <section class="row mt-5">
-    <div class="col-xs-12 col-md-3 mt-4" *ngFor="let item of books.items">
+    <div class="col-xs-12 col-md-3 mt-4" *ngFor="let item of books?.items">
       <!-- Card Book -->
       <app-card-book [content]="item"></app-card-book>
       <!-- End Card Book -->
