@@ -95,4 +95,8 @@ export class BookService {
   public setFacilitatorNotes(facilitatorNotes: FacilitatorNotes) {
     return this._http.post<any>(`${this.config.apiEndpoint}/book/AddFacilitatorNotes`, facilitatorNotes);
   }
+
+  public getMainUsers(bookId: string) {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/MainUsers/${bookId}`);
+  }
 }
