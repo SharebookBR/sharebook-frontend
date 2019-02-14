@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
+import { MainUsersComponent } from '../main-users/main-users.component';
 
 @Component({
   selector: 'app-list',
@@ -100,16 +101,18 @@ export class ListComponent implements OnInit {
       myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
     });
 
-    const btnCancelDonation   = '<span class="btn btn-danger btn-sm" data-toggle="tooltip" title="Cancelar Doação">' +
-                                ' <i class="fa fa-trash"></i> </span>&nbsp;';
-    const btnEdit             = '<span class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar Livro">' +
-                                ' <i class="fa fa-edit"></i> </span>&nbsp;';
-    const btnDonate           = '<span class="btn btn-warning btn-sm" data-toggle="tooltip" title="Escolher Donatário">' +
-                                ' <i class="fa fa-trophy"></i> </span>&nbsp;';
-    const btnFacilitatorNotes = '<span class="btn btn-info btn-sm" data-toggle="tooltip" title="Informar Comentários">' +
-                                ' <i class="fa fa-sticky-note"></i> </span>&nbsp;';
-    const btnTrackNumber      = '<span class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Informar Código Rastreio">' +
-                                ' <i class="fa fa-truck"></i> </span>&nbsp;';
+    const btnEdit             = '<span class="btn btn-primary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Editar Livro">' +
+                                ' <i class="fa fa-edit"></i> </span>';
+    const btnCancelDonation   = '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
+                                ' <i class="fa fa-trash"></i> </span>';
+    const btnDonate           = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+                                ' <i class="fa fa-trophy"></i> </span>';
+    const btnFacilitatorNotes = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Comentários">' +
+                                ' <i class="fa fa-sticky-note"></i> </span>';
+    const btnTrackNumber      = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+                                ' <i class="fa fa-truck"></i> </span>';
+    const btnShowUsersInfo    = '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
+                                ' <i class="fa fa-users"></i> </span>';
 
     this.settings = {
       columns: {
@@ -135,7 +138,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '25%',
+          width: '28%',
         },
         users: {
           title: 'Doador / Donatário / Facilitador',
@@ -143,7 +146,7 @@ export class ListComponent implements OnInit {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '25%',
+          width: '28%',
         },
         status: {
           title: 'Status',
@@ -186,6 +189,10 @@ export class ListComponent implements OnInit {
           {
             name: 'trackNumber',
             title: btnTrackNumber,
+          },
+          {
+            name: 'showUsersInfo',
+            title: btnShowUsersInfo,
           }
         ],
         position: 'right' // left|right
@@ -273,8 +280,25 @@ export class ListComponent implements OnInit {
           modalRef.componentInstance.bookId         = event.data.id;
           modalRef.componentInstance.bookTitle      = event.data.bookTitle;
           modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
-          break;
         }
+        break;
+      }
+      case 'showUsersInfo': {
+        const modalRef = this._modalService.open(MainUsersComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+
+        modalRef.result.then((result) => {
+          if (result === 'Success') {
+            this.reloadData();
+          }
+        }, (reason) => {
+          if (reason === 'Success') {
+            this.reloadData();
+          }
+        });
+
+        modalRef.componentInstance.bookId         = event.data.id;
+        modalRef.componentInstance.bookTitle      = event.data.bookTitle;
+        break;
       }
     }
   }
@@ -283,4 +307,5 @@ export class ListComponent implements OnInit {
     this.getAllBooks();
     this.books.refresh();
   }
+
 }
