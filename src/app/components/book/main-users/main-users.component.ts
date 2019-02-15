@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BookService } from 'src/app/core/services/book/book.service';
+import { UserInfo } from 'src/app/core/models/userInfo';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-main-users',
@@ -12,8 +14,10 @@ export class MainUsersComponent implements OnInit {
   @Input() bookTitle;
 
   isLoading: Boolean;
+  mainUsers: UserInfo[] = [];
 
   constructor(
+    public activeModal: NgbActiveModal,
     private _scBook: BookService
   ) { }
 
@@ -21,11 +25,14 @@ export class MainUsersComponent implements OnInit {
     this.isLoading = true;
     this._scBook.getMainUsers(this.bookId).subscribe(resp => {
       this.isLoading = false;
-      console.log(resp);
+
+      this.mainUsers[0] = !!resp.donor       ? resp.donor       : '';
+      this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : '';
+      this.mainUsers[2] = !!resp.winner      ? resp.winner      : '';
+
     },
       error => {
         this.isLoading = false;
-        console.log(error);
       }
     );
   }
