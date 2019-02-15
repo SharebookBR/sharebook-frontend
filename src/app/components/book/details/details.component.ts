@@ -89,7 +89,7 @@ export class DetailsComponent implements OnInit {
           this.daysToChoose = chooseDate - todayDate;
           this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
-          if (this.myUser.id) {
+          if (this.myUser.name) {
             switch (x.freightOption.toString()) {
               case 'City': {
                 if (this.bookInfo.user.address.city !== this.myUser.address.city) {
