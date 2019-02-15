@@ -1,6 +1,6 @@
 import { Address } from './address';
 
-export class UpdateUserVM {
+export class UserInfo {
   name: string;
   email: string;
   linkedin: string;

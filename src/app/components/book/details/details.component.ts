@@ -9,8 +9,8 @@ import { Book } from '../../../core/models/book';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestComponent } from '../request/request.component';
-import { User } from 'src/app/core/models/user';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { UserInfo } from 'src/app/core/models/userInfo';
 
 @Component({
   selector: 'app-details',
@@ -29,7 +29,7 @@ export class DetailsComponent implements OnInit {
   requested: Boolean = false;
   available: Boolean = false;
 
-  myUser: User = new User();
+  myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
   categoryName: string;
   freightName: string;
