@@ -8,50 +8,48 @@
   <div class="text-center" [hidden]="!isLoading">
     <i class="fa fa-spinner fa-spin"></i> Aguarde...
   </div>
-  <div class="text-center" *ngIf="state=='request-error'">
-    <p>:/ ocorreu um erro.</p>
-    <div class="alert alert-danger" role="alert">
-        {{lastError}}
-    </div>
-  </div>  
 
-<!--Carousel Wrapper-->
-<div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
-  <!--Indicators-->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" *ngFor="let mainUser of mainUsers; let i = index" [attr.data-slide-to]="i" [ngClass]="i == 0 ? 'active' : ''"></li> 
-  </ol>
-  <!--/.Indicators-->
-  <!--Slides-->
-  <div class="carousel-inner" role="listbox">
-    <div *ngFor="let mainUser of mainUsers; let k = index" [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">{{k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor'}}</h5>
-          <p class="card-text">Nome: {{mainUser.name}}</p>
-          <p class="card-text">E-mail: {{mainUser.email}}</p>
-          <p class="card-text">LinkedIn: {{mainUser.linkedin}}</p>
-          <p class="card-text">Telefone: {{mainUser.phone}}</p>
-          <p class="card-text">{{mainUser.address?.street}}, {{mainUser.address?.number}}  {{!!mainUser.address?.complement ? mainUser.address?.complement : ''}}</p>
-          <p class="card-text">{{mainUser.address?.neighborhood}} - {{mainUser.address?.city}} - {{mainUser.address?.state}}</p>
-          <p class="card-text">CEP: {{mainUser.address?.postalCode}} - {{mainUser.address?.country}}</p>
+  <!--Carousel Wrapper-->
+  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" *ngFor="let mainUser of mainUsers; let i = index" [attr.data-slide-to]="i"
+        [ngClass]="i == 0 ? 'active' : ''"></li>
+    </ol>
+    <!--/.Indicators-->
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <div *ngFor="let mainUser of mainUsers; let k = index"
+        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">{{k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor'}}</h5>
+            <p class="card-text">Nome: {{mainUser.name}}</p>
+            <p class="card-text">E-mail: {{mainUser.email}}</p>
+            <p class="card-text">LinkedIn: {{mainUser.linkedin}}</p>
+            <p class="card-text">Telefone: {{mainUser.phone}}</p>
+            <p class="card-text">{{mainUser.address?.street}}, {{mainUser.address?.number}}
+              {{!!mainUser.address?.complement ? mainUser.address?.complement : ''}}</p>
+            <p class="card-text">{{mainUser.address?.neighborhood}} - {{mainUser.address?.city}} -
+              {{mainUser.address?.state}}</p>
+            <p class="card-text">CEP: {{mainUser.address?.postalCode}} - {{mainUser.address?.country}}</p>
+          </div>
         </div>
       </div>
     </div>
+    <!--/.Slides-->
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
   </div>
-  <!--/.Slides-->
-  <!--Controls-->
-  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-  <!--/.Controls-->
-</div>
-<!--/.Carousel Wrapper-->
+  <!--/.Carousel Wrapper-->
 
 </div>
 <div class="modal-footer">
