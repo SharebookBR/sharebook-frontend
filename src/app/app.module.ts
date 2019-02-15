@@ -54,11 +54,13 @@ import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
+import { MainUsersComponent } from './components/book/main-users/main-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
 import {RouteReuseStrategy} from '@angular/router';
 import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+
 
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     DonationsComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
-    FacilitatorNotesComponent
+    FacilitatorNotesComponent,
+    MainUsersComponent
   ],
   imports: [
   BrowserModule,
@@ -129,7 +132,8 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     RequestComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
-    FacilitatorNotesComponent
+    FacilitatorNotesComponent,
+    MainUsersComponent
   ],
   bootstrap: [AppComponent]
 })

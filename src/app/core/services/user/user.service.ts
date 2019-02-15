@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../../models/user';
-import { UpdateUserVM } from '../../models/updateUserVM';
+import { UserInfo } from '../../models/userInfo';
 import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
 import { ChangeUserPasswordByHashCodeVM } from '../../models/ChangeUserPasswordByHashCodeVM';
 import { ForgotMyPasswordVM } from '../../models/forgotMyPasswordVM';
@@ -24,7 +24,7 @@ export class UserService {
     }
 
     getUserData() {
-        return this._http.get<User>(`${this.config.apiEndpoint}/Account`);
+        return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`);
     }
 
     register(user: User) {
@@ -40,8 +40,8 @@ export class UserService {
             }));
     }
 
-    update(updateUserVM: UpdateUserVM) {
-        return this._http.put<any>(`${this.config.apiEndpoint}/Account`, updateUserVM);
+    update(userInfo: UserInfo) {
+        return this._http.put<any>(`${this.config.apiEndpoint}/Account`, userInfo);
     }
 
     changePassword(changePasswordUserVM: ChangePasswordUserVM) {

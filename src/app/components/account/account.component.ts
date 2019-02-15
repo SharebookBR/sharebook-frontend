@@ -48,21 +48,21 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._subscription = this._scUser.getUserData().subscribe(User => {
+    this._subscription = this._scUser.getUserData().subscribe(userInfo => {
       const foo = {
-        name: User.name,
-        email: User.email,
-        phone: User.phone,
-        linkedin: User.linkedin,
+        name: userInfo.name,
+        email: userInfo.email,
+        phone: userInfo.phone,
+        linkedin: userInfo.linkedin,
         Address: {
-          postalCode: User.address.postalCode,
-          street: User.address.street,
-          number: User.address.number,
-          complement: User.address.complement,
-          neighborhood: User.address.neighborhood,
-          city: User.address.city,
-          state: User.address.state,
-          country: User.address.country
+          postalCode: userInfo.address.postalCode,
+          street: userInfo.address.street,
+          number: userInfo.address.number,
+          complement: userInfo.address.complement,
+          neighborhood: userInfo.address.neighborhood,
+          city: userInfo.address.city,
+          state: userInfo.address.state,
+          country: userInfo.address.country
         }
       };
       this.formGroup.setValue(foo);
