@@ -106,7 +106,7 @@ export class DonateComponent implements OnInit {
 
   onDonate() {
     this.donateBookUser = new DonateBookUser();
-    this.donateBookUser.userId = this.selectedDonatedUser.id;
+    this.donateBookUser.userId = this.selectedDonatedUser.userId;
     this.donateBookUser.note = this.formGroup.value.myNote;
 
     this.isLoading = true;
