@@ -6,6 +6,8 @@ import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { DonateComponent } from '../donate/donate.component';
+import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
+import { AlertService } from 'src/app/core/services/alert/alert.service';
 
 @Component({
   selector: 'app-donations',
@@ -21,7 +23,9 @@ export class DonationsComponent implements OnInit {
   constructor(
     private _bookService: BookService,
     private _sanitizer: DomSanitizer,
-    private _modalService: NgbModal
+    private _modalService: NgbModal,
+    private _scAlert: AlertService,
+    private _confirmationDialogService: ConfirmationDialogService
   ) { }
 
   ngOnInit() {
@@ -94,7 +98,7 @@ export class DonationsComponent implements OnInit {
             title: btnDonate
           },
           {
-            name: 'RenewChooseDate',
+            name: 'renewChooseDate',
             title: btnRenewChooseDate
           },
           {
@@ -143,14 +147,46 @@ export class DonationsComponent implements OnInit {
         if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
           alert('Livro já doado ou cancelado!');
         } else {
-          const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-          modalRef.componentInstance.bookId = event.data.id;
+          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          modalRef.result.then((data) => {
-            if (data === 'ok') {
-              this.getDonations();
-            }
-          });
+          if (chooseDate - todayDate > 0) {
+            alert('Aguarde a data de escolha!');
+          } else {
+            const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+            modalRef.componentInstance.bookId = event.data.id;
+
+            modalRef.result.then((data) => {
+              if (data === 'ok') {
+                this.getDonations();
+              }
+            });
+          }
+        }
+        break;
+      }
+      case 'renewChooseDate': {
+        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
+          alert('Livro já doado ou cancelado!');
+        } else {
+          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+          if (chooseDate - todayDate > 0) {
+            alert('Aguarde a data de escolha!');
+          } else {
+            this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
+            .then((confirmed) => {
+              if (confirmed) {
+                this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
+                  if (resp['success']) {
+                    this._scAlert.success('Doação renovada com sucesso.');
+                    this.getDonations();
+                  }
+                });
+              }
+            });
+          }
         }
         break;
       }
