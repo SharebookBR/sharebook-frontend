@@ -72,6 +72,10 @@ export class BookService {
     return this._http.put<any>(`${this.config.apiEndpoint}/book/Donate/${bookId}`, donateBookUser);
   }
 
+  public renewChooseDate(bookId: string) {
+    return this._http.put<any>(`${this.config.apiEndpoint}/book/RenewChooseDate/${bookId}`, null);
+  }
+
   public requestBook(bookId: string, reason: string) {
     const request = {
       'BookId': bookId,
