@@ -6,7 +6,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <ng2-smart-table class="table" [settings]="settings" [source]="donateUsers" (custom)="onCustom($event)">
+    <ng2-smart-table class="table table-responsive" [settings]="settings" [source]="donateUsers" (custom)="onCustom($event)">
     </ng2-smart-table>
     <div class="text-center" [hidden]="!isLoading">
       <i class="fa fa-spinner fa-spin"></i> Aguarde...
