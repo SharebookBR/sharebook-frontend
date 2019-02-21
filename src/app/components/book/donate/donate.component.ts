@@ -36,7 +36,7 @@ export class DonateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._scBook.getGranteeUsersByBookId(this.bookId).subscribe(resp => {
+    this._scBook.getRequestersList(this.bookId).subscribe(resp => {
       this.donateUsers = new LocalDataSource(<any>resp);
       this.isLoading = false;
     });
@@ -47,13 +47,30 @@ export class DonateComponent implements OnInit {
       mode: 'inline',
       hideSubHeader: true,
       columns: {
-        name: {
-          title: 'Nome',
-          filter: false
+        requesterNickName: {
+          title: 'Apelido',
+          filter: false,
+          width: '15%'
         },
-        email: {
-          title: 'E-mail',
-          filter: false
+        location: {
+          title: 'Destino',
+          filter: false,
+          width: '15%'
+        },
+        totalBooksWon: {
+          title: 'Livros Ganhos',
+          filter: false,
+          width: '15%'
+        },
+        totalBooksDonated: {
+          title: 'Livros Doados',
+          filter: false,
+          width: '15%'
+        },
+        requestText: {
+          title: 'Motivo',
+          filter: false,
+          width: '15%'
         }
       },
       actions: {

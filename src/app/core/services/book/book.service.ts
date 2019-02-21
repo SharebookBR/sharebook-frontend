@@ -64,6 +64,10 @@ export class BookService {
     return this._http.get(`${this.config.apiEndpoint}/book/GranteeUsersByBookId/${bookId}`);
   }
 
+  public getRequestersList(bookId: string) {
+    return this._http.get(`${this.config.apiEndpoint}/book/RequestersList/${bookId}`);
+  }
+
   public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
     return this._http.put<any>(`${this.config.apiEndpoint}/book/Donate/${bookId}`, donateBookUser);
   }
