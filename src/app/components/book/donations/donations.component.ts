@@ -179,10 +179,10 @@ export class DonationsComponent implements OnInit {
             .then((confirmed) => {
               if (confirmed) {
                 this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
-                  if (resp['success']) {
-                    this._scAlert.success('Doação renovada com sucesso.');
-                    this.getDonations();
-                  }
+                  this._scAlert.success('Doação renovada com sucesso.');
+                  this.getDonations();
+                }, error => {
+                  this._scAlert.error(error);
                 });
               }
             });
