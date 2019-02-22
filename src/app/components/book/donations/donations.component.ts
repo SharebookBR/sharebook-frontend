@@ -4,6 +4,10 @@ import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
+import { DonateComponent } from '../donate/donate.component';
+import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
+import { AlertService } from 'src/app/core/services/alert/alert.service';
 
 @Component({
   selector: 'app-donations',
@@ -19,29 +23,49 @@ export class DonationsComponent implements OnInit {
   constructor(
     private _bookService: BookService,
     private _sanitizer: DomSanitizer,
-    private _modalService: NgbModal
+    private _modalService: NgbModal,
+    private _scAlert: AlertService,
+    private _confirmationDialogService: ConfirmationDialogService
   ) { }
 
   ngOnInit() {
 
     this.getDonations();
 
-    const btnTrackNumber = '<span class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Informar Código Rastreio">' +
-                           ' <i class="fa fa-truck"></i> </span>&nbsp;';
+    // Carrega Status do ENUM BookDonationStatus
+    const myBookDonationStatus = new Array();
+    Object.keys(BookDonationStatus).forEach(key => {
+      myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
+    });
+
+    const btnDonate          = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+                               ' <i class="fa fa-trophy"></i> </span>';
+    const btnRenewChooseDate = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
+                               ' <i class="fa fa-calendar"></i> </span>';
+    const btnTrackNumber     = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+                               ' <i class="fa fa-truck"></i> </span>';
 
     this.tableSettings = {
       columns: {
         title: {
           title: 'Titulo',
-          width: '50%'
+          width: '27%'
         },
         totalInterested: {
           title: 'Total interessados',
-          width: '15%'
+          width: '08%'
         },
         daysInShowcase: {
           title: 'Dias na vitrine',
-          width: '15%'
+          width: '08%'
+        },
+        chooseDate: {
+          title: 'Data Escolha',
+          width: '10%',
+          type: 'html',
+          valuePrepareFunction: (cell, row) => {
+            return new DatePipe('en-US').transform(cell, 'dd/MM/yyyy');
+          },
         },
         trackingNumber: {
           title: 'Código Ratreio',
@@ -51,8 +75,16 @@ export class DonationsComponent implements OnInit {
           title: 'Status',
           width: '15%',
           type: 'html',
-          valuePrepareFunction: value =>
-            this._sanitizer.bypassSecurityTrustHtml(`<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`),
+          valuePrepareFunction: value => {
+            return this._sanitizer.bypassSecurityTrustHtml(`<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`);
+          },
+          filter: {
+            type: 'list',
+            config: {
+              selectText: 'Selecionar...',
+              list: myBookDonationStatus,
+            },
+          },
         }
       },
       actions: {
@@ -62,8 +94,16 @@ export class DonationsComponent implements OnInit {
         update: false,
         custom: [
           {
+            name: 'donate',
+            title: btnDonate
+          },
+          {
+            name: 'renewChooseDate',
+            title: btnRenewChooseDate
+          },
+          {
             name: 'trackNumber',
-            title: btnTrackNumber,
+            title: btnTrackNumber
           }
         ],
         position: 'right' // left|right
@@ -103,6 +143,53 @@ export class DonationsComponent implements OnInit {
 
   onCustom(event) {
     switch (event.action) {
+      case 'donate': {
+        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
+          alert('Livro já doado ou cancelado!');
+        } else {
+          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+          if (!chooseDate || chooseDate - todayDate > 0) {
+            alert('Aguarde a data de escolha!');
+          } else {
+            const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+            modalRef.componentInstance.bookId = event.data.id;
+
+            modalRef.result.then((data) => {
+              if (data === 'ok') {
+                this.getDonations();
+              }
+            });
+          }
+        }
+        break;
+      }
+      case 'renewChooseDate': {
+        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
+          alert('Livro já doado ou cancelado!');
+        } else {
+          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+          if (!chooseDate || chooseDate - todayDate > 0) {
+            alert('Aguarde a data de escolha!');
+          } else {
+            this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
+            .then((confirmed) => {
+              if (confirmed) {
+                this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
+                  this._scAlert.success('Doação renovada com sucesso.');
+                  this.getDonations();
+                }, error => {
+                  this._scAlert.error(error);
+                });
+              }
+            });
+          }
+        }
+        break;
+      }
       case 'trackNumber': {
         if (!event.data.donated) {
           alert('Livro deve estar como doado!');
