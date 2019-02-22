@@ -150,7 +150,7 @@ export class DonationsComponent implements OnInit {
           const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
           const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          if (chooseDate - todayDate > 0) {
+          if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
             const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
@@ -172,7 +172,7 @@ export class DonationsComponent implements OnInit {
           const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
           const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          if (chooseDate - todayDate > 0) {
+          if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
             this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
