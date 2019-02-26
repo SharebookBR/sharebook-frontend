@@ -19,6 +19,7 @@ import { ContactUsComponent } from '../components/contact-us/contact-us.componen
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
 import { AboutComponent } from '../components/about/about.component';
+import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,11 @@ const routes: Routes = [
     path: 'book/donations',
     component: DonationsComponent,
     canActivate: [AuthGuardUser]
+  },
+  {
+    path: 'book/donate/:id',
+    component: DonatePageComponent,
+    canActivate: [AuthGuardAdmin]
   },
   {
     path: 'livros/:slug',

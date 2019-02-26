@@ -60,6 +60,7 @@ import { ConfirmationDialogService } from './core/services/confirmation-dialog/c
 
 import {RouteReuseStrategy} from '@angular/router';
 import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
     RequestedsComponent,
     ContactUsComponent,
     DonationsComponent,
+    DonatePageComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
     FacilitatorNotesComponent,

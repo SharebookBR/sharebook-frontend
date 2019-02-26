@@ -1,0 +1,43 @@
+<div class="container">
+  <h1 class="text-center display-4">Doar Livro
+    <button class="btn btn-info btn-lg" (click)="back()" title="Voltar">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </h1>
+  <div [hidden]="!isLoading">
+    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
+  </div>
+  <div class="container mt-5" [hidden]="isLoading">
+    <ng2-smart-table class="table table-responsive" [settings]="settings" [source]="donateUsers"
+      (custom)="onCustom($event)">
+    </ng2-smart-table>
+  </div>
+</div>
+<div *ngIf="showNote">
+    <div>
+      <div class="modal-header">
+        <h4 class="modal-title">Motivo da Doação para {{selectedDonatedUser.name}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onDonate()">
+        <div class="modal-body">
+          <div class="text-center" [hidden]="!isLoading">
+            <i class="fa fa-spinner fa-spin"></i> Aguarde...
+          </div>
+          <textarea formControlName="myNote" name="myNote" type="text" id="myNote" class="md-textarea form-control" rows="3" maxlength="2000"></textarea>
+          <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
+              Informe o motivo da doação.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary" value="Doar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
+            [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
+          <button type="button" class="btn btn-outline-dark" (click)="onCancelNote()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
