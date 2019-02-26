@@ -14,12 +14,14 @@ import { AlertService } from '../../../core/services/alert/alert.service';
   styleUrls: ['./donate.component.css']
 })
 export class DonateComponent implements OnInit {
+
   @Input() bookId;
+  @Input() userId;
+  @Input() userNickName;
+
   donateUsers: LocalDataSource;
   settings: any;
   isLoading: Boolean = true;
-  showNote: Boolean = false;
-  selectedDonatedUser: any;
   myNote: String;
   formGroup: FormGroup;
   donateBookUser: DonateBookUser;
@@ -36,77 +38,16 @@ export class DonateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._scBook.getRequestersList(this.bookId).subscribe(resp => {
-      this.donateUsers = new LocalDataSource(<any>resp);
-      this.isLoading = false;
-    });
-
-    const btnDonate = '<span class="btn btn-warning btn-sm"> <i class="fa fa-trophy"></i> </span>';
-
-    this.settings = {
-      mode: 'inline',
-      hideSubHeader: true,
-      columns: {
-        requesterNickName: {
-          title: 'Apelido',
-          filter: false,
-          width: '15%'
-        },
-        location: {
-          title: 'Destino',
-          filter: false,
-          width: '15%'
-        },
-        totalBooksWon: {
-          title: 'Livros Ganhos',
-          filter: false,
-          width: '15%'
-        },
-        totalBooksDonated: {
-          title: 'Livros Doados',
-          filter: false,
-          width: '15%'
-        },
-        requestText: {
-          title: 'Motivo',
-          filter: false,
-          width: '15%'
-        }
-      },
-      actions: {
-        delete: false,
-        edit: false,
-        add: false,
-        update: false,
-        custom: [
-          {
-            name: 'donate',
-            title: btnDonate,
-          }
-        ],
-        position: 'right', // left|right
-      },
+    const foo = {
+      myNote: ''
     };
-  }
-
-  onCustom(event) {
-    if (event.action === 'donate') {
-      this.selectedDonatedUser = event.data;
-      this.showNote = true;
-      const foo = {
-        myNote: ''
-      };
-      this.formGroup.setValue(foo);
-    }
-  }
-
-  onCancelNote() {
-    this.showNote = false;
+    this.formGroup.setValue(foo);
+    this.isLoading = false;
   }
 
   onDonate() {
     this.donateBookUser = new DonateBookUser();
-    this.donateBookUser.userId = this.selectedDonatedUser.userId;
+    this.donateBookUser.userId = this.userId;
     this.donateBookUser.note = this.formGroup.value.myNote;
 
     this.isLoading = true;
