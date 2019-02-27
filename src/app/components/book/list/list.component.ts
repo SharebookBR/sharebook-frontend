@@ -231,14 +231,6 @@ export class ListComponent implements OnInit {
         } else {
           this._router.navigate([`book/donate/${event.data.id}`],
             { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
-          /*const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-          modalRef.componentInstance.bookId = event.data.id;
-
-          modalRef.result.then((data) => {
-            if (data === 'ok') {
-              this.reloadData();
-            }
-          });*/
         }
         break;
       }
