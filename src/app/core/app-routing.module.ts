@@ -59,7 +59,7 @@ const routes: Routes = [
   {
     path: 'book/donate/:id',
     component: DonatePageComponent,
-    canActivate: [AuthGuardAdmin]
+    canActivate: [AuthGuardUser]
   },
   {
     path: 'livros/:slug',
