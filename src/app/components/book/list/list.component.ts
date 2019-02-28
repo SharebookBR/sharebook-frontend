@@ -229,8 +229,15 @@ export class ListComponent implements OnInit {
         if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
           alert('Livro já doado ou cancelado!');
         } else {
-          this._router.navigate([`book/donate/${event.data.id}`],
-            { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
+          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+          if (!chooseDate || chooseDate - todayDate > 0) {
+            alert('Aguarde a data de escolha!');
+          } else {
+            this._router.navigate([`book/donate/${event.data.id}`],
+              { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+          }
         }
         break;
       }
