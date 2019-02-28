@@ -20,7 +20,7 @@
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary" value="Doar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
         [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
-      <button type="button" class="btn btn-outline-dark" (click)="onCancelNote()">Cancelar</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
     </div>
   </form>
 </div>
