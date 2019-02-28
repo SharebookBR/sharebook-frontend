@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { AlertService } from 'src/app/core/services/alert/alert.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-donations',
@@ -25,7 +26,9 @@ export class DonationsComponent implements OnInit {
     private _sanitizer: DomSanitizer,
     private _modalService: NgbModal,
     private _scAlert: AlertService,
-    private _confirmationDialogService: ConfirmationDialogService
+    private _confirmationDialogService: ConfirmationDialogService,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -35,15 +38,15 @@ export class DonationsComponent implements OnInit {
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
     Object.keys(BookDonationStatus).forEach(key => {
-      myBookDonationStatus.push({value: BookDonationStatus[key], title: BookDonationStatus[key]});
+      myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
     });
 
-    const btnDonate          = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
-                               ' <i class="fa fa-trophy"></i> </span>';
+    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+      ' <i class="fa fa-trophy"></i> </span>';
     const btnRenewChooseDate = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
-                               ' <i class="fa fa-calendar"></i> </span>';
-    const btnTrackNumber     = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
-                               ' <i class="fa fa-truck"></i> </span>';
+      ' <i class="fa fa-calendar"></i> </span>';
+    const btnTrackNumber = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+      ' <i class="fa fa-truck"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -148,19 +151,13 @@ export class DonationsComponent implements OnInit {
           alert('Livro já doado ou cancelado!');
         } else {
           const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
           if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
-            const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-            modalRef.componentInstance.bookId = event.data.id;
-
-            modalRef.result.then((data) => {
-              if (data === 'ok') {
-                this.getDonations();
-              }
-            });
+            this._router.navigate([`book/donate/${event.data.id}`],
+              { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
           }
         }
         break;
@@ -170,22 +167,22 @@ export class DonationsComponent implements OnInit {
           alert('Livro já doado ou cancelado!');
         } else {
           const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
           if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
             this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
-            .then((confirmed) => {
-              if (confirmed) {
-                this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
-                  this._scAlert.success('Doação renovada com sucesso.');
-                  this.getDonations();
-                }, error => {
-                  this._scAlert.error(error);
-                });
-              }
-            });
+              .then((confirmed) => {
+                if (confirmed) {
+                  this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
+                    this._scAlert.success('Doação renovada com sucesso.');
+                    this.getDonations();
+                  }, error => {
+                    this._scAlert.error(error);
+                  });
+                }
+              });
           }
         }
         break;
@@ -206,8 +203,8 @@ export class DonationsComponent implements OnInit {
             }
           });
 
-          modalRef.componentInstance.bookId         = event.data.id;
-          modalRef.componentInstance.bookTitle      = event.data.title;
+          modalRef.componentInstance.bookId = event.data.id;
+          modalRef.componentInstance.bookTitle = event.data.title;
           modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
           break;
         }

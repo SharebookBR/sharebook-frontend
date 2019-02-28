@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
+import { Requesters } from '../../models/requesters';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,7 @@ export class BookService {
   }
 
   public getRequestersList(bookId: string) {
-    return this._http.get(`${this.config.apiEndpoint}/book/RequestersList/${bookId}`);
+    return this._http.get<Requesters>(`${this.config.apiEndpoint}/book/RequestersList/${bookId}`);
   }
 
   public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
