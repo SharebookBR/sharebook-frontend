@@ -20,6 +20,7 @@ import { RequestedsComponent } from '../components/book/requesteds/requesteds.co
 import { DonationsComponent } from '../components/book/donations/donations.component';
 import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
+import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {
@@ -107,6 +108,10 @@ const routes: Routes = [
   {
     path: 'contact-us',
     component: ContactUsComponent,
+  },
+  {
+    path: 'politica-privacidade',
+    component: PrivacyPolicyComponent,
   },
   // otherwise redirect to home
   {

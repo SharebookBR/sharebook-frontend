@@ -29,6 +29,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -92,7 +93,8 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     ConfirmationDialogComponent,
     TrackingComponent,
     FacilitatorNotesComponent,
-    MainUsersComponent
+    MainUsersComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
   BrowserModule,
