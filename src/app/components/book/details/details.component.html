@@ -26,8 +26,8 @@
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap;"><b>Sinópse:</b><br/>{{bookInfo.synopsis}}</p>
         <p><b>Quando será anunciado o ganhador desse livro?</b><br/>{{chooseDateInfo}}</p>        
         <p><b>Local de Origem</b><br/>{{bookInfo.user.address.city}} - {{bookInfo.user.address.state}}</p>        
-        <p><b>Frete grátis?</b><br/>{{!freightAlert ? 'Sim' : 'Não'}}</p>
-        <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !!freightAlert">
+        <p><b>Frete grátis?</b><br/>{{isFreeFreight ? 'Sim' : 'Não'}}</p>
+        <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight ">
           <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight">
           <label class="custom-control-label" for="checkFreight">Estou ciente que o frete não é grátis. Caso seja escolhido, me comprometo a reembolsar o doador.</label>
         </div>          
@@ -37,7 +37,7 @@
 
             <span class="badge badge-danger mr-auto" *ngIf="!requested && !available">Não disponível.</span>
             
-            <input type="button" *ngIf="available && userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px" (click)="onRequestBook()" [disabled]="!!freightAlert && !isCheckedFreight">
+            <input type="button" *ngIf="available && userProfile && !requested" class="btn btn-primary" value="Tenho interesse" style="padding-left: 50px; padding-right: 50px" (click)="onRequestBook()" [disabled]="!isFreeFreight && !isCheckedFreight">
             
             <input type="button" *ngIf="available && !userProfile" class="btn btn-primary" value="Faça login para solicitar o livro" style="padding-left: 50px; padding-right: 50px" (click)="onLoginBook()">
               <a [routerLink]="['/home']" class="btn btn-link" id="cancelButton">Cancelar</a>
