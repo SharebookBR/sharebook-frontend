@@ -1,0 +1,7 @@
+<div class="card" [routerLink]="['/livros', content.slug]">
+  <img [src]="content.imageUrl" class="card-img-top" alt="Imagem do livro {{ content.title }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ content.title }}</h5>
+    <!-- <p class="card-text">{{ content.synopsis }}</p> -->
+  </div>
+</div>

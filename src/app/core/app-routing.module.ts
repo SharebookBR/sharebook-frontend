@@ -58,6 +58,10 @@ const routes: Routes = [
     canActivate: [AuthGuardUser]
   },
   {
+    path: 'book/search',
+    loadChildren: '../components/book/search-results/search-results.module#SearchResultsModule'
+  },
+  {
     path: 'book/donate/:id',
     component: DonatePageComponent,
     canActivate: [AuthGuardUser]
