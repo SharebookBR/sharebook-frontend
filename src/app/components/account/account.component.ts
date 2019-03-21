@@ -32,7 +32,7 @@ export class AccountComponent implements OnInit {
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-      phone: ['', [Validators.pattern(AppConst.phonePattern)]],
+      phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
       linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
       Address: _formBuilder.group({
         postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
