@@ -32,7 +32,7 @@ export class AccountComponent implements OnInit {
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-      phone: ['', [Validators.pattern(AppConst.phonePattern)]],
+      phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
       linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
       Address: _formBuilder.group({
         postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
@@ -48,21 +48,21 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._subscription = this._scUser.getUserData().subscribe(User => {
+    this._subscription = this._scUser.getUserData().subscribe(userInfo => {
       const foo = {
-        name: User.name,
-        email: User.email,
-        phone: User.phone,
-        linkedin: User.linkedin,
+        name: userInfo.name,
+        email: userInfo.email,
+        phone: userInfo.phone,
+        linkedin: userInfo.linkedin,
         Address: {
-          postalCode: User.address.postalCode,
-          street: User.address.street,
-          number: User.address.number,
-          complement: User.address.complement,
-          neighborhood: User.address.neighborhood,
-          city: User.address.city,
-          state: User.address.state,
-          country: User.address.country
+          postalCode: userInfo.address.postalCode,
+          street: userInfo.address.street,
+          number: userInfo.address.number,
+          complement: userInfo.address.complement,
+          neighborhood: userInfo.address.neighborhood,
+          city: userInfo.address.city,
+          state: userInfo.address.state,
+          country: userInfo.address.country
         }
       };
       this.formGroup.setValue(foo);
@@ -100,11 +100,11 @@ export class AccountComponent implements OnInit {
 
         this.address = address;
         this.address.country = 'Brasil';
-        this.formGroup['controls'].Address['controls'].street.setValue(this.address.street);
-        this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood);
-        this.formGroup['controls'].Address['controls'].city.setValue(this.address.city);
-        this.formGroup['controls'].Address['controls'].state.setValue(this.address.state);
-        this.formGroup['controls'].Address['controls'].country.setValue(this.address.country);
+        this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
+        this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood.substring(0, 50));
+        this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
+        this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
+        this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
         this.isGettingAddress = false;
 
       });

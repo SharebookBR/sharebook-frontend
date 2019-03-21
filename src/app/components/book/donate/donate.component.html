@@ -1,46 +1,26 @@
-<div *ngIf="!showNote">
+<div>
   <div class="modal-header">
-    <h4 class="modal-title">Escolher Vencedor da Doação!</h4>
+    <h4 class="modal-title">Motivo da Doação para {{userNickName}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <ng2-smart-table class="table" [settings]="settings" [source]="donateUsers" (custom)="onCustom($event)">
-    </ng2-smart-table>
-    <div class="text-center" [hidden]="!isLoading">
-      <i class="fa fa-spinner fa-spin"></i> Aguarde...
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancelar</button>
-  </div>
-</div>
-<div *ngIf="showNote">
-  <div>
-    <div class="modal-header">
-      <h4 class="modal-title">Motivo da Doação para {{selectedDonatedUser.name}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onDonate()">
-      <div class="modal-body">
-        <div class="text-center" [hidden]="!isLoading">
-          <i class="fa fa-spinner fa-spin"></i> Aguarde...
-        </div>
-        <textarea formControlName="myNote" name="myNote" type="text" id="myNote" class="md-textarea form-control" rows="3" maxlength="2000"></textarea>
-        <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
-            Informe o motivo da doação.
-          </small>
-        </div>
+  <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onDonate()">
+    <div class="modal-body">
+      <div class="text-center" [hidden]="!isLoading">
+        <i class="fa fa-spinner fa-spin"></i> Aguarde...
       </div>
-      <div class="modal-footer">
-        <input type="submit" class="btn btn-primary" value="Doar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
-          [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
-        <button type="button" class="btn btn-outline-dark" (click)="onCancelNote()">Cancelar</button>
+      <textarea formControlName="myNote" name="myNote" type="text" id="myNote" class="md-textarea form-control" rows="3" maxlength="2000"></textarea>
+      <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
+        <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
+          Informe o motivo da doação.
+        </small>
       </div>
-    </form>
-  </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="Doar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
+        [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}">
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+    </div>
+  </form>
 </div>

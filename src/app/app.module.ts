@@ -29,6 +29,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -54,12 +55,14 @@ import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
+import { MainUsersComponent } from './components/book/main-users/main-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
 import {RouteReuseStrategy} from '@angular/router';
 import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
+import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 
 @NgModule({
   declarations: [
@@ -86,9 +89,12 @@ import { InputSearchModule } from './components/input-search/input-search.module
     RequestedsComponent,
     ContactUsComponent,
     DonationsComponent,
+    DonatePageComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
-    FacilitatorNotesComponent
+    FacilitatorNotesComponent,
+    MainUsersComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
   BrowserModule,
@@ -131,7 +137,8 @@ import { InputSearchModule } from './components/input-search/input-search.module
     RequestComponent,
     ConfirmationDialogComponent,
     TrackingComponent,
-    FacilitatorNotesComponent
+    FacilitatorNotesComponent,
+    MainUsersComponent
   ],
   bootstrap: [AppComponent]
 })

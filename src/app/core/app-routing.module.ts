@@ -19,6 +19,8 @@ import { ContactUsComponent } from '../components/contact-us/contact-us.componen
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
 import { AboutComponent } from '../components/about/about.component';
+import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
+import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {
@@ -58,6 +60,11 @@ const routes: Routes = [
   {
     path: 'book/search',
     loadChildren: '../components/book/search-results/search-results.module#SearchResultsModule'
+  },
+  {
+    path: 'book/donate/:id',
+    component: DonatePageComponent,
+    canActivate: [AuthGuardUser]
   },
   {
     path: 'livros/:slug',
@@ -105,6 +112,10 @@ const routes: Routes = [
   {
     path: 'contact-us',
     component: ContactUsComponent,
+  },
+  {
+    path: 'politica-privacidade',
+    component: PrivacyPolicyComponent,
   },
   // otherwise redirect to home
   {

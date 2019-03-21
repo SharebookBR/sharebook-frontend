@@ -9,8 +9,8 @@ import { Book } from '../../../core/models/book';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestComponent } from '../request/request.component';
-import { User } from 'src/app/core/models/user';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { UserInfo } from 'src/app/core/models/userInfo';
 
 @Component({
   selector: 'app-details',
@@ -29,14 +29,14 @@ export class DetailsComponent implements OnInit {
   requested: Boolean = false;
   available: Boolean = false;
 
-  myUser: User = new User();
+  myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
   categoryName: string;
   freightName: string;
-  freightAlert: boolean;
-  freightAlertMessage: string;
+  isFreeFreight: boolean;
   daysToChoose: number;
   chooseDateInfo: string;
+  isCheckedFreight: boolean;
 
   constructor(
     private _scBook: BookService,
@@ -89,30 +89,26 @@ export class DetailsComponent implements OnInit {
           this.daysToChoose = chooseDate - todayDate;
           this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
-          if (this.myUser.id) {
+          if (this.myUser.name) {
             switch (x.freightOption.toString()) {
               case 'City': {
                 if (this.bookInfo.user.address.city !== this.myUser.address.city) {
-                  this.freightAlert = true;
-                  this.freightAlertMessage = 'O doador paga o frete somente para a cidade de origem';
+                  this.isFreeFreight = false;
                 }
                 break;
               }
               case 'State': {
                 if (this.bookInfo.user.address.state !== this.myUser.address.state) {
-                  this.freightAlert = true;
-                  this.freightAlertMessage = 'O doador paga o frete somente para o estado de origem';
+                  this.isFreeFreight = false;
                 }
                 break;
               }
               case 'WithoutFreight': {
-                this.freightAlert = true;
-                this.freightAlertMessage = 'O doador NÃO paga pelo frete';
+                this.isFreeFreight = false;
                 break;
               }
               default: {
-                this.freightAlert = false;
-                this.freightAlertMessage = '';
+                this.isFreeFreight = true;
               }
             }
           }

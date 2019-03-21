@@ -91,6 +91,9 @@
         </div>
 
         <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('required')">
+              Telefone obrigatório.
+          </small>
           <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
             Telefone deve estar no formato (99) 99999-9999
           </small>
@@ -138,7 +141,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="street">Logradouro</label>
         <div class="input-group">
-          <input formControlName="street" type="text" class="form-control">
+          <input formControlName="street" type="text" class="form-control" maxlength="80">
           <div class="input-group-addon append">
             <i class="fa fa-road"></i>
           </div>
@@ -154,7 +157,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="number">Número</label>
         <div class="input-group">
-          <input formControlName="number" type="text" class="form-control">
+          <input formControlName="number" type="text" class="form-control" maxlength="10">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -170,7 +173,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="complement">Complemento</label>
         <div class="input-group">
-          <input formControlName="complement" type="text" class="form-control">
+          <input formControlName="complement" type="text" class="form-control" maxlength="50">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -180,7 +183,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="neighborhood">Bairro</label>
         <div class="input-group">
-          <input formControlName="neighborhood" type="text" class="form-control">
+          <input formControlName="neighborhood" type="text" class="form-control" maxlength="50">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -196,7 +199,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="city">Cidade</label>
         <div class="input-group">
-          <input formControlName="city" type="text" class="form-control">
+          <input formControlName="city" type="text" class="form-control" maxlength="50">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -212,7 +215,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="state">Estado</label>
         <div class="input-group">
-          <input formControlName="state" type="text" class="form-control">
+          <input formControlName="state" type="text" class="form-control"  maxlength="30">
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -228,7 +231,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="country">País</label>
         <div class="input-group">
-          <input formControlName="country" type="text" class="form-control">
+          <input formControlName="country" type="text" class="form-control" maxlength="50">
           <div class="input-group-addon append">
             <i class="fa fa-globe"></i>
           </div>

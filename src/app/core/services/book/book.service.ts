@@ -9,6 +9,7 @@ import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
 import { Observable } from 'rxjs';
+import { Requesters } from '../../models/requesters';
 
 @Injectable({
   providedIn: 'root'
@@ -65,8 +66,16 @@ export class BookService {
     return this._http.get(`${this.config.apiEndpoint}/book/GranteeUsersByBookId/${bookId}`);
   }
 
+  public getRequestersList(bookId: string) {
+    return this._http.get<Requesters>(`${this.config.apiEndpoint}/book/RequestersList/${bookId}`);
+  }
+
   public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
     return this._http.put<any>(`${this.config.apiEndpoint}/book/Donate/${bookId}`, donateBookUser);
+  }
+
+  public renewChooseDate(bookId: string) {
+    return this._http.put<any>(`${this.config.apiEndpoint}/book/RenewChooseDate/${bookId}`, null);
   }
 
   public requestBook(bookId: string, reason: string) {
@@ -99,5 +108,8 @@ export class BookService {
 
   public getFullSearch(criteria: string, page: number, items: number): Observable<any[]> {
     return this._http.get<any[]>(`${this.config.apiEndpoint}/book/FullSearch/${criteria}/${page}/${items}`);
+    
+  public getMainUsers(bookId: string) {
+    return this._http.get<any>(`${this.config.apiEndpoint}/book/MainUsers/${bookId}`);
   }
 }

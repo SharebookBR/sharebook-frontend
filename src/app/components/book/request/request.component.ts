@@ -50,11 +50,11 @@ export class RequestComponent implements OnInit {
     this.state = 'form';
     this.modalTitle = 'Quanto você quer esse livro?';
 
-    this._scUser.getUserData().subscribe(updateUserVM => {
-      this.addressLine01 = updateUserVM.address.street + ',' + updateUserVM.address.number + ' ' +
-        ((!updateUserVM.address.complement) ? '' : updateUserVM.address.complement);
-      this.addressLine02 = updateUserVM.address.neighborhood + ' - ' + updateUserVM.address.city + ' - ' + updateUserVM.address.state;
-      this.addressLine03 = 'CEP: ' + updateUserVM.address.postalCode + ' - ' + updateUserVM.address.country;
+    this._scUser.getUserData().subscribe(userInfo => {
+      this.addressLine01 = userInfo.address.street + ',' + userInfo.address.number + ' ' +
+        ((!userInfo.address.complement) ? '' : userInfo.address.complement);
+      this.addressLine02 = userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
+      this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
     });
   }
 
