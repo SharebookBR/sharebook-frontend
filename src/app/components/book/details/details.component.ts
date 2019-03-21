@@ -33,10 +33,10 @@ export class DetailsComponent implements OnInit {
   bookInfo: Book = new Book();
   categoryName: string;
   freightName: string;
-  freightAlert: boolean;
-  freightAlertMessage: string;
+  isFreeFreight: boolean;
   daysToChoose: number;
   chooseDateInfo: string;
+  isCheckedFreight: boolean;
 
   constructor(
     private _scBook: BookService,
@@ -93,26 +93,22 @@ export class DetailsComponent implements OnInit {
             switch (x.freightOption.toString()) {
               case 'City': {
                 if (this.bookInfo.user.address.city !== this.myUser.address.city) {
-                  this.freightAlert = true;
-                  this.freightAlertMessage = 'O doador paga o frete somente para a cidade de origem';
+                  this.isFreeFreight = false;
                 }
                 break;
               }
               case 'State': {
                 if (this.bookInfo.user.address.state !== this.myUser.address.state) {
-                  this.freightAlert = true;
-                  this.freightAlertMessage = 'O doador paga o frete somente para o estado de origem';
+                  this.isFreeFreight = false;
                 }
                 break;
               }
               case 'WithoutFreight': {
-                this.freightAlert = true;
-                this.freightAlertMessage = 'O doador NÃO paga pelo frete';
+                this.isFreeFreight = false;
                 break;
               }
               default: {
-                this.freightAlert = false;
-                this.freightAlertMessage = '';
+                this.isFreeFreight = true;
               }
             }
           }
