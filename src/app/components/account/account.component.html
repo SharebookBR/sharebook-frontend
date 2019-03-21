@@ -53,6 +53,9 @@
         </div>
 
         <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('required')">
+              Telefone obrigatório.
+          </small>          
           <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
             Telefone deve estar no formato (99) 99999-9999
           </small>
