@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from 'src/app/core/services/alert/alert.service';
 
 @Component({
   selector: 'app-search-results',
@@ -18,7 +19,8 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private _bookService: BookService
+    private _bookService: BookService,
+    private _scAlert: AlertService
   ) {
     this.page = 1;
     this.items = 12;
@@ -34,7 +36,7 @@ export class SearchResultsComponent implements OnInit {
     this._route.params.subscribe(param => {
       this.criteria = param['param'];
     }, (error: HttpErrorResponse) => {
-      console.log('Algum erro ao buscar o parâmetro', error);
+      this._scAlert.error(error.message ? error.message : error.toString());
     });
   }
 
@@ -49,7 +51,7 @@ export class SearchResultsComponent implements OnInit {
           console.log(this.books);
         },
         (error: HttpErrorResponse) => {
-          console.log('Algum erro ao buscar o parâmetro', error);
+          this._scAlert.error(error.message ? error.message : error.toString());
         }, () => {
         }
     );
@@ -66,7 +68,7 @@ export class SearchResultsComponent implements OnInit {
           console.log(this.books);
         },
         (error: HttpErrorResponse) => {
-          console.log('Algum erro ao buscar o parâmetro', error);
+          this._scAlert.error(error.message ? error.message : error.toString());
         }, () => {
         }
     );
