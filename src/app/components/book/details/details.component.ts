@@ -37,6 +37,7 @@ export class DetailsComponent implements OnInit {
   freightAlertMessage: string;
   daysToChoose: number;
   chooseDateInfo: string;
+  isCheckedFreight: boolean;
 
   constructor(
     private _scBook: BookService,
