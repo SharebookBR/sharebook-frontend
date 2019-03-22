@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from 'src/app/core/services/alert/alert.service';
 
 @Component({
   selector: 'app-search-results',
@@ -11,21 +12,34 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class SearchResultsComponent implements OnInit {
 
   public criteria: string;
-  public page: number;
-  public items: number;
+  public currentPage: number;
+  public itemsPerPage: number;
 
   public books: any;
+  isLoading: Boolean = true;
+
+  navigationSubscription;
 
   constructor(
     private _route: ActivatedRoute,
-    private _bookService: BookService
+    private _bookService: BookService,
+    private _scAlert: AlertService,
+    private _router: Router
   ) {
-    this.page = 1;
-    this.items = 12;
+    this.currentPage = 1;
+    this.itemsPerPage = 12;
+
+    this.navigationSubscription = this._router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.isLoading = true;
+        this.getParamByUri();
+        this.getBooks();
+      }
+    });
   }
 
   ngOnInit() {
-    console.log('Search Component');
     this.getParamByUri();
     this.getBooks();
   }
@@ -34,39 +48,43 @@ export class SearchResultsComponent implements OnInit {
     this._route.params.subscribe(param => {
       this.criteria = param['param'];
     }, (error: HttpErrorResponse) => {
-      console.log('Algum erro ao buscar o parâmetro', error);
+      this._scAlert.error(error.message ? error.message : error.toString());
     });
   }
 
   private getBooks(): void {
     this._bookService.getFullSearch(
       this.criteria,
-      this.page,
-      this.items
+      this.currentPage,
+      this.itemsPerPage
       ).subscribe(
         (books: any[]) => {
           this.books = books;
-          console.log(this.books);
+          this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
-          console.log('Algum erro ao buscar o parâmetro', error);
+          this._scAlert.error(error.message ? error.message : error.toString());
+          this.books = null;
+          this.isLoading = false;
         }, () => {
         }
     );
   }
 
-  public togglePage(): void {
+  public togglePage(currentPage: number): void {
+    this.isLoading = true;
     this._bookService.getFullSearch(
       this.criteria,
-      this.page,
-      this.items
+      this.currentPage,
+      this.itemsPerPage
       ).subscribe(
         (books: any[]) => {
           this.books = books;
-          console.log(this.books);
+          this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
-          console.log('Algum erro ao buscar o parâmetro', error);
+          this._scAlert.error(error.message ? error.message : error.toString());
+          this.isLoading = false;
         }, () => {
         }
     );
