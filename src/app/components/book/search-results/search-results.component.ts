@@ -12,10 +12,11 @@ import { AlertService } from 'src/app/core/services/alert/alert.service';
 export class SearchResultsComponent implements OnInit {
 
   public criteria: string;
-  public page: number;
-  public items: number;
+  public currentPage: number;
+  public itemsPerPage: number;
 
   public books: any;
+  isLoading: Boolean = true;
 
   navigationSubscription;
 
@@ -25,12 +26,13 @@ export class SearchResultsComponent implements OnInit {
     private _scAlert: AlertService,
     private _router: Router
   ) {
-    this.page = 1;
-    this.items = 12;
+    this.currentPage = 1;
+    this.itemsPerPage = 12;
 
     this.navigationSubscription = this._router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
+        this.isLoading = true;
         this.getParamByUri();
         this.getBooks();
       }
@@ -53,30 +55,36 @@ export class SearchResultsComponent implements OnInit {
   private getBooks(): void {
     this._bookService.getFullSearch(
       this.criteria,
-      this.page,
-      this.items
+      this.currentPage,
+      this.itemsPerPage
       ).subscribe(
         (books: any[]) => {
           this.books = books;
+          this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
           this._scAlert.error(error.message ? error.message : error.toString());
+          this.books = null;
+          this.isLoading = false;
         }, () => {
         }
     );
   }
 
-  public togglePage(): void {
+  public togglePage(currentPage: number): void {
+    this.isLoading = true;
     this._bookService.getFullSearch(
       this.criteria,
-      this.page,
-      this.items
+      this.currentPage,
+      this.itemsPerPage
       ).subscribe(
         (books: any[]) => {
           this.books = books;
+          this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
           this._scAlert.error(error.message ? error.message : error.toString());
+          this.isLoading = false;
         }, () => {
         }
     );

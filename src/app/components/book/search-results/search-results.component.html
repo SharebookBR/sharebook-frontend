@@ -1,4 +1,8 @@
-<div class="container mt-5">
+<div [hidden]="!isLoading">
+  <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
+</div>
+
+<div class="container mt-5" [hidden]="isLoading">
   <h1>Seus resultados para <strong>{{ criteria }}</strong></h1>
   <section class="row">
     <div class="col-xs-12 col-md-12">
@@ -14,18 +18,9 @@
     </div>
   </section>
   <section class="row mt-5">
-    <div class="col-12">
-        <ngb-pagination
-          class="d-flex justify-content-center"
-          [pageSize]="books?.itemsPerPage"
-          [collectionSize]="books?.totalItems"
-          [(page)]="page"
-          size="lg"
-          (click)="togglePage()"
-          ></ngb-pagination>
+    <div class="col-12" *ngIf="books?.totalItems > 0">
+      <ngb-pagination class="d-flex justify-content-center" [pageSize]="itemsPerPage"
+        [collectionSize]="books?.totalItems" [(page)]="currentPage" size="lg" (pageChange)="togglePage(currentPage)"></ngb-pagination>
     </div>
-
-
   </section>
 </div>
-
