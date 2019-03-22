@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/core/services/alert/alert.service';
@@ -17,17 +17,27 @@ export class SearchResultsComponent implements OnInit {
 
   public books: any;
 
+  navigationSubscription;
+
   constructor(
     private _route: ActivatedRoute,
     private _bookService: BookService,
-    private _scAlert: AlertService
+    private _scAlert: AlertService,
+    private _router: Router
   ) {
     this.page = 1;
     this.items = 12;
+
+    this.navigationSubscription = this._router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.getParamByUri();
+        this.getBooks();
+      }
+    });
   }
 
   ngOnInit() {
-    console.log('Search Component');
     this.getParamByUri();
     this.getBooks();
   }
@@ -48,7 +58,6 @@ export class SearchResultsComponent implements OnInit {
       ).subscribe(
         (books: any[]) => {
           this.books = books;
-          console.log(this.books);
         },
         (error: HttpErrorResponse) => {
           this._scAlert.error(error.message ? error.message : error.toString());
@@ -65,7 +74,6 @@ export class SearchResultsComponent implements OnInit {
       ).subscribe(
         (books: any[]) => {
           this.books = books;
-          console.log(this.books);
         },
         (error: HttpErrorResponse) => {
           this._scAlert.error(error.message ? error.message : error.toString());
