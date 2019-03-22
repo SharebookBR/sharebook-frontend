@@ -2,25 +2,25 @@
   <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
 </div>
 
-<div class="container mt-5" [hidden]="isLoading">
-  <h1>Seus resultados para <strong>{{ criteria }}</strong></h1>
+<div class="container" [hidden]="isLoading">
+  <h1 class="text-center display-4">Seus resultados para <strong>{{ criteria }}</strong></h1>
   <section class="row">
     <div class="col-xs-12 col-md-12">
       <p *ngIf="books?.totalItems === 0">Nenhum resultado para sua pesquisa</p>
       <p *ngIf="books?.totalItems > 0">Legal! Achamos {{ books?.totalItems }} resultados relacionadas a sua pesquisa</p>
     </div>
   </section>
-  <section class="row mt-5">
-    <div class="col-xs-12 col-md-3 mt-4" *ngFor="let item of books?.items">
+  <section class="row">
+    <div class="col-xs-12 col-md-3" *ngFor="let item of books?.items">
       <!-- Card Book -->
       <app-card-book [content]="item"></app-card-book>
       <!-- End Card Book -->
     </div>
   </section>
-  <section class="row mt-5">
-    <div class="col-12" *ngIf="books?.totalItems > 0">
+  <section class="row">
+    <div class="col-xs-12 col-md-3" *ngIf="books?.totalItems > 0">
       <ngb-pagination class="d-flex justify-content-center" [pageSize]="itemsPerPage"
-        [collectionSize]="books?.totalItems" [(page)]="currentPage" size="lg" (pageChange)="togglePage(currentPage)"></ngb-pagination>
+        [collectionSize]="books?.totalItems" [(page)]="currentPage" size="sm" (pageChange)="togglePage(currentPage)"></ngb-pagination>
     </div>
   </section>
 </div>
