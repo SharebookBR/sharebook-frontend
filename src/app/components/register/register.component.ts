@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../core/services/user/user.service';
-import { ToastrService } from 'ngx-toastr';
+
 import { PasswordValidation } from '../../core/utils/passwordValidation';
 import { AddressService } from '../../core/services/address/address.service';
 import * as AppConst from '../../core/utils/app.const';

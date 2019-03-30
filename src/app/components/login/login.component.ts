@@ -5,7 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
-import { ToastrService } from 'ngx-toastr';
 import * as AppConst from '../../core/utils/app.const';
 
 @Component({
