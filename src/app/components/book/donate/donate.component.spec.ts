@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DonateComponent } from './donate.component';
 
 import { AppConfigModule } from '../../../app-config.module';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('DonateComponent', () => {
   let component: DonateComponent;

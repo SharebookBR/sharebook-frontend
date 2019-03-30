@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -7,8 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
-import { AlertService } from 'src/app/core/services/alert/alert.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-donations',
@@ -25,7 +25,7 @@ export class DonationsComponent implements OnInit {
     private _bookService: BookService,
     private _sanitizer: DomSanitizer,
     private _modalService: NgbModal,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _confirmationDialogService: ConfirmationDialogService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -176,10 +176,10 @@ export class DonationsComponent implements OnInit {
               .then((confirmed) => {
                 if (confirmed) {
                   this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
-                    this._scAlert.success('Doação renovada com sucesso.');
+                    this._toastr.success('Doação renovada com sucesso.');
                     this.getDonations();
                   }, error => {
-                    this._scAlert.error(error);
+                    this._toastr.error(error);
                   });
                 }
               });

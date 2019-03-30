@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { PasswordValidation } from '../../core/utils/passwordValidation';
 import * as AppConst from '../../core/utils/app.const';
 
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
     private _router: Router,
     private _formBuilder: FormBuilder,
     private _scUser: UserService,
-    private _scAlert: AlertService
+    private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({
       hashCodePassword: ['', Validators.required],
@@ -53,14 +53,14 @@ export class ForgotPasswordComponent implements OnInit {
       this._scUser.changeUserPasswordByHashCode(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._scAlert.success('Senha atualizada com sucesso', true);
+            this._toastr.success('Senha atualizada com sucesso');
             this._router.navigate(['/login']);
           } else {
-            this._scAlert.error(data.messages[0]);
+            this._toastr.error(data.messages[0]);
           }
         },
         error => {
-          this._scAlert.error(error);
+          this._toastr.error(error);
         }
       );
     }

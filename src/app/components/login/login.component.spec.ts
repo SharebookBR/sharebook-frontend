@@ -7,7 +7,7 @@ import { LoginComponent } from './login.component';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import { UserService } from '../../core/services/user/user.service';
 import { AppConfigModule } from '../../app-config.module';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

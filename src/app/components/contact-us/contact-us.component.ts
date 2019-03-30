@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import * as AppConst from '../../core/utils/app.const';
 import { ContactUsService } from '../../core/services/contact-us/contact-us.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contact-us',
@@ -17,7 +17,7 @@ export class ContactUsComponent implements OnInit {
   isLoading: Boolean = false;
   pageTitle: string;
 
-  constructor(private _formBuilder: FormBuilder, private _scContactUs: ContactUsService, private _scAlert: AlertService) {
+  constructor(private _formBuilder: FormBuilder, private _scContactUs: ContactUsService, private _toastr: ToastrService) {
     this.createFormGroup();
    }
 
@@ -43,10 +43,10 @@ export class ContactUsComponent implements OnInit {
         this._scContactUs.contactUs(this.formGroup.value).subscribe(resp => {
           if (resp.success) {
             this.isSent = true;
-            this._scAlert.success('Mensagem enviada com sucesso!');
+            this._toastr.success('Mensagem enviada com sucesso!');
             this.pageTitle = 'Obrigado por entrar em contato! ^^ ';
           } else {
-            this._scAlert.error(resp.messages[0]);
+            this._toastr.error(resp.messages[0]);
           }
           this.isLoading = false;
         });

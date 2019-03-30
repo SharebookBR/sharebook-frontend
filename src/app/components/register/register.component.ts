@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { ToastrService } from 'ngx-toastr';
+
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { PasswordValidation } from '../../core/utils/passwordValidation';
 import { AddressService } from '../../core/services/address/address.service';
 import * as AppConst from '../../core/utils/app.const';
@@ -22,10 +24,10 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private _scUser: UserService,
-    private _scAlert: AlertService,
     private _router: Router,
     private _formBuilder: FormBuilder,
-    private _AddressService: AddressService
+    private _AddressService: AddressService,
+    private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
@@ -55,14 +57,14 @@ export class RegisterComponent implements OnInit {
       this._scUser.register(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._scAlert.success('Registro realizado com sucesso', true);
+            this._toastr.success('Registro realizado com sucesso1');
             this._router.navigate(['/']);
           } else {
-            this._scAlert.error(data.messages[0]);
+            this._toastr.error(data.messages[0]);
           }
         },
         error => {
-          this._scAlert.error(error);
+          this._toastr.error(error);
         }
       );
     }

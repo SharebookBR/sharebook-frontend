@@ -8,7 +8,7 @@ import { RegisterComponent } from './register.component';
 
 import { AppConfigModule } from '../../app-config.module';
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { AddressService } from '../../core/services/address/address.service';
 
 describe('RegisterComponent', () => {

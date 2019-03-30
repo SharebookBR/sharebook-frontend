@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { ToastrService } from 'ngx-toastr';
+
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import * as AppConst from '../../core/utils/app.const';
+
 
 
 @Component({
@@ -18,9 +21,9 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor(
     private _scUser: UserService,
-    private _scAlert: AlertService,
     private _router: Router,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]]
@@ -35,14 +38,14 @@ export class ResetPasswordComponent implements OnInit {
       this._scUser.resetPassword(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-            alert(data.successMessage);
+            this._toastr.info(data.successMessage);
             this._router.navigate(['/panel']);
           } else {
-            this._scAlert.error(data.messages[0]);
+            this._toastr.error(data.messages[0]);
           }
         },
         error => {
-          this._scAlert.error(error);
+          this._toastr.error(error);
         }
       );
     }

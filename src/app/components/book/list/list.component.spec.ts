@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from './list.component';
 
 import { AppConfigModule } from '../../../app-config.module';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from '../../../core/services/confirmation-dialog/confirmation-dialog.service';
 
 describe('ListComponent', () => {

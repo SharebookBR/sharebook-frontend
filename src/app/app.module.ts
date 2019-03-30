@@ -8,6 +8,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
 import { Ng2ImgMaxModule } from 'ng2-img-max';
 
+// modules
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
 
@@ -111,7 +115,9 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     RecaptchaFormsModule,
     Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
-    InputSearchModule
+    InputSearchModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     AuthGuardUser,
