@@ -24,7 +24,6 @@ import { FormComponent as BookFormComponent } from './components/book/form/form.
 import { DetailsComponent as BookDetailComponent } from './components/book/details/details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { AlertComponent } from './core/directives/alert/alert.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
@@ -43,7 +42,6 @@ import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
 import { UserService } from './core/services/user/user.service';
-import { AlertService } from './core/services/alert/alert.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
 import { AddressService } from './core/services/address/address.service';
 import { ContactUsService } from './core/services/contact-us/contact-us.service';
@@ -80,7 +78,6 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     FooterComponent,
     RegisterComponent,
     LoginComponent,
-    AlertComponent,
     ListComponent,
     PanelComponent,
     AccountComponent,
@@ -123,7 +120,6 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     AuthGuardUser,
     BookService,
     CategoryService,
-    AlertService,
     AuthenticationService,
     ContactUsService,
     GoogleAnalyticsService,
