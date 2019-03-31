@@ -10,7 +10,7 @@ import { RequestComponent } from './request.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { UserService } from '../../../core/services/user/user.service';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('RequestComponent', () => {
   let component: RequestComponent;

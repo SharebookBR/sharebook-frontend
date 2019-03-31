@@ -11,7 +11,7 @@ import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class FormComponent implements OnInit {
     private _scUser: UserService,
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _ng2ImgMaxService: Ng2ImgMaxService) {
 
     /*  Inicializa o formGroup defatult por que é obrigatório  */
@@ -146,7 +146,7 @@ export class FormComponent implements OnInit {
   onAddBook() {
     if (this.formGroup.valid) {
       if (this.userProfile === 'User' && !this.isImageLoaded) {
-        this._scAlert.error('Selecionar imagem da capa do livro.');
+        this._toastr.error('Selecionar imagem da capa do livro.');
       } else {
         this.isLoading = true;
         this.isLoadingMessage = 'Aguarde...';
@@ -158,10 +158,10 @@ export class FormComponent implements OnInit {
           this._scBook.create(this.formGroup.value).subscribe(resp => {
             if (resp.success) {
               this.isSaved = true;
-              this._scAlert.success('Livro cadastrado com sucesso!');
+              this._toastr.success('Livro cadastrado com sucesso!');
               this.pageTitle = 'Obrigado por ajudar.';
             } else {
-              this._scAlert.error(resp.messages[0]);
+              this._toastr.error(resp.messages[0]);
             }
             this.isLoading = false;
           }

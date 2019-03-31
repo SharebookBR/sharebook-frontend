@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContactUsComponent } from './contact-us.component';
 
 import { AppConfigModule } from '../../app-config.module';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('ContactUsComponent', () => {
   let component: ContactUsComponent;

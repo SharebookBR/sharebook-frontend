@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { Router } from '@angular/router';
 
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { PasswordValidation } from '../../core/utils/passwordValidation';
 import * as AppConst from '../../core/utils/app.const';
 
@@ -18,7 +18,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private _scUser: UserService,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _router: Router,
     private _formBuilder: FormBuilder
   ) {
@@ -39,14 +39,14 @@ export class ChangePasswordComponent implements OnInit {
       this._scUser.changePassword(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._scAlert.success('Senha atualizada com sucesso', true);
+            this._toastr.success('Senha atualizada com sucesso');
             this._router.navigate(['/panel']);
           } else {
-            this._scAlert.error(data.messages[0]);
+            this._toastr.error(data.messages[0]);
           }
         },
         error => {
-          this._scAlert.error(error);
+          this._toastr.error(error);
         }
       );
     }

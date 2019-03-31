@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'src/app/core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-search-results',
@@ -23,7 +23,7 @@ export class SearchResultsComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _bookService: BookService,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _router: Router
   ) {
     this.currentPage = 1;
@@ -48,7 +48,7 @@ export class SearchResultsComponent implements OnInit {
     this._route.params.subscribe(param => {
       this.criteria = param['param'];
     }, (error: HttpErrorResponse) => {
-      this._scAlert.error(error.message ? error.message : error.toString());
+      this._toastr.error(error.message ? error.message : error.toString());
     });
   }
 
@@ -63,7 +63,7 @@ export class SearchResultsComponent implements OnInit {
           this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
-          this._scAlert.error(error.message ? error.message : error.toString());
+          this._toastr.error(error.message ? error.message : error.toString());
           this.books = null;
           this.isLoading = false;
         }, () => {
@@ -83,7 +83,7 @@ export class SearchResultsComponent implements OnInit {
           this.isLoading = false;
         },
         (error: HttpErrorResponse) => {
-          this._scAlert.error(error.message ? error.message : error.toString());
+          this._toastr.error(error.message ? error.message : error.toString());
           this.isLoading = false;
         }, () => {
         }
