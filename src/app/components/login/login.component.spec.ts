@@ -27,7 +27,7 @@ describe('LoginComponent', () => {
       providers: [
         AuthenticationService,
         UserService,
-        AlertService,
+
         HttpClient,
         HttpHandler
       ]

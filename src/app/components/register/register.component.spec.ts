@@ -29,7 +29,6 @@ describe('RegisterComponent', () => {
       ],
       providers: [
         UserService,
-        AlertService,
         AddressService,
         HttpClient,
         HttpHandler

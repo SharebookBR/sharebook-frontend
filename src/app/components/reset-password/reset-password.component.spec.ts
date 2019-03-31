@@ -31,7 +31,6 @@ describe('ResetPasswordComponent', () => {
         UserService,
         HttpClient,
         HttpHandler,
-        AlertService
       ]
     })
     .compileComponents();

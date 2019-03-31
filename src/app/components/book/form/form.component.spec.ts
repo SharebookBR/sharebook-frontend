@@ -35,7 +35,7 @@ describe('FormComponent', () => {
         HttpClient,
         HttpHandler,
         UserService,
-        AlertService,
+
         Ng2ImgMaxService,
         ImgMaxSizeService,
         ImgExifService,

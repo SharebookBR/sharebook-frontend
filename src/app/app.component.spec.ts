@@ -28,7 +28,7 @@ describe('AppComponent', () => {
       providers: [
         UserService,
         AuthenticationService,
-        AlertService,
+
         HttpClient,
         HttpHandler
       ]

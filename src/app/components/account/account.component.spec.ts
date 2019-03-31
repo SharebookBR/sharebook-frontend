@@ -32,7 +32,7 @@ describe('AccountComponent', () => {
       ],
       providers: [
         UserService,
-        AlertService,
+
         AddressService,
         HttpClient,
         HttpHandler

@@ -29,7 +29,7 @@ describe('ListComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        AlertService,
+
         ConfirmationDialogService
       ]
     })
