@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookService } from 'src/app/core/services/book/book.service';
-import { AlertService } from 'src/app/core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tracking',

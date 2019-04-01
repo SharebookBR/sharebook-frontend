@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -38,7 +38,7 @@ export class RequestComponent implements OnInit {
     private _scBook: BookService,
     private _scUser: UserService,
     private _router: Router,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _formBuilder: FormBuilder) {
 
     this.formGroup = _formBuilder.group({

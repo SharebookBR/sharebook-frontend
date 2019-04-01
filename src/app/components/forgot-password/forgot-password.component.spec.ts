@@ -10,7 +10,7 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 
 import { AppConfigModule } from '../../app-config.module';
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;

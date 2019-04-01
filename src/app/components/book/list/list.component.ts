@@ -3,7 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlertService } from '../../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
@@ -29,7 +29,7 @@ export class ListComponent implements OnInit {
     private _sanitizer: DomSanitizer,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _modalService: NgbModal,
     private confirmationDialogService: ConfirmationDialogService) {
   }
@@ -216,7 +216,7 @@ export class ListComponent implements OnInit {
               if (confirmed) {
                 this._scBook.cancelDonation(event.data.id).subscribe(resp => {
                   if (resp['success']) {
-                    this._scAlert.success('Doação cancelada com sucesso.');
+                    this._toastr.success('Doação cancelada com sucesso.');
                     this.reloadData();
                   }
                 });

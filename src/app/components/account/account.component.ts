@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { UserService } from '../../core/services/user/user.service';
-import { AlertService } from '../../core/services/alert/alert.service';
+import { ToastrService } from 'ngx-toastr';
 import { AddressService } from '../../core/services/address/address.service';
 import * as AppConst from '../../core/utils/app.const';
 import { Address } from '../../core/models/address';
@@ -23,7 +23,7 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private _scUser: UserService,
-    private _scAlert: AlertService,
+    private _toastr: ToastrService,
     private _router: Router,
     private _formBuilder: FormBuilder,
     private _AddressService: AddressService
@@ -74,14 +74,14 @@ export class AccountComponent implements OnInit {
       this._scUser.update(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._scAlert.success('Registro atualizado com sucesso', true);
+            this._toastr.success('Registro atualizado com sucesso');
             this._router.navigate(['/panel']);
           } else {
-            this._scAlert.error(data.messages[0]);
+            this._toastr.error(data.messages[0]);
           }
         },
         error => {
-          this._scAlert.error(error);
+          this._toastr.error(error);
         }
       );
     }
