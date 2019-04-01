@@ -6,9 +6,11 @@
     <div *ngIf="!isSent">
       <h1 class="text-center display-4">{{pageTitle}}</h1>
       <div class="form-row">
+
         <div class="col-">
           <img src="/assets/img/fale-conosco.jpg" class="img-thumbnail"/>
         </div>
+
         <div class="col">
 
           <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -54,8 +56,7 @@
           <div class="form-group col-md-6 offset-md-3 mb-2">
             <label class="col-form-label" for="phone">DDD + Telefone</label>
             <div class="input-group">
-              <input formControlName="phone" type="text" name="phone" id="phone" class="form-control" [dropSpecialCharacters]="false"
-                     mask="(99) 99999-9999">
+              <input formControlName="phone" type="text" name="phone" id="phone" class="form-control" [dropSpecialCharacters]="false" mask="(99) 99999-9999">
               <div class="input-group-addon append">
                 <i class="fa fa-whatsapp"></i>
               </div>
@@ -94,8 +95,7 @@
           </div>
           <div class="form-group col-md-6 offset-md-3 mb-2">
             <div class="input-group">
-              <input type="submit" class="btn btn-primary" value="Enviar"
-                     style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+              <input type="submit" class="btn btn-primary" value="Enviar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
             </div>
           </div>
 
@@ -104,6 +104,7 @@
               <i class="fa fa-spinner fa-spin"></i> Aguarde...
             </div>
           </div>
+
         </div>
       </div>
     </div>
