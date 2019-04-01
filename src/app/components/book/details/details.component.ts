@@ -33,7 +33,7 @@ export class DetailsComponent implements OnInit {
   bookInfo: Book = new Book();
   categoryName: string;
   freightName: string;
-  isFreeFreight: boolean;
+  isFreeFreight: Boolean = true;
   daysToChoose: number;
   chooseDateInfo: string;
   isCheckedFreight: boolean;
