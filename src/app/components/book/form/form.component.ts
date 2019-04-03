@@ -12,6 +12,8 @@ import { FreightOptions } from '../../../core/models/freightOptions';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
+import {ContributorsService} from '../../../core/services/contributors/contributors.service';
+import {SeoService} from '../../../core/services/seo/seo.service';
 
 
 @Component({
@@ -46,13 +48,25 @@ export class FormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    private _ng2ImgMaxService: Ng2ImgMaxService) {
+    private _ng2ImgMaxService: Ng2ImgMaxService,
+    private seo: SeoService) {
 
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
   }
 
   ngOnInit() {
+
+    this.seo.generateTags({
+      title: 'Doe um livro.',
+      description: 'Doe um livro e você vai ficar emocionado com a experiência. Nossos usuários tem relatado que eh emocionante. ' +
+        'Apesar de ser no anonimato vc se envolve com muitas histórias incríveis. ' +
+        'Vc não faz ideia de como tem pessoas que realmente precisam. ' +
+        'E da força transformadora que um simples livro causa na vida de uma pessoa. ' +
+        'E que você ao escolher um ganhador, passa a fazer parte dessa história.',
+      slug: 'doar-livro'
+    });
+
     this.findProfile();
 
     if (this._scUser.getLoggedUserFromLocalStorage()) {

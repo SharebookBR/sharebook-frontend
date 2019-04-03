@@ -26,8 +26,9 @@ export class ContactUsComponent implements OnInit {
     // TODO: receber mensagem por query string, pra integrar com outras pages.
     this.seo.generateTags({
       title: 'Fale Conosco',
-      description: 'Fale Conosco para tirar duvidas, sugestões, apoiar o projeto.',
-      image: 'https://www.sharebook.com.br/assets/img/sharebook-share.png',
+      description: 'Tem alguma dúvida, sugestão de melhoria ou crítica? Entre em contato conosco.' +
+        ' É sempre um prazer atendê-lo.Também estamos buscando apoiadores e parceiros pro projeto. ' +
+        'Se você conhece alguém, não hesite em entrar em contato. Obrigado.',
       slug: 'fale-conosco'
     });
   }
