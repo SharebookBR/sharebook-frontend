@@ -94,11 +94,19 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/rodrigo-barreto.jpg',
-        name: 'Rodrigo Barreto',
+        image: 'assets/img/top_contributors/montanha.jpg',
+        name: 'Roberto Montanha',
         position: 'Facilitador',
         links: [
-          {url: 'https://www.linkedin.com/in/rcbarreto/', content: 'Linkedin'}
+          {url: 'https://www.linkedin.com/in/robertomontanha/', content: 'Linkedin'}
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/manoel-jr.jpg',
+        name: 'Manoel Júnior',
+        position: 'Facilitador',
+        links: [
+          {url: 'https://www.linkedin.com/in/msjunior/', content: 'Linkedin'}
         ]
       },
       {
