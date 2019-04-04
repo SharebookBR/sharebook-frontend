@@ -8,10 +8,10 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
 })
 export class CardBookComponent implements OnInit {
 
-  @Input()
-  public content: any;
-  private isApprovedBadge: string;
-  private isApprovedText: string;
+  @Input() content: any;
+
+  public isApprovedBadge: string;
+  public isApprovedText: string;
 
   constructor() { }
 
