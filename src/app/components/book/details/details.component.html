@@ -25,7 +25,7 @@
           <p><b>Autor:</b><br/>{{bookInfo.author}}</p>
           <p><b>Categoria:</b><br/>{{bookInfo.category?.name}}</p>
           <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap;"><b>Sinópse:</b><br/>{{bookInfo.synopsis}}</p>
-          <p><b>Quando será anunciado o ganhador desse livro?</b><br/>{{chooseDateInfo}}</p>        
+          <p *ngIf="available"><b>Quando será anunciado o ganhador desse livro?</b><br/>{{chooseDateInfo}}</p>        
           <p><b>Local de Origem</b><br/>{{bookInfo.user.address.city}} - {{bookInfo.user.address.state}}</p>
           <p *ngIf="available && userProfile"><b>Frete grátis?</b><br/>{{isFreeFreight ? 'Sim' : 'Não'}}</p>
           <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight ">
