@@ -47,7 +47,7 @@ export class DetailsComponent implements OnInit {
     private _router: Router,
     private _modalService: NgbModal,
     private _scAuthentication: AuthenticationService,
-    private seo: SeoService) {
+    private _seo: SeoService) {
 
     this._scAuthentication.checkTokenValidity();
   }
@@ -125,7 +125,7 @@ export class DetailsComponent implements OnInit {
               this.state = 'ready';
             }
 
-            this.seo.generateTags({
+            this._seo.generateTags({
               title: this.bookInfo.title,
               description: this.bookInfo.synopsis,
               image: this.bookInfo.imageUrl,

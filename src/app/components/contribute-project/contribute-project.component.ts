@@ -27,12 +27,12 @@ export class ContributeProjectComponent implements OnInit {
     private technologiesService: TechnologiesService,
     private toolsService: ToolsService,
     private careersService: CareersService,
-    private seo: SeoService) {
+    private _seo: SeoService) {
   }
 
   ngOnInit() {
 
-    this.seo.generateTags({
+    this._seo.generateTags({
       title: 'Apoie o projeto.',
       description: 'Precisamos da sua ajuda. Tem muitas formas de ajudar. Todos são bem vindos, seja para contribuir ou aprender. ' +
         'Você pode ajudar contribuindo em nosso código-fonte open source. ' +

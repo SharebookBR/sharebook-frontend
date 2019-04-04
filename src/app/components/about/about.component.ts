@@ -16,11 +16,11 @@ export class AboutComponent implements OnInit {
 
   contributors: Contributor[] = [];
 
-  constructor(private contributorsService: ContributorsService, private seo: SeoService) {
+  constructor(private contributorsService: ContributorsService, private _seo: SeoService) {
   }
 
   ngOnInit() {
-    this.seo.generateTags({
+    this._seo.generateTags({
       title: 'Quem somos.',
       description: 'Sharebook é um projeto social. Um app livre e gratuito para ajudar as pessoas a doar ou ganhar livros.' +
         'Foi fundado pelo Raffaello Damgaard após conversar com Vagner Nunes que incentivou a ideia. ' +

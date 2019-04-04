@@ -18,13 +18,13 @@ export class ContactUsComponent implements OnInit {
   pageTitle: string;
 
   constructor(private _formBuilder: FormBuilder, private _scContactUs: ContactUsService,
-              private _toastr: ToastrService, private seo: SeoService) {
+              private _toastr: ToastrService, private _seo: SeoService) {
     this.createFormGroup();
   }
 
   ngOnInit() {
     // TODO: receber mensagem por query string, pra integrar com outras pages.
-    this.seo.generateTags({
+    this._seo.generateTags({
       title: 'Fale Conosco',
       description: 'Tem alguma dúvida, sugestão de melhoria ou crítica? Entre em contato conosco.' +
         ' É sempre um prazer atendê-lo.Também estamos buscando apoiadores e parceiros pro projeto. ' +

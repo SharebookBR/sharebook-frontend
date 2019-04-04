@@ -49,7 +49,7 @@ export class FormComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     private _ng2ImgMaxService: Ng2ImgMaxService,
-    private seo: SeoService) {
+    private _seo: SeoService) {
 
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
@@ -57,7 +57,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.seo.generateTags({
+    this._seo.generateTags({
       title: 'Doe um livro.',
       description: 'Doe um livro e você vai ficar emocionado com a experiência. Nossos usuários tem relatado que eh emocionante. ' +
         'Apesar de ser no anonimato vc se envolve com muitas histórias incríveis. ' +
