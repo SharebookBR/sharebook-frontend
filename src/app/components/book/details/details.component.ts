@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
-import { BookService } from '../../../core/services/book/book.service';
-import { Category } from '../../../core/models/category';
-import { FreightOptions } from '../../../core/models/freightOptions';
-import { UserService } from '../../../core/services/user/user.service';
-import { Book } from '../../../core/models/book';
+import {BookService} from '../../../core/services/book/book.service';
+import {Category} from '../../../core/models/category';
+import {FreightOptions} from '../../../core/models/freightOptions';
+import {UserService} from '../../../core/services/user/user.service';
+import {Book} from '../../../core/models/book';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RequestComponent } from '../request/request.component';
-import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { UserInfo } from 'src/app/core/models/userInfo';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RequestComponent} from '../request/request.component';
+import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {UserInfo} from 'src/app/core/models/userInfo';
+import {ToastrService} from 'ngx-toastr';
+import {SeoService} from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-details',
@@ -44,7 +46,8 @@ export class DetailsComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _modalService: NgbModal,
-    private _scAuthentication: AuthenticationService) {
+    private _scAuthentication: AuthenticationService,
+    private _seo: SeoService) {
 
     this._scAuthentication.checkTokenValidity();
   }
@@ -74,60 +77,68 @@ export class DetailsComponent implements OnInit {
     if (slug) {
       this._scBook.getBySlug(slug).subscribe(x => {
 
-        this._scBook.getFreightOptions().subscribe(data => {
-          this.freightOptions = data;
+          this._scBook.getFreightOptions().subscribe(data => {
+            this.freightOptions = data;
 
-          const name = this.freightOptions.find(obj => obj.value.toString() === x.freightOption.toString());
-          this.freightName = name.text;
+            const name = this.freightOptions.find(obj => obj.value.toString() === x.freightOption.toString());
+            this.freightName = name.text;
 
-          this.bookInfo = x;
-          this.pageTitle = this.bookInfo.title;
-          this.available = this.bookInfo.approved;
-          const chooseDate = Math.floor(new Date(this.bookInfo.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate   = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+            this.bookInfo = x;
+            this.pageTitle = this.bookInfo.title;
+            this.available = this.bookInfo.approved;
+            const chooseDate = Math.floor(new Date(this.bookInfo.chooseDate).getTime() / (3600 * 24 * 1000));
+            const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          this.daysToChoose = chooseDate - todayDate;
-          this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
+            this.daysToChoose = chooseDate - todayDate;
+            this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
-          if (this.myUser.name) {
-            switch (x.freightOption.toString()) {
-              case 'City': {
-                if (this.bookInfo.user.address.city !== this.myUser.address.city) {
-                  this.isFreeFreight = false;
+            if (this.myUser.name) {
+              switch (x.freightOption.toString()) {
+                case 'City': {
+                  if (this.bookInfo.user.address.city !== this.myUser.address.city) {
+                    this.isFreeFreight = false;
+                  }
+                  break;
                 }
-                break;
-              }
-              case 'State': {
-                if (this.bookInfo.user.address.state !== this.myUser.address.state) {
-                  this.isFreeFreight = false;
+                case 'State': {
+                  if (this.bookInfo.user.address.state !== this.myUser.address.state) {
+                    this.isFreeFreight = false;
+                  }
+                  break;
                 }
-                break;
-              }
-              case 'WithoutFreight': {
-                this.isFreeFreight = false;
-                break;
-              }
-              default: {
-                this.isFreeFreight = true;
+                case 'WithoutFreight': {
+                  this.isFreeFreight = false;
+                  break;
+                }
+                default: {
+                  this.isFreeFreight = true;
+                }
               }
             }
-          }
 
-          if (this.userProfile) {
-            this._scBook.getRequested(x.id).subscribe(requested => {
-              this.requested = requested.value.bookRequested;
+            if (this.userProfile) {
+              this._scBook.getRequested(x.id).subscribe(requested => {
+                this.requested = requested.value.bookRequested;
+                this.state = 'ready';
+              });
+            } else {
               this.state = 'ready';
+            }
+
+            this._seo.generateTags({
+              title: this.bookInfo.title,
+              description: this.bookInfo.synopsis,
+              image: this.bookInfo.imageUrl,
+              slug: slug
             });
-          } else {
-            this.state = 'ready';
-          }
+
+          });
+        }
+        , err => {
+          console.error(err);
+          this.pageTitle = 'Ops... Não encontramos esse livro :/';
+          this.state = 'not-found';
         });
-      }
-      , err => {
-        console.error(err);
-        this.pageTitle = 'Ops... Não encontramos esse livro :/';
-        this.state = 'not-found';
-      });
     } else {
       this.pageTitle = 'Ops... Não encontramos esse livro :/';
       this.state = 'not-found';
@@ -135,7 +146,7 @@ export class DetailsComponent implements OnInit {
   }
 
   onRequestBook() {
-    const modalRef = this._modalService.open(RequestComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+    const modalRef = this._modalService.open(RequestComponent, {backdropClass: 'light-blue-backdrop', centered: true});
 
     modalRef.result.then((result) => {
       if (result === 'Success') {
@@ -151,7 +162,7 @@ export class DetailsComponent implements OnInit {
   }
 
   onLoginBook() {
-    this._router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+    this._router.navigate(['/login'], {queryParams: {returnUrl: this._activatedRoute.snapshot.url.join('/')}});
   }
 
   onConvertImageToBase64(event: any) {
