@@ -178,8 +178,14 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onChangeFieldFreightOption(freightOption: string) {
+  onChangeFieldFreightOption(freightOption: string, p) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
+
+    if (freightOption === 'WithoutFreight') {
+      p.open();
+    } else {
+      p.close();
+    }
   }
 
   onChangeFieldApproved(approved: boolean) {
@@ -209,15 +215,6 @@ export class FormComponent implements OnInit {
       this.formGroup.controls['imageName'].setErrors({ InvalidExtension: true });
       this.formGroup.controls['imageBytes'].setValue('');
       this.isImageLoaded = false;
-    }
-  }
-
-  showFreightPopover(p) {
-    const freight = this.formGroup.controls['freightOption'].value;
-    if (freight === 'WithoutFreight') {
-      p.open();
-    } else {
-      p.close();
     }
   }
 
