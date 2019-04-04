@@ -1,0 +1,7 @@
+version: '3.1'
+
+services:
+  app:
+    image: 'sharebook'
+    ports:
+      - 80:80

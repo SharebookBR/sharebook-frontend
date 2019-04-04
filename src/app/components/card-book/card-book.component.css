@@ -8,6 +8,7 @@
 .card {
   max-height: 330px;
   min-height: 330px;
+  margin-bottom: 10px;
 }
 
 .card:hover {

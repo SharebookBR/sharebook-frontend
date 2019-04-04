@@ -28,7 +28,8 @@
     "test-single": "ng test --watch=false --progress",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "docker-dev": "ng build && docker image build -t sharebook ."
   },
   "private": true,
   "dependencies": {
@@ -40,7 +41,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^4.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^4.1.1",
     "base64-img": "^1.0.4",
     "core-js": "^2.5.4",
     "moment-timezone": "^0.5.21",

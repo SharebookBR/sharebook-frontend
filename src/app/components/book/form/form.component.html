@@ -111,19 +111,21 @@
           </div>
         </div>
 
+        <ng-template #popContent>
+            <p>Sabia que com o <b>registro módico</b> o envio de livros para todo Brasil fica baratinho? Em média apenas dez reais.</p>
+            <p>Mais detalhes,
+            <a href="https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544" target="_blank">clique aqui.</a></p>
+        </ng-template>
+
         <div class="form-group col-md-8">
 
-          <ng-template #popContent>
-            <p>Sabia que com o <b>registro módico</b> o envio de livros para todo Brasil fica baratinho? Em média apenas dez reais.</p>
-            <p>Mais detalhes, <a href="https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544" target="_blank">clique aqui.</a></p>
-          </ng-template>
-
           <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons" #p="ngbPopover" placement="top" [ngbPopover]="popContent" triggers="manual" popoverTitle="Espere! 🙏" (click)="showFreightPopover(p)">
+          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
             <label *ngFor="let option of freightOptions" [ngClass]="(formGroup.value.freightOption === option.value)
                 ? 'btn btn-outline-secondary form-control active'
-                : 'btn btn-outline-secondary form-control'" (click)="onChangeFieldFreightOption(option.value)">
-              <input type="radio" name="freightOption" formControlName="freightOption" (blur)="p.close()"> {{option.text}}
+                : 'btn btn-outline-secondary form-control'" (click)="onChangeFieldFreightOption(option.value, p)"
+                #p="ngbPopover" placement="top" [autoClose]="'outside'" [ngbPopover]="popContent" triggers="manual" popoverTitle="Espere! 🙏">
+              <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
             </label>
           </div>
 
