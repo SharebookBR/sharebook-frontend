@@ -25,11 +25,11 @@ export class HomeComponent implements OnInit {
       this.top15NewBooks = newBooks;
       this.hasBook = (newBooks.length > 0 ? true : false);
 
-      if (this.hasBook) {
+      /*if (this.hasBook) {
         this._scBook.getRandom15Books().subscribe(randomBooks => {
           this.random15NewBooks = randomBooks;
         });
-      }
+      }*/
     });
   }
 
