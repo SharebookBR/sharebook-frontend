@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   public top15NewBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
+  public hasBook: Boolean = false;
 
 
   constructor(
@@ -20,8 +21,16 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._scBook.getTop15NewBooks().subscribe(data => (this.top15NewBooks = data));
-    this._scBook.getRandom15Books().subscribe(data => (this.random15NewBooks = data));
+    this._scBook.getTop15NewBooks().subscribe(newBooks => {
+      this.top15NewBooks = newBooks;
+      this.hasBook = (newBooks.length > 0 ? true : false);
+
+      /*if (this.hasBook) {
+        this._scBook.getRandom15Books().subscribe(randomBooks => {
+          this.random15NewBooks = randomBooks;
+        });
+      }*/
+    });
   }
 
 
