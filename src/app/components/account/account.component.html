@@ -46,7 +46,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-          <input formControlName="phone" [dropSpecialCharacters]="false" mask="(99) 99999-9999" type="text" class="form-control">
+          <input formControlName="phone" [dropSpecialCharacters]="false" mask="(00) 00000-0000" type="text" class="form-control">
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
@@ -82,7 +82,7 @@
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="postalCode">CEP</label>
           <div class="input-group">
-            <input formControlName="postalCode" [dropSpecialCharacters]="false" mask="99999-999" type="text" class="form-control" (blur)="getAddressByPostalCode($event.target.value)">
+            <input formControlName="postalCode" [dropSpecialCharacters]="false" mask="00000-000" type="text" class="form-control" (blur)="getAddressByPostalCode($event.target.value)">
             <button class="btn btn-cep" (click)="onGetAddressByPostalCode(); false"><i class="fa-white fa fa-repeat"></i></button>
             <div class="input-group-addon append" [hidden]="isGettingAddress">
               <i class="fa fa-map-marker"></i>
