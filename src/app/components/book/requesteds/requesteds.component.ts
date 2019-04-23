@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BookService  } from '../../../core/services/book/book.service';
+import { BookService } from '../../../core/services/book/book.service';
 import { BookRequestStatus } from '../../../core/models/BookRequestStatus';
 
 @Component({
@@ -8,17 +8,13 @@ import { BookRequestStatus } from '../../../core/models/BookRequestStatus';
   styleUrls: ['./requesteds.component.css']
 })
 export class RequestedsComponent implements OnInit {
-
   requestedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
 
-  constructor(
-    private _bookService: BookService
-  ) { }
+  constructor(private _bookService: BookService) {}
 
   ngOnInit() {
-
     this.isLoading = true;
 
     this._bookService.getRequestedBooks(1, 9999).subscribe(resp => {

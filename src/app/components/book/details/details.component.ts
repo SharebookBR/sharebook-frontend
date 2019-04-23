@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {BookService} from '../../../core/services/book/book.service';
-import {Category} from '../../../core/models/category';
-import {FreightOptions} from '../../../core/models/freightOptions';
-import {UserService} from '../../../core/services/user/user.service';
-import {Book} from '../../../core/models/book';
+import { BookService } from '../../../core/services/book/book.service';
+import { Category } from '../../../core/models/category';
+import { FreightOptions } from '../../../core/models/freightOptions';
+import { UserService } from '../../../core/services/user/user.service';
+import { Book } from '../../../core/models/book';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {RequestComponent} from '../request/request.component';
-import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
-import {UserInfo} from 'src/app/core/models/userInfo';
-import {ToastrService} from 'ngx-toastr';
-import {SeoService} from '../../../core/services/seo/seo.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RequestComponent } from '../request/request.component';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { UserInfo } from 'src/app/core/models/userInfo';
+import { ToastrService } from 'ngx-toastr';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-details',
@@ -20,7 +20,6 @@ import {SeoService} from '../../../core/services/seo/seo.service';
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent implements OnInit {
-
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
 
@@ -47,8 +46,8 @@ export class DetailsComponent implements OnInit {
     private _router: Router,
     private _modalService: NgbModal,
     private _scAuthentication: AuthenticationService,
-    private _seo: SeoService) {
-
+    private _seo: SeoService
+  ) {
     this._scAuthentication.checkTokenValidity();
   }
 
@@ -60,7 +59,6 @@ export class DetailsComponent implements OnInit {
     } else {
       this.getBook();
     }
-
   }
 
   getMyUser() {
@@ -72,11 +70,11 @@ export class DetailsComponent implements OnInit {
 
   getBook() {
     let slug = '';
-    this._activatedRoute.params.subscribe((param) => slug = param.slug);
+    this._activatedRoute.params.subscribe(param => (slug = param.slug));
 
     if (slug) {
-      this._scBook.getBySlug(slug).subscribe(x => {
-
+      this._scBook.getBySlug(slug).subscribe(
+        x => {
           this._scBook.getFreightOptions().subscribe(data => {
             this.freightOptions = data;
 
@@ -90,7 +88,8 @@ export class DetailsComponent implements OnInit {
             const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
             this.daysToChoose = chooseDate - todayDate;
-            this.chooseDateInfo = (!this.daysToChoose || this.daysToChoose <= 0) ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
+            this.chooseDateInfo =
+              !this.daysToChoose || this.daysToChoose <= 0 ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
             if (this.myUser.name) {
               switch (x.freightOption.toString()) {
@@ -131,14 +130,14 @@ export class DetailsComponent implements OnInit {
               image: this.bookInfo.imageUrl,
               slug: slug
             });
-
           });
-        }
-        , err => {
+        },
+        err => {
           console.error(err);
           this.pageTitle = 'Ops... Não encontramos esse livro :/';
           this.state = 'not-found';
-        });
+        }
+      );
     } else {
       this.pageTitle = 'Ops... Não encontramos esse livro :/';
       this.state = 'not-found';
@@ -146,27 +145,32 @@ export class DetailsComponent implements OnInit {
   }
 
   onRequestBook() {
-    const modalRef = this._modalService.open(RequestComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-
-    modalRef.result.then((result) => {
-      if (result === 'Success') {
-        this.requested = true;
-      }
-    }, (reason) => {
-      if (reason === 'Success') {
-        this.requested = true;
-      }
+    const modalRef = this._modalService.open(RequestComponent, {
+      backdropClass: 'light-blue-backdrop',
+      centered: true
     });
+
+    modalRef.result.then(
+      result => {
+        if (result === 'Success') {
+          this.requested = true;
+        }
+      },
+      reason => {
+        if (reason === 'Success') {
+          this.requested = true;
+        }
+      }
+    );
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
   }
 
   onLoginBook() {
-    this._router.navigate(['/login'], {queryParams: {returnUrl: this._activatedRoute.snapshot.url.join('/')}});
+    this._router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
   }
 
   onConvertImageToBase64(event: any) {
-
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -178,5 +182,4 @@ export class DetailsComponent implements OnInit {
       };
     }
   }
-
 }

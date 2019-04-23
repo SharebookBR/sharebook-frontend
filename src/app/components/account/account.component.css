@@ -2,7 +2,7 @@ form i.fa {
   position: absolute;
   top: 8px;
   left: 15px;
-  color: #2098D1;
+  color: #2098d1;
   font-size: 22px;
   z-index: 99;
 }
@@ -10,7 +10,7 @@ form i.fa {
 form i.fa-white {
   position: inherit;
   color: #ffffff;
-  z-index: 99;    
+  z-index: 99;
 }
 
 .form-control {
@@ -20,7 +20,7 @@ form i.fa-white {
 
 /* Style buttons */
 .btn-cep {
-  background-color: #2098D1;
+  background-color: #2098d1;
   cursor: pointer;
 }
 

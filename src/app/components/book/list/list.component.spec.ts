@@ -16,9 +16,7 @@ describe('ListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ListComponent
-      ],
+      declarations: [ListComponent],
       imports: [
         Ng2SmartTableModule,
         AppConfigModule,
@@ -28,12 +26,8 @@ describe('ListComponent', () => {
         FormsModule,
         ReactiveFormsModule
       ],
-      providers: [
-
-        ConfirmationDialogService
-      ]
-    })
-    .compileComponents();
+      providers: [ConfirmationDialogService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

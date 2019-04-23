@@ -12,9 +12,8 @@ import { FreightOptions } from '../../../core/models/freightOptions';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import {ContributorsService} from '../../../core/services/contributors/contributors.service';
-import {SeoService} from '../../../core/services/seo/seo.service';
-
+import { ContributorsService } from '../../../core/services/contributors/contributors.service';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-form',
@@ -22,7 +21,6 @@ import {SeoService} from '../../../core/services/seo/seo.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
@@ -49,17 +47,17 @@ export class FormComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     private _ng2ImgMaxService: Ng2ImgMaxService,
-    private _seo: SeoService) {
-
+    private _seo: SeoService
+  ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
   }
 
   ngOnInit() {
-
     this._seo.generateTags({
       title: 'Doe um livro.',
-      description: 'Doe um livro e você vai ficar emocionado com a experiência. Nossos usuários tem relatado que eh emocionante. ' +
+      description:
+        'Doe um livro e você vai ficar emocionado com a experiência. Nossos usuários tem relatado que eh emocionante. ' +
         'Apesar de ser no anonimato vc se envolve com muitas histórias incríveis. ' +
         'Vc não faz ideia de como tem pessoas que realmente precisam. ' +
         'E da força transformadora que um simples livro causa na vida de uma pessoa. ' +
@@ -73,14 +71,9 @@ export class FormComponent implements OnInit {
       this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
     }
 
-    this._scBook.getFreightOptions().subscribe(data =>
-      this.freightOptions = data
-    );
+    this._scBook.getFreightOptions().subscribe(data => (this.freightOptions = data));
 
-    this._scCategory.getAll().subscribe(data =>
-      this.categories = data
-    );
-
+    this._scCategory.getAll().subscribe(data => (this.categories = data));
   }
 
   createFormGroup() {
@@ -97,7 +90,7 @@ export class FormComponent implements OnInit {
       approved: false,
       imageUrl: '',
       imageSlug: '',
-      synopsis: ['', [Validators.maxLength(2000)]],
+      synopsis: ['', [Validators.maxLength(2000)]]
     });
   }
 
@@ -122,7 +115,7 @@ export class FormComponent implements OnInit {
 
   getBookSaved() {
     let id = '';
-    this._activatedRoute.params.subscribe((param) => id = param.id);
+    this._activatedRoute.params.subscribe(param => (id = param.id));
     this.itsEditMode = !!id;
 
     if (this.userProfile === 'Administrator' && id) {
@@ -145,8 +138,7 @@ export class FormComponent implements OnInit {
         this.formGroup.get('userIdFacilitator').setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
         this.formGroup.setValue(bookForUpdate);
         this.getAllFacilitators();
-      }
-      );
+      });
     }
 
     // ao doar um livro, o userId é do usuário logado.
@@ -154,7 +146,6 @@ export class FormComponent implements OnInit {
       this.formGroup.get('userId').setValue(this.shareBookUser['userId']);
       this.getAllFacilitators();
     }
-
   }
 
   onAddBook() {
@@ -178,15 +169,13 @@ export class FormComponent implements OnInit {
               this._toastr.error(resp.messages[0]);
             }
             this.isLoading = false;
-          }
-          );
+          });
         } else {
           this._scBook.update(this.formGroup.value).subscribe(resp => {
             this.isSaved = true;
             this.pageTitle = 'Registro atualizado';
             this.isLoading = false;
-          }
-          );
+          });
         }
       }
     }
@@ -207,14 +196,12 @@ export class FormComponent implements OnInit {
   }
 
   onConvertImageToBase64(imageResult: ImageResult) {
-
     if (!imageResult.error) {
-
       this.isLoading = true;
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
 
-      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000).subscribe((result) => {
+      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000).subscribe(result => {
         const reader = new FileReader();
         reader.readAsDataURL(result);
 
@@ -233,8 +220,6 @@ export class FormComponent implements OnInit {
   }
 
   getAllFacilitators() {
-    this._scUser.getAllFacilitators(this.formGroup.get('userId').value).subscribe(data =>
-      this.facilitators = data
-    );
+    this._scUser.getAllFacilitators(this.formGroup.get('userId').value).subscribe(data => (this.facilitators = data));
   }
 }

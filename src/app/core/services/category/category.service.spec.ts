@@ -7,14 +7,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppConfigModule
-      ],
-      providers: [
-        CategoryService,
-        HttpClient,
-        HttpHandler
-      ]
+      imports: [AppConfigModule],
+      providers: [CategoryService, HttpClient, HttpHandler]
     });
   });
 

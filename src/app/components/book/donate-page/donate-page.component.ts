@@ -12,7 +12,6 @@ import { DonateComponent } from '../donate/donate.component';
   styleUrls: ['./donate-page.component.css']
 })
 export class DonatePageComponent implements OnInit {
-
   donateUsers: LocalDataSource;
   isLoading: Boolean = true;
   settings: any;
@@ -35,7 +34,7 @@ export class DonatePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._activatedRoute.params.subscribe((param) => this.bookId = param.id);
+    this._activatedRoute.params.subscribe(param => (this.bookId = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
 
@@ -44,7 +43,8 @@ export class DonatePageComponent implements OnInit {
       this.isLoading = false;
     });
 
-    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+    const btnDonate =
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
       ' <i class="fa fa-trophy"></i> </span>';
 
     this.settings = {
@@ -85,22 +85,25 @@ export class DonatePageComponent implements OnInit {
         custom: [
           {
             name: 'donate',
-            title: btnDonate,
+            title: btnDonate
           }
         ],
-        position: 'right', // left|right
-      },
+        position: 'right' // left|right
+      }
     };
   }
 
   onCustom(event) {
     if (event.action === 'donate') {
-      const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-      modalRef.componentInstance.bookId       = this.bookId;
-      modalRef.componentInstance.userId       = event.data.userId;
+      const modalRef = this._modalService.open(DonateComponent, {
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+      modalRef.componentInstance.bookId = this.bookId;
+      modalRef.componentInstance.userId = event.data.userId;
       modalRef.componentInstance.userNickName = event.data.requesterNickName;
 
-      modalRef.result.then((data) => {
+      modalRef.result.then(data => {
         if (data === 'ok') {
           this.back();
         }
@@ -111,5 +114,4 @@ export class DonatePageComponent implements OnInit {
   back() {
     this._router.navigate([this.returnUrl]);
   }
-
 }

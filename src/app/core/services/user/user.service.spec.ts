@@ -8,14 +8,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UserService,
-        HttpClient,
-        HttpHandler
-      ],
-      imports: [
-        AppConfigModule
-      ]
+      providers: [UserService, HttpClient, HttpHandler],
+      imports: [AppConfigModule]
     });
   });
 

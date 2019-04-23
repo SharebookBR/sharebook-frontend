@@ -12,20 +12,10 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HomeComponent
-      ],
-      imports: [
-        AppConfigModule,
-        FormsModule,
-        ReactiveFormsModule
-      ],
-      providers: [
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [HomeComponent],
+      imports: [AppConfigModule, FormsModule, ReactiveFormsModule],
+      providers: [HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

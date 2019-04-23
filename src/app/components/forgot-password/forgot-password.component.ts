@@ -13,7 +13,6 @@ import * as AppConst from '../../core/utils/app.const';
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent implements OnInit {
-
   formGroup: FormGroup;
 
   constructor(
@@ -23,18 +22,21 @@ export class ForgotPasswordComponent implements OnInit {
     private _scUser: UserService,
     private _toastr: ToastrService
   ) {
-    this.formGroup = _formBuilder.group({
-      hashCodePassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: PasswordValidation.MatchPassword
-    });
+    this.formGroup = _formBuilder.group(
+      {
+        hashCodePassword: ['', Validators.required],
+        newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      {
+        validator: PasswordValidation.MatchPassword
+      }
+    );
   }
 
   ngOnInit() {
     let hashCodePassword = '';
-    this._activatedRoute.params.subscribe((param) => {
+    this._activatedRoute.params.subscribe(param => {
       hashCodePassword = param.hashCodePassword;
 
       const changeUserPasswordByHashCodeVM = {
@@ -45,7 +47,6 @@ export class ForgotPasswordComponent implements OnInit {
 
       this.formGroup.setValue(changeUserPasswordByHashCodeVM);
     });
-
   }
 
   changePassword() {
@@ -65,5 +66,4 @@ export class ForgotPasswordComponent implements OnInit {
       );
     }
   }
-
 }

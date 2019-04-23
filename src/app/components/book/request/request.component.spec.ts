@@ -18,9 +18,7 @@ describe('RequestComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        RequestComponent
-      ],
+      declarations: [RequestComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -30,15 +28,8 @@ describe('RequestComponent', () => {
         AppConfigModule,
         RouterTestingModule
       ],
-      providers: [
-        NgbActiveModal,
-        HttpClient,
-        HttpHandler,
-        UserService,
-        AlertService
-      ]
-    })
-    .compileComponents();
+      providers: [NgbActiveModal, HttpClient, HttpHandler, UserService, AlertService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

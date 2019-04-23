@@ -10,20 +10,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
   public top15NewBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
   public hasBook: Boolean = true;
 
-
-  constructor(
-    private _scBook: BookService
-  ) { }
+  constructor(private _scBook: BookService) {}
 
   ngOnInit() {
     this._scBook.getTop15NewBooks().subscribe(newBooks => {
       this.top15NewBooks = newBooks;
-      this.hasBook = (newBooks.length > 0 ? true : false);
+      this.hasBook = newBooks.length > 0 ? true : false;
 
       /*if (this.hasBook) {
         this._scBook.getRandom15Books().subscribe(randomBooks => {
@@ -32,6 +28,4 @@ export class HomeComponent implements OnInit {
       }*/
     });
   }
-
-
 }

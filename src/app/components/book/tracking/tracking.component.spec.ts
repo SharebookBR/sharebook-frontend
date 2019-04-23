@@ -15,19 +15,10 @@ describe('TrackingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrackingComponent ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        AppConfigModule
-      ],
-      providers: [
-        NgbActiveModal,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [TrackingComponent],
+      imports: [FormsModule, ReactiveFormsModule, AppConfigModule],
+      providers: [NgbActiveModal, HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

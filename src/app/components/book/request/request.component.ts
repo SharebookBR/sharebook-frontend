@@ -9,7 +9,6 @@ import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
@@ -39,8 +38,8 @@ export class RequestComponent implements OnInit {
     private _scUser: UserService,
     private _router: Router,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder) {
-
+    private _formBuilder: FormBuilder
+  ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
     });
@@ -51,39 +50,41 @@ export class RequestComponent implements OnInit {
     this.modalTitle = 'Quanto você quer esse livro?';
 
     this._scUser.getUserData().subscribe(userInfo => {
-      this.addressLine01 = userInfo.address.street + ',' + userInfo.address.number + ' ' +
-        ((!userInfo.address.complement) ? '' : userInfo.address.complement);
-      this.addressLine02 = userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
+      this.addressLine01 =
+        userInfo.address.street +
+        ',' +
+        userInfo.address.number +
+        ' ' +
+        (!userInfo.address.complement ? '' : userInfo.address.complement);
+      this.addressLine02 =
+        userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
       this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
     });
   }
 
   onRequest() {
-
     this.state = 'loading';
     const reason = this.formGroup.value.myNote;
-    this._scBook.requestBook(this.bookId, reason).subscribe(resp => {
-
-      if (resp.success) {
-        this.state = 'request-success';
-        this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
-      } else {
-        this.lastError = resp.messages[0];
-        this.state = 'request-error';
-        this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
-      }
-    },
+    this._scBook.requestBook(this.bookId, reason).subscribe(
+      resp => {
+        if (resp.success) {
+          this.state = 'request-success';
+          this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
+        } else {
+          this.lastError = resp.messages[0];
+          this.state = 'request-error';
+          this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
+        }
+      },
       error => {
         this.lastError = error;
         this.state = 'request-error';
         this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
       }
     );
-
   }
 
   updateAddress() {
     this._router.navigate(['/account']);
   }
-
 }
