@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   public top15NewBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
-  public hasBook: Boolean = false;
+  public hasBook: Boolean = true;
 
   constructor(private _scBook: BookService) {}
 
