@@ -31,16 +31,9 @@ https://github.com/SharebookBR/frontend
 
 ### 4.2 INSTALE OS PLUGUINS RECOMENADADOS
 
-Para padronizarmos a formatação do código, é necessário instalar o pluguin no VSCode chamado "Prettier - Code Formatter", e inserir as seguintes configurações em seu settings.json:
+Para padronizarmos a formatação do código, é necessário instalar o pluguin no VSCode chamado "Prettier - Code Formatter".
 
-```bash
-"prettier.singleQuote": true,
-"prettier.jsxSingleQuote": true,
-"prettier.tslintIntegration": true,
-"prettier.jsxBracketSameLine": true,
-"prettier.eslintIntegration": true,
-```
-Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e JSHint
+Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e JSHint.
 
 ### 4.3 ESCREVA CÓDIGO
 
