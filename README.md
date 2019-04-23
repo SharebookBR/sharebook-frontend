@@ -29,7 +29,20 @@ https://trello.com/invite/sharebook6/928f21ef82592b5edafde06f171d338b
 
 https://github.com/SharebookBR/frontend
 
-### 4.2 ESCREVA CÓDIGO
+### 4.2 INSTALE OS PLUGUINS RECOMENADADOS
+
+Para padronizarmos a formatação do código, é necessário instalar o pluguin no VSCode chamado "Prettier - Code Formatter", e inserir as seguintes configurações em seu settings.json:
+
+```bash
+"prettier.singleQuote": true,
+"prettier.jsxSingleQuote": true,
+"prettier.tslintIntegration": true,
+"prettier.jsxBracketSameLine": true,
+"prettier.eslintIntegration": true,
+```
+Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e JSHint
+
+### 4.3 ESCREVA CÓDIGO
 
 Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie e aguarde o PULL REQUEST ser aprovado.
 
