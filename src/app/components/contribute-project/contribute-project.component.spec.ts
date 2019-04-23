@@ -11,9 +11,8 @@ describe('ContributeProjectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContributeProjectComponent ]
-    })
-    .compileComponents();
+      declarations: [ContributeProjectComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

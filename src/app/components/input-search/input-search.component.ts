@@ -8,13 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./input-search.component.css']
 })
 export class InputSearchComponent implements OnInit {
-
   public searchForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private _router: Router
-  ) { }
+  constructor(private fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {
     this.searchForm = this.fb.group({
@@ -25,5 +21,4 @@ export class InputSearchComponent implements OnInit {
   public search(): void {
     this._router.navigate(['/book/search', this.searchForm.value.paramSearch]);
   }
-
 }

@@ -13,7 +13,6 @@ import * as AppConst from '../../core/utils/app.const';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-
   formGroup: FormGroup;
 
   constructor(
@@ -22,17 +21,19 @@ export class ChangePasswordComponent implements OnInit {
     private _router: Router,
     private _formBuilder: FormBuilder
   ) {
-    this.formGroup = _formBuilder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: PasswordValidation.MatchPassword
-    });
+    this.formGroup = _formBuilder.group(
+      {
+        oldPassword: ['', [Validators.required]],
+        newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      {
+        validator: PasswordValidation.MatchPassword
+      }
+    );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   changePassword() {
     if (this.formGroup.valid) {

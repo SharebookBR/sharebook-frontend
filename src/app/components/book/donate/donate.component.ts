@@ -7,14 +7,12 @@ import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-donate',
   templateUrl: './donate.component.html',
   styleUrls: ['./donate.component.css']
 })
 export class DonateComponent implements OnInit {
-
   @Input() bookId;
   @Input() userId;
   @Input() userNickName;
@@ -30,8 +28,8 @@ export class DonateComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private _scBook: BookService,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder) {
-
+    private _formBuilder: FormBuilder
+  ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
     });
@@ -68,5 +66,4 @@ export class DonateComponent implements OnInit {
       }
     );
   }
-
 }

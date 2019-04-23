@@ -11,9 +11,8 @@ describe('MainUsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainUsersComponent ]
-    })
-    .compileComponents();
+      declarations: [MainUsersComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

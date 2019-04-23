@@ -15,7 +15,6 @@ import { Address } from '../../core/models/address';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-
   formGroup: FormGroup;
   private _subscription: Subscription;
   address = new Address();
@@ -28,7 +27,6 @@ export class AccountComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _AddressService: AddressService
   ) {
-
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
@@ -92,21 +90,17 @@ export class AccountComponent implements OnInit {
   }
 
   getAddressByPostalCode(postalCode: string) {
-
     this.isGettingAddress = true;
 
-    this._AddressService.getAddressByPostalCode(postalCode)
-      .subscribe((address: Address) => {
-
-        this.address = address;
-        this.address.country = 'Brasil';
-        this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
-        this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood.substring(0, 50));
-        this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
-        this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
-        this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
-        this.isGettingAddress = false;
-
-      });
+    this._AddressService.getAddressByPostalCode(postalCode).subscribe((address: Address) => {
+      this.address = address;
+      this.address.country = 'Brasil';
+      this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
+      this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood.substring(0, 50));
+      this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
+      this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
+      this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
+      this.isGettingAddress = false;
+    });
   }
 }

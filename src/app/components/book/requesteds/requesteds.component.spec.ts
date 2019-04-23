@@ -12,17 +12,9 @@ describe('RequestedsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        RequestedsComponent
-      ],
-      imports: [
-        Ng2SmartTableModule,
-        AppConfigModule,
-        FormsModule,
-        ReactiveFormsModule
-      ]
-    })
-    .compileComponents();
+      declarations: [RequestedsComponent],
+      imports: [Ng2SmartTableModule, AppConfigModule, FormsModule, ReactiveFormsModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

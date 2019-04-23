@@ -9,7 +9,6 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
   styleUrls: ['./facilitator-notes.component.css']
 })
 export class FacilitatorNotesComponent implements OnInit {
-
   @Input() bookId;
   @Input() bookTitle;
   @Input() facilitatorNotes;
@@ -20,41 +19,33 @@ export class FacilitatorNotesComponent implements OnInit {
   state = 'loading'; // loading, form, error
   lastError: string;
 
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private _scBook: BookService,
-    private _formBuilder: FormBuilder) {
-      this.formGroup = _formBuilder.group({
-        bookId: '',
-        facilitatorNotes: ['', [Validators.required]]
-      });
-    }
+  constructor(public activeModal: NgbActiveModal, private _scBook: BookService, private _formBuilder: FormBuilder) {
+    this.formGroup = _formBuilder.group({
+      bookId: '',
+      facilitatorNotes: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit() {
-
     const facilitatorNotesForUpdate = {
       bookId: this.bookId,
       facilitatorNotes: ''
     };
     this.formGroup.setValue(facilitatorNotesForUpdate);
-
   }
 
   onTracking() {
-
     this.isLoading = true;
-    this._scBook.setFacilitatorNotes(this.formGroup.value).subscribe(resp => {
-      this.isLoading = false;
-      this.activeModal.close('Success');
-    },
+    this._scBook.setFacilitatorNotes(this.formGroup.value).subscribe(
+      resp => {
+        this.isLoading = false;
+        this.activeModal.close('Success');
+      },
       error => {
         this.lastError = error;
         this.state = 'request-error';
         this.isLoading = false;
       }
     );
-
   }
-
 }

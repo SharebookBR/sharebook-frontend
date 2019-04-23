@@ -7,11 +7,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 describe('AddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AddressService,
-        HttpClient,
-        HttpHandler
-      ],
+      providers: [AddressService, HttpClient, HttpHandler]
     });
   });
 

@@ -17,24 +17,10 @@ describe('RegisterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        RegisterComponent
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgxMaskModule.forRoot(),
-        RouterTestingModule,
-        AppConfigModule
-      ],
-      providers: [
-        UserService,
-        AddressService,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [RegisterComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgxMaskModule.forRoot(), RouterTestingModule, AppConfigModule],
+      providers: [UserService, AddressService, HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

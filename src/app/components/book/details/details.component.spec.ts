@@ -18,23 +18,10 @@ describe('DetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DetailsComponent
-      ],
-      imports: [
-        RouterTestingModule,
-        AppConfigModule,
-        NgbModule.forRoot(),
-        NgbModalModule
-      ],
-      providers: [
-        UserService,
-        AuthenticationService,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [DetailsComponent],
+      imports: [RouterTestingModule, AppConfigModule, NgbModule.forRoot(), NgbModalModule],
+      providers: [UserService, AuthenticationService, HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

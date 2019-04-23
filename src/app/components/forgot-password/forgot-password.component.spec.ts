@@ -18,23 +18,10 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ForgotPasswordComponent
-       ],
-       imports: [
-         FormsModule,
-         ReactiveFormsModule,
-         RouterTestingModule,
-         AppConfigModule
-       ],
-       providers: [
-         UserService,
-         HttpClient,
-         HttpHandler,
-         AlertService
-       ]
-    })
-    .compileComponents();
+      declarations: [ForgotPasswordComponent],
+      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, AppConfigModule],
+      providers: [UserService, HttpClient, HttpHandler, AlertService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

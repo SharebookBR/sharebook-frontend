@@ -14,21 +14,10 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        HeaderComponent
-      ],
-      imports: [
-        AppConfigModule,
-        RouterTestingModule
-      ],
-      providers: [
-        UserService,
-        HttpClient,
-        HttpHandler,
-        AuthenticationService
-      ]
-    })
-    .compileComponents();
+      declarations: [HeaderComponent],
+      imports: [AppConfigModule, RouterTestingModule],
+      providers: [UserService, HttpClient, HttpHandler, AuthenticationService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -2,11 +2,10 @@
   <h1 class="text-center display-4">Registro</h1>
   <div class="form-row">
     <div class="col">
-
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="name">Nome</label>
         <div class="input-group">
-          <input formControlName="name" name="name" type="text" class="form-control">
+          <input formControlName="name" name="name" type="text" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-address-book"></i>
           </div>
@@ -18,7 +17,7 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
             O nome deve conter no mínimo 3 caracteres.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength') ">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength')">
             O nome deve conter no máximo 200 caracteres.
           </small>
         </div>
@@ -27,7 +26,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
-          <input formControlName="email" type="text" class="form-control">
+          <input formControlName="email" type="text" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-envelope-square"></i>
           </div>
@@ -37,16 +36,16 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
             E-mail obrigatório.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern') ">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern')">
             O e-mail deve ser um e-mail válido.
-          </small>          
+          </small>
         </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="password">Senha</label>
         <div class="input-group">
-          <input formControlName="password" type="password" class="form-control">
+          <input formControlName="password" type="password" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-unlock-alt"></i>
           </div>
@@ -57,7 +56,9 @@
             Senha obrigatória.
           </small>
           <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('pattern')">
-            A senha não atende os requisitos. Mínimo oito caracteres, um caractere especial (&#64;&#36;&#33;&#37;&#42;&#63;&#38;&#35;&#46;&#44;&#45;&#95;&#58;&#59;), um   caractere numérico e uma letra em maiúsculo.
+            A senha não atende os requisitos. Mínimo oito caracteres, um caractere especial
+            (&#64;&#36;&#33;&#37;&#42;&#63;&#38;&#35;&#46;&#44;&#45;&#95;&#58;&#59;), um caractere numérico e uma letra
+            em maiúsculo.
           </small>
         </div>
       </div>
@@ -65,7 +66,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="confirmPassword">Confirmar Senha</label>
         <div class="input-group">
-          <input formControlName="confirmPassword" type="password" class="form-control">
+          <input formControlName="confirmPassword" type="password" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-unlock-alt"></i>
           </div>
@@ -75,16 +76,22 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('required')">
             Confirmação de senha obrigatória.
           </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('MatchPassword') ">
+          <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('MatchPassword')">
             A confirmação de senha não confere com a senha informada.
-          </small>          
+          </small>
         </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-          <input formControlName="phone" type="text" class="form-control" [dropSpecialCharacters]="false" mask="(99) 99999-9999">
+          <input
+            formControlName="phone"
+            type="text"
+            class="form-control"
+            [dropSpecialCharacters]="false"
+            mask="(99) 99999-9999"
+          />
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
@@ -92,18 +99,18 @@
 
         <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('required')">
-              Telefone obrigatório.
+            Telefone obrigatório.
           </small>
           <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
             Telefone deve estar no formato (99) 99999-9999
           </small>
-        </div>        
+        </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="linkedin">LinkedIn</label>
         <div class="input-group">
-          <input formControlName="linkedin" type="text" class="form-control">
+          <input formControlName="linkedin" type="text" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-linkedin"></i>
           </div>
@@ -119,7 +126,14 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="99999-999" class="form-control" (blur)="getAddressByPostalCode($event.target.value)">
+          <input
+            formControlName="postalCode"
+            type="text"
+            [dropSpecialCharacters]="false"
+            mask="99999-999"
+            class="form-control"
+            (blur)="getAddressByPostalCode($event.target.value)"
+          />
           <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -141,12 +155,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="street">Logradouro</label>
         <div class="input-group">
-          <input formControlName="street" type="text" class="form-control" maxlength="80">
+          <input formControlName="street" type="text" class="form-control" maxlength="80" />
           <div class="input-group-addon append">
             <i class="fa fa-road"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['street'].touched && !formGroup.controls['street'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['street'].hasError('required')">
             Endereço obrigatório.
@@ -157,12 +171,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="number">Número</label>
         <div class="input-group">
-          <input formControlName="number" type="text" class="form-control" maxlength="10">
+          <input formControlName="number" type="text" class="form-control" maxlength="10" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['number'].touched && !formGroup.controls['number'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['number'].hasError('required')">
             Número obrigatório.
@@ -173,7 +187,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="complement">Complemento</label>
         <div class="input-group">
-          <input formControlName="complement" type="text" class="form-control" maxlength="50">
+          <input formControlName="complement" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -183,12 +197,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="neighborhood">Bairro</label>
         <div class="input-group">
-          <input formControlName="neighborhood" type="text" class="form-control" maxlength="50">
+          <input formControlName="neighborhood" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['neighborhood'].touched && !formGroup.controls['neighborhood'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['neighborhood'].hasError('required')">
             Bairro obrigatório.
@@ -199,12 +213,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="city">Cidade</label>
         <div class="input-group">
-          <input formControlName="city" type="text" class="form-control" maxlength="50">
+          <input formControlName="city" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['city'].touched && !formGroup.controls['city'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['city'].hasError('required')">
             Cidade obrigatório.
@@ -215,12 +229,12 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="state">Estado</label>
         <div class="input-group">
-          <input formControlName="state" type="text" class="form-control"  maxlength="30">
+          <input formControlName="state" type="text" class="form-control" maxlength="30" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['state'].touched && !formGroup.controls['state'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['state'].hasError('required')">
             Estado obrigatório.
@@ -231,22 +245,28 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="country">País</label>
         <div class="input-group">
-          <input formControlName="country" type="text" class="form-control" maxlength="50">
+          <input formControlName="country" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-globe"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['country'].touched && !formGroup.controls['country'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['country'].hasError('required')">
             País obrigatório.
           </small>
         </div>
-      </div>      
+      </div>
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input type="submit" class="btn btn-primary" value="Registrar" style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid">
+          <input
+            type="submit"
+            class="btn btn-primary"
+            value="Registrar"
+            style="padding-left: 50px; padding-right: 50px"
+            [disabled]="!formGroup.valid"
+          />
           <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
         </div>
       </div>

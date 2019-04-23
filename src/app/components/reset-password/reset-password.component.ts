@@ -7,15 +7,12 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../core/services/user/user.service';
 import * as AppConst from '../../core/utils/app.const';
 
-
-
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
-
   formGroup: FormGroup;
 
   constructor(
@@ -29,8 +26,7 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   resetPassword() {
     if (this.formGroup.valid) {
@@ -49,5 +45,4 @@ export class ResetPasswordComponent implements OnInit {
       );
     }
   }
-
 }

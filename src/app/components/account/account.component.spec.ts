@@ -20,25 +20,10 @@ describe('AccountComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AccountComponent
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgxMaskModule.forRoot(),
-        RouterTestingModule,
-        AppConfigModule
-      ],
-      providers: [
-        UserService,
-
-        AddressService,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [AccountComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgxMaskModule.forRoot(), RouterTestingModule, AppConfigModule],
+      providers: [UserService, AddressService, HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
