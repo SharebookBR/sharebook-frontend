@@ -125,6 +125,22 @@ export class ContributorsService {
           { url: 'https://www.linkedin.com/in/marciojfsantos/', content: 'Linkedin' },
           { url: 'https://github.com/marcios', content: 'Github' }
         ]
+      },
+      {
+        image: 'assets/img/top_contributors/maikon.jpeg',
+        name: 'Maikon Araújo Leão',
+        position: 'Facilitador',
+        links: [{ url: 'https://www.linkedin.com/in/maikon-ara%C3%BAjo/', content: 'Linkedin' },
+        ]
+      },
+      {
+        image: 'assets/img/top_contributors/abraao.jpeg',
+        name: 'Abraão Allysson',
+        position: 'Fullstack Developer',
+        links: [
+          { url: 'https://www.linkedin.com/in/abraaohonorio/', content: 'Linkedin' },
+          { url: 'https://github.com/AbraaoHonorio', content: 'Github' }
+        ]
       }
     ];
 
