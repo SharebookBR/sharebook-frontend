@@ -24,7 +24,7 @@ export class ChangePasswordComponent implements OnInit {
     this.formGroup = _formBuilder.group(
       {
         oldPassword: ['', [Validators.required]],
-        newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]]
       },
       {
