@@ -28,6 +28,7 @@
     "test-single": "ng test --watch=false --progress",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "precommit": "npm run lint",
     "docker-dev": "ng build && docker image build -t sharebook ."
   },
   "private": true,

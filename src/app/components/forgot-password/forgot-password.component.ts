@@ -25,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.formGroup = _formBuilder.group(
       {
         hashCodePassword: ['', Validators.required],
-        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
         confirmPassword: ['', [Validators.required]]
       },
       {
