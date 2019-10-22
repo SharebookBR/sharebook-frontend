@@ -127,10 +127,10 @@ export class ContributorsService {
         ]
       },
       {
-        image: 'assets/img/top_contributors/maikon.jpeg',
-        name: 'Maikon Araújo Leão',
+        image: 'assets/img/top_contributors/rodrigo-silva.jpg',
+        name: 'Rodrigo Silva',
         position: 'Facilitador',
-        links: [{ url: 'https://www.linkedin.com/in/maikon-ara%C3%BAjo/', content: 'Linkedin' },
+        links: [{ url: 'https://www.linkedin.com/in/rodrigoesilva/', content: 'Linkedin' },
         ]
       },
       {
