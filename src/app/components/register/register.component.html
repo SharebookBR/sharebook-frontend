@@ -58,6 +58,9 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
             A senha deve conter no mínimo 6 caracteres.
           </small>
+          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength')">
+            A senha deve conter no máximo 32 caracteres.
+          </small>
         </div>
       </div>
 
