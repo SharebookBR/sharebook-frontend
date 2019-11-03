@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { BookService } from '../../../core/services/book/book.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { BookService  } from '../../../core/services/book/book.service';
 import { BookRequestStatus } from '../../../core/models/BookRequestStatus';
 
 @Component({
@@ -7,17 +11,24 @@ import { BookRequestStatus } from '../../../core/models/BookRequestStatus';
   templateUrl: './requesteds.component.html',
   styleUrls: ['./requesteds.component.css']
 })
-export class RequestedsComponent implements OnInit {
+export class RequestedsComponent implements OnInit, OnDestroy {
+
   requestedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
+  private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _bookService: BookService) {}
+  constructor(
+    private _bookService: BookService
+  ) { }
 
   ngOnInit() {
+
     this.isLoading = true;
 
-    this._bookService.getRequestedBooks(1, 9999).subscribe(resp => {
+    this._bookService.getRequestedBooks(1, 9999)
+    .pipe(takeUntil(this._destroySubscribes$))
+    .subscribe(resp => {
       this.requestedBooks = resp.items;
       this.addBadgeToStatusColumn();
       this.isLoading = false;
@@ -70,5 +81,10 @@ export class RequestedsComponent implements OnInit {
 
       book.status = `<span class="badge badge-${badgeColor}">${book.status}</span>`;
     });
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }
