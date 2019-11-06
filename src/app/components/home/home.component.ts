@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public top15NewBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
+  public hasBook: Boolean = true;
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
