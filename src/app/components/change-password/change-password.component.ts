@@ -1,9 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,10 +12,8 @@ import * as AppConst from '../../core/utils/app.const';
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.css']
 })
-export class ChangePasswordComponent implements OnInit, OnDestroy {
-
+export class ChangePasswordComponent implements OnInit {
   formGroup: FormGroup;
-  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scUser: UserService,
@@ -26,23 +21,23 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _formBuilder: FormBuilder
   ) {
-    this.formGroup = _formBuilder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: PasswordValidation.MatchPassword
-    });
+    this.formGroup = _formBuilder.group(
+      {
+        oldPassword: ['', [Validators.required]],
+        newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      {
+        validator: PasswordValidation.MatchPassword
+      }
+    );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   changePassword() {
     if (this.formGroup.valid) {
-      this._scUser.changePassword(this.formGroup.value)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(
+      this._scUser.changePassword(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._toastr.success('Senha atualizada com sucesso');
@@ -56,10 +51,5 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
         }
       );
     }
-  }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
   }
 }

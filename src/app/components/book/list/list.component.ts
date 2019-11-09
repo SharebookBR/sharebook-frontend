@@ -1,17 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-
 import { BookService } from '../../../core/services/book/book.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
+import { DatePipe } from '@angular/common';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
@@ -20,14 +16,13 @@ import { MainUsersComponent } from '../main-users/main-users.component';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css'],
+  styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit {
   books: LocalDataSource;
   settings: any;
   myBookArray = Array();
   isLoading: boolean;
-  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scBook: BookService,
@@ -36,23 +31,33 @@ export class ListComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     private _modalService: NgbModal,
-    private confirmationDialogService: ConfirmationDialogService) {
-  }
+    private confirmationDialogService: ConfirmationDialogService
+  ) {}
 
   getHtmlForCell(value: string, row: any) {
     if (!!row.donated) {
       return '<font color="green">' + value + '</font>';
     } else if (!!row.chooseDate) {
       // Coloca o chooseDate para as 23:59:59 do dia da escolha
-      const myChooseDate = new Date(new Date(row.chooseDate).getFullYear(),
+      const myChooseDate = new Date(
+        new Date(row.chooseDate).getFullYear(),
         new Date(row.chooseDate).getMonth(),
         new Date(row.chooseDate).getDate(),
-        23, 39, 59, 59);
+        23,
+        39,
+        59,
+        59
+      );
       // Coloca o today para as 23:59:59 do dia
-      const myTodayDate = new Date(new Date().getFullYear(),
+      const myTodayDate = new Date(
+        new Date().getFullYear(),
         new Date().getMonth(),
         new Date().getDate(),
-        23, 39, 59, 59);
+        23,
+        39,
+        59,
+        59
+      );
       if (myChooseDate.getTime() < myTodayDate.getTime()) {
         return '<font color="red">' + value + '</font>';
       } else if (myChooseDate.getTime() === myTodayDate.getTime()) {
@@ -66,12 +71,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   getAllBooks() {
-
     this.isLoading = true;
 
-    this._scBook.getAll()
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(resp => {
+    this._scBook.getAll().subscribe(resp => {
       this.myBookArray = new Array();
       resp['items'].forEach(items => {
         this.myBookArray.push({
@@ -79,12 +81,20 @@ export class ListComponent implements OnInit, OnDestroy {
           creationDate: items.creationDate,
           chooseDate: items.chooseDate,
           bookTitle: items.title,
-          title: items.title + '<br>' +
-            items.author + '<br>' +
-            items.totalInterested + ' interessado(s)<br>' +
-            items.daysInShowcase + ' dia(s) na vitrine',
-          users: items.donor + '<br>' +
-            (!!items.winner ? items.winner : '') + '<br>' +
+          title:
+            items.title +
+            '<br>' +
+            items.author +
+            '<br>' +
+            items.totalInterested +
+            ' interessado(s)<br>' +
+            items.daysInShowcase +
+            ' dia(s) na vitrine',
+          users:
+            items.donor +
+            '<br>' +
+            (!!items.winner ? items.winner : '') +
+            '<br>' +
             (!!items.facilitator ? items.facilitator : ''),
           status: items.status,
           donated: items.donated,
@@ -94,8 +104,7 @@ export class ListComponent implements OnInit, OnDestroy {
       });
       this.books.load(this.myBookArray);
       this.isLoading = false;
-    }
-    );
+    });
   }
 
   ngOnInit() {
@@ -109,17 +118,23 @@ export class ListComponent implements OnInit, OnDestroy {
       myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
     });
 
-    const btnEdit = '<span class="btn btn-primary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Editar Livro">' +
+    const btnEdit =
+      '<span class="btn btn-primary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Editar Livro">' +
       ' <i class="fa fa-edit"></i> </span>';
-    const btnCancelDonation = '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
+    const btnCancelDonation =
+      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
       ' <i class="fa fa-trash"></i> </span>';
-    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+    const btnDonate =
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
       ' <i class="fa fa-trophy"></i> </span>';
-    const btnFacilitatorNotes = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Comentários">' +
+    const btnFacilitatorNotes =
+      '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Comentários">' +
       ' <i class="fa fa-sticky-note"></i> </span>';
-    const btnTrackNumber = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+    const btnTrackNumber =
+      '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
       ' <i class="fa fa-truck"></i> </span>';
-    const btnShowUsersInfo = '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
+    const btnShowUsersInfo =
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
       ' <i class="fa fa-users"></i> </span>';
 
     this.settings = {
@@ -146,7 +161,7 @@ export class ListComponent implements OnInit, OnDestroy {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '28%',
+          width: '28%'
         },
         users: {
           title: 'Doador / Donatário / Facilitador',
@@ -154,7 +169,7 @@ export class ListComponent implements OnInit, OnDestroy {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '28%',
+          width: '28%'
         },
         status: {
           title: 'Status',
@@ -166,11 +181,11 @@ export class ListComponent implements OnInit, OnDestroy {
             type: 'list',
             config: {
               selectText: 'Selecionar...',
-              list: myBookDonationStatus,
-            },
+              list: myBookDonationStatus
+            }
           },
           width: '10%'
-        },
+        }
       },
       actions: {
         delete: false,
@@ -196,11 +211,11 @@ export class ListComponent implements OnInit, OnDestroy {
           },
           {
             name: 'trackNumber',
-            title: btnTrackNumber,
+            title: btnTrackNumber
           },
           {
             name: 'showUsersInfo',
-            title: btnShowUsersInfo,
+            title: btnShowUsersInfo
           }
         ],
         position: 'right' // left|right
@@ -218,19 +233,16 @@ export class ListComponent implements OnInit, OnDestroy {
         if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
           alert('Livro já doado ou cancelado!');
         } else {
-          this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?')
-            .then((confirmed) => {
-              if (confirmed) {
-                this._scBook.cancelDonation(event.data.id)
-                .pipe(takeUntil(this._destroySubscribes$))
-                .subscribe(resp => {
-                  if (resp['success']) {
-                    this._toastr.success('Doação cancelada com sucesso.');
-                    this.reloadData();
-                  }
-                });
-              }
-            });
+          this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?').then(confirmed => {
+            if (confirmed) {
+              this._scBook.cancelDonation(event.data.id).subscribe(resp => {
+                if (resp['success']) {
+                  this._toastr.success('Doação cancelada com sucesso.');
+                  this.reloadData();
+                }
+              });
+            }
+          });
         }
         break;
       }
@@ -244,8 +256,9 @@ export class ListComponent implements OnInit, OnDestroy {
           if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
-            this._router.navigate([`book/donate/${event.data.id}`],
-              { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+            this._router.navigate([`book/donate/${event.data.id}`], {
+              queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }
+            });
           }
         }
         break;
@@ -255,17 +268,23 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'FacilitatorNotes': {
-        const modalRef = this._modalService.open(FacilitatorNotesComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-
-        modalRef.result.then((result) => {
-          if (result === 'Success') {
-            this.reloadData();
-          }
-        }, (reason) => {
-          if (reason === 'Success') {
-            this.reloadData();
-          }
+        const modalRef = this._modalService.open(FacilitatorNotesComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true
         });
+
+        modalRef.result.then(
+          result => {
+            if (result === 'Success') {
+              this.reloadData();
+            }
+          },
+          reason => {
+            if (reason === 'Success') {
+              this.reloadData();
+            }
+          }
+        );
 
         modalRef.componentInstance.bookId = event.data.id;
         modalRef.componentInstance.bookTitle = event.data.bookTitle;
@@ -276,17 +295,23 @@ export class ListComponent implements OnInit, OnDestroy {
         if (!event.data.donated) {
           alert('Livro deve estar como doado!');
         } else {
-          const modalRef = this._modalService.open(TrackingComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-
-          modalRef.result.then((result) => {
-            if (result === 'Success') {
-              this.reloadData();
-            }
-          }, (reason) => {
-            if (reason === 'Success') {
-              this.reloadData();
-            }
+          const modalRef = this._modalService.open(TrackingComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
           });
+
+          modalRef.result.then(
+            result => {
+              if (result === 'Success') {
+                this.reloadData();
+              }
+            },
+            reason => {
+              if (reason === 'Success') {
+                this.reloadData();
+              }
+            }
+          );
 
           modalRef.componentInstance.bookId = event.data.id;
           modalRef.componentInstance.bookTitle = event.data.bookTitle;
@@ -295,17 +320,23 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'showUsersInfo': {
-        const modalRef = this._modalService.open(MainUsersComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-
-        modalRef.result.then((result) => {
-          if (result === 'Success') {
-            this.reloadData();
-          }
-        }, (reason) => {
-          if (reason === 'Success') {
-            this.reloadData();
-          }
+        const modalRef = this._modalService.open(MainUsersComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true
         });
+
+        modalRef.result.then(
+          result => {
+            if (result === 'Success') {
+              this.reloadData();
+            }
+          },
+          reason => {
+            if (reason === 'Success') {
+              this.reloadData();
+            }
+          }
+        );
 
         modalRef.componentInstance.bookId = event.data.id;
         modalRef.componentInstance.bookTitle = event.data.bookTitle;
@@ -318,10 +349,4 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getAllBooks();
     this.books.refresh();
   }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
-
 }

@@ -1,30 +1,27 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import {ToastrService} from 'ngx-toastr';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import * as AppConst from '../../core/utils/app.const';
-import {ContactUsService} from '../../core/services/contact-us/contact-us.service';
-import {SeoService} from '../../core/services/seo/seo.service';
+import { ContactUsService } from '../../core/services/contact-us/contact-us.service';
+import { ToastrService } from 'ngx-toastr';
+import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-contact-us',
   templateUrl: './contact-us.component.html',
   styleUrls: ['./contact-us.component.css']
 })
-
-export class ContactUsComponent implements OnInit, OnDestroy {
+export class ContactUsComponent implements OnInit {
   formGroup: FormGroup;
   isSent: Boolean;
   isLoading: Boolean = false;
   pageTitle: string;
-  private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _formBuilder: FormBuilder, private _scContactUs: ContactUsService,
-              private _toastr: ToastrService, private _seo: SeoService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _scContactUs: ContactUsService,
+    private _toastr: ToastrService,
+    private _seo: SeoService
+  ) {
     this.createFormGroup();
   }
 
@@ -32,7 +29,8 @@ export class ContactUsComponent implements OnInit, OnDestroy {
     // TODO: receber mensagem por query string, pra integrar com outras pages.
     this._seo.generateTags({
       title: 'Fale Conosco',
-      description: 'Tem alguma dúvida, sugestão de melhoria ou crítica? Entre em contato conosco.' +
+      description:
+        'Tem alguma dúvida, sugestão de melhoria ou crítica? Entre em contato conosco.' +
         ' É sempre um prazer atendê-lo.Também estamos buscando apoiadores e parceiros pro projeto. ' +
         'Se você conhece alguém, não hesite em entrar em contato. Obrigado.',
       slug: 'fale-conosco'
@@ -54,9 +52,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
     if (this.formGroup.valid) {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
-        this._scContactUs.contactUs(this.formGroup.value)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe(resp => {
+        this._scContactUs.contactUs(this.formGroup.value).subscribe(resp => {
           if (resp.success) {
             this.isSent = true;
             this._toastr.success('Mensagem enviada com sucesso!');
@@ -69,10 +65,4 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
-
 }

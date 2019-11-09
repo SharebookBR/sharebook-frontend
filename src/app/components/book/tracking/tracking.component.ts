@@ -1,19 +1,15 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
 import { BookService } from 'src/app/core/services/book/book.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tracking',
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.css']
 })
-export class TrackingComponent implements OnInit, OnDestroy {
-
+export class TrackingComponent implements OnInit {
   @Input() bookId;
   @Input() bookTitle;
   @Input() trackingNumber;
@@ -24,49 +20,33 @@ export class TrackingComponent implements OnInit, OnDestroy {
   state = 'loading'; // loading, form, error
   lastError: string;
 
-  private _destroySubscribes$ = new Subject<void>();
-
-  constructor(
-    public activeModal: NgbActiveModal,
-    private _scBook: BookService,
-    private _formBuilder: FormBuilder) {
-      this.formGroup = _formBuilder.group({
-        trackingNumber: ['', [Validators.required]]
-      });
-    }
+  constructor(public activeModal: NgbActiveModal, private _scBook: BookService, private _formBuilder: FormBuilder) {
+    this.formGroup = _formBuilder.group({
+      trackingNumber: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit() {
-
     if (!!this.trackingNumber) {
       const trackingNumberForUpdate = {
         trackingNumber: this.trackingNumber
       };
       this.formGroup.setValue(trackingNumberForUpdate);
     }
-
   }
 
   onTracking() {
-
     this.isLoading = true;
-    this._scBook.setTrackingNumber(this.bookId, this.formGroup.value)
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(() => {
-      this.isLoading = false;
-      this.activeModal.close('Success');
-    },
+    this._scBook.setTrackingNumber(this.bookId, this.formGroup.value).subscribe(
+      resp => {
+        this.isLoading = false;
+        this.activeModal.close('Success');
+      },
       error => {
         this.lastError = error;
         this.state = 'request-error';
         this.isLoading = false;
       }
     );
-
   }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
-
 }

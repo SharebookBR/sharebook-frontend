@@ -1,26 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../core/services/user/user.service';
 import * as AppConst from '../../core/utils/app.const';
 
-
-
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy {
-
+export class ResetPasswordComponent implements OnInit {
   formGroup: FormGroup;
-  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scUser: UserService,
@@ -33,14 +26,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   resetPassword() {
     if (this.formGroup.valid) {
-      this._scUser.resetPassword(this.formGroup.value)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(
+      this._scUser.resetPassword(this.formGroup.value).subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._toastr.info(data.successMessage);
@@ -55,10 +45,4 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
-
 }

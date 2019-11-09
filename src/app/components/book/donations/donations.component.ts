@@ -1,15 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DatePipe } from '@angular/common';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
+import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,12 +15,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css']
 })
-export class DonationsComponent implements OnInit, OnDestroy {
-
+export class DonationsComponent implements OnInit {
   donatedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
-  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _bookService: BookService,
@@ -32,11 +27,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _confirmationDialogService: ConfirmationDialogService,
     private _router: Router,
-    private _activatedRoute: ActivatedRoute,
-  ) { }
+    private _activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-
     this.getDonations();
 
     // Carrega Status do ENUM BookDonationStatus
@@ -45,11 +39,14 @@ export class DonationsComponent implements OnInit, OnDestroy {
       myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
     });
 
-    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+    const btnDonate =
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
       ' <i class="fa fa-trophy"></i> </span>';
-    const btnRenewChooseDate = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
+    const btnRenewChooseDate =
+      '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
       ' <i class="fa fa-calendar"></i> </span>';
-    const btnTrackNumber = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+    const btnTrackNumber =
+      '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
       ' <i class="fa fa-truck"></i> </span>';
 
     this.tableSettings = {
@@ -72,26 +69,28 @@ export class DonationsComponent implements OnInit, OnDestroy {
           type: 'html',
           valuePrepareFunction: (cell, row) => {
             return new DatePipe('en-US').transform(cell, 'dd/MM/yyyy');
-          },
+          }
         },
         trackingNumber: {
           title: 'Código Ratreio',
-          width: '15%',
+          width: '15%'
         },
         status: {
           title: 'Status',
           width: '15%',
           type: 'html',
           valuePrepareFunction: value => {
-            return this._sanitizer.bypassSecurityTrustHtml(`<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`);
+            return this._sanitizer.bypassSecurityTrustHtml(
+              `<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`
+            );
           },
           filter: {
             type: 'list',
             config: {
               selectText: 'Selecionar...',
-              list: myBookDonationStatus,
-            },
-          },
+              list: myBookDonationStatus
+            }
+          }
         }
       },
       actions: {
@@ -142,9 +141,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   getDonations() {
     this.isLoading = true;
 
-    this._bookService.getDonatedBooks()
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(resp => {
+    this._bookService.getDonatedBooks().subscribe(resp => {
       this.donatedBooks = resp;
       this.isLoading = false;
     });
@@ -162,8 +159,9 @@ export class DonationsComponent implements OnInit, OnDestroy {
           if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
-            this._router.navigate([`book/donate/${event.data.id}`],
-              { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+            this._router.navigate([`book/donate/${event.data.id}`], {
+              queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }
+            });
           }
         }
         break;
@@ -178,17 +176,19 @@ export class DonationsComponent implements OnInit, OnDestroy {
           if (!chooseDate || chooseDate - todayDate > 0) {
             alert('Aguarde a data de escolha!');
           } else {
-            this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
-              .then((confirmed) => {
+            this._confirmationDialogService
+              .confirm('Atenção!', 'Confirma a renovação da data de doação?')
+              .then(confirmed => {
                 if (confirmed) {
-                  this._bookService.renewChooseDate(event.data.id)
-                  .pipe(takeUntil(this._destroySubscribes$))
-                  .subscribe(() => {
-                    this._toastr.success('Doação renovada com sucesso.');
-                    this.getDonations();
-                  }, error => {
-                    this._toastr.error(error);
-                  });
+                  this._bookService.renewChooseDate(event.data.id).subscribe(
+                    resp => {
+                      this._toastr.success('Doação renovada com sucesso.');
+                      this.getDonations();
+                    },
+                    error => {
+                      this._toastr.error(error);
+                    }
+                  );
                 }
               });
           }
@@ -199,17 +199,23 @@ export class DonationsComponent implements OnInit, OnDestroy {
         if (!event.data.donated) {
           alert('Livro deve estar como doado!');
         } else {
-          const modalRef = this._modalService.open(TrackingComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-
-          modalRef.result.then((result) => {
-            if (result === 'Success') {
-              this.getDonations();
-            }
-          }, (reason) => {
-            if (reason === 'Success') {
-              this.getDonations();
-            }
+          const modalRef = this._modalService.open(TrackingComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
           });
+
+          modalRef.result.then(
+            result => {
+              if (result === 'Success') {
+                this.getDonations();
+              }
+            },
+            reason => {
+              if (reason === 'Success') {
+                this.getDonations();
+              }
+            }
+          );
 
           modalRef.componentInstance.bookId = event.data.id;
           modalRef.componentInstance.bookTitle = event.data.title;
@@ -218,10 +224,5 @@ export class DonationsComponent implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
   }
 }

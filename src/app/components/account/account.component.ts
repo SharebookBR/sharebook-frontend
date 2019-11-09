@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,9 +14,9 @@ import { Address } from '../../core/models/address';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit, OnDestroy {
+export class AccountComponent implements OnInit {
   formGroup: FormGroup;
-  private _destroySubscribes$ = new Subject<void>();
+  private _subscription: Subscription;
   address = new Address();
   isGettingAddress: boolean;
 
@@ -48,48 +46,42 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._scUser
-      .getUserData()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(userInfo => {
-        const foo = {
-          name: userInfo.name,
-          email: userInfo.email,
-          phone: userInfo.phone,
-          linkedin: userInfo.linkedin,
-          Address: {
-            postalCode: userInfo.address.postalCode,
-            street: userInfo.address.street,
-            number: userInfo.address.number,
-            complement: userInfo.address.complement,
-            neighborhood: userInfo.address.neighborhood,
-            city: userInfo.address.city,
-            state: userInfo.address.state,
-            country: userInfo.address.country
-          }
-        };
-        this.formGroup.setValue(foo);
-      });
+    this._subscription = this._scUser.getUserData().subscribe(userInfo => {
+      const foo = {
+        name: userInfo.name,
+        email: userInfo.email,
+        phone: userInfo.phone,
+        linkedin: userInfo.linkedin,
+        Address: {
+          postalCode: userInfo.address.postalCode,
+          street: userInfo.address.street,
+          number: userInfo.address.number,
+          complement: userInfo.address.complement,
+          neighborhood: userInfo.address.neighborhood,
+          city: userInfo.address.city,
+          state: userInfo.address.state,
+          country: userInfo.address.country
+        }
+      };
+      this.formGroup.setValue(foo);
+    });
   }
 
   updateUser() {
     if (this.formGroup.valid) {
-      this._scUser
-        .update(this.formGroup.value)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe(
-          data => {
-            if (data.success || data.authenticated) {
-              this._toastr.success('Registro atualizado com sucesso');
-              this._router.navigate(['/panel']);
-            } else {
-              this._toastr.error(data.messages[0]);
-            }
-          },
-          error => {
-            this._toastr.error(error);
+      this._scUser.update(this.formGroup.value).subscribe(
+        data => {
+          if (data.success || data.authenticated) {
+            this._toastr.success('Registro atualizado com sucesso');
+            this._router.navigate(['/panel']);
+          } else {
+            this._toastr.error(data.messages[0]);
           }
-        );
+        },
+        error => {
+          this._toastr.error(error);
+        }
+      );
     }
   }
 
@@ -100,25 +92,15 @@ export class AccountComponent implements OnInit, OnDestroy {
   getAddressByPostalCode(postalCode: string) {
     this.isGettingAddress = true;
 
-    this._AddressService
-      .getAddressByPostalCode(postalCode)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((address: Address) => {
-        this.address = address;
-        this.address.country = 'Brasil';
-        this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
-        this.formGroup['controls'].Address['controls'].neighborhood.setValue(
-          this.address.neighborhood.substring(0, 50)
-        );
-        this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
-        this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
-        this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
-        this.isGettingAddress = false;
-      });
-  }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
+    this._AddressService.getAddressByPostalCode(postalCode).subscribe((address: Address) => {
+      this.address = address;
+      this.address.country = 'Brasil';
+      this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
+      this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood.substring(0, 50));
+      this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
+      this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
+      this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
+      this.isGettingAddress = false;
+    });
   }
 }

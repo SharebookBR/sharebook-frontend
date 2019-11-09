@@ -1,25 +1,20 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
 import { LocalDataSource } from 'ng2-smart-table';
-import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.css']
 })
-export class RequestComponent implements OnInit, OnDestroy {
+export class RequestComponent implements OnInit {
   @Input() bookId;
   donateUsers: LocalDataSource;
   settings: any;
@@ -37,15 +32,14 @@ export class RequestComponent implements OnInit, OnDestroy {
   state = 'loading'; // loading, form, error
   lastError: string;
 
-  private _destroySubscribes$ = new Subject<void>();
-
   constructor(
     public activeModal: NgbActiveModal,
     private _scBook: BookService,
     private _scUser: UserService,
     private _router: Router,
-    private _formBuilder: FormBuilder) {
-
+    private _toastr: ToastrService,
+    private _formBuilder: FormBuilder
+  ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
     });
@@ -55,49 +49,42 @@ export class RequestComponent implements OnInit, OnDestroy {
     this.state = 'form';
     this.modalTitle = 'Quanto você quer esse livro?';
 
-    this._scUser.getUserData()
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(userInfo => {
-      this.addressLine01 = userInfo.address.street + ',' + userInfo.address.number + ' ' +
-        ((!userInfo.address.complement) ? '' : userInfo.address.complement);
-      this.addressLine02 = userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
+    this._scUser.getUserData().subscribe(userInfo => {
+      this.addressLine01 =
+        userInfo.address.street +
+        ',' +
+        userInfo.address.number +
+        ' ' +
+        (!userInfo.address.complement ? '' : userInfo.address.complement);
+      this.addressLine02 =
+        userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
       this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
     });
   }
 
   onRequest() {
-
     this.state = 'loading';
     const reason = this.formGroup.value.myNote;
-    this._scBook.requestBook(this.bookId, reason)
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(resp => {
-
-      if (resp.success) {
-        this.state = 'request-success';
-        this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
-      } else {
-        this.lastError = resp.messages[0];
-        this.state = 'request-error';
-        this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
-      }
-    },
+    this._scBook.requestBook(this.bookId, reason).subscribe(
+      resp => {
+        if (resp.success) {
+          this.state = 'request-success';
+          this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
+        } else {
+          this.lastError = resp.messages[0];
+          this.state = 'request-error';
+          this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
+        }
+      },
       error => {
         this.lastError = error;
         this.state = 'request-error';
         this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
       }
     );
-
   }
 
   updateAddress() {
     this._router.navigate(['/account']);
   }
-
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
-
 }
