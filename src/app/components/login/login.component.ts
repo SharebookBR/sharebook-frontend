@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,9 +15,11 @@ import * as AppConst from '../../core/utils/app.const';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+
   formGroup: FormGroup;
   returnUrl: string;
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scAuthentication: AuthenticationService,
@@ -25,32 +30,44 @@ export class LoginComponent implements OnInit {
   ) {
     this.formGroup = _formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
   ngOnInit() {
-    // reset login status
-    this._scAuthentication.logout();
 
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/panel';
+        // reset login status
+        this._scAuthentication.logout();
+
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/panel';
+
   }
 
   loginUser() {
     if (this.formGroup.valid) {
-      this._scAuthentication.login(this.formGroup.value.email, this.formGroup.value.password).subscribe(
-        data => {
-          if (data.success || data.authenticated) {
-            this._router.navigate([this.returnUrl]);
-          } else {
-            this._toastr.error(data.messages[0]);
+      this._scAuthentication.login(
+        this.formGroup.value.email,
+        this.formGroup.value.password)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe(
+          data => {
+            if (data.success || data.authenticated) {
+              this._router.navigate([this.returnUrl]);
+            } else {
+              this._toastr.error(data.messages[0]);
+            }
+          },
+          error => {
+            this._toastr.error(error);
           }
-        },
-        error => {
-          this._toastr.error(error);
-        }
-      );
+        );
     }
   }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
+
 }
