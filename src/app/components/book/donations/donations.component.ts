@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,10 +18,12 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css']
 })
-export class DonationsComponent implements OnInit {
+export class DonationsComponent implements OnInit, OnDestroy {
   donatedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _bookService: BookService,
@@ -141,7 +146,11 @@ export class DonationsComponent implements OnInit {
   getDonations() {
     this.isLoading = true;
 
-    this._bookService.getDonatedBooks().subscribe(resp => {
+    this._bookService.getDonatedBooks()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(resp => {
       this.donatedBooks = resp;
       this.isLoading = false;
     });
@@ -180,8 +189,12 @@ export class DonationsComponent implements OnInit {
               .confirm('Atenção!', 'Confirma a renovação da data de doação?')
               .then(confirmed => {
                 if (confirmed) {
-                  this._bookService.renewChooseDate(event.data.id).subscribe(
-                    resp => {
+                  this._bookService.renewChooseDate(event.data.id)
+                  .pipe(
+                    takeUntil(this._destroySubscribes$)
+                  )
+                  .subscribe(
+                    () => {
                       this._toastr.success('Doação renovada com sucesso.');
                       this.getDonations();
                     },
@@ -224,5 +237,10 @@ export class DonationsComponent implements OnInit {
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

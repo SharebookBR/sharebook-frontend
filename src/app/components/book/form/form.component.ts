@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ImageResult, ResizeOptions } from 'ng2-imageupload';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { ImageResult } from 'ng2-imageupload';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -12,7 +14,6 @@ import { FreightOptions } from '../../../core/models/freightOptions';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { ContributorsService } from '../../../core/services/contributors/contributors.service';
 import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
@@ -20,7 +21,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
@@ -38,6 +39,8 @@ export class FormComponent implements OnInit {
   src: string;
 
   shareBookUser = new User();
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scBook: BookService,
@@ -71,9 +74,17 @@ export class FormComponent implements OnInit {
       this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
     }
 
-    this._scBook.getFreightOptions().subscribe(data => (this.freightOptions = data));
+    this._scBook.getFreightOptions()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(data => (this.freightOptions = data));
 
-    this._scCategory.getAll().subscribe(data => (this.categories = data));
+    this._scCategory.getAll()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(data => (this.categories = data));
   }
 
   createFormGroup() {
@@ -95,7 +106,11 @@ export class FormComponent implements OnInit {
   }
 
   findProfile() {
-    this._scUser.getProfile().subscribe(({ profile }) => {
+    this._scUser.getProfile()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(({ profile }) => {
       this.userProfile = profile;
       this.createFormGroup();
       this.getBookSaved();
@@ -115,11 +130,19 @@ export class FormComponent implements OnInit {
 
   getBookSaved() {
     let id = '';
-    this._activatedRoute.params.subscribe(param => (id = param.id));
+    this._activatedRoute.params
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(param => (id = param.id));
     this.itsEditMode = !!id;
 
     if (this.userProfile === 'Administrator' && id) {
-      this._scBook.getById(id).subscribe(x => {
+      this._scBook.getById(id)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(x => {
         const bookForUpdate = {
           id: x.id,
           title: x.title,
@@ -160,7 +183,11 @@ export class FormComponent implements OnInit {
             this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
           }
 
-          this._scBook.create(this.formGroup.value).subscribe(resp => {
+          this._scBook.create(this.formGroup.value)
+          .pipe(
+            takeUntil(this._destroySubscribes$)
+          )
+          .subscribe(resp => {
             if (resp.success) {
               this.isSaved = true;
               this._toastr.success('Livro cadastrado com sucesso!');
@@ -171,7 +198,11 @@ export class FormComponent implements OnInit {
             this.isLoading = false;
           });
         } else {
-          this._scBook.update(this.formGroup.value).subscribe(resp => {
+          this._scBook.update(this.formGroup.value)
+          .pipe(
+            takeUntil(this._destroySubscribes$)
+          )
+          .subscribe(resp => {
             this.isSaved = true;
             this.pageTitle = 'Registro atualizado';
             this.isLoading = false;
@@ -201,7 +232,11 @@ export class FormComponent implements OnInit {
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
 
-      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000).subscribe(result => {
+      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(result => {
         const reader = new FileReader();
         reader.readAsDataURL(result);
 
@@ -220,6 +255,15 @@ export class FormComponent implements OnInit {
   }
 
   getAllFacilitators() {
-    this._scUser.getAllFacilitators(this.formGroup.get('userId').value).subscribe(data => (this.facilitators = data));
+    this._scUser.getAllFacilitators(this.formGroup.get('userId').value)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(data => (this.facilitators = data));
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

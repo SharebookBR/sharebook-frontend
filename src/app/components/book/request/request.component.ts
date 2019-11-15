@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { LocalDataSource } from 'ng2-smart-table';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { LocalDataSource } from 'ng2-smart-table';
 import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
@@ -14,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.css']
 })
-export class RequestComponent implements OnInit {
+export class RequestComponent implements OnInit, OnDestroy {
   @Input() bookId;
   donateUsers: LocalDataSource;
   settings: any;
@@ -31,6 +33,8 @@ export class RequestComponent implements OnInit {
 
   state = 'loading'; // loading, form, error
   lastError: string;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -49,7 +53,11 @@ export class RequestComponent implements OnInit {
     this.state = 'form';
     this.modalTitle = 'Quanto você quer esse livro?';
 
-    this._scUser.getUserData().subscribe(userInfo => {
+    this._scUser.getUserData()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(userInfo => {
       this.addressLine01 =
         userInfo.address.street +
         ',' +
@@ -65,7 +73,11 @@ export class RequestComponent implements OnInit {
   onRequest() {
     this.state = 'loading';
     const reason = this.formGroup.value.myNote;
-    this._scBook.requestBook(this.bookId, reason).subscribe(
+    this._scBook.requestBook(this.bookId, reason)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(
       resp => {
         if (resp.success) {
           this.state = 'request-success';
@@ -86,5 +98,10 @@ export class RequestComponent implements OnInit {
 
   updateAddress() {
     this._router.navigate(['/account']);
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }
