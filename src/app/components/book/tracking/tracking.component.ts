@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookService } from 'src/app/core/services/book/book.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tracking',
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.css']
 })
-export class TrackingComponent implements OnInit {
+export class TrackingComponent implements OnInit, OnDestroy {
   @Input() bookId;
   @Input() bookTitle;
   @Input() trackingNumber;
@@ -19,6 +21,8 @@ export class TrackingComponent implements OnInit {
 
   state = 'loading'; // loading, form, error
   lastError: string;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(public activeModal: NgbActiveModal, private _scBook: BookService, private _formBuilder: FormBuilder) {
     this.formGroup = _formBuilder.group({
@@ -37,7 +41,11 @@ export class TrackingComponent implements OnInit {
 
   onTracking() {
     this.isLoading = true;
-    this._scBook.setTrackingNumber(this.bookId, this.formGroup.value).subscribe(
+    this._scBook.setTrackingNumber(this.bookId, this.formGroup.value)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(
       resp => {
         this.isLoading = false;
         this.activeModal.close('Success');
@@ -48,5 +56,10 @@ export class TrackingComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

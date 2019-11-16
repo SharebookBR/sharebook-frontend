@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -16,10 +18,12 @@ import { Address } from '../../core/models/address';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   address = new Address();
   isGettingAddress: boolean;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scUser: UserService,
@@ -55,7 +59,11 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     if (this.formGroup.valid) {
-      this._scUser.register(this.formGroup.value).subscribe(
+      this._scUser.register(this.formGroup.value)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._toastr.success('Registro realizado com sucesso1');
@@ -74,7 +82,11 @@ export class RegisterComponent implements OnInit {
   getAddressByPostalCode(postalCode: string) {
     this.isGettingAddress = true;
 
-    this._AddressService.getAddressByPostalCode(postalCode).subscribe((address: Address) => {
+    this._AddressService.getAddressByPostalCode(postalCode)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe((address: Address) => {
       this.address = address;
       this.address.country = 'Brasil';
       this.formGroup.controls['street'].setValue(this.address.street.substring(0, 80));
@@ -85,5 +97,10 @@ export class RegisterComponent implements OnInit {
       this.formGroup.controls['country'].setValue(this.address.country.substring(0, 50));
       this.isGettingAddress = false;
     });
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import * as AppConst from '../../core/utils/app.const';
 import { ContactUsService } from '../../core/services/contact-us/contact-us.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,11 +13,13 @@ import { SeoService } from '../../core/services/seo/seo.service';
   templateUrl: './contact-us.component.html',
   styleUrls: ['./contact-us.component.css']
 })
-export class ContactUsComponent implements OnInit {
+export class ContactUsComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   isSent: Boolean;
   isLoading: Boolean = false;
   pageTitle: string;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -52,7 +57,11 @@ export class ContactUsComponent implements OnInit {
     if (this.formGroup.valid) {
       this.isLoading = true;
       if (!this.formGroup.value.id) {
-        this._scContactUs.contactUs(this.formGroup.value).subscribe(resp => {
+        this._scContactUs.contactUs(this.formGroup.value)
+        .pipe(
+          takeUntil(this._destroySubscribes$)
+        )
+        .subscribe(resp => {
           if (resp.success) {
             this.isSent = true;
             this._toastr.success('Mensagem enviada com sucesso!');
@@ -64,5 +73,10 @@ export class ContactUsComponent implements OnInit {
         });
       }
     }
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

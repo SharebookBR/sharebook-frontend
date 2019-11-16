@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { Category } from '../../../core/models/category';
@@ -11,7 +13,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
-import { ToastrService } from 'ngx-toastr';
 import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
@@ -19,7 +20,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
 
@@ -38,6 +39,8 @@ export class DetailsComponent implements OnInit {
   daysToChoose: number;
   chooseDateInfo: string;
   isCheckedFreight: boolean;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scBook: BookService,
@@ -62,7 +65,11 @@ export class DetailsComponent implements OnInit {
   }
 
   getMyUser() {
-    this._scUser.getUserData().subscribe(x => {
+    this._scUser.getUserData()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(x => {
       this.myUser = x;
       this.getBook();
     });
@@ -70,12 +77,24 @@ export class DetailsComponent implements OnInit {
 
   getBook() {
     let slug = '';
-    this._activatedRoute.params.subscribe(param => (slug = param.slug));
+    this._activatedRoute.params
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(param => (slug = param.slug));
 
     if (slug) {
-      this._scBook.getBySlug(slug).subscribe(
+      this._scBook.getBySlug(slug)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
         x => {
-          this._scBook.getFreightOptions().subscribe(data => {
+          this._scBook.getFreightOptions()
+          .pipe(
+            takeUntil(this._destroySubscribes$)
+          )
+          .subscribe(data => {
             this.freightOptions = data;
 
             const name = this.freightOptions.find(obj => obj.value.toString() === x.freightOption.toString());
@@ -116,7 +135,11 @@ export class DetailsComponent implements OnInit {
             }
 
             if (this.userProfile) {
-              this._scBook.getRequested(x.id).subscribe(requested => {
+              this._scBook.getRequested(x.id)
+              .pipe(
+                takeUntil(this._destroySubscribes$)
+              )
+              .subscribe(requested => {
                 this.requested = requested.value.bookRequested;
                 this.state = 'ready';
               });
@@ -181,5 +204,10 @@ export class DetailsComponent implements OnInit {
         this.bookInfo.imageBytes = img[1];
       };
     }
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

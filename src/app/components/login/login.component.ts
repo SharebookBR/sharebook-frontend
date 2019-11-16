@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
-
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import * as AppConst from '../../core/utils/app.const';
 
@@ -12,9 +13,11 @@ import * as AppConst from '../../core/utils/app.const';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   returnUrl: string;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scAuthentication: AuthenticationService,
@@ -39,7 +42,11 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     if (this.formGroup.valid) {
-      this._scAuthentication.login(this.formGroup.value.email, this.formGroup.value.password).subscribe(
+      this._scAuthentication.login(this.formGroup.value.email, this.formGroup.value.password)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._router.navigate([this.returnUrl]);
@@ -52,5 +59,10 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

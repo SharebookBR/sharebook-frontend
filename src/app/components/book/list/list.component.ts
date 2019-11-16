@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
-import { DatePipe } from '@angular/common';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
@@ -18,11 +20,13 @@ import { MainUsersComponent } from '../main-users/main-users.component';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   books: LocalDataSource;
   settings: any;
   myBookArray = Array();
   isLoading: boolean;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scBook: BookService,
@@ -73,7 +77,11 @@ export class ListComponent implements OnInit {
   getAllBooks() {
     this.isLoading = true;
 
-    this._scBook.getAll().subscribe(resp => {
+    this._scBook.getAll()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(resp => {
       this.myBookArray = new Array();
       resp['items'].forEach(items => {
         this.myBookArray.push({
@@ -235,7 +243,11 @@ export class ListComponent implements OnInit {
         } else {
           this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?').then(confirmed => {
             if (confirmed) {
-              this._scBook.cancelDonation(event.data.id).subscribe(resp => {
+              this._scBook.cancelDonation(event.data.id)
+              .pipe(
+                takeUntil(this._destroySubscribes$)
+              )
+              .subscribe(resp => {
                 if (resp['success']) {
                   this._toastr.success('Doação cancelada com sucesso.');
                   this.reloadData();
@@ -348,5 +360,10 @@ export class ListComponent implements OnInit {
   reloadData() {
     this.getAllBooks();
     this.books.refresh();
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

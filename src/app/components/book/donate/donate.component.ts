@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { LocalDataSource } from 'ng2-smart-table';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
+import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
 import { ToastrService } from 'ngx-toastr';
@@ -12,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './donate.component.html',
   styleUrls: ['./donate.component.css']
 })
-export class DonateComponent implements OnInit {
+export class DonateComponent implements OnInit, OnDestroy {
   @Input() bookId;
   @Input() userId;
   @Input() userNickName;
@@ -23,6 +25,8 @@ export class DonateComponent implements OnInit {
   myNote: String;
   formGroup: FormGroup;
   donateBookUser: DonateBookUser;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -50,7 +54,11 @@ export class DonateComponent implements OnInit {
 
     this.isLoading = true;
 
-    this._scBook.donateBookUser(this.bookId, this.donateBookUser).subscribe(
+    this._scBook.donateBookUser(this.bookId, this.donateBookUser)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(
       resp => {
         if (!resp.success) {
           this._toastr.error(resp.messages[0]);
@@ -65,5 +73,10 @@ export class DonateComponent implements OnInit {
         this._toastr.error(error);
       }
     );
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }
