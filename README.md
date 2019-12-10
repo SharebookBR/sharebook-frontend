@@ -29,7 +29,7 @@ https://trello.com/invite/sharebook6/928f21ef82592b5edafde06f171d338b
 
 https://github.com/SharebookBR/frontend
 
-### 4.2 INSTALE OS PLUGUINS RECOMENADADOS
+### 4.2 INSTALE OS PLUGINS RECOMENDADOS
 
 Para padronizarmos a formatação do código, é necessário instalar o pluguin no VSCode chamado "Prettier - Code Formatter".
 
