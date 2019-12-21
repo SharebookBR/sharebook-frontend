@@ -41,6 +41,11 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
+## Observções:  
+Verifique a versão do Node - Recomendamos Versão 10.x.x  
+Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
+Use o Angular 7+
+
 # Rodar o app pela primeira vez
 
 ```bash
