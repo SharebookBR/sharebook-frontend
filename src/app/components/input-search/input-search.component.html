@@ -12,4 +12,20 @@
       <button class="btn btn-outline-primary" type="submit" id="button-addon2">Pesquisar</button>
     </div>
   </div>
+  <div
+        *ngIf="searchAlert"
+        #alert
+        class="alert alert-warning alert-dismissible fade show"
+        role="alert"
+      >
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="closeAlert()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Você deve incluir uma palavra na pesquisa</strong>
+      </div>
 </form>
