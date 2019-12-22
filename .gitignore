@@ -19,6 +19,11 @@
 
 # IDE - VSCode
 .vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 
 # misc
 /.sass-cache
@@ -35,4 +40,4 @@ testem.log
 Thumbs.db
 
 # Ignoring package-lock.json
-# package-lock.json
+package-lock.json
