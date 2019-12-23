@@ -8,9 +8,7 @@
   "editor.detectIndentation": false,
   "prettier.tabWidth": 2,
   "prettier.printWidth": 120,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "prettier.jsxSingleQuote": true,
-  "prettier.tslintIntegration": true,
-  "prettier.jsxBracketSameLine": true,
-  "prettier.eslintIntegration": true,
+  "prettier.jsxBracketSameLine": true
 }
