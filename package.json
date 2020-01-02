@@ -43,7 +43,7 @@
     "@angular/router": "~7.2.0",
     "@ng-bootstrap/ng-bootstrap": "^4.1.1",
     "base64-img": "^1.0.4",
-    "core-js": "^2.5.4",
+    "core-js": "^3.6.1",
     "moment-timezone": "^0.5.21",
     "ng-recaptcha": "^3.0.5",
     "ng2-completer": "^2.0.8",
