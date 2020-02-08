@@ -43,7 +43,8 @@ export class RegisterComponent implements OnInit {
       neighborhood: ['', [Validators.required]],
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
-      country: ['', [Validators.required]]
+      country: ['', [Validators.required]],
+      allowSendingEmail: [true, null]
     }, {
       validator: PasswordValidation.MatchPassword
     });

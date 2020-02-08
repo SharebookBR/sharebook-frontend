@@ -14,4 +14,5 @@ export class User {
   profile: Profile;
   address: Address;
   creationDate: Date;
+  allowSendingEmail: boolean;
 }

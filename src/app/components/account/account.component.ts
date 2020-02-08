@@ -54,6 +54,7 @@ export class AccountComponent implements OnInit {
         email: userInfo.email,
         phone: userInfo.phone,
         linkedin: userInfo.linkedin,
+        allowSendingEmail: [true, null],
         Address: {
           postalCode: userInfo.address.postalCode,
           street: userInfo.address.street,

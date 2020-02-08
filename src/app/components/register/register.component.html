@@ -39,7 +39,7 @@
           </small>
           <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern') ">
             O e-mail deve ser um e-mail válido.
-          </small>          
+          </small>
         </div>
       </div>
 
@@ -77,7 +77,7 @@
           </small>
           <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('MatchPassword') ">
             A confirmação de senha não confere com a senha informada.
-          </small>          
+          </small>
         </div>
       </div>
 
@@ -97,7 +97,7 @@
           <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
             Telefone deve estar no formato (99) 99999-9999
           </small>
-        </div>        
+        </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -146,7 +146,7 @@
             <i class="fa fa-road"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['street'].touched && !formGroup.controls['street'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['street'].hasError('required')">
             Endereço obrigatório.
@@ -162,7 +162,7 @@
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['number'].touched && !formGroup.controls['number'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['number'].hasError('required')">
             Número obrigatório.
@@ -188,7 +188,7 @@
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['neighborhood'].touched && !formGroup.controls['neighborhood'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['neighborhood'].hasError('required')">
             Bairro obrigatório.
@@ -204,7 +204,7 @@
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['city'].touched && !formGroup.controls['city'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['city'].hasError('required')">
             Cidade obrigatório.
@@ -220,7 +220,7 @@
             <i class="fa fa-map-marker"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['state'].touched && !formGroup.controls['state'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['state'].hasError('required')">
             Estado obrigatório.
@@ -236,13 +236,22 @@
             <i class="fa fa-globe"></i>
           </div>
         </div>
-        
+
         <div *ngIf="formGroup.controls['country'].touched && !formGroup.controls['country'].valid">
           <small class="form-text text-danger" *ngIf="formGroup.controls['country'].hasError('required')">
             País obrigatório.
           </small>
         </div>
-      </div>      
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="allowSendingEmail" id="defaultCheck1">
+          <label class="form-check-label" for="defaultCheck1">
+            Aceito receber e-mails e newletter do Sharebook
+          </label>
+        </div>
+      </div>
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
