@@ -12,17 +12,9 @@ describe('DonationsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DonationsComponent
-      ],
-      imports: [
-        Ng2SmartTableModule,
-        AppConfigModule,
-        NgbModule.forRoot(),
-        NgbModalModule
-      ]
-    })
-    .compileComponents();
+      declarations: [DonationsComponent],
+      imports: [Ng2SmartTableModule, AppConfigModule, NgbModule.forRoot(), NgbModalModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

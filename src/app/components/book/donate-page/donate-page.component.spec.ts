@@ -11,9 +11,8 @@ describe('DonatePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DonatePageComponent ]
-    })
-    .compileComponents();
+      declarations: [DonatePageComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

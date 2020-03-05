@@ -7,14 +7,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('ContactUsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ContactUsService,
-        HttpClient,
-        HttpHandler
-      ],
-      imports: [
-        AppConfigModule
-      ]
+      providers: [ContactUsService, HttpClient, HttpHandler],
+      imports: [AppConfigModule]
     });
   });
 

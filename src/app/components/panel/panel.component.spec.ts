@@ -15,19 +15,10 @@ describe('PanelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PanelComponent
-      ],
-      imports: [
-        AppConfigModule
-      ],
-      providers: [
-        UserService,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [PanelComponent],
+      imports: [AppConfigModule],
+      providers: [UserService, HttpClient, HttpHandler]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

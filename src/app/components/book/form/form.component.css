@@ -19,12 +19,12 @@
   max-width: 170px;
 }
 
-select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
+select.ng-invalid.ng-touched,
+input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
 @media (max-width: 600px) {
-
   .form-row {
     flex-direction: column;
     align-items: center;
@@ -39,7 +39,7 @@ select.ng-invalid.ng-touched, input.ng-invalid.ng-touched {
   }
 
   .img-thumbnail {
-    min-height: 220px; 
+    min-height: 220px;
     min-width: 320px;
   }
 }

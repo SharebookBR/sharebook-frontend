@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { PasswordValidation } from '../../core/utils/passwordValidation';
-import * as AppConst from '../../core/utils/app.const';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent implements OnInit {
-
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -23,18 +25,25 @@ export class ForgotPasswordComponent implements OnInit {
     private _scUser: UserService,
     private _toastr: ToastrService
   ) {
-    this.formGroup = _formBuilder.group({
-      hashCodePassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.pattern(AppConst.passwordPattern)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: PasswordValidation.MatchPassword
-    });
+    this.formGroup = _formBuilder.group(
+      {
+        hashCodePassword: ['', Validators.required],
+        newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      {
+        validator: PasswordValidation.MatchPassword
+      }
+    );
   }
 
   ngOnInit() {
     let hashCodePassword = '';
-    this._activatedRoute.params.subscribe((param) => {
+    this._activatedRoute.params
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(param => {
       hashCodePassword = param.hashCodePassword;
 
       const changeUserPasswordByHashCodeVM = {
@@ -45,12 +54,15 @@ export class ForgotPasswordComponent implements OnInit {
 
       this.formGroup.setValue(changeUserPasswordByHashCodeVM);
     });
-
   }
 
   changePassword() {
     if (this.formGroup.valid) {
-      this._scUser.changeUserPasswordByHashCode(this.formGroup.value).subscribe(
+      this._scUser.changeUserPasswordByHashCode(this.formGroup.value)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
         data => {
           if (data.success || data.authenticated) {
             this._toastr.success('Senha atualizada com sucesso');
@@ -66,4 +78,8 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
 }

@@ -1,58 +1,82 @@
 <div class="container">
   <h1 class="text-center display-4">Quem Somos</h1>
-  <p>Sharebook é um projeto colaborativo de código aberto que é apoiado por muitos contribuidores. Você pode ser um deles. Vem
-    pro time! Conheça alguns dos maiores contribuidores do projeto.</p>
+  <p>
+    Sharebook é um projeto colaborativo de código aberto que é apoiado por muitos contribuidores. Você pode ser um
+    deles. Vem pro time! Conheça alguns dos maiores contribuidores do projeto.
+  </p>
 
-  <p>Seu nome não está nessa lista? Não se preocupe. Essa é uma lista viva que se renova toda hora. É só voltar a contribuir que colocamos seu nome de volta. Blz?</p>
+  <p>
+    Seu nome não está nessa lista? Não se preocupe. Essa é uma lista viva que se renova toda hora. É só voltar a
+    contribuir que colocamos seu nome de volta. Blz?
+  </p>
 
   <div class="flex-container">
     <div *ngFor="let contributor of contributors" class="card">
-      <img class="card-img-top" [src]="contributor.image" alt="Card image cap">
+      <img class="card-img-top" [src]="contributor.image" alt="Card image cap" />
       <div class="card-body">
-        <h5 class="card-title">{{contributor.name}}</h5>
-        <p class="card-text">{{contributor.position}}</p>
-        <a *ngFor="let link of contributor.links" 
-          [href]="link.url" 
-          class="card-link" target="_blank">{{link.content}}</a>
+        <h5 class="card-title">{{ contributor.name }}</h5>
+        <p class="card-text">{{ contributor.position }}</p>
+        <a *ngFor="let link of contributor.links" [href]="link.url" class="card-link" target="_blank">{{
+          link.content
+        }}</a>
       </div>
     </div>
   </div>
 
   <h1>História</h1>
 
-  <p>Antes de começar, deixa eu me apresentar. Meu nome é Raffaello Damgaard e sou o Product Owner desse projeto. Sou desenvolvedor
-    há 17 anos e sempre tive um sonho de um dia colaborar num projeto gratuito e de código aberto. Algo que possa ajudar
-    as pessoas. Finalmente essa oportunidade chegou! Pra conhecer mais sobre mim, visite meu perfil no Linkedin.</p>
+  <p>
+    Antes de começar, deixa eu me apresentar. Meu nome é Raffaello Damgaard e sou o Product Owner desse projeto. Sou
+    desenvolvedor há 17 anos e sempre tive um sonho de um dia colaborar num projeto gratuito e de código aberto. Algo
+    que possa ajudar as pessoas. Finalmente essa oportunidade chegou! Pra conhecer mais sobre mim, visite meu perfil no
+    Linkedin.
+  </p>
 
-  <p>O que é o Sharebook? Vou falar um pouco sobre o projeto. Tudo começou com meu amigo Vagner Nunes que ajudou um cara humilde
-    que nunca tinha ganhado um livro na vida. Pode até parecer pouco, mas tem muita gente que esse simples gesto faz uma
-    grande diferença. Pessoas humildes que não tem condições e tem até vergonha de pedir.</p>
+  <p>
+    O que é o Sharebook? Vou falar um pouco sobre o projeto. Tudo começou com meu amigo Vagner Nunes que ajudou um cara
+    humilde que nunca tinha ganhado um livro na vida. Pode até parecer pouco, mas tem muita gente que esse simples gesto
+    faz uma grande diferença. Pessoas humildes que não tem condições e tem até vergonha de pedir.
+  </p>
 
-  <p>De certa forma quero me inspirar no UBER. O uber não tem carro próprio. Ele junta as pontas. É isso que vamos fazer. O
-    livro não vai passar pela nossa mão. O doador vai cadastrar o livro em nosso sistema. Nós vamos avaliar e aprovar. Aí
-    o livro vai para nossa VITRINE (website e apps).</p>
+  <p>
+    De certa forma quero me inspirar no UBER. O uber não tem carro próprio. Ele junta as pontas. É isso que vamos fazer.
+    O livro não vai passar pela nossa mão. O doador vai cadastrar o livro em nosso sistema. Nós vamos avaliar e aprovar.
+    Aí o livro vai para nossa VITRINE (website e apps).
+  </p>
 
-  <p>Então depois que o livro está na vitrine ele fica lá até aparecer um interessado. O doador é notificado e envia.</p>
+  <p>
+    Então depois que o livro está na vitrine ele fica lá até aparecer um interessado. O doador é notificado e envia.
+  </p>
 
   <p>&nbsp;</p>
 
   <h1>3 princípios do projeto Sharebook</h1>
   <ol class="rounded-list">
     <li>
-      <p><b>Código livre</b><br />
-      Não se confundir com um projeto comercial. A essência é ser um serviço grátis para ajudar quem precisa. Um projeto
-      colaborativo de código aberto. Podemos e vamos ser bons e agressivos no marketing, mas sem jamais esquecer essa base.</p></li>
-      
+      <p>
+        <b>Código livre</b><br />
+        Não se confundir com um projeto comercial. A essência é ser um serviço grátis para ajudar quem precisa. Um
+        projeto colaborativo de código aberto. Podemos e vamos ser bons e agressivos no marketing, mas sem jamais
+        esquecer essa base.
+      </p>
+    </li>
 
     <li>
-        <p><b>Simples</b><br />
-      Manter as coisas simples e incentivar o aprendizado. Nossa estrutura precisa ser simples ao ponto que mesmo um iniciante
-      rapidamente entenda e se sinta confortável em colaborar no código fonte. Design simples e código limpo.</p></li>
+      <p>
+        <b>Simples</b><br />
+        Manter as coisas simples e incentivar o aprendizado. Nossa estrutura precisa ser simples ao ponto que mesmo um
+        iniciante rapidamente entenda e se sinta confortável em colaborar no código fonte. Design simples e código
+        limpo.
+      </p>
+    </li>
 
     <li>
-        <p><b>Divertido</b><br />
-      Tem que ser divertido como um game. Ganhando pontos. Subindo de nível. Ganhando selos de conquistas. E quem sabe, no
-      futuro, algum parceiro possa patrocinar os prêmios? (prêmios pro time de desenvolvimento também, claro.)</p></li>
+      <p>
+        <b>Divertido</b><br />
+        Tem que ser divertido como um game. Ganhando pontos. Subindo de nível. Ganhando selos de conquistas. E quem
+        sabe, no futuro, algum parceiro possa patrocinar os prêmios? (prêmios pro time de desenvolvimento também,
+        claro.)
+      </p>
+    </li>
   </ol>
-
 </div>

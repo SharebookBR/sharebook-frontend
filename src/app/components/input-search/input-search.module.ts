@@ -4,13 +4,8 @@ import { InputSearchComponent } from './input-search.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   declarations: [InputSearchComponent],
-  exports: [
-    InputSearchComponent
-  ]
+  exports: [InputSearchComponent]
 })
-export class InputSearchModule { }
+export class InputSearchModule {}

@@ -17,9 +17,7 @@ describe('ContactUsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ContactUsComponent
-      ],
+      declarations: [ContactUsComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -29,13 +27,8 @@ describe('ContactUsComponent', () => {
         AppConfigModule,
         RouterTestingModule
       ],
-      providers: [
-        HttpClient,
-        HttpHandler,
-        AlertService
-      ]
-    })
-    .compileComponents();
+      providers: [HttpClient, HttpHandler, AlertService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

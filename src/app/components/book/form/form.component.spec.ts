@@ -19,9 +19,7 @@ describe('FormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FormComponent
-      ],
+      declarations: [FormComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -43,8 +41,7 @@ describe('FormComponent', () => {
         Ng2PicaService,
         ImgPicaService
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

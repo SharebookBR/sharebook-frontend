@@ -80,8 +80,8 @@ export class BookService {
 
   public requestBook(bookId: string, reason: string) {
     const request = {
-      'BookId': bookId,
-      'Reason': reason
+      BookId: bookId,
+      Reason: reason
     };
     return this._http.post<any>(`${this.config.apiEndpoint}/book/Request/`, request);
   }
@@ -107,7 +107,9 @@ export class BookService {
   }
 
   public getFullSearch(criteria: string, page: number, items: number): Observable<any[]> {
-    return this._http.get<any[]>(`${this.config.apiEndpoint}/book/FullSearch/${criteria}/${page}/${items}`);
+    return this._http.get<any[]>(
+      `${this.config.apiEndpoint}/book/FullSearch/${encodeURIComponent(criteria)}/${page}/${items}`
+    );
   }
 
   public getMainUsers(bookId: string) {

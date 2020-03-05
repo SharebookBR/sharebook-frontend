@@ -61,8 +61,8 @@ import { MainUsersComponent } from './components/book/main-users/main-users.comp
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
-import {RouteReuseStrategy} from '@angular/router';
-import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 
@@ -98,7 +98,7 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     PrivacyPolicyComponent
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -128,7 +128,10 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     ConfirmationDialogService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings },
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings
+    },
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     AuthGuardAdmin
     // provider used to create fake backend
@@ -145,5 +148,5 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
- }
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
+}

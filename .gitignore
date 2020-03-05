@@ -23,6 +23,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+*.code-workspace
 
 # misc
 /.sass-cache
@@ -37,3 +38,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Ignoring package-lock.json
+package-lock.json

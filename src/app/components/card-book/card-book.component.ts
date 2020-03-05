@@ -7,23 +7,20 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
   styleUrls: ['./card-book.component.css']
 })
 export class CardBookComponent implements OnInit {
-
   @Input() content: any;
 
   public isApprovedBadge: string;
   public isApprovedText: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-
-    if ( this.content.approved ) {
+    if (this.content.approved) {
       this.isApprovedBadge = 'badge badge-success mr-auto';
-      this.isApprovedText  = 'Disponível';
+      this.isApprovedText = 'Disponível';
     } else {
       this.isApprovedBadge = 'badge badge-danger mr-auto';
-      this.isApprovedText  = 'Não Disponível';
+      this.isApprovedText = 'Não Disponível';
     }
   }
-
 }

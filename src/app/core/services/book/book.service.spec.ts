@@ -8,14 +8,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('BookService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        BookService,
-        HttpClient,
-        HttpHandler
-      ],
-      imports: [
-        AppConfigModule
-      ]
+      providers: [BookService, HttpClient, HttpHandler],
+      imports: [AppConfigModule]
     });
   });
 

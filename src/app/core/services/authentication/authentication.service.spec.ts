@@ -9,16 +9,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('AuthenticationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AuthenticationService,
-        HttpClient,
-        HttpHandler,
-        UserService
-      ],
-      imports: [
-        RouterTestingModule,
-        AppConfigModule
-      ]
+      providers: [AuthenticationService, HttpClient, HttpHandler, UserService],
+      imports: [RouterTestingModule, AppConfigModule]
     });
   });
 

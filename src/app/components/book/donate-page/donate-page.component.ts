@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { BookService } from 'src/app/core/services/book/book.service';
 import { LocalDataSource } from 'ng2-smart-table';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 
@@ -11,8 +14,7 @@ import { DonateComponent } from '../donate/donate.component';
   templateUrl: './donate-page.component.html',
   styleUrls: ['./donate-page.component.css']
 })
-export class DonatePageComponent implements OnInit {
-
+export class DonatePageComponent implements OnInit, OnDestroy {
   donateUsers: LocalDataSource;
   isLoading: Boolean = true;
   settings: any;
@@ -21,6 +23,8 @@ export class DonatePageComponent implements OnInit {
   showNote: Boolean = false;
   formGroup: FormGroup;
   bookId: string;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -35,16 +39,25 @@ export class DonatePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._activatedRoute.params.subscribe((param) => this.bookId = param.id);
+    this._activatedRoute.params
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(param => (this.bookId = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
 
-    this._scBook.getRequestersList(this.bookId).subscribe(resp => {
+    this._scBook.getRequestersList(this.bookId)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(resp => {
       this.donateUsers = new LocalDataSource(<any>resp);
       this.isLoading = false;
     });
 
-    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+    const btnDonate =
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
       ' <i class="fa fa-trophy"></i> </span>';
 
     this.settings = {
@@ -85,22 +98,25 @@ export class DonatePageComponent implements OnInit {
         custom: [
           {
             name: 'donate',
-            title: btnDonate,
+            title: btnDonate
           }
         ],
-        position: 'right', // left|right
-      },
+        position: 'right' // left|right
+      }
     };
   }
 
   onCustom(event) {
     if (event.action === 'donate') {
-      const modalRef = this._modalService.open(DonateComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-      modalRef.componentInstance.bookId       = this.bookId;
-      modalRef.componentInstance.userId       = event.data.userId;
+      const modalRef = this._modalService.open(DonateComponent, {
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+      modalRef.componentInstance.bookId = this.bookId;
+      modalRef.componentInstance.userId = event.data.userId;
       modalRef.componentInstance.userNickName = event.data.requesterNickName;
 
-      modalRef.result.then((data) => {
+      modalRef.result.then(data => {
         if (data === 'ok') {
           this.back();
         }
@@ -112,4 +128,8 @@ export class DonatePageComponent implements OnInit {
     this._router.navigate([this.returnUrl]);
   }
 
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
 }
