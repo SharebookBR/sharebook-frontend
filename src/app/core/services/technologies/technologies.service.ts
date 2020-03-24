@@ -14,13 +14,13 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/angular.jpg',
         title: 'Frontend',
-        text: 'Angular 6, Bootstrap 4, HTML 5',
+        text: 'Angular 7+, Typescript 3, Bootstrap 4, HTML 5',
         links: [{ url: RepositoriesUrls.FRONTEND, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
       },
       {
         image: 'assets/img/contribute-project/ionic.jpg',
         title: 'Mobile',
-        text: 'Cordova, Ionic, Angular<br/>',
+        text: 'Cordova, Ionic 3, Angular<br/>',
         links: [{ url: RepositoriesUrls.MOBILE, content: 'Github' }, { url: TrelloUrls.MOBILE, content: 'Trello' }]
       },
       {
