@@ -37,11 +37,12 @@ Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e 
 
 ### 4.3 ESCREVA CÓDIGO
 
-Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie e aguarde o PULL REQUEST ser aprovado.
+Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie sua PULL REQUEST para a branch DEVELOP e aguarde ser aprovado.
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
-## Observções:  
+## Observções:
+
 Verifique a versão do Node - Recomendamos Versão 10.x.x  
 Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
 Use o Angular 7+
