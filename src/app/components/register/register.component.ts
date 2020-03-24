@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._toastr.success('Registro realizado com sucesso1');
+            this._toastr.success('Registro realizado com sucesso');
             this._router.navigate(['/']);
           } else {
             this._toastr.error(data.messages[0]);
