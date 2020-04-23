@@ -41,7 +41,7 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
-## Observções:
+## Observações:
 
 Verifique a versão do Node - Recomendamos Versão 10.x.x  
 Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
@@ -56,6 +56,24 @@ npm start
 
 # crie seu primeiro componente. Exemplo.
 ng generate component book/list nomeDoComponente
+```
+
+# Rodar o app pela primeira vez com Docker
+
+Os comandos abaixo irão rodar o frontend em container docker com hot reload, ou seja, qualquer alteração feita no front será automaticamente atualizada.
+
+```bash
+# Criando imagem e rodando o container com Backend DEV
+docker-compose up -d --build
+
+# Criando imagem e rodando o container com Backend LOCAL
+docker-compose -f docker-compose-local.yml up -d --build
+
+# Parando o container
+docker-compose stop
+
+# Parando e eliminando o container
+docker-compose down
 ```
 
 ## API no ambiente de dev
