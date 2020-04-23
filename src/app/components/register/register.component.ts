@@ -32,27 +32,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private _AddressService: AddressService,
     private _toastr: ToastrService
   ) {
-    this.formGroup = _formBuilder.group(
-      {
-        name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
-        email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-        password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
-        confirmPassword: ['', [Validators.required]],
-        phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
-        linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
-        postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
-        street: ['', [Validators.required]],
-        number: ['', [Validators.required]],
-        complement: [''],
-        neighborhood: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        state: ['', [Validators.required]],
-        country: ['', [Validators.required]]
-      },
-      {
-        validator: PasswordValidation.MatchPassword
-      }
-    );
+
+    this.formGroup = _formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
+      confirmPassword: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
+      linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
+      postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
+      street: ['', [Validators.required]],
+      number: ['', [Validators.required]],
+      complement: [''],
+      neighborhood: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      allowSendingEmail: [true, null]
+    }, {
+      validator: PasswordValidation.MatchPassword
+    });
+
   }
 
   ngOnInit() {}
@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.success || data.authenticated) {
-            this._toastr.success('Registro realizado com sucesso1');
+            this._toastr.success('Registro realizado com sucesso');
             this._router.navigate(['/']);
           } else {
             this._toastr.error(data.messages[0]);
