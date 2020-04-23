@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   example:
-    container_name: sharebook-frontend-dev
+    container_name: sharebook-frontend-local
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-local
     volumes:
       - '.:/app'
       - '/app/node_modules'
