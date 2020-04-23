@@ -1,0 +1,7 @@
+<div class="cookieconsent" *ngIf="!consentHide">
+    <span>{{consent.text}}<a routerLink="/politica-privacidade">{{consent.link}}</a></span>
+    <div>
+        <button class="btnaccept" (click)="consentUser(true)">{{consent.accept}}</button>
+        <button class="btnclose" (click)="consentUser(false)">{{consent.close}}</button>
+    </div>
+</div>
