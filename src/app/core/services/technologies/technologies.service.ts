@@ -8,7 +8,7 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/dotnet.jpg',
         title: 'Backend',
-        text: '.Net core 2.x, C#, SQL Server, Web api',
+        text: '.Net core 3.1, C#, SQL Server, Web api',
         links: [{ url: RepositoriesUrls.BACKEND, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
       },
       {
