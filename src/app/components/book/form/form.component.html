@@ -187,6 +187,15 @@
           </div>
         </div>
 
+        <div class="form-group col-md-8">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="agreeToTerms" id="agreeToTerms">
+            <label class="form-check-label" for="agreeToTerms">
+              Declaro que estou ciente da importância desta doação e que irei tratar a mesma com carinho, evitando atrasos no processo. Sei que tem uma pessoa do outro lado que deseja e precisa desse livro.
+            </label>
+          </div>
+        </div>
+
         <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator' && itsEditMode">
           <label class="col-form-label" for="approved">Situação do livro</label>
           <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
