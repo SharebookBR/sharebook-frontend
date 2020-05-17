@@ -101,7 +101,8 @@ export class FormComponent implements OnInit, OnDestroy {
       approved: false,
       imageUrl: '',
       imageSlug: '',
-      synopsis: ['', [Validators.maxLength(2000)]]
+      synopsis: ['', [Validators.maxLength(2000)]],
+      agreeToTerms: ['', Validators.requiredTrue ]
     });
   }
 
