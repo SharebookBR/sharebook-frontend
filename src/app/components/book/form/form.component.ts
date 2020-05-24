@@ -157,7 +157,8 @@ export class FormComponent implements OnInit, OnDestroy {
           approved: x.approved,
           imageUrl: x.imageUrl,
           imageSlug: x.imageSlug,
-          synopsis: !!x.synopsis ? x.synopsis : ''
+          synopsis: !!x.synopsis ? x.synopsis : '',
+          agreeToTerms: true
         };
         this.formGroup.get('userIdFacilitator').setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
         this.formGroup.setValue(bookForUpdate);
