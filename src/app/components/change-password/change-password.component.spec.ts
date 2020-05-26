@@ -19,8 +19,13 @@ describe('ChangePasswordComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ChangePasswordComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, AppConfigModule],
-      providers: [UserService, HttpClient, HttpHandler, AlertService]
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        AppConfigModule,
+      ],
+      providers: [UserService, HttpClient, HttpHandler],
     }).compileComponents();
   }));
 

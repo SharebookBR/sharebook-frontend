@@ -26,9 +26,9 @@ describe('RequestComponent', () => {
         NgbModalModule,
         Ng2SmartTableModule,
         AppConfigModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      providers: [NgbActiveModal, HttpClient, HttpHandler, UserService, AlertService]
+      providers: [NgbActiveModal, HttpClient, HttpHandler, UserService],
     }).compileComponents();
   }));
 

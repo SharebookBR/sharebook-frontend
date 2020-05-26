@@ -19,8 +19,14 @@ describe('DonateComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DonateComponent],
-      imports: [FormsModule, ReactiveFormsModule, Ng2SmartTableModule, AppConfigModule, RouterTestingModule],
-      providers: [NgbActiveModal, AlertService]
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        Ng2SmartTableModule,
+        AppConfigModule,
+        RouterTestingModule,
+      ],
+      providers: [NgbActiveModal],
     }).compileComponents();
   }));
 
