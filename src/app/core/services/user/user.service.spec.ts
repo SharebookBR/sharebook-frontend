@@ -1,5 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { UserService } from './user.service';
 
@@ -8,8 +8,8 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserService, HttpClient, HttpHandler],
-      imports: [AppConfigModule]
+      imports: [AppConfigModule, HttpClientTestingModule],
+      providers: [UserService],
     });
   });
 

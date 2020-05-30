@@ -1,6 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { AppConfigModule } from './app-config.module';
 
 import { AppComponent } from './app.component';
@@ -9,13 +9,15 @@ import { FooterComponent } from './components/footer/footer.component';
 
 import { UserService } from './core/services/user/user.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent, HeaderComponent, FooterComponent],
-      imports: [RouterTestingModule, AppConfigModule],
-      providers: [UserService, AuthenticationService, HttpClient, HttpHandler],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, AppConfigModule, HttpClientTestingModule],
+      providers: [UserService, AuthenticationService],
     }).compileComponents();
   }));
   it('should create the app', async(() => {

@@ -1,8 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
@@ -10,7 +11,6 @@ import { RequestComponent } from './request.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { UserService } from '../../../core/services/user/user.service';
-import { ToastrService } from 'ngx-toastr';
 
 describe('RequestComponent', () => {
   let component: RequestComponent;
@@ -27,8 +27,10 @@ describe('RequestComponent', () => {
         Ng2SmartTableModule,
         AppConfigModule,
         RouterTestingModule,
+        ToastrModule.forRoot(),
+        HttpClientTestingModule,
       ],
-      providers: [NgbActiveModal, HttpClient, HttpHandler, UserService],
+      providers: [NgbActiveModal, UserService],
     }).compileComponents();
   }));
 
