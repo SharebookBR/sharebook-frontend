@@ -3,54 +3,33 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardBookComponent } from './card-book.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
 
 describe('CardBookComponent', () => {
-  @Component({
-    selector: `app-test-card-book`,
-    template: `<app-card-book></app-card-book>`,
-  })
-  class TestCardBookComponent {
-    @ViewChild(CardBookComponent)
-    public cardBookComponent: CardBookComponent;
-  }
-
-  let component: TestCardBookComponent;
-  let fixture: ComponentFixture<TestCardBookComponent>;
+  let component: CardBookComponent;
+  let fixture: ComponentFixture<CardBookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, FormsModule, ReactiveFormsModule],
-      declarations: [CardBookComponent, TestCardBookComponent],
+      declarations: [CardBookComponent, CardBookComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestCardBookComponent);
+    fixture = TestBed.createComponent(CardBookComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  // it('should show TEST INPUT', () => {
-  //   const book = {
-  //     title: 'Como desenhar super-heróis',
-  //     slug: 'como-desenhar-super-herois',
-  //     imageUrl:
-  //       'https://www.sharebook.com.br/Images/Books/como-desenhar-super-herois.jpeg',
-  //     approved: true,
-  //   };
-  //   component.cardBookComponent.content = book;
-  //   fixture.detectChanges();
-  //   expect(fixture.nativeElement.querySelector('card-title').innerText).toEqual(
-  //     book.title
-  //   );
-  // });
-
-  // it('should show DIFFERENT TEST INPUT', () => {
-  //   component.cardBookComponent.content = 'different test input';
-  //   fixture.detectChanges();
-  //   expect(fixture.nativeElement.querySelector('div').innerText).toEqual(
-  //     'DIFFERENT TEST INPUT'
-  //   );
-  // });
+  it('should create', () => {
+    const book = {
+      title: 'Como desenhar super-heróis',
+      slug: 'como-desenhar-super-herois',
+      imageUrl:
+        'https://www.sharebook.com.br/Images/Books/como-desenhar-super-herois.jpeg',
+      approved: true,
+    };
+    component.content = book;
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
 });

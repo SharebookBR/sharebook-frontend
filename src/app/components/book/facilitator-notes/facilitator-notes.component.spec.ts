@@ -26,10 +26,13 @@ describe('FacilitatorNotesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FacilitatorNotesComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    component.bookId = '9eb3fe55-d195-4f9b-9533-08d6eae2daab';
+    component.bookTitle = 'My Book';
+    component.facilitatorNotes = 'My Notes for book';
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
 });

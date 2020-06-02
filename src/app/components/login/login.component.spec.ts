@@ -7,7 +7,7 @@ import { LoginComponent } from './login.component';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import { UserService } from '../../core/services/user/user.service';
 import { AppConfigModule } from '../../app-config.module';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -22,6 +22,7 @@ describe('LoginComponent', () => {
         RouterTestingModule,
         AppConfigModule,
         HttpClientTestingModule,
+        ToastrModule.forRoot(),
       ],
       providers: [AuthenticationService, UserService],
     }).compileComponents();
@@ -33,7 +34,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  /*it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });*/
+  });
 });

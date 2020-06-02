@@ -2,7 +2,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppConfigModule } from './../../../app-config.module';
 import { AddressService } from './../../../core/services/address/address.service';
 import { RouterTestingModule } from '@angular/router/testing';
-// import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -12,10 +11,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 describe('DonatePageComponent', () => {
   let component: DonatePageComponent;
   let fixture: ComponentFixture<DonatePageComponent>;
-
-  // const fakeActivatedRoute = {
-  //   snapshot: { data: {} },
-  // } as ActivatedRoute;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
