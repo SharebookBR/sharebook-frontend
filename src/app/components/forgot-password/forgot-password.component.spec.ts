@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
   let fixture: ComponentFixture<ForgotPasswordComponent>;
-  const hashCodeValue: String = '961bf5da-cdfc-4603-a03b-dcfcbba1e5af';
+  const hashCodeValue = '961bf5da-cdfc-4603-a03b-dcfcbba1e5af';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
