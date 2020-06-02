@@ -24,6 +24,7 @@
     "build-dev": "ng build",
     "build-stg": "ng build --configuration=stage",
     "build-prod": "ng build --configuration=production",
+    "test-debug": "ng test --browsers ChromeDebug",
     "test": "ng test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
