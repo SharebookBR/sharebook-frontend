@@ -1,5 +1,6 @@
 import { Category } from './category';
 import { User } from './user';
+import { BookDonationStatus } from './BookDonationStatus';
 
 export class Book {
   title: string;
@@ -14,12 +15,11 @@ export class Book {
   userIdFacilitator: string;
   userFacilitator: User;
   category: Category;
-  approved: boolean;
-  // bookUsers
   imageUrl: string;
   imageName: string;
   chooseDate: Date;
   synopsis: string;
   id: string;
   creationDate: Date;
+  status: BookDonationStatus;
 }
