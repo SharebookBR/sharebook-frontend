@@ -69,6 +69,9 @@ docker-compose up -d --build
 # Criando imagem e rodando o container com Backend LOCAL
 docker-compose -f docker-compose-local.yml up -d --build
 
+# Rodando os testes unitários
+docker-compose run --rm sharebook npm run test
+
 # Parando o container
 docker-compose stop
 
