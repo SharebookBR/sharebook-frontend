@@ -19,7 +19,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
@@ -65,7 +65,7 @@ export class FormComponent implements OnInit, OnDestroy {
         'Vc não faz ideia de como tem pessoas que realmente precisam. ' +
         'E da força transformadora que um simples livro causa na vida de uma pessoa. ' +
         'E que você ao escolher um ganhador, passa a fazer parte dessa história.',
-      slug: 'doar-livro'
+      slug: 'doar-livro',
     });
 
     this.findProfile();
@@ -74,24 +74,36 @@ export class FormComponent implements OnInit, OnDestroy {
       this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
     }
 
-    this._scBook.getFreightOptions()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(data => (this.freightOptions = data));
+    this._scBook
+      .getFreightOptions()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((data) => (this.freightOptions = data));
 
-    this._scCategory.getAll()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(data => (this.categories = data));
+    this._scCategory
+      .getAll()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((data) => (this.categories = data));
   }
 
   createFormGroup() {
     this.formGroup = this._formBuilder.group({
       id: '',
-      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
-      author: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(200),
+        ],
+      ],
+      author: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(200),
+        ],
+      ],
       categoryId: ['', [Validators.required]],
       userIdFacilitator: [''],
       userId: ['', [Validators.required]],
@@ -102,21 +114,20 @@ export class FormComponent implements OnInit, OnDestroy {
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
-      agreeToTerms: ['', Validators.requiredTrue ]
+      agreeToTerms: ['', Validators.requiredTrue],
     });
   }
 
   findProfile() {
-    this._scUser.getProfile()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(({ profile }) => {
-      this.userProfile = profile;
-      this.createFormGroup();
-      this.getBookSaved();
-      this.buildFormsLabels();
-    });
+    this._scUser
+      .getProfile()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(({ profile }) => {
+        this.userProfile = profile;
+        this.createFormGroup();
+        this.getBookSaved();
+        this.buildFormsLabels();
+      });
   }
 
   buildFormsLabels() {
@@ -132,38 +143,39 @@ export class FormComponent implements OnInit, OnDestroy {
   getBookSaved() {
     let id = '';
     this._activatedRoute.params
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(param => (id = param.id));
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((param) => (id = param.id));
     this.itsEditMode = !!id;
 
     if (this.userProfile === 'Administrator' && id) {
-      this._scBook.getById(id)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe(x => {
-        const bookForUpdate = {
-          id: x.id,
-          title: x.title,
-          author: x.author,
-          categoryId: x.categoryId,
-          userIdFacilitator: !!x.userIdFacilitator ? x.userIdFacilitator : null,
-          userId: x.userId,
-          freightOption: x.freightOption,
-          imageBytes: '',
-          imageName: null,
-          approved: x.approved,
-          imageUrl: x.imageUrl,
-          imageSlug: x.imageSlug,
-          synopsis: !!x.synopsis ? x.synopsis : '',
-          agreeToTerms: true
-        };
-        this.formGroup.get('userIdFacilitator').setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
-        this.formGroup.setValue(bookForUpdate);
-        this.getAllFacilitators();
-      });
+      this._scBook
+        .getById(id)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe((x) => {
+          const bookForUpdate = {
+            id: x.id,
+            title: x.title,
+            author: x.author,
+            categoryId: x.categoryId,
+            userIdFacilitator: !!x.userIdFacilitator
+              ? x.userIdFacilitator
+              : null,
+            userId: x.userId,
+            freightOption: x.freightOption,
+            imageBytes: '',
+            imageName: null,
+            status: x.status,
+            imageUrl: x.imageUrl,
+            imageSlug: x.imageSlug,
+            synopsis: !!x.synopsis ? x.synopsis : '',
+            agreeToTerms: true,
+          };
+          this.formGroup
+            .get('userIdFacilitator')
+            .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
+          this.formGroup.setValue(bookForUpdate);
+          this.getAllFacilitators();
+        });
     }
 
     // ao doar um livro, o userId é do usuário logado.
@@ -185,30 +197,28 @@ export class FormComponent implements OnInit, OnDestroy {
             this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
           }
 
-          this._scBook.create(this.formGroup.value)
-          .pipe(
-            takeUntil(this._destroySubscribes$)
-          )
-          .subscribe(resp => {
-            if (resp.success) {
-              this.isSaved = true;
-              this._toastr.success('Livro cadastrado com sucesso!');
-              this.pageTitle = 'Obrigado por ajudar.';
-            } else {
-              this._toastr.error(resp.messages[0]);
-            }
-            this.isLoading = false;
-          });
+          this._scBook
+            .create(this.formGroup.value)
+            .pipe(takeUntil(this._destroySubscribes$))
+            .subscribe((resp) => {
+              if (resp.success) {
+                this.isSaved = true;
+                this._toastr.success('Livro cadastrado com sucesso!');
+                this.pageTitle = 'Obrigado por ajudar.';
+              } else {
+                this._toastr.error(resp.messages[0]);
+              }
+              this.isLoading = false;
+            });
         } else {
-          this._scBook.update(this.formGroup.value)
-          .pipe(
-            takeUntil(this._destroySubscribes$)
-          )
-          .subscribe(resp => {
-            this.isSaved = true;
-            this.pageTitle = 'Registro atualizado';
-            this.isLoading = false;
-          });
+          this._scBook
+            .update(this.formGroup.value)
+            .pipe(takeUntil(this._destroySubscribes$))
+            .subscribe((resp) => {
+              this.isSaved = true;
+              this.pageTitle = 'Registro atualizado';
+              this.isLoading = false;
+            });
         }
       }
     }
@@ -234,34 +244,34 @@ export class FormComponent implements OnInit, OnDestroy {
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
 
-      this._ng2ImgMaxService.resize([imageResult.file], 600, 10000)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe(result => {
-        const reader = new FileReader();
-        reader.readAsDataURL(result);
+      this._ng2ImgMaxService
+        .resize([imageResult.file], 600, 10000)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe((result) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(result);
 
-        reader.onload = event => {
-          this.src = <string>reader.result;
-          const img = this.src.split(',');
-          this.formGroup.controls['imageBytes'].setValue(img[1]);
-          this.isLoading = false;
-        };
-      });
+          reader.onload = (event) => {
+            this.src = <string>reader.result;
+            const img = this.src.split(',');
+            this.formGroup.controls['imageBytes'].setValue(img[1]);
+            this.isLoading = false;
+          };
+        });
     } else {
-      this.formGroup.controls['imageName'].setErrors({ InvalidExtension: true });
+      this.formGroup.controls['imageName'].setErrors({
+        InvalidExtension: true,
+      });
       this.formGroup.controls['imageBytes'].setValue('');
       this.isImageLoaded = false;
     }
   }
 
   getAllFacilitators() {
-    this._scUser.getAllFacilitators(this.formGroup.get('userId').value)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(data => (this.facilitators = data));
+    this._scUser
+      .getAllFacilitators(this.formGroup.get('userId').value)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((data) => (this.facilitators = data));
   }
 
   ngOnDestroy() {

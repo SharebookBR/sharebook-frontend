@@ -18,7 +18,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   freightOptions: FreightOptions[] = [];
@@ -65,102 +65,113 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getMyUser() {
-    this._scUser.getUserData()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(x => {
-      this.myUser = x;
-      this.getBook();
-    });
+    this._scUser
+      .getUserData()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((x) => {
+        this.myUser = x;
+        this.getBook();
+      });
   }
 
   getBook() {
     let slug = '';
     this._activatedRoute.params
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(param => (slug = param.slug));
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((param) => (slug = param.slug));
 
     if (slug) {
-      this._scBook.getBySlug(slug)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe(
-        x => {
-          this._scBook.getFreightOptions()
-          .pipe(
-            takeUntil(this._destroySubscribes$)
-          )
-          .subscribe(data => {
-            this.freightOptions = data;
+      this._scBook
+        .getBySlug(slug)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe(
+          (x) => {
+            this._scBook
+              .getFreightOptions()
+              .pipe(takeUntil(this._destroySubscribes$))
+              .subscribe((data) => {
+                this.freightOptions = data;
 
-            const name = this.freightOptions.find(obj => obj.value.toString() === x.freightOption.toString());
-            this.freightName = name.text;
+                const name = this.freightOptions.find(
+                  (obj) => obj.value.toString() === x.freightOption.toString()
+                );
+                this.freightName = name.text;
 
-            this.bookInfo = x;
-            this.pageTitle = this.bookInfo.title;
-            this.available = this.bookInfo.approved;
-            const chooseDate = Math.floor(new Date(this.bookInfo.chooseDate).getTime() / (3600 * 24 * 1000));
-            const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+                this.bookInfo = x;
+                this.pageTitle = this.bookInfo.title;
+                //this.available = this.bookInfo.approved;
+                // TODO: verificar o status corretamente.
+                this.available = true;
+                const chooseDate = Math.floor(
+                  new Date(this.bookInfo.chooseDate).getTime() /
+                    (3600 * 24 * 1000)
+                );
+                const todayDate = Math.floor(
+                  new Date().getTime() / (3600 * 24 * 1000)
+                );
 
-            this.daysToChoose = chooseDate - todayDate;
-            this.chooseDateInfo =
-              !this.daysToChoose || this.daysToChoose <= 0 ? 'Hoje' : 'Daqui a ' + this.daysToChoose + ' dia(s)';
+                this.daysToChoose = chooseDate - todayDate;
+                this.chooseDateInfo =
+                  !this.daysToChoose || this.daysToChoose <= 0
+                    ? 'Hoje'
+                    : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
-            if (this.myUser.name) {
-              switch (x.freightOption.toString()) {
-                case 'City': {
-                  if (this.bookInfo.user.address.city !== this.myUser.address.city) {
-                    this.isFreeFreight = false;
+                if (this.myUser.name) {
+                  switch (x.freightOption.toString()) {
+                    case 'City': {
+                      if (
+                        this.bookInfo.user.address.city !==
+                        this.myUser.address.city
+                      ) {
+                        this.isFreeFreight = false;
+                      }
+                      break;
+                    }
+                    case 'State': {
+                      if (
+                        this.bookInfo.user.address.state !==
+                        this.myUser.address.state
+                      ) {
+                        this.isFreeFreight = false;
+                      }
+                      break;
+                    }
+                    case 'WithoutFreight': {
+                      this.isFreeFreight = false;
+                      break;
+                    }
+                    default: {
+                      this.isFreeFreight = true;
+                    }
                   }
-                  break;
                 }
-                case 'State': {
-                  if (this.bookInfo.user.address.state !== this.myUser.address.state) {
-                    this.isFreeFreight = false;
-                  }
-                  break;
-                }
-                case 'WithoutFreight': {
-                  this.isFreeFreight = false;
-                  break;
-                }
-                default: {
-                  this.isFreeFreight = true;
-                }
-              }
-            }
 
-            if (this.userProfile) {
-              this._scBook.getRequested(x.id)
-              .pipe(
-                takeUntil(this._destroySubscribes$)
-              )
-              .subscribe(requested => {
-                this.requested = requested.value.bookRequested;
-                this.state = 'ready';
+                if (this.userProfile) {
+                  this._scBook
+                    .getRequested(x.id)
+                    .pipe(takeUntil(this._destroySubscribes$))
+                    .subscribe((requested) => {
+                      this.requested = requested.value.bookRequested;
+                      this.state = 'ready';
+                    });
+                } else {
+                  this.state = 'ready';
+                }
+
+                this._seo.generateTags({
+                  title: this.bookInfo.title,
+                  description: this.bookInfo.synopsis,
+                  image: this.bookInfo.imageUrl,
+                  slug: slug,
+                });
               });
-            } else {
-              this.state = 'ready';
-            }
-
-            this._seo.generateTags({
-              title: this.bookInfo.title,
-              description: this.bookInfo.synopsis,
-              image: this.bookInfo.imageUrl,
-              slug: slug
-            });
-          });
-        },
-        err => {
-          console.error(err);
-          this.pageTitle = 'Ops... Não encontramos esse livro :/';
-          this.state = 'not-found';
-        }
-      );
+          },
+          (err) => {
+            console.error(err);
+            this.pageTitle = 'Ops... Não encontramos esse livro :/';
+            this.state = 'not-found';
+          }
+        );
     } else {
       this.pageTitle = 'Ops... Não encontramos esse livro :/';
       this.state = 'not-found';
@@ -170,16 +181,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
   onRequestBook() {
     const modalRef = this._modalService.open(RequestComponent, {
       backdropClass: 'light-blue-backdrop',
-      centered: true
+      centered: true,
     });
 
     modalRef.result.then(
-      result => {
+      (result) => {
         if (result === 'Success') {
           this.requested = true;
         }
       },
-      reason => {
+      (reason) => {
         if (reason === 'Success') {
           this.requested = true;
         }
@@ -190,7 +201,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   onLoginBook() {
-    this._router.navigate(['/login'], { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
+    this._router.navigate(['/login'], {
+      queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') },
+    });
   }
 
   onConvertImageToBase64(event: any) {
@@ -199,7 +212,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(event.target.files[0]);
 
       // tslint:disable-next-line:no-shadowed-variable
-      reader.onload = event => {
+      reader.onload = (event) => {
         const img = event.target['result'].split(',');
         this.bookInfo.imageBytes = img[1];
       };
