@@ -37,7 +37,7 @@ export class FormComponent implements OnInit, OnDestroy {
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
   canApprove: Boolean = true;
-  status: string = '';
+  status = '';
 
   src: string;
 
@@ -168,7 +168,7 @@ export class FormComponent implements OnInit, OnDestroy {
               : null,
             userId: book.userId,
             freightOption: this.freightOptions.find(
-              (e) => e.text == book.freightOption
+              (e) => e.text === book.freightOption
             ).value,
             imageBytes: '',
             imageName: null,
@@ -228,8 +228,11 @@ export class FormComponent implements OnInit, OnDestroy {
         .update(this.formGroup.value)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe((resp) => {
-          if (!this.formGroup.value.approve) this.happyEnd();
-          else this.approve();
+          if (!this.formGroup.value.approve) {
+            this.happyEnd();
+          } else {
+            this.approve();
+          }
         });
     }
   }
