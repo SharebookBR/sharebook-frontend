@@ -15,6 +15,7 @@ import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from '../../../core/services/seo/seo.service';
+import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-form',
@@ -35,6 +36,8 @@ export class FormComponent implements OnInit, OnDestroy {
   isLoadingMessage: string;
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
+  canApprove: Boolean = true;
+  status: string = '';
 
   src: string;
 
@@ -57,6 +60,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('renderizando');
     this._seo.generateTags({
       title: 'Doe um livro.',
       description:
@@ -110,7 +114,7 @@ export class FormComponent implements OnInit, OnDestroy {
       freightOption: ['', [Validators.required]],
       imageBytes: [''],
       imageName: [''], // , this.userProfile === 'User' && [Validators.required]],
-      approved: false,
+      approve: [''],
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
@@ -151,24 +155,28 @@ export class FormComponent implements OnInit, OnDestroy {
       this._scBook
         .getById(id)
         .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe((x) => {
+        .subscribe((book) => {
+          this.status = book.status;
+          this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
-            id: x.id,
-            title: x.title,
-            author: x.author,
-            categoryId: x.categoryId,
-            userIdFacilitator: !!x.userIdFacilitator
-              ? x.userIdFacilitator
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            categoryId: book.categoryId,
+            userIdFacilitator: !!book.userIdFacilitator
+              ? book.userIdFacilitator
               : null,
-            userId: x.userId,
-            freightOption: x.freightOption,
+            userId: book.userId,
+            freightOption: this.freightOptions.find(
+              (e) => e.text == book.freightOption
+            ).value,
             imageBytes: '',
             imageName: null,
-            status: x.status,
-            imageUrl: x.imageUrl,
-            imageSlug: x.imageSlug,
-            synopsis: !!x.synopsis ? x.synopsis : '',
+            imageUrl: book.imageUrl,
+            imageSlug: book.imageSlug,
+            synopsis: !!book.synopsis ? book.synopsis : '',
             agreeToTerms: true,
+            approve: false,
           };
           this.formGroup
             .get('userIdFacilitator')
@@ -186,41 +194,43 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   onAddBook() {
-    if (this.formGroup.valid) {
-      if (this.userProfile === 'User' && !this.isImageLoaded) {
-        this._toastr.error('Selecionar imagem da capa do livro.');
-      } else {
-        this.isLoading = true;
-        this.isLoadingMessage = 'Aguarde...';
-        if (!this.formGroup.value.id) {
-          if (!this.formGroup.value.imageName) {
-            this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
-          }
+    if (!this.formGroup.valid) {
+      return false;
+    }
 
-          this._scBook
-            .create(this.formGroup.value)
-            .pipe(takeUntil(this._destroySubscribes$))
-            .subscribe((resp) => {
-              if (resp.success) {
-                this.isSaved = true;
-                this._toastr.success('Livro cadastrado com sucesso!');
-                this.pageTitle = 'Obrigado por ajudar.';
-              } else {
-                this._toastr.error(resp.messages[0]);
-              }
-              this.isLoading = false;
-            });
-        } else {
-          this._scBook
-            .update(this.formGroup.value)
-            .pipe(takeUntil(this._destroySubscribes$))
-            .subscribe((resp) => {
-              this.isSaved = true;
-              this.pageTitle = 'Registro atualizado';
-              this.isLoading = false;
-            });
-        }
+    if (this.userProfile === 'User' && !this.isImageLoaded) {
+      this._toastr.error('Selecionar imagem da capa do livro.');
+      return false;
+    }
+
+    this.isLoading = true;
+    this.isLoadingMessage = 'Aguarde...';
+    if (!this.formGroup.value.id) {
+      if (!this.formGroup.value.imageName) {
+        this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
       }
+
+      this._scBook
+        .create(this.formGroup.value)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe((resp) => {
+          if (resp.success) {
+            this.isSaved = true;
+            this._toastr.success('Livro cadastrado com sucesso!');
+            this.pageTitle = 'Obrigado por ajudar.';
+          } else {
+            this._toastr.error(resp.messages[0]);
+          }
+          this.isLoading = false;
+        });
+    } else {
+      this._scBook
+        .update(this.formGroup.value)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe((resp) => {
+          if (!this.formGroup.value.approve) this.happyEnd();
+          else this.approve();
+        });
     }
   }
 
@@ -232,10 +242,6 @@ export class FormComponent implements OnInit, OnDestroy {
     } else {
       p.close();
     }
-  }
-
-  onChangeFieldApproved(approved: boolean) {
-    this.formGroup.controls['approved'].setValue(approved);
   }
 
   onConvertImageToBase64(imageResult: ImageResult) {
@@ -277,5 +283,20 @@ export class FormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  approve() {
+    this._scBook
+      .approve(this.formGroup.value.id)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((resp) => {
+        this.happyEnd();
+      });
+  }
+
+  happyEnd() {
+    this.isSaved = true;
+    this.pageTitle = 'Registro atualizado';
+    this.isLoading = false;
   }
 }
