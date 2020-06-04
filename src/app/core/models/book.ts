@@ -11,9 +11,7 @@ export class Book {
   freightOption: string;
   userId: string;
   categoryId: string;
-  user: User;
   userIdFacilitator: string;
-  userFacilitator: User;
   category: Category;
   imageUrl: string;
   imageName: string;
