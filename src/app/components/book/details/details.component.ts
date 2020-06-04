@@ -98,7 +98,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.bookInfo = book;
                 this.pageTitle = this.bookInfo.title;
                 this.available =
-                  this.bookInfo.status == BookDonationStatus.AVAILABLE;
+                  this.bookInfo.status === BookDonationStatus.AVAILABLE;
 
                 const chooseDate = Math.floor(
                   new Date(this.bookInfo.chooseDate).getTime() /
