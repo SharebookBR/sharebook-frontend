@@ -60,7 +60,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('renderizando');
     this._seo.generateTags({
       title: 'Doe um livro.',
       description:

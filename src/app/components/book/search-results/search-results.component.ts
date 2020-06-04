@@ -30,25 +30,11 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   ) {
     this.currentPage = 1;
     this.itemsPerPage = 12;
-
-    this._router.events
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((e: any) => {
-        // If it is a NavigationEnd event re-initalise the component
-        if (e instanceof NavigationEnd) {
-          this.isLoading = true;
-          this.getParamByUri();
-          this.getBooks();
-        }
-      });
   }
 
   ngOnInit() {
-    console.log(1);
     this.getParamByUri();
-    console.log(2);
     this.getBooks();
-    console.log(3);
   }
 
   private getParamByUri(): void {
