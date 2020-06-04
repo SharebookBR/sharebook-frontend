@@ -14,6 +14,7 @@ import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
+import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
 
 @Component({
   selector: 'app-list',
@@ -39,38 +40,15 @@ export class ListComponent implements OnInit, OnDestroy {
   ) {}
 
   getHtmlForCell(value: string, row: any) {
-    if (!!row.donated) {
-      return '<font color="green">' + value + '</font>';
-    } else if (!!row.chooseDate) {
-      // Coloca o chooseDate para as 23:59:59 do dia da escolha
-      const myChooseDate = new Date(
-        new Date(row.chooseDate).getFullYear(),
-        new Date(row.chooseDate).getMonth(),
-        new Date(row.chooseDate).getDate(),
-        23,
-        39,
-        59,
-        59
-      );
-      // Coloca o today para as 23:59:59 do dia
-      const myTodayDate = new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate(),
-        23,
-        39,
-        59,
-        59
-      );
-      if (myChooseDate.getTime() < myTodayDate.getTime()) {
+    switch (row.status) {
+      case BookDonationStatus.AVAILABLE:
+      case BookDonationStatus.RECEIVED:
+        return '<font color="green">' + value + '</font>';
+      case BookDonationStatus.CANCELED:
+      case BookDonationStatus.WAITING_DECISION:
         return '<font color="red">' + value + '</font>';
-      } else if (myChooseDate.getTime() === myTodayDate.getTime()) {
-        return '<font color="orange">' + value + '</font>';
-      } else {
+      default:
         return '<font>' + value + '</font>';
-      }
-    } else {
-      return '<font>' + value + '</font>';
     }
   }
 
