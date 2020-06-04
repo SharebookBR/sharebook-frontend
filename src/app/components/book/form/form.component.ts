@@ -36,7 +36,7 @@ export class FormComponent implements OnInit, OnDestroy {
   isLoadingMessage: string;
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
-  canApprove: Boolean = true;
+  canApprove: Boolean = false;
   status = '';
 
   src: string;
