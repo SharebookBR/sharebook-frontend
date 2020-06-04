@@ -22,4 +22,6 @@ export class Book {
   id: string;
   creationDate: Date;
   status: BookDonationStatus;
+  city: string;
+  state: string;
 }
