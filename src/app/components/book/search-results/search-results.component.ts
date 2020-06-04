@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
-  styleUrls: ['./search-results.component.css']
+  styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   public criteria: string;
@@ -32,31 +32,28 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.itemsPerPage = 12;
 
     this._router.events
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        this.isLoading = true;
-        this.getParamByUri();
-        this.getBooks();
-      }
-    });
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((e: any) => {
+        // If it is a NavigationEnd event re-initalise the component
+        if (e instanceof NavigationEnd) {
+          this.isLoading = true;
+          this.getParamByUri();
+          this.getBooks();
+        }
+      });
   }
 
   ngOnInit() {
+    console.log(1);
     this.getParamByUri();
+    console.log(2);
     this.getBooks();
+    console.log(3);
   }
 
   private getParamByUri(): void {
-    this._route.params
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      param => {
+    this._route.params.pipe(takeUntil(this._destroySubscribes$)).subscribe(
+      (param) => {
         this.criteria = param['param'];
       },
       (error: HttpErrorResponse) => {
@@ -66,41 +63,39 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   }
 
   private getBooks(): void {
-    this._bookService.getFullSearch(this.criteria, this.currentPage, this.itemsPerPage)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      (books: any[]) => {
-        this.books = books;
-        this.isLoading = false;
-      },
-      (error: HttpErrorResponse) => {
-        this._toastr.error(error.message ? error.message : error.toString());
-        this.books = null;
-        this.isLoading = false;
-      },
-      () => {}
-    );
+    this._bookService
+      .getFullSearch(this.criteria, this.currentPage, this.itemsPerPage)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        (books: any[]) => {
+          this.books = books;
+          this.isLoading = false;
+        },
+        (error: HttpErrorResponse) => {
+          this._toastr.error(error.message ? error.message : error.toString());
+          this.books = null;
+          this.isLoading = false;
+        },
+        () => {}
+      );
   }
 
   public togglePage(currentPage: number): void {
     this.isLoading = true;
-    this._bookService.getFullSearch(this.criteria, this.currentPage, this.itemsPerPage)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      (books: any[]) => {
-        this.books = books;
-        this.isLoading = false;
-      },
-      (error: HttpErrorResponse) => {
-        this._toastr.error(error.message ? error.message : error.toString());
-        this.isLoading = false;
-      },
-      () => {}
-    );
+    this._bookService
+      .getFullSearch(this.criteria, this.currentPage, this.itemsPerPage)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        (books: any[]) => {
+          this.books = books;
+          this.isLoading = false;
+        },
+        (error: HttpErrorResponse) => {
+          this._toastr.error(error.message ? error.message : error.toString());
+          this.isLoading = false;
+        },
+        () => {}
+      );
   }
 
   ngOnDestroy() {
