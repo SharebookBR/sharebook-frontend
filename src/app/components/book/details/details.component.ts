@@ -14,6 +14,7 @@ import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
 import { SeoService } from '../../../core/services/seo/seo.service';
+import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-details',
@@ -85,23 +86,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .getBySlug(slug)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe(
-          (x) => {
+          (book) => {
             this._scBook
               .getFreightOptions()
               .pipe(takeUntil(this._destroySubscribes$))
               .subscribe((data) => {
                 this.freightOptions = data;
 
-                const name = this.freightOptions.find(
-                  (obj) => obj.value.toString() === x.freightOption.toString()
-                );
-                this.freightName = name.text;
+                this.freightName = book.freightOption;
 
-                this.bookInfo = x;
+                this.bookInfo = book;
                 this.pageTitle = this.bookInfo.title;
-                //this.available = this.bookInfo.approved;
-                // TODO: verificar o status corretamente.
-                this.available = true;
+                this.available =
+                  this.bookInfo.status == BookDonationStatus.AVAILABLE;
+
                 const chooseDate = Math.floor(
                   new Date(this.bookInfo.chooseDate).getTime() /
                     (3600 * 24 * 1000)
@@ -117,26 +115,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
                     : 'Daqui a ' + this.daysToChoose + ' dia(s)';
 
                 if (this.myUser.name) {
-                  switch (x.freightOption.toString()) {
-                    case 'City': {
-                      if (
-                        this.bookInfo.user.address.city !==
-                        this.myUser.address.city
-                      ) {
+                  switch (book.freightOption) {
+                    case 'Cidade': {
+                      if (book.city !== this.myUser.address.city) {
                         this.isFreeFreight = false;
                       }
                       break;
                     }
-                    case 'State': {
-                      if (
-                        this.bookInfo.user.address.state !==
-                        this.myUser.address.state
-                      ) {
+                    case 'Estado': {
+                      if (book.state !== this.myUser.address.state) {
                         this.isFreeFreight = false;
                       }
                       break;
                     }
-                    case 'WithoutFreight': {
+                    case 'Não': {
                       this.isFreeFreight = false;
                       break;
                     }
@@ -148,7 +140,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
                 if (this.userProfile) {
                   this._scBook
-                    .getRequested(x.id)
+                    .getRequested(book.id)
                     .pipe(takeUntil(this._destroySubscribes$))
                     .subscribe((requested) => {
                       this.requested = requested.value.bookRequested;
