@@ -1,8 +1,9 @@
 export enum BookDonationStatus {
-  UNKNOW = 'Não identificado',
   WAITING_APPROVAL = 'Aguardando aprovação',
   AVAILABLE = 'Disponível',
-  INVISIBLE = 'Invisível',
-  DONATED = 'Doado',
-  CANCELED = 'Cancelado'
+  WAITING_DECISION = 'Aguardando decisão do doador',
+  WAITING_SEND = 'Aguardando envio',
+  SENT = 'Enviado',
+  RECEIVED = 'Recebido',
+  CANCELED = 'Cancelado',
 }

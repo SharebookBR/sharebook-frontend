@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
-  styleUrls: ['./donations.component.css']
+  styleUrls: ['./donations.component.css'],
 })
 export class DonationsComponent implements OnInit, OnDestroy {
   donatedBooks = new Array<any>();
@@ -40,8 +40,11 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach(key => {
-      myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
+    Object.keys(BookDonationStatus).forEach((key) => {
+      myBookDonationStatus.push({
+        value: BookDonationStatus[key],
+        title: BookDonationStatus[key],
+      });
     });
 
     const btnDonate =
@@ -58,15 +61,15 @@ export class DonationsComponent implements OnInit, OnDestroy {
       columns: {
         title: {
           title: 'Titulo',
-          width: '27%'
+          width: '27%',
         },
         totalInterested: {
           title: 'Total interessados',
-          width: '08%'
+          width: '08%',
         },
         daysInShowcase: {
           title: 'Dias na vitrine',
-          width: '08%'
+          width: '08%',
         },
         chooseDate: {
           title: 'Data Escolha',
@@ -74,29 +77,31 @@ export class DonationsComponent implements OnInit, OnDestroy {
           type: 'html',
           valuePrepareFunction: (cell, row) => {
             return new DatePipe('en-US').transform(cell, 'dd/MM/yyyy');
-          }
+          },
         },
         trackingNumber: {
           title: 'Código Ratreio',
-          width: '15%'
+          width: '15%',
         },
         status: {
           title: 'Status',
           width: '15%',
           type: 'html',
-          valuePrepareFunction: value => {
+          valuePrepareFunction: (value) => {
             return this._sanitizer.bypassSecurityTrustHtml(
-              `<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`
+              `<span class="badge badge-${this.getStatusBadge(
+                value
+              )}">${value}</span>`
             );
           },
           filter: {
             type: 'list',
             config: {
               selectText: 'Selecionar...',
-              list: myBookDonationStatus
-            }
-          }
-        }
+              list: myBookDonationStatus,
+            },
+          },
+        },
       },
       actions: {
         delete: false,
@@ -106,135 +111,156 @@ export class DonationsComponent implements OnInit, OnDestroy {
         custom: [
           {
             name: 'donate',
-            title: btnDonate
+            title: btnDonate,
           },
           {
             name: 'renewChooseDate',
-            title: btnRenewChooseDate
+            title: btnRenewChooseDate,
           },
           {
             name: 'trackNumber',
-            title: btnTrackNumber
-          }
+            title: btnTrackNumber,
+          },
         ],
-        position: 'right' // left|right
+        position: 'right', // left|right
       },
       attr: {
-        class: 'table table-bordered table-hover table-striped'
+        class: 'table table-bordered table-hover table-striped',
       },
-      noDataMessage: 'Nenhum registro encontrado.'
+      noDataMessage: 'Nenhum registro encontrado.',
     };
   }
 
   private getStatusBadge(status) {
     switch (status) {
-      case BookDonationStatus.UNKNOW:
-        return 'secondary';
       case BookDonationStatus.WAITING_APPROVAL:
+      case BookDonationStatus.WAITING_DECISION:
+      case BookDonationStatus.WAITING_SEND:
+      case BookDonationStatus.SENT:
         return 'warning';
       case BookDonationStatus.AVAILABLE:
-        return 'primary';
-      case BookDonationStatus.INVISIBLE:
-        return 'light';
-      case BookDonationStatus.DONATED:
+      case BookDonationStatus.RECEIVED:
         return 'success';
       case BookDonationStatus.CANCELED:
         return 'danger';
+      default:
+        return 'secondary';
     }
   }
 
   getDonations() {
     this.isLoading = true;
 
-    this._bookService.getDonatedBooks()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      this.donatedBooks = resp;
-      this.isLoading = false;
-    });
+    this._bookService
+      .getDonatedBooks()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((resp) => {
+        this.donatedBooks = resp;
+        this.isLoading = false;
+      });
   }
 
   onCustom(event) {
     switch (event.action) {
       case 'donate': {
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
-
-          if (!chooseDate || chooseDate - todayDate > 0) {
-            alert('Aguarde a data de escolha!');
-          } else {
-            this._router.navigate([`book/donate/${event.data.id}`], {
-              queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }
-            });
-          }
+        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
+          alert(
+            `Não é possível escolher ganhador. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+              `status atual = ${event.data.status}`
+          );
+          return;
         }
+
+        const chooseDate = Math.floor(
+          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
+        );
+        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+        if (!chooseDate || chooseDate - todayDate > 0) {
+          alert('Aguarde a data de escolha!');
+        } else {
+          this._router.navigate([`book/donate/${event.data.id}`], {
+            queryParams: {
+              returnUrl: this._activatedRoute.snapshot.url.join('/'),
+            },
+          });
+        }
+
         break;
       }
       case 'renewChooseDate': {
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
+          alert(
+            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+              `status atual = ${event.data.status}`
+          );
+          return;
+        }
 
-          if (!chooseDate || chooseDate - todayDate > 0) {
-            alert('Aguarde a data de escolha!');
-          } else {
-            this._confirmationDialogService
-              .confirm('Atenção!', 'Confirma a renovação da data de doação?')
-              .then(confirmed => {
-                if (confirmed) {
-                  this._bookService.renewChooseDate(event.data.id)
-                  .pipe(
-                    takeUntil(this._destroySubscribes$)
-                  )
+        const chooseDate = Math.floor(
+          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
+        );
+        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+        if (!chooseDate || chooseDate - todayDate > 0) {
+          alert('Aguarde a data de escolha!');
+        } else {
+          this._confirmationDialogService
+            .confirm('Atenção!', 'Confirma a renovação da data de doação?')
+            .then((confirmed) => {
+              if (confirmed) {
+                this._bookService
+                  .renewChooseDate(event.data.id)
+                  .pipe(takeUntil(this._destroySubscribes$))
                   .subscribe(
                     () => {
                       this._toastr.success('Doação renovada com sucesso.');
                       this.getDonations();
                     },
-                    error => {
+                    (error) => {
                       this._toastr.error(error);
                     }
                   );
-                }
-              });
-          }
+              }
+            });
         }
+
         break;
       }
       case 'trackNumber': {
-        if (!event.data.donated) {
-          alert('Livro deve estar como doado!');
-        } else {
-          const modalRef = this._modalService.open(TrackingComponent, {
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-
-          modalRef.result.then(
-            result => {
-              if (result === 'Success') {
-                this.getDonations();
-              }
-            },
-            reason => {
-              if (reason === 'Success') {
-                this.getDonations();
-              }
-            }
+        if (
+          event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT
+        ) {
+          alert(
+            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
+              `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
           );
-
-          modalRef.componentInstance.bookId = event.data.id;
-          modalRef.componentInstance.bookTitle = event.data.title;
-          modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
-          break;
+          return;
         }
+
+        const modalRef = this._modalService.open(TrackingComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true,
+        });
+
+        modalRef.result.then(
+          (result) => {
+            if (result === 'Success') {
+              this.getDonations();
+            }
+          },
+          (reason) => {
+            if (reason === 'Success') {
+              this.getDonations();
+            }
+          }
+        );
+
+        modalRef.componentInstance.bookId = event.data.id;
+        modalRef.componentInstance.bookTitle = event.data.title;
+        modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+        break;
       }
     }
   }
