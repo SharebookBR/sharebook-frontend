@@ -25,9 +25,9 @@ export class BookService {
     return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/9999`);
   }
 
-  public getTop15NewBooks() {
+  public getAvailableBooks() {
     return this._http.get<Book[]>(
-      `${this.config.apiEndpoint}/book/Top15NewBooks`
+      `${this.config.apiEndpoint}/book/AvailableBooks`
     );
   }
 
