@@ -1,9 +1,9 @@
 export enum BookDonationStatus {
-  WAITING_APPROVAL = 'Aguardando aprovação',
-  AVAILABLE = 'Disponível',
-  WAITING_DECISION = 'Aguardando decisão do doador',
-  WAITING_SEND = 'Aguardando envio',
-  SENT = 'Enviado',
-  RECEIVED = 'Recebido',
-  CANCELED = 'Cancelado',
+  WAITING_APPROVAL = 'WaitingApproval',
+  AVAILABLE = 'Available',
+  WAITING_DECISION = 'AwaitingDonorDecision',
+  WAITING_SEND = 'WaitingSend',
+  SENT = 'Sent',
+  RECEIVED = 'Received',
+  CANCELED = 'Canceled',
 }

@@ -12,6 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 
 @Component({
   selector: 'app-donations',
@@ -91,7 +92,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
             return this._sanitizer.bypassSecurityTrustHtml(
               `<span class="badge badge-${this.getStatusBadge(
                 value
-              )}">${value}</span>`
+              )}">${getStatusDescription(value)}</span>`
             );
           },
           filter: {

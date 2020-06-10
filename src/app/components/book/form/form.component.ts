@@ -166,9 +166,7 @@ export class FormComponent implements OnInit, OnDestroy {
               ? book.userIdFacilitator
               : null,
             userId: book.userId,
-            freightOption: this.freightOptions.find(
-              (e) => e.text === book.freightOption
-            ).value,
+            freightOption: book.freightOption,
             imageBytes: '',
             imageName: null,
             imageUrl: book.imageUrl,
