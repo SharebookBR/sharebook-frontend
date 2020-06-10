@@ -15,6 +15,7 @@ import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-note
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
 import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
+import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 
 @Component({
   selector: 'app-list',
@@ -171,7 +172,7 @@ export class ListComponent implements OnInit, OnDestroy {
           title: 'Status',
           type: 'html',
           valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(cell, row);
+            return this.getHtmlForCell(getStatusDescription(row.status), row);
           },
           filter: {
             type: 'list',

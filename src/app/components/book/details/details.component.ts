@@ -116,19 +116,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
                 if (this.myUser.name) {
                   switch (book.freightOption) {
-                    case 'Cidade': {
+                    case 'City': {
                       if (book.city !== this.myUser.address.city) {
                         this.isFreeFreight = false;
                       }
                       break;
                     }
-                    case 'Estado': {
+                    case 'State': {
                       if (book.state !== this.myUser.address.state) {
                         this.isFreeFreight = false;
                       }
                       break;
                     }
-                    case 'Não': {
+                    case 'WithoutFreight': {
                       this.isFreeFreight = false;
                       break;
                     }
