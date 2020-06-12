@@ -3,12 +3,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../../core/services/book/book.service';
-import { BookRequestStatus } from '../../../core/models/BookRequestStatus';
+import { BookRequestStatus, getStatusDescription } from '../../../core/models/BookRequestStatus';
 
 @Component({
   selector: 'app-requesteds',
   templateUrl: './requesteds.component.html',
-  styleUrls: ['./requesteds.component.css']
+  styleUrls: ['./requesteds.component.css'],
 })
 export class RequestedsComponent implements OnInit, OnDestroy {
   requestedBooks = new Array<any>();
@@ -22,50 +22,49 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
 
-    this._bookService.getRequestedBooks(1, 9999)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      this.requestedBooks = resp.items;
-      this.addBadgeToStatusColumn();
-      this.isLoading = false;
-    });
+    this._bookService
+      .getRequestedBooks(1, 9999)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((resp) => {
+        this.requestedBooks = resp.items;
+        this.addBadgeToStatusColumn();
+        this.isLoading = false;
+      });
 
     this.tableSettings = {
       columns: {
         title: {
           title: 'Titulo',
-          width: '45%'
+          width: '45%',
         },
         author: {
           title: 'Autor',
-          width: '30%'
+          width: '30%',
         },
         status: {
           title: 'Status',
           width: '25%',
-          type: 'html'
-        }
+          type: 'html',
+        },
       },
       actions: {
         delete: false,
         edit: false,
         add: false,
-        update: false
+        update: false,
       },
       attr: {
-        class: 'table table-bordered table-hover table-striped'
+        class: 'table table-bordered table-hover table-striped',
       },
-      noDataMessage: 'Nenhum registro encontrado.'
+      noDataMessage: 'Nenhum registro encontrado.',
     };
   }
 
   public addBadgeToStatusColumn() {
-    this.requestedBooks.forEach(book => {
+    this.requestedBooks.forEach((book) => {
       let badgeColor = '';
 
-      switch (book.status.toUpperCase()) {
+      switch (book.status) {
         case BookRequestStatus.DONATED:
           badgeColor = 'success';
           break;
@@ -77,7 +76,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
           break;
       }
 
-      book.status = `<span class="badge badge-${badgeColor}">${book.status}</span>`;
+      book.status = `<span class="badge badge-${badgeColor}">${getStatusDescription(book.status)}</span>`;
     });
   }
 
