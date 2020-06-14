@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
+  "version": "v4.5.0",
   "description": "It's just a getting started of front end sharebook application",
   "main": "index.js",
   "repository": {
