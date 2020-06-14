@@ -1,12 +1,13 @@
 ﻿import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import * as moment from 'moment-timezone';
+const moment = require('moment-timezone');
 
 import { UserService } from '../user/user.service';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+const { version } = require('package.json');
 
 @Injectable()
 export class AuthenticationService {
@@ -19,26 +20,29 @@ export class AuthenticationService {
   private _localStorageUserKey = 'shareBookUser';
 
   login(email: string, password: string) {
-    return this.http
-      .post<any>(`${this.config.apiEndpoint}/Account/Login/`, {
-        email: email,
-        password: password,
-      })
-      .pipe(
-        map((response) => {
-          // login successful if there's a jwt token in the response
-          if (response.success || response.value.authenticated) {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem(
-              'shareBookUser',
-              JSON.stringify(response.value)
-            );
-            this._user.setLoggedUser(response.value);
-          }
+    const url = `${this.config.apiEndpoint}/Account/Login/`;
+    const body = {
+      email: email,
+      password: password,
+    };
+    const headers = new HttpHeaders({
+      'x-requested-with': 'web',
+      'Client-Version': version,
+    });
+    const options = { headers: headers };
 
-          return response.value;
-        })
-      );
+    return this.http.post<any>(url, body, options).pipe(
+      map((response) => {
+        // login successful if there's a jwt token in the response
+        if (response.success || response.value.authenticated) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('shareBookUser', JSON.stringify(response.value));
+          this._user.setLoggedUser(response.value);
+        }
+
+        return response.value;
+      })
+    );
   }
 
   logout() {
