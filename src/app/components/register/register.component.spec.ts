@@ -10,10 +10,16 @@ import { RegisterComponent } from './register.component';
 import { AppConfigModule } from '../../app-config.module';
 import { UserService } from '../../core/services/user/user.service';
 import { AddressService } from '../../core/services/address/address.service';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
+  let debugElement: DebugElement;
+  let addressService: AddressService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -34,6 +40,8 @@ describe('RegisterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
+    debugElement = fixture.debugElement;
+    addressService = TestBed.get(AddressService);
     fixture.detectChanges();
   });
 
@@ -163,6 +171,56 @@ describe('RegisterComponent', () => {
 
     postalCode.setValue('99999-999');
     expect(postalCode.valid).toBeTruthy();
+  });
+
+  it('postalCode with invalid value', () => {
+    spyOn(addressService, 'getAddressByPostalCode').and.returnValue(
+      of({
+        erro: true,
+      }).pipe(map((data) => (this.resultado = addressService.convertResponseToAddress(data))))
+    );
+    fixture.detectChanges();
+
+    const postalCode = debugElement.query(By.css('#postalCode')).nativeElement;
+
+    postalCode.dispatchEvent(new Event('blur'));
+
+    expect(addressService.getAddressByPostalCode).toHaveBeenCalled();
+    expect(debugElement.query(By.css('#street')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#complement')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#neighborhood')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#city')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#state')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#country')).nativeElement.value).toBe('');
+  });
+
+  it('postalCode with valid value', () => {
+    spyOn(addressService, 'getAddressByPostalCode').and.returnValue(
+      of({
+        cep: '01310-940',
+        logradouro: 'Avenida Paulista 900',
+        complemento: '',
+        bairro: 'Bela Vista',
+        localidade: 'São Paulo',
+        uf: 'SP',
+        unidade: '',
+        ibge: '3550308',
+        gia: '1004',
+      }).pipe(map((data) => (this.resultado = addressService.convertResponseToAddress(data))))
+    );
+    fixture.detectChanges();
+
+    const postalCode = debugElement.query(By.css('#postalCode')).nativeElement;
+
+    postalCode.dispatchEvent(new Event('blur'));
+
+    expect(addressService.getAddressByPostalCode).toHaveBeenCalled();
+    expect(debugElement.query(By.css('#street')).nativeElement.value).toBe('Avenida Paulista 900');
+    expect(debugElement.query(By.css('#complement')).nativeElement.value).toBe('');
+    expect(debugElement.query(By.css('#neighborhood')).nativeElement.value).toBe('Bela Vista');
+    expect(debugElement.query(By.css('#city')).nativeElement.value).toBe('São Paulo');
+    expect(debugElement.query(By.css('#state')).nativeElement.value).toBe('SP');
+    expect(debugElement.query(By.css('#country')).nativeElement.value).toBe('Brasil');
   });
 
   it('street field validity', () => {
