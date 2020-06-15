@@ -1,6 +1,5 @@
 import { CategoryService } from './../../../core/services/category/category.service';
 import { BookService } from './../../../core/services/book/book.service';
-import { AppConfig } from './../../../app-config.module';
 import { UserService } from './../../../core/services/user/user.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
