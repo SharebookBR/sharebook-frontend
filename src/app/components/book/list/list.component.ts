@@ -14,11 +14,13 @@ import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
+import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
+import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, OnDestroy {
   books: LocalDataSource;
@@ -39,80 +41,58 @@ export class ListComponent implements OnInit, OnDestroy {
   ) {}
 
   getHtmlForCell(value: string, row: any) {
-    if (!!row.donated) {
-      return '<font color="green">' + value + '</font>';
-    } else if (!!row.chooseDate) {
-      // Coloca o chooseDate para as 23:59:59 do dia da escolha
-      const myChooseDate = new Date(
-        new Date(row.chooseDate).getFullYear(),
-        new Date(row.chooseDate).getMonth(),
-        new Date(row.chooseDate).getDate(),
-        23,
-        39,
-        59,
-        59
-      );
-      // Coloca o today para as 23:59:59 do dia
-      const myTodayDate = new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate(),
-        23,
-        39,
-        59,
-        59
-      );
-      if (myChooseDate.getTime() < myTodayDate.getTime()) {
+    switch (row.status) {
+      case BookDonationStatus.AVAILABLE:
+      case BookDonationStatus.RECEIVED:
+        return '<font color="green">' + value + '</font>';
+      case BookDonationStatus.CANCELED:
+      case BookDonationStatus.WAITING_DECISION:
         return '<font color="red">' + value + '</font>';
-      } else if (myChooseDate.getTime() === myTodayDate.getTime()) {
-        return '<font color="orange">' + value + '</font>';
-      } else {
+      default:
         return '<font>' + value + '</font>';
-      }
-    } else {
-      return '<font>' + value + '</font>';
     }
   }
 
   getAllBooks() {
     this.isLoading = true;
 
-    this._scBook.getAll()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      this.myBookArray = new Array();
-      resp['items'].forEach(items => {
-        this.myBookArray.push({
-          id: items.id,
-          creationDate: items.creationDate,
-          chooseDate: items.chooseDate,
-          bookTitle: items.title,
-          title:
-            items.title +
-            '<br>' +
-            items.author +
-            '<br>' +
-            items.totalInterested +
-            ' interessado(s)<br>' +
-            items.daysInShowcase +
-            ' dia(s) na vitrine',
-          users:
-            items.donor +
-            '<br>' +
-            (!!items.winner ? items.winner : '') +
-            '<br>' +
-            (!!items.facilitator ? items.facilitator : ''),
-          status: items.status,
-          donated: items.donated,
-          facilitatorNotes: !!items.facilitatorNotes ? items.facilitatorNotes : '',
-          trackingNumber: !!items.trackingNumber ? items.trackingNumber : ''
+    this._scBook
+      .getAll()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((resp) => {
+        this.myBookArray = new Array();
+        resp['items'].forEach((items) => {
+          this.myBookArray.push({
+            id: items.id,
+            creationDate: items.creationDate,
+            chooseDate: items.chooseDate,
+            bookTitle: items.title,
+            title:
+              items.title +
+              '<br>' +
+              items.author +
+              '<br>' +
+              items.totalInterested +
+              ' interessado(s)<br>' +
+              items.daysInShowcase +
+              ' dia(s) na vitrine',
+            users:
+              items.donor +
+              '<br>' +
+              (!!items.winner ? items.winner : '') +
+              '<br>' +
+              (!!items.facilitator ? items.facilitator : ''),
+            status: items.status,
+            donated: items.donated,
+            facilitatorNotes: !!items.facilitatorNotes
+              ? items.facilitatorNotes
+              : '',
+            trackingNumber: !!items.trackingNumber ? items.trackingNumber : '',
+          });
         });
+        this.books.load(this.myBookArray);
+        this.isLoading = false;
       });
-      this.books.load(this.myBookArray);
-      this.isLoading = false;
-    });
   }
 
   ngOnInit() {
@@ -122,8 +102,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach(key => {
-      myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
+    Object.keys(BookDonationStatus).forEach((key) => {
+      myBookDonationStatus.push({
+        value: BookDonationStatus[key],
+        title: BookDonationStatus[key],
+      });
     });
 
     const btnEdit =
@@ -151,17 +134,23 @@ export class ListComponent implements OnInit, OnDestroy {
           title: 'Inclusão',
           type: 'html',
           valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'), row);
+            return this.getHtmlForCell(
+              new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'),
+              row
+            );
           },
-          width: '10%'
+          width: '10%',
         },
         chooseDate: {
           title: 'Escolha',
           type: 'html',
           valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'), row);
+            return this.getHtmlForCell(
+              new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'),
+              row
+            );
           },
-          width: '10%'
+          width: '10%',
         },
         title: {
           title: 'Título / Autor / Total Interessados / Dias na Vitrine',
@@ -169,7 +158,7 @@ export class ListComponent implements OnInit, OnDestroy {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '28%'
+          width: '28%',
         },
         users: {
           title: 'Doador / Donatário / Facilitador',
@@ -177,23 +166,23 @@ export class ListComponent implements OnInit, OnDestroy {
           valuePrepareFunction: (cell, row) => {
             return this.getHtmlForCell(cell, row);
           },
-          width: '28%'
+          width: '28%',
         },
         status: {
           title: 'Status',
           type: 'html',
           valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(cell, row);
+            return this.getHtmlForCell(getStatusDescription(row.status), row);
           },
           filter: {
             type: 'list',
             config: {
               selectText: 'Selecionar...',
-              list: myBookDonationStatus
-            }
+              list: myBookDonationStatus,
+            },
           },
-          width: '10%'
-        }
+          width: '10%',
+        },
       },
       actions: {
         delete: false,
@@ -203,34 +192,34 @@ export class ListComponent implements OnInit, OnDestroy {
         custom: [
           {
             name: 'edit',
-            title: btnEdit
+            title: btnEdit,
           },
           {
             name: 'CancelDonation',
-            title: btnCancelDonation
+            title: btnCancelDonation,
           },
           {
             name: 'donate',
-            title: btnDonate
+            title: btnDonate,
           },
           {
             name: 'FacilitatorNotes',
-            title: btnFacilitatorNotes
+            title: btnFacilitatorNotes,
           },
           {
             name: 'trackNumber',
-            title: btnTrackNumber
+            title: btnTrackNumber,
           },
           {
             name: 'showUsersInfo',
-            title: btnShowUsersInfo
-          }
+            title: btnShowUsersInfo,
+          },
         ],
-        position: 'right' // left|right
+        position: 'right', // left|right
       },
       attr: {
-        class: 'table table-bordered'
-      }
+        class: 'table table-bordered',
+      },
     };
   }
 
@@ -238,41 +227,56 @@ export class ListComponent implements OnInit, OnDestroy {
     switch (event.action) {
       case 'CancelDonation': {
         // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          this.confirmationDialogService.confirm('Atenção!', 'Confirma o cancelamento da doação?').then(confirmed => {
+        if (
+          event.data.status === BookDonationStatus.RECEIVED ||
+          event.data.status === BookDonationStatus.CANCELED
+        ) {
+          alert(
+            `Não é possível cancelar essa doação com status = ${event.data.status}`
+          );
+          return;
+        }
+        this.confirmationDialogService
+          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
+          .then((confirmed) => {
             if (confirmed) {
-              this._scBook.cancelDonation(event.data.id)
-              .pipe(
-                takeUntil(this._destroySubscribes$)
-              )
-              .subscribe(resp => {
-                if (resp['success']) {
-                  this._toastr.success('Doação cancelada com sucesso.');
-                  this.reloadData();
-                }
-              });
+              this._scBook
+                .cancelDonation(event.data.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe((resp) => {
+                  if (resp['success']) {
+                    this._toastr.success('Doação cancelada com sucesso.');
+                    this.reloadData();
+                  }
+                });
             }
           });
-        }
+
         break;
       }
       case 'donate': {
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
-
-          if (!chooseDate || chooseDate - todayDate > 0) {
-            alert('Aguarde a data de escolha!');
-          } else {
-            this._router.navigate([`book/donate/${event.data.id}`], {
-              queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') }
-            });
-          }
+        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
+          alert(
+            `Não é possível escolher ganhador. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+              `status atual = ${event.data.status}`
+          );
+          return;
         }
+        const chooseDate = Math.floor(
+          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
+        );
+        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+        if (!chooseDate || chooseDate - todayDate > 0) {
+          alert('Aguarde a data de escolha!');
+        } else {
+          this._router.navigate([`book/donate/${event.data.id}`], {
+            queryParams: {
+              returnUrl: this._activatedRoute.snapshot.url.join('/'),
+            },
+          });
+        }
+
         break;
       }
       case 'edit': {
@@ -282,16 +286,16 @@ export class ListComponent implements OnInit, OnDestroy {
       case 'FacilitatorNotes': {
         const modalRef = this._modalService.open(FacilitatorNotesComponent, {
           backdropClass: 'light-blue-backdrop',
-          centered: true
+          centered: true,
         });
 
         modalRef.result.then(
-          result => {
+          (result) => {
             if (result === 'Success') {
               this.reloadData();
             }
           },
-          reason => {
+          (reason) => {
             if (reason === 'Success') {
               this.reloadData();
             }
@@ -300,50 +304,59 @@ export class ListComponent implements OnInit, OnDestroy {
 
         modalRef.componentInstance.bookId = event.data.id;
         modalRef.componentInstance.bookTitle = event.data.bookTitle;
-        modalRef.componentInstance.facilitatorNotes = event.data.facilitatorNotes;
+        modalRef.componentInstance.facilitatorNotes =
+          event.data.facilitatorNotes;
         break;
       }
       case 'trackNumber': {
-        if (!event.data.donated) {
-          alert('Livro deve estar como doado!');
-        } else {
-          const modalRef = this._modalService.open(TrackingComponent, {
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-
-          modalRef.result.then(
-            result => {
-              if (result === 'Success') {
-                this.reloadData();
-              }
-            },
-            reason => {
-              if (reason === 'Success') {
-                this.reloadData();
-              }
-            }
+        if (
+          event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT
+        ) {
+          alert(
+            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ou` +
+              `${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
           );
-
-          modalRef.componentInstance.bookId = event.data.id;
-          modalRef.componentInstance.bookTitle = event.data.bookTitle;
-          modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+          return;
         }
+
+        const modalRef = this._modalService.open(TrackingComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true,
+        });
+
+        modalRef.result.then(
+          (result) => {
+            if (result === 'Success') {
+              this.reloadData();
+            }
+          },
+          (reason) => {
+            if (reason === 'Success') {
+              this.reloadData();
+            }
+          }
+        );
+
+        modalRef.componentInstance.bookId = event.data.id;
+        modalRef.componentInstance.bookTitle = event.data.bookTitle;
+        modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+
         break;
       }
       case 'showUsersInfo': {
         const modalRef = this._modalService.open(MainUsersComponent, {
           backdropClass: 'light-blue-backdrop',
-          centered: true
+          centered: true,
         });
 
         modalRef.result.then(
-          result => {
+          (result) => {
             if (result === 'Success') {
               this.reloadData();
             }
           },
-          reason => {
+          (reason) => {
             if (reason === 'Success') {
               this.reloadData();
             }

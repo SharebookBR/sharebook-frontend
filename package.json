@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
+  "version": "v4.5.0",
   "description": "It's just a getting started of front end sharebook application",
   "main": "index.js",
   "repository": {
@@ -24,8 +24,8 @@
     "build-dev": "ng build",
     "build-stg": "ng build --configuration=stage",
     "build-prod": "ng build --configuration=production",
-    "test": "ng test",
-    "test-single": "ng test --watch=false --progress",
+    "test-debug": "ng test --browsers ChromeDebug",
+    "test": "ng test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "npm run lint",
@@ -44,7 +44,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.1.1",
     "base64-img": "^1.0.4",
     "core-js": "^2.5.4",
-    "moment-timezone": "^0.5.21",
+    "moment-timezone": "^0.5.31",
     "ng-recaptcha": "^3.0.5",
     "ng2-completer": "^2.0.8",
     "ng2-imageupload": "^1.4.2",

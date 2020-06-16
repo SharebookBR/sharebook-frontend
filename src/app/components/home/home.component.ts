@@ -8,10 +8,10 @@ import { Book } from '../../core/models/book';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public top15NewBooks: Book[] = [];
+  public availableBooks: Book[] = [];
   public random15NewBooks: Book[] = [];
   public hasBook: Boolean = true;
 
@@ -20,20 +20,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private _scBook: BookService) {}
 
   ngOnInit() {
-    this._scBook.getTop15NewBooks()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(newBooks => {
-      this.top15NewBooks = newBooks;
-      this.hasBook = newBooks.length > 0 ? true : false;
-
-      /*if (this.hasBook) {
-        this._scBook.getRandom15Books().subscribe(randomBooks => {
-          this.random15NewBooks = randomBooks;
-        });
-      }*/
-    });
+    this._scBook
+      .getAvailableBooks()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((books) => {
+        this.availableBooks = books;
+        this.hasBook = books.length > 0 ? true : false;
+      });
   }
 
   ngOnDestroy() {
