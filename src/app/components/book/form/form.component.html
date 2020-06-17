@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
+<form [formGroup]="formGroup" id="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
   <input formControlName="userId" id="userId" type="hidden" />
 
   <div *ngIf="isSaved" class="text-center">
@@ -215,6 +215,7 @@
             <input
               type="submit"
               class="btn btn-primary"
+              id="buttonSave"
               [value]="buttonSaveLabel"
               style="padding-left: 50px; padding-right: 50px;"
               [disabled]="!formGroup.valid"

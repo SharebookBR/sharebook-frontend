@@ -3,7 +3,7 @@ import { BookService } from './../../../core/services/book/book.service';
 import { UserService } from './../../../core/services/user/user.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,12 +18,81 @@ import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
-describe('FormComponent', () => {
-  let component: FormComponent;
-  let fixture: ComponentFixture<FormComponent>;
-  let userService: UserService;
-  let bookService: BookService;
+let component: FormComponent;
+let fixture: ComponentFixture<FormComponent>;
+let userService: UserService;
+let bookService: BookService;
+let categoryService: CategoryService;
 
+const validForm = {
+  title: 'Book Title',
+  author: 'Book Author',
+  categoryId: '95f5dc4a-1dff-4f70-92e1-e1c8a150886b',
+  userId: '5b6f7ded-6163-4915-9ff8-d96a9b802220',
+  freightOption: 'WithoutFreight',
+  synopsis: 'Book Synopsis',
+  agreeToTerms: true,
+};
+
+const freightOptionsArray = [
+  { value: 'City', text: 'Cidade' },
+  { value: 'State', text: 'Estado' },
+  { value: 'Country', text: 'País' },
+  { value: 'World', text: 'Mundo' },
+  { value: 'WithoutFreight', text: 'Não' },
+];
+
+const categoryServiceArray = [
+  {
+    name: 'Administração',
+    id: '95f5dc4a-1dff-4f70-92e1-e1c8a150886b',
+    creationDate: '2020-06-02T21:52:10.295309',
+  },
+  { name: 'Artes', id: '0f6be317-a61b-48e5-b532-d68a77276a0f', creationDate: '2020-06-02T21:52:10.295317' },
+  { name: 'Aventura', id: '0c756650-a9d9-47e1-96cf-c525db7a56b5', creationDate: '2020-06-02T21:52:10.29531' },
+  {
+    name: 'Ciências Biógicas',
+    id: 'ce090294-2eb6-413b-9c8e-3fd3d289a282',
+    creationDate: '2020-06-02T21:52:10.295314',
+  },
+  { name: 'Direito', id: 'c96359b6-66a8-4a44-a443-d5211ee01bbd', creationDate: '2020-06-02T21:52:10.295299' },
+  {
+    name: 'Engenharia',
+    id: 'b2b4090c-8f9a-46a2-babe-35eef55296b4',
+    creationDate: '2020-06-02T21:52:10.295312',
+  },
+  {
+    name: 'Geografia e História',
+    id: '398262a0-8e9c-465f-bbb2-b5443bcca2df',
+    creationDate: '2020-06-02T21:52:10.295315',
+  },
+  {
+    name: 'Informática',
+    id: '15395d99-6077-4cce-ba00-e99beffc628e',
+    creationDate: '2020-06-02T21:52:10.295321',
+  },
+  { name: 'Medicina', id: '5e51347a-088e-4dc4-9bcb-be2b2c3f0179', creationDate: '2020-06-02T21:52:10.295318' },
+  {
+    name: 'Psicologia',
+    id: '163ddbc5-02a3-4e28-b275-deb54ad3c4b4',
+    creationDate: '2020-06-02T21:52:10.295307',
+  },
+];
+
+function setFormValues(formData) {
+  component.formGroup.controls['userId'].setValue(formData.userId);
+  component.formGroup.controls['title'].setValue(formData.title);
+  component.formGroup.controls['author'].setValue(formData.author);
+  component.formGroup.controls['categoryId'].setValue(formData.categoryId);
+  component.formGroup.controls['userIdFacilitator'].setValue(formData.userIdFacilitator);
+  component.formGroup.controls['imageName'].setValue(formData.imageName);
+  component.formGroup.controls['freightOption'].setValue(formData.freightOption);
+  component.formGroup.controls['synopsis'].setValue(formData.synopsis);
+  component.formGroup.controls['agreeToTerms'].setValue(formData.agreeToTerms);
+  component.formGroup.controls['approve'].setValue(formData.approve);
+}
+
+describe('FormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FormComponent],
@@ -57,16 +126,21 @@ describe('FormComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     bookService = TestBed.get(BookService);
+    categoryService = TestBed.get(CategoryService);
     spyOn(userService, 'getProfile').and.returnValue(of({ profile: 'User' }));
-    spyOn(bookService, 'getFreightOptions').and.returnValue(
-      of([
-        { value: 'City', text: 'Cidade' },
-        { value: 'State', text: 'Estado' },
-        { value: 'Country', text: 'País' },
-        { value: 'World', text: 'Mundo' },
-        { value: 'WithoutFreight', text: 'Não' },
-      ])
-    );
+    spyOn(userService, 'getLoggedUserFromLocalStorage').and.returnValue({
+      authenticated: true,
+      created: '2020-06-16T14:38:45.5301947-07:00',
+      expiration: '2020-06-17T14:38:45.5301947-07:00',
+      accessToken: 'myToken',
+      name: 'William Dev',
+      email: 'william+dev@gmail.com',
+      userId: '5b6f7ded-6163-4915-9ff8-d96a9b802220',
+      profile: 'User',
+      message: 'OK',
+    });
+    spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
+    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray));
     fixture.detectChanges();
   });
 
@@ -238,15 +312,46 @@ describe('FormComponent', () => {
     agreeToTerms.setValue(true);
     expect(agreeToTerms.valid).toBeTruthy();
   });
+
+  it('should have form valid', () => {
+    setFormValues(validForm);
+    expect(component.formGroup.valid).toBeTruthy();
+  });
+
+  it('should render popup when freight option is without freight', fakeAsync(() => {
+    spyOn(component, 'onChangeFieldFreightOption');
+    const freightOption = fixture.debugElement.query(By.css('#freightOption')).nativeElement;
+
+    freightOption.value = 'WithoutFreight';
+    freightOption.click();
+    tick();
+    fixture.detectChanges();
+
+    expect(component.onChangeFieldFreightOption).toHaveBeenCalled();
+    // expect(fixture.debugElement.query(By.css('#ngb-popover-4'))).toBeTruthy();
+  }));
+
+  it('should add book', () => {
+    spyOn(bookService, 'create').and.returnValue(
+      of({
+        value: null,
+        messages: [],
+        successMessage: 'Livro cadastrado com sucesso! Aguarde aprovação.',
+        success: true,
+      })
+    );
+    fixture.detectChanges();
+
+    setFormValues(validForm);
+    component.isImageLoaded = true;
+    const compiled = fixture.debugElement.nativeElement;
+    const getForm = fixture.debugElement.query(By.css('#formGroup'));
+    expect(getForm.triggerEventHandler('submit', compiled)).toBeUndefined();
+    expect(component.pageTitle).toBe('Obrigado por ajudar.');
+  });
 });
 
 describe('FormComponent Editing book', () => {
-  let component: FormComponent;
-  let fixture: ComponentFixture<FormComponent>;
-  let userService: UserService;
-  let bookService: BookService;
-  let categoyService: CategoryService;
-
   const bookObject = {
     id: '1c31d9c2-54e6-4d69-094d-08d80b184d9b',
     title: 'TESTE AWS DEV',
@@ -273,6 +378,19 @@ describe('FormComponent Editing book', () => {
     synopsis: 'Livro de teste sobre AWS.',
     slug: 'teste-aws-dev',
     userId: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
+  };
+
+  const validUpdateForm = {
+    bookId: bookObject.id,
+    title: bookObject.title,
+    author: bookObject.author,
+    categoryId: bookObject.categoryId,
+    userId: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
+    userIdFacilitator: bookObject.userIdFacilitator,
+    freightOption: bookObject.freightOption,
+    synopsis: bookObject.synopsis,
+    agreeToTerms: true,
+    approve: true,
   };
 
   beforeEach(async(() => {
@@ -315,8 +433,19 @@ describe('FormComponent Editing book', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     bookService = TestBed.get(BookService);
-    categoyService = TestBed.get(CategoryService);
+    categoryService = TestBed.get(CategoryService);
     spyOn(userService, 'getProfile').and.returnValue(of({ profile: 'Administrator' }));
+    spyOn(userService, 'getLoggedUserFromLocalStorage').and.returnValue({
+      authenticated: true,
+      created: '2020-06-16T14:36:22.5820099-07:00',
+      expiration: '2020-06-17T14:36:22.5820099-07:00',
+      accessToken: 'token',
+      name: 'Vagner',
+      email: 'vagner@sharebook.com',
+      userId: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
+      profile: 'Administrator',
+      message: 'OK',
+    });
     spyOn(userService, 'getAllFacilitators').and.returnValue(
       of([
         {
@@ -337,53 +466,8 @@ describe('FormComponent Editing book', () => {
         },
       ])
     );
-    spyOn(bookService, 'getFreightOptions').and.returnValue(
-      of([
-        { value: 'City', text: 'Cidade' },
-        { value: 'State', text: 'Estado' },
-        { value: 'Country', text: 'País' },
-        { value: 'World', text: 'Mundo' },
-        { value: 'WithoutFreight', text: 'Não' },
-      ])
-    );
-    spyOn(categoyService, 'getAll').and.returnValue(
-      of([
-        {
-          name: 'Administração',
-          id: '95f5dc4a-1dff-4f70-92e1-e1c8a150886b',
-          creationDate: '2020-06-02T21:52:10.295309',
-        },
-        { name: 'Artes', id: '0f6be317-a61b-48e5-b532-d68a77276a0f', creationDate: '2020-06-02T21:52:10.295317' },
-        { name: 'Aventura', id: '0c756650-a9d9-47e1-96cf-c525db7a56b5', creationDate: '2020-06-02T21:52:10.29531' },
-        {
-          name: 'Ciências Biógicas',
-          id: 'ce090294-2eb6-413b-9c8e-3fd3d289a282',
-          creationDate: '2020-06-02T21:52:10.295314',
-        },
-        { name: 'Direito', id: 'c96359b6-66a8-4a44-a443-d5211ee01bbd', creationDate: '2020-06-02T21:52:10.295299' },
-        {
-          name: 'Engenharia',
-          id: 'b2b4090c-8f9a-46a2-babe-35eef55296b4',
-          creationDate: '2020-06-02T21:52:10.295312',
-        },
-        {
-          name: 'Geografia e História',
-          id: '398262a0-8e9c-465f-bbb2-b5443bcca2df',
-          creationDate: '2020-06-02T21:52:10.295315',
-        },
-        {
-          name: 'Informática',
-          id: '15395d99-6077-4cce-ba00-e99beffc628e',
-          creationDate: '2020-06-02T21:52:10.295321',
-        },
-        { name: 'Medicina', id: '5e51347a-088e-4dc4-9bcb-be2b2c3f0179', creationDate: '2020-06-02T21:52:10.295318' },
-        {
-          name: 'Psicologia',
-          id: '163ddbc5-02a3-4e28-b275-deb54ad3c4b4',
-          creationDate: '2020-06-02T21:52:10.295307',
-        },
-      ])
-    );
+    spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
+    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray));
     spyOn(bookService, 'getById').and.returnValue(of(bookObject));
     fixture.detectChanges();
   });
@@ -422,5 +506,22 @@ describe('FormComponent Editing book', () => {
     expect(compiled.querySelectorAll('#freightOptionLabel.active')[0].innerText.trim()).toBe('Mundo');
     expect(compiled.querySelector('textarea[id="synopsis"]').value).toBe(bookObject.synopsis);
     expect(compiled.querySelector('input[type="submit"]').value).toBe('Salvar');
+  });
+
+  it('should update book', () => {
+    spyOn(bookService, 'update').and.returnValue(
+      of({ value: null, messages: [], successMessage: 'Livro alterado com sucesso!', success: true })
+    );
+    spyOn(bookService, 'approve').and.returnValue(
+      of({ value: null, messages: [], successMessage: 'Livro aprovado com sucesso.', success: true })
+    );
+    fixture.detectChanges();
+
+    setFormValues(validUpdateForm);
+    component.isImageLoaded = true;
+    const compiled = fixture.debugElement.nativeElement;
+    const getForm = fixture.debugElement.query(By.css('#formGroup'));
+    expect(getForm.triggerEventHandler('submit', compiled)).toBeUndefined();
+    expect(component.pageTitle).toBe('Registro atualizado');
   });
 });
