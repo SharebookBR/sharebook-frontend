@@ -1,16 +1,13 @@
-/* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { ResetPasswordComponent } from './reset-password.component';
 
 import { AppConfigModule } from '../../app-config.module';
 import { UserService } from '../../core/services/user/user.service';
-import { ToastrService } from 'ngx-toastr';
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
@@ -19,8 +16,15 @@ describe('ResetPasswordComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ResetPasswordComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, AppConfigModule],
-      providers: [UserService, HttpClient, HttpHandler]
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        AppConfigModule,
+        ToastrModule.forRoot(),
+        HttpClientTestingModule,
+      ],
+      providers: [UserService],
     }).compileComponents();
   }));
 

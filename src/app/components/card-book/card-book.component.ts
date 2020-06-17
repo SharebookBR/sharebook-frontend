@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-card-book',
   templateUrl: './card-book.component.html',
-  styleUrls: ['./card-book.component.css']
+  styleUrls: ['./card-book.component.css'],
 })
 export class CardBookComponent implements OnInit {
   @Input() content: any;
@@ -15,7 +16,7 @@ export class CardBookComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.content.approved) {
+    if (this.content.status === BookDonationStatus.AVAILABLE) {
       this.isApprovedBadge = 'badge badge-success mr-auto';
       this.isApprovedText = 'Disponível';
     } else {

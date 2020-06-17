@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  example:
+  sharebook:
     container_name: sharebook-frontend-dev
     build:
       context: .

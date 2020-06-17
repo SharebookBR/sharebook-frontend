@@ -1,5 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { CategoryService } from './category.service';
 import { AppConfigModule } from '../../../app-config.module';
@@ -7,12 +7,15 @@ import { AppConfigModule } from '../../../app-config.module';
 describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppConfigModule],
-      providers: [CategoryService, HttpClient, HttpHandler]
+      imports: [AppConfigModule, HttpClientTestingModule],
+      providers: [CategoryService],
     });
   });
 
-  it('should be created', inject([CategoryService], (service: CategoryService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should be created', inject(
+    [CategoryService],
+    (service: CategoryService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });
