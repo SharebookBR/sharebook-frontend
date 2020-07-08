@@ -4,7 +4,33 @@
     <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
   </div>
   <div class="container mt-5 table-responsive" [hidden]="isLoading">
-    <ng2-smart-table [settings]="tableSettings" [source]="requestedBooks"></ng2-smart-table>
+    <!-- TODO: toogle table vs card visualization -->
+    <!-- <ng2-smart-table [settings]="tableSettings" [source]="requestedBooks"></ng2-smart-table> -->
+
+    <div class="row">
+      <div class="col-sm-6" *ngFor="let request of requestedBooks">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title" style="min-height: 50px;">{{ request.title }}</h5>
+
+            {{ request.author }} <br />
+            <div [innerHTML]="request.statusHTML"></div>
+            <br />
+            <hr />
+
+            <div [hidden]="!showActionButton(request.status)">
+              <span class="btn btn-primary" title="Informar Recebimento." style="margin-right: 5px;">
+                <i class="fa fa-archive"></i>
+              </span>
+              <span class="btn btn-primary" title="Falar com o Doador." style="margin-right: 5px;">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="btn btn-primary" title="Ver o código de Rastreio."><i class="fa fa-truck"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <p class="mt-2">
       <a routerLink="/panel" class="btn btn-link">Voltar</a>

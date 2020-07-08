@@ -27,7 +27,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((resp) => {
         this.requestedBooks = resp.items;
-        this.addBadgeToStatusColumn();
+        this.addStatusHTML();
         this.isLoading = false;
       });
 
@@ -60,7 +60,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public addBadgeToStatusColumn() {
+  public addStatusHTML() {
     this.requestedBooks.forEach((book) => {
       let badgeColor = '';
 
@@ -76,8 +76,18 @@ export class RequestedsComponent implements OnInit, OnDestroy {
           break;
       }
 
-      book.status = `<span class="badge badge-${badgeColor}">${getStatusDescription(book.status)}</span>`;
+      book.statusHTML = `<span class="badge badge-${badgeColor}">${getStatusDescription(book.status)}</span>`;
     });
+  }
+
+  public showActionButton(status) {
+    console.log(status);
+    switch (status) {
+      case BookRequestStatus.DONATED:
+        return true;
+      default:
+        return false;
+    }
   }
 
   ngOnDestroy() {
