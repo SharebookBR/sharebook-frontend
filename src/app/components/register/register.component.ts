@@ -48,34 +48,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      allowSendingEmail: [true, null]
+      allowSendingEmail: [true, null],
+      aceptTermOfUse: [true, null],
     }, {
       validator: PasswordValidation.MatchPassword
     });
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   registerUser() {
     if (this.formGroup.valid) {
       this._scUser.register(this.formGroup.value)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe(
-        data => {
-          if (data.success || data.authenticated) {
-            this._toastr.success('Registro realizado com sucesso');
-            this._router.navigate(['/']);
-          } else {
-            this._toastr.error(data.messages[0]);
+        .pipe(
+          takeUntil(this._destroySubscribes$)
+        )
+        .subscribe(
+          data => {
+            if (data.success || data.authenticated) {
+              this._toastr.success('Registro realizado com sucesso');
+              this._router.navigate(['/']);
+            } else {
+              this._toastr.error(data.messages[0]);
+            }
+          },
+          error => {
+            this._toastr.error(error);
           }
-        },
-        error => {
-          this._toastr.error(error);
-        }
-      );
+        );
     }
   }
 
@@ -83,20 +84,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.isGettingAddress = true;
 
     this._AddressService.getAddressByPostalCode(postalCode)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe((address: Address) => {
-      this.address = address;
-      this.address.country = 'Brasil';
-      this.formGroup.controls['street'].setValue(this.address.street.substring(0, 80));
-      this.formGroup.controls['complement'].setValue(this.address.complement.substring(0, 50));
-      this.formGroup.controls['neighborhood'].setValue(this.address.neighborhood.substring(0, 50));
-      this.formGroup.controls['city'].setValue(this.address.city.substring(0, 50));
-      this.formGroup.controls['state'].setValue(this.address.state.substring(0, 30));
-      this.formGroup.controls['country'].setValue(this.address.country.substring(0, 50));
-      this.isGettingAddress = false;
-    });
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe((address: Address) => {
+        this.address = address;
+        this.address.country = 'Brasil';
+        this.formGroup.controls['street'].setValue(this.address.street.substring(0, 80));
+        this.formGroup.controls['complement'].setValue(this.address.complement.substring(0, 50));
+        this.formGroup.controls['neighborhood'].setValue(this.address.neighborhood.substring(0, 50));
+        this.formGroup.controls['city'].setValue(this.address.city.substring(0, 50));
+        this.formGroup.controls['state'].setValue(this.address.state.substring(0, 30));
+        this.formGroup.controls['country'].setValue(this.address.country.substring(0, 50));
+        this.isGettingAddress = false;
+      });
   }
 
   ngOnDestroy() {

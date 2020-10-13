@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardUser } from './guards/auth.guard.user';
 import { AuthGuardAdmin } from './guards/auth.guard.admin';
@@ -21,6 +22,7 @@ import { DonationsComponent } from '../components/book/donations/donations.compo
 import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
+import { TermOfUseComponent } from './../components/term-of-use/term-of-use.component';
 
 const routes: Routes = [
   {
@@ -117,6 +119,10 @@ const routes: Routes = [
     path: 'politica-privacidade',
     component: PrivacyPolicyComponent
   },
+  {
+    path: 'termo-uso',
+    component: TermOfUseComponent
+  },
   // otherwise redirect to home
   {
     path: '**',
@@ -132,4 +138,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
