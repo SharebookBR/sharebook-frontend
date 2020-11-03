@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
       allowSendingEmail: [true, null],
-      aceptTermOfUse: [true, null],
+      acceptTermOfUse: [false, null],
     }, {
       validator: PasswordValidation.MatchPassword
     });

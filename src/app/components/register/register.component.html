@@ -258,12 +258,13 @@
           </label>
         </div>
       </div>
+
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="aceptTermOfUse" id="defaultCheck2" required
+          <input class="form-check-input" type="checkbox" formControlName="acceptTermOfUse" id="defaultCheck2" required
             defaultCheck2>
           <label class="form-check-label" for="defaultCheck2">
-            Aceito os <a href="http://localhost:4200/termo-uso">termos de uso</a>
+            Aceito os <a routerLink="/termos-de-uso">termos de uso</a>
           </label>
         </div>
       </div>
@@ -276,6 +277,9 @@
           <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
         </div>
       </div>
+
     </div>
+
   </div>
+
 </form>

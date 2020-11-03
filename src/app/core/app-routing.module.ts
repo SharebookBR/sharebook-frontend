@@ -22,7 +22,7 @@ import { DonationsComponent } from '../components/book/donations/donations.compo
 import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
-import { TermOfUseComponent } from './../components/term-of-use/term-of-use.component';
+import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
 
 const routes: Routes = [
   {
@@ -120,8 +120,8 @@ const routes: Routes = [
     component: PrivacyPolicyComponent
   },
   {
-    path: 'termo-uso',
-    component: TermOfUseComponent
+    path: 'termos-de-uso',
+    component: TermsOfUseComponent
   },
   // otherwise redirect to home
   {

@@ -70,7 +70,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
-import { TermOfUseComponent } from './components/term-of-use/term-of-use.component';
+import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +103,7 @@ import { TermOfUseComponent } from './components/term-of-use/term-of-use.compone
     MainUsersComponent,
     PrivacyPolicyComponent,
     CookieConsentComponent,
-    TermOfUseComponent,
+    TermsOfUseComponent,
   ],
   imports: [
     BrowserModule,
