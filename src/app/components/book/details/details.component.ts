@@ -109,7 +109,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 );
 
                 this.daysToChoose = chooseDate - todayDate;                
-                const daysLeftMessage  = (this.daysToChoose  && this.daysToChoose)  > 1 ?  'Daqui a ' + this.daysToChoose + ' dia(s)' : 'Daqui a ' + this.daysToChoose + ' dia';
+                const daysLeftMessage  = (this.daysToChoose  && this.daysToChoose > 1) ? 'Daqui a ' + this.daysToChoose + ' dia(s)' : 'Daqui a ' + this.daysToChoose + ' dia';
                 const isToday = (!this.daysToChoose || this.daysToChoose <= 0);
                 this.chooseDateInfo =  isToday ? 'Hoje' : daysLeftMessage;
 
