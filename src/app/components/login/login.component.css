@@ -6,6 +6,9 @@ form i.fa {
   font-size: 22px;
   z-index: 99;
 }
+.lowerCase {
+  text-transform : lowercase;
+}
 
 .form-control {
   position: relative;
