@@ -19,7 +19,7 @@ export class BookService {
   constructor(
     private _http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig
-  ) {}
+  ) { }
 
   public getAll() {
     return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/9999`);
@@ -28,6 +28,12 @@ export class BookService {
   public getAvailableBooks() {
     return this._http.get<Book[]>(
       `${this.config.apiEndpoint}/book/AvailableBooks`
+    );
+  }
+
+  public getRandomEbooks() {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/random15ebooks`
     );
   }
 

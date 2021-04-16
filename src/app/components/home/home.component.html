@@ -52,7 +52,7 @@
     Nenhum livro encontrado &#9785; <br />Ajude o Sharebook e
     <b><a [routerLink]="['/livros/doar']">doe um livro agora</a></b>
   </h1>
-  <h1 class="text-center display-4" *ngIf="hasBook">Livros mais novos</h1>
+  <h1 class="text-center display-4" *ngIf="hasBook">Livros em destaque</h1>
   <div class="row justify-content-center book-covers" *ngIf="hasBook">
     <figure class="figure" *ngFor="let book of availableBooks">
       <div>
@@ -66,7 +66,26 @@
     </figure>
   </div>
 
-  <!-- autor em destaque
+  <div class="container">
+    <h1 class="text-center display-4" *ngIf="!hasEbook">
+      Nenhum e-book encontrado &#9785; <br />Ajude o Sharebook e
+      <b><a [routerLink]="['/livros/doar']">doe um e-book agora</a></b>
+    </h1>
+    <h1 class="text-center display-4" *ngIf="hasEbook">E-books em destaque</h1>
+    <div class="row justify-content-center book-covers" *ngIf="hasEbook">
+      <figure class="figure" *ngFor="let ebook of randomEbooks">
+        <div>
+          <a href="/livros/{{ ebook.slug }}" title="Detalhes do e-book">
+            <img src="{{ ebook.imageUrl }}" class="figure-img img-fluid rounded" alt="{{ ebook.title }}" />
+          </a>
+        </div>
+        <figcaption class="figure-caption text-center">
+          {{ ebook.title }}
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- autor em destaque
   Imagem fixada para posterior integração dinamica. -->
   <h1 class="text-center display-4">Autor em destaque</h1>
   <div class="row justify-content-center book-covers">
@@ -94,23 +113,23 @@
         das antologias “Grimm – Contos para sonhos horripilantes” e “Aventuras
         no País das Maravilhas”
 
-        <br /><br />
+          <br /><br />
 
-        Os irmãos Grimm foram acadêmicos, linguistas, poetas e escritores que
-        nasceram no então Condado de Hesse-Darmstadt, atual Alemanha. Os dois
-        dedicaram-se ao registro de várias fábulas infantis, ganhando assim
-        grande notoriedade, notoriedade essa que, gradativamente, tomou
-        proporções globais. Seus contos servem de inspiração até hoje para
-        crianças e adultos. Pensando nisso, nossa antologia retoma a essência
-        original dos contos que eram feitos para assustar as crianças.
-        Trabalhamos com contos que poucos conhecem, mas que fazem parte da mais
-        bela coletânea. Todos são bem-vindos para mergulhar no mundo de Jacob e
-        Wilhelm Grimm...
+          Os irmãos Grimm foram acadêmicos, linguistas, poetas e escritores que
+          nasceram no então Condado de Hesse-Darmstadt, atual Alemanha. Os dois
+          dedicaram-se ao registro de várias fábulas infantis, ganhando assim
+          grande notoriedade, notoriedade essa que, gradativamente, tomou
+          proporções globais. Seus contos servem de inspiração até hoje para
+          crianças e adultos. Pensando nisso, nossa antologia retoma a essência
+          original dos contos que eram feitos para assustar as crianças.
+          Trabalhamos com contos que poucos conhecem, mas que fazem parte da mais
+          bela coletânea. Todos são bem-vindos para mergulhar no mundo de Jacob e
+          Wilhelm Grimm...
 
-        <br /><br />
-        É disso que trata o livro Grimm, contos para sonhos horripilantes, agora
-        disponível (Grátis) no Sharebook. Confira.
-      </p>
+          <br /><br />
+          É disso que trata o livro Grimm, contos para sonhos horripilantes, agora
+          disponível (Grátis) no Sharebook. Confira.
+        </p>
 
       <a type="button" class="btn btn-primary" href="/livros/grimm---contos-para-sonhos-horripilantes">Eu quero esse
         livro!</a>
@@ -127,9 +146,8 @@
       <a type="button" class="btn btn-primary" href="/contact-us">Eu quero ser Autor Destaque!</a>
     </div>
   </div>
-</div>
 
-<!-- LIVROS EM DESTAQUE
+  <!-- LIVROS EM DESTAQUE
 
   <h1 class="text-center display-4">Livros em destaque</h1>
   <div class="row justify-content-center book-covers">
@@ -146,14 +164,14 @@
   </div>
   -->
 
-<!--
+  <!--
   <h1 class="text-center display-4">Novidades da Fanpage</h1>
   <div class="taggbox-container" style="width:90%;height:100%;overflow: auto;">
     <div class="taggbox-socialwall" data-wall-id="sharebook-linkedin"> Carregando posts... </div>
   </div>
   -->
 
-<!--carousel
+  <!--carousel
 
   <div class="container-fluid container-carousel">
     <div class="row justify-content-center">
@@ -186,7 +204,7 @@
   </div>
   -->
 
-<!--how it works
+  <!--how it works
 
   <div class="container-fluid how-it-works">
     <div class="row justify-content-center" id="how-it-works">
@@ -201,7 +219,7 @@
   <p id="how" class="text-center">Funciona como uma rede solidária onde pessoas doam livros e outros ganham</p>
 -->
 
-<!--benefits
+  <!--benefits
 
   <div class="container container-benefits">
     <div class="row justify-content-center">
@@ -236,9 +254,9 @@
   </div>
   -->
 
-<p>&nbsp;</p>
+  <p>&nbsp;</p>
 
-<!--banner-->
+  <!--banner-->
 
 <div class="container">
   <div class="d-block">
