@@ -33,8 +33,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _confirmationDialogService: ConfirmationDialogService,
     private _router: Router,
-    private _activatedRoute: ActivatedRoute
-  ) {}
+    private _activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
     this.getDonations();
@@ -57,6 +57,9 @@ export class DonationsComponent implements OnInit, OnDestroy {
     const btnTrackNumber =
       '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
       ' <i class="fa fa-truck"></i> </span>';
+    const btnCancelDonation =
+      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
+      ' <i class="fa fa-trash"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -122,6 +125,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
             name: 'trackNumber',
             title: btnTrackNumber,
           },
+          {
+            name: 'CancelDonation',
+            title: btnCancelDonation,
+          },
         ],
         position: 'right', // left|right
       },
@@ -167,7 +174,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
             `Não é possível escolher ganhador. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-              `status atual = ${event.data.status}`
+            `status atual = ${event.data.status}`
           );
           return;
         }
@@ -193,7 +200,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
             `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-              `status atual = ${event.data.status}`
+            `status atual = ${event.data.status}`
           );
           return;
         }
@@ -235,7 +242,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         ) {
           alert(
             `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
-              `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
+            `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
           );
           return;
         }
@@ -261,6 +268,35 @@ export class DonationsComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.bookId = event.data.id;
         modalRef.componentInstance.bookTitle = event.data.title;
         modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+        break;
+      }
+      case 'CancelDonation': {
+        // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
+        if (
+          event.data.status === BookDonationStatus.RECEIVED ||
+          event.data.status === BookDonationStatus.CANCELED
+        ) {
+          alert(
+            `Não é possível cancelar essa doação com status = ${event.data.status}`
+          );
+          return;
+        }
+        this._confirmationDialogService
+          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
+          .then((confirmed) => {
+            if (confirmed) {
+              this._bookService
+                .cancelDonation(event.data.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe((resp) => {
+                  if (resp['success']) {
+                    this._toastr.success('Doação cancelada com sucesso.');
+                    this.getDonations();
+                  }
+                });
+            }
+          });
+
         break;
       }
     }
