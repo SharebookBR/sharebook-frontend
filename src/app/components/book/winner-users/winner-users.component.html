@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <h4 class="modal-title">Informações de usuários para o livro: {{ bookTitle }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+
+  <!--Carousel Wrapper-->
+  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" *ngFor="let winnerUser of winnerUsers; let i = index" [attr.data-slide-to]="i"
+        [ngClass]="i == 0 ? 'active' : ''"></li>
+    </ol>
+    <!--/.Indicators-->
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <div *ngFor="let winnerUser of winnerUsers; let k = index"
+        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Vencedor</h5>
+            <p class="card-text">Nome: {{ winnerUser.name }}</p>
+            <p class="card-text">E-mail: {{ winnerUser.email }}</p>
+            <p class="card-text">LinkedIn: {{ winnerUser.linkedin }}</p>
+            <p class="card-text">Telefone: {{ winnerUser.phone }}</p>
+            <p class="card-text">
+              {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
+              {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
+            </p>
+            <p class="card-text">
+              {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
+            </p>
+            <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.Slides-->
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+  </div>
+  <!--/.Carousel Wrapper-->
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+</div>
