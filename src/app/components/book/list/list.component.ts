@@ -84,6 +84,7 @@ export class ListComponent implements OnInit, OnDestroy {
               (!!items.facilitator ? items.facilitator : ''),
             status: items.status,
             donated: items.donated,
+            slug: items.slug,
             facilitatorNotes: !!items.facilitatorNotes
               ? items.facilitatorNotes
               : '',
@@ -116,8 +117,8 @@ export class ListComponent implements OnInit, OnDestroy {
       '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
       ' <i class="fa fa-trash"></i> </span>';
     const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
-      ' <i class="fa fa-trophy"></i> </span>';
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver lista de interessados">' +
+      ' <i class="fa fa-list"></i> </span>';
     const btnFacilitatorNotes =
       '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Comentários">' +
       ' <i class="fa fa-sticky-note"></i> </span>';
@@ -255,27 +256,12 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'donate': {
-        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
-          alert(
-            `Não é possível escolher ganhador. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-              `status atual = ${event.data.status}`
-          );
-          return;
-        }
-        const chooseDate = Math.floor(
-          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
-        );
-        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-        if (!chooseDate || chooseDate - todayDate > 0) {
-          alert('Aguarde a data de escolha!');
-        } else {
-          this._router.navigate([`book/donate/${event.data.id}`], {
-            queryParams: {
-              returnUrl: this._activatedRoute.snapshot.url.join('/'),
-            },
-          });
-        }
+        this._router.navigate([`book/donate/${event.data.slug}`], {
+          queryParams: {
+            returnUrl: this._activatedRoute.snapshot.url.join('/'),
+          },
+        });
 
         break;
       }
