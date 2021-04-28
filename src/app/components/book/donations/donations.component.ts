@@ -9,11 +9,9 @@ import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
-import { MainUsersComponent } from '../main-users/main-users.component';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 
 @Component({
@@ -312,9 +310,11 @@ export class DonationsComponent implements OnInit, OnDestroy {
       }
       case 'ShowWinnerInfo': {
 
-        if (event.data.status !== BookDonationStatus.WAITING_SEND) {
+        if (event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT &&
+          event.data.status !== BookDonationStatus.RECEIVED) {
           alert(
-            `Não há ganhadores para este livro!`
+            `Não há ganhador para este livro!`
           );
           return;
         }
