@@ -1,7 +1,7 @@
-/* tslint:disable:no-unused-variable */
+import { AppConfigModule } from './../../../app-config.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { MainUsersComponent } from './main-users.component';
 
@@ -11,9 +11,10 @@ describe('MainUsersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainUsersComponent ]
-    })
-    .compileComponents();
+      declarations: [MainUsersComponent],
+      imports: [HttpClientTestingModule, AppConfigModule],
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

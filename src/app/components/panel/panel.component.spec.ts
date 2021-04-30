@@ -1,8 +1,5 @@
-/* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { PanelComponent } from './panel.component';
 
@@ -15,19 +12,10 @@ describe('PanelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PanelComponent
-      ],
-      imports: [
-        AppConfigModule
-      ],
-      providers: [
-        UserService,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      declarations: [PanelComponent],
+      imports: [AppConfigModule, HttpClientTestingModule],
+      providers: [UserService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

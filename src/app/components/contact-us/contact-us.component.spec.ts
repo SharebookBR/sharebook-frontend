@@ -1,15 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { RecaptchaModule } from 'ng-recaptcha';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ContactUsComponent } from './contact-us.component';
 
 import { AppConfigModule } from '../../app-config.module';
-import { ToastrService } from 'ngx-toastr';
 
 describe('ContactUsComponent', () => {
   let component: ContactUsComponent;
@@ -17,9 +17,7 @@ describe('ContactUsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ContactUsComponent
-      ],
+      declarations: [ContactUsComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -27,15 +25,11 @@ describe('ContactUsComponent', () => {
         RecaptchaModule.forRoot(),
         RecaptchaFormsModule,
         AppConfigModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ToastrModule.forRoot(),
+        HttpClientTestingModule,
       ],
-      providers: [
-        HttpClient,
-        HttpHandler,
-        AlertService
-      ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

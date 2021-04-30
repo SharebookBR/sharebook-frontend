@@ -7,15 +7,15 @@ import { ConfirmationDialogComponent } from '../../directives/confirmation-dialo
 
 @Injectable()
 export class ConfirmationDialogService {
-
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal) {}
 
   public confirm(
     title: string,
     message: string,
     btnOkText: string = 'Confirmar',
     btnCancelText: string = 'Cancelar',
-    dialogSize: 'sm'|'lg' = 'sm'): Promise<boolean> {
+    dialogSize: 'sm' | 'lg' = 'sm'
+  ): Promise<boolean> {
     const modalRef = this.modalService.open(ConfirmationDialogComponent, { size: dialogSize });
     modalRef.componentInstance.title = title;
     modalRef.componentInstance.message = message;
@@ -24,5 +24,4 @@ export class ConfirmationDialogService {
 
     return modalRef.result;
   }
-
 }

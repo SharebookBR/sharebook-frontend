@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { User } from '../../core/models/user';
 import { UserService } from '../../core/services/user/user.service';
@@ -10,19 +11,16 @@ import { AuthenticationService } from '../../core/services/authentication/authen
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-
+export class HeaderComponent implements OnInit, OnDestroy {
   // variavel apra selecionar o menu via DOM
   @ViewChild('menu') menu: ElementRef;
-
-  private _subscription: Subscription;
 
   userLogged = false;
   shareBookUser = new User();
 
-  constructor(private _scUser: UserService,
-              private _scAuthentication: AuthenticationService) {
+  private _destroySubscribes$ = new Subject<void>();
 
+  constructor(private _scUser: UserService, private _scAuthentication: AuthenticationService) {
     this._scAuthentication.checkTokenValidity();
 
     // if has shareBookUser, set value to variables
@@ -30,15 +28,17 @@ export class HeaderComponent implements OnInit {
       this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
       this.userLogged = true;
     }
-
   }
 
   ngOnInit() {
-    this._subscription = this._scUser.getLoggedUser().subscribe(shareBookUser => {
+    this._scUser.getLoggedUser()
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(shareBookUser => {
       this.shareBookUser = shareBookUser;
       this.userLogged = !!this.shareBookUser;
     });
-
   }
 
   // metodo que desativa o menu ao clicar em um link
@@ -48,4 +48,8 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
 }

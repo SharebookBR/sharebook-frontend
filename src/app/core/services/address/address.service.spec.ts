@@ -1,17 +1,13 @@
-/* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { AddressService } from './address.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('AddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AddressService,
-        HttpClient,
-        HttpHandler
-      ],
+      imports: [HttpClientTestingModule],
+      providers: [AddressService],
     });
   });
 

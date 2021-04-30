@@ -1,6 +1,6 @@
 @media (max-width: 418px) {
   .img-thumbnail {
-    min-height: 220px; 
+    min-height: 220px;
     min-width: 320px;
   }
 }

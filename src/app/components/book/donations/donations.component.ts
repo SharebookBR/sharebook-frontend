@@ -1,25 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
 import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
-  styleUrls: ['./donations.component.css']
+  styleUrls: ['./donations.component.css'],
 })
-export class DonationsComponent implements OnInit {
-
+export class DonationsComponent implements OnInit, OnDestroy {
   donatedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
+
+  private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _bookService: BookService,
@@ -32,35 +37,43 @@ export class DonationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.getDonations();
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach(key => {
-      myBookDonationStatus.push({ value: BookDonationStatus[key], title: BookDonationStatus[key] });
+    Object.keys(BookDonationStatus).forEach((key) => {
+      myBookDonationStatus.push({
+        value: BookDonationStatus[key],
+        title: BookDonationStatus[key],
+      });
     });
 
-    const btnDonate = '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
-      ' <i class="fa fa-trophy"></i> </span>';
-    const btnRenewChooseDate = '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
+    const btnDonate =
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver interessados">' +
+      ' <i class="fa fa-list"></i> </span>';
+    const btnRenewChooseDate =
+      '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
       ' <i class="fa fa-calendar"></i> </span>';
-    const btnTrackNumber = '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
+    const btnTrackNumber =
+      '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
       ' <i class="fa fa-truck"></i> </span>';
+    const btnCancelDonation =
+      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
+      ' <i class="fa fa-trash"></i> </span>';
 
     this.tableSettings = {
       columns: {
         title: {
           title: 'Titulo',
-          width: '27%'
+          width: '27%',
         },
         totalInterested: {
           title: 'Total interessados',
-          width: '08%'
+          width: '08%',
         },
         daysInShowcase: {
           title: 'Dias na vitrine',
-          width: '08%'
+          width: '08%',
         },
         chooseDate: {
           title: 'Data Escolha',
@@ -78,8 +91,12 @@ export class DonationsComponent implements OnInit {
           title: 'Status',
           width: '15%',
           type: 'html',
-          valuePrepareFunction: value => {
-            return this._sanitizer.bypassSecurityTrustHtml(`<span class="badge badge-${this.getStatusBadge(value)}">${value}</span>`);
+          valuePrepareFunction: (value) => {
+            return this._sanitizer.bypassSecurityTrustHtml(
+              `<span class="badge badge-${this.getStatusBadge(
+                value
+              )}">${getStatusDescription(value)}</span>`
+            );
           },
           filter: {
             type: 'list',
@@ -88,7 +105,7 @@ export class DonationsComponent implements OnInit {
               list: myBookDonationStatus,
             },
           },
-        }
+        },
       },
       actions: {
         delete: false,
@@ -98,117 +115,179 @@ export class DonationsComponent implements OnInit {
         custom: [
           {
             name: 'donate',
-            title: btnDonate
+            title: btnDonate,
           },
           {
             name: 'renewChooseDate',
-            title: btnRenewChooseDate
+            title: btnRenewChooseDate,
           },
           {
             name: 'trackNumber',
-            title: btnTrackNumber
-          }
+            title: btnTrackNumber,
+          },
+          {
+            name: 'CancelDonation',
+            title: btnCancelDonation,
+          },
         ],
-        position: 'right' // left|right
+        position: 'right', // left|right
       },
       attr: {
-        class: 'table table-bordered table-hover table-striped'
+        class: 'table table-bordered table-hover table-striped',
       },
-      noDataMessage: 'Nenhum registro encontrado.'
+      noDataMessage: 'Nenhum registro encontrado.',
     };
   }
 
   private getStatusBadge(status) {
     switch (status) {
-      case BookDonationStatus.UNKNOW:
-        return 'secondary';
       case BookDonationStatus.WAITING_APPROVAL:
+      case BookDonationStatus.WAITING_DECISION:
+      case BookDonationStatus.WAITING_SEND:
+      case BookDonationStatus.SENT:
         return 'warning';
       case BookDonationStatus.AVAILABLE:
-        return 'primary';
-      case BookDonationStatus.INVISIBLE:
-        return 'light';
-      case BookDonationStatus.DONATED:
+      case BookDonationStatus.RECEIVED:
         return 'success';
       case BookDonationStatus.CANCELED:
         return 'danger';
+      default:
+        return 'secondary';
     }
   }
 
   getDonations() {
     this.isLoading = true;
 
-    this._bookService.getDonatedBooks().subscribe(resp => {
-      this.donatedBooks = resp;
-      this.isLoading = false;
-    });
+    this._bookService
+      .getDonatedBooks()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((resp) => {
+        this.donatedBooks = resp;
+        this.isLoading = false;
+      });
   }
 
   onCustom(event) {
     switch (event.action) {
       case 'donate': {
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
-          if (!chooseDate || chooseDate - todayDate > 0) {
-            alert('Aguarde a data de escolha!');
-          } else {
-            this._router.navigate([`book/donate/${event.data.id}`],
-              { queryParams: { returnUrl: this._activatedRoute.snapshot.url.join('/') } });
-          }
-        }
+        this._router.navigate([`book/donate/${event.data.slug}`], {
+          queryParams: {
+            returnUrl: this._activatedRoute.snapshot.url.join('/'),
+          },
+        });
         break;
+
       }
       case 'renewChooseDate': {
-        if (event.data.donated || event.data.status === BookDonationStatus.CANCELED) {
-          alert('Livro já doado ou cancelado!');
-        } else {
-          const chooseDate = Math.floor(new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000));
-          const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
-
-          if (!chooseDate || chooseDate - todayDate > 0) {
-            alert('Aguarde a data de escolha!');
-          } else {
-            this._confirmationDialogService.confirm('Atenção!', 'Confirma a renovação da data de doação?')
-              .then((confirmed) => {
-                if (confirmed) {
-                  this._bookService.renewChooseDate(event.data.id).subscribe(resp => {
-                    this._toastr.success('Doação renovada com sucesso.');
-                    this.getDonations();
-                  }, error => {
-                    this._toastr.error(error);
-                  });
-                }
-              });
-          }
+        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
+          alert(
+            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+            `status atual = ${event.data.status}`
+          );
+          return;
         }
+
+        const chooseDate = Math.floor(
+          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
+        );
+        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+        if (!chooseDate || chooseDate - todayDate > 0) {
+          alert('Aguarde a data de escolha!');
+        } else {
+          this._confirmationDialogService
+            .confirm('Atenção!', 'Confirma a renovação da data de doação?')
+            .then((confirmed) => {
+              if (confirmed) {
+                this._bookService
+                  .renewChooseDate(event.data.id)
+                  .pipe(takeUntil(this._destroySubscribes$))
+                  .subscribe(
+                    () => {
+                      this._toastr.success('Doação renovada com sucesso.');
+                      this.getDonations();
+                    },
+                    (error) => {
+                      this._toastr.error(error);
+                    }
+                  );
+              }
+            });
+        }
+
         break;
       }
       case 'trackNumber': {
-        if (!event.data.donated) {
-          alert('Livro deve estar como doado!');
-        } else {
-          const modalRef = this._modalService.open(TrackingComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        if (
+          event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT
+        ) {
+          alert(
+            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
+            `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
+          );
+          return;
+        }
 
-          modalRef.result.then((result) => {
+        const modalRef = this._modalService.open(TrackingComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true,
+        });
+
+        modalRef.result.then(
+          (result) => {
             if (result === 'Success') {
               this.getDonations();
             }
-          }, (reason) => {
+          },
+          (reason) => {
             if (reason === 'Success') {
               this.getDonations();
             }
+          }
+        );
+
+        modalRef.componentInstance.bookId = event.data.id;
+        modalRef.componentInstance.bookTitle = event.data.title;
+        modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+        break;
+      }
+      case 'CancelDonation': {
+        // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
+        if (
+          event.data.status === BookDonationStatus.RECEIVED ||
+          event.data.status === BookDonationStatus.CANCELED
+        ) {
+          alert(
+            `Não é possível cancelar essa doação com status = ${event.data.status}`
+          );
+          return;
+        }
+        this._confirmationDialogService
+          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
+          .then((confirmed) => {
+            if (confirmed) {
+              this._bookService
+                .cancelDonation(event.data.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe((resp) => {
+                  if (resp['success']) {
+                    this._toastr.success('Doação cancelada com sucesso.');
+                    this.getDonations();
+                  }
+                });
+            }
           });
 
-          modalRef.componentInstance.bookId = event.data.id;
-          modalRef.componentInstance.bookTitle = event.data.title;
-          modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
-          break;
-        }
+        break;
       }
     }
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

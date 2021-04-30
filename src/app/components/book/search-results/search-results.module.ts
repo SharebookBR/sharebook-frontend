@@ -13,12 +13,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CardBookModule,
-    NgbPaginationModule
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes), CardBookModule, NgbPaginationModule],
   declarations: [SearchResultsComponent]
 })
-export class SearchResultsModule { }
+export class SearchResultsModule {}

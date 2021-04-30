@@ -20,6 +20,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ContributeProjectComponent } from './components/contribute-project/contribute-project.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CookieConsentComponent } from './components/cookieconsent/cookieconsent.component';
 import { FormComponent as BookFormComponent } from './components/book/form/form.component';
 import { DetailsComponent as BookDetailComponent } from './components/book/details/details.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -51,7 +52,11 @@ import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+import {
+  RecaptchaModule,
+  RECAPTCHA_SETTINGS,
+  RecaptchaSettings,
+} from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
@@ -61,10 +66,11 @@ import { MainUsersComponent } from './components/book/main-users/main-users.comp
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
-import {RouteReuseStrategy} from '@angular/router';
-import {CustomReuseStrategy} from './core/router/custom-reuse-strategy';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
+import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
 
 @NgModule({
   declarations: [
@@ -95,10 +101,12 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    CookieConsentComponent,
+    TermsOfUseComponent,
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -114,7 +122,7 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     NgxMaskModule.forRoot(),
     InputSearchModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
   providers: [
     AuthGuardUser,
@@ -128,9 +136,14 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     ConfirmationDialogService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3' } as RecaptchaSettings },
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: '6LcxaXAUAAAAAGM8zgwQvgMuykwiBPgMr0P7sNL3',
+      } as RecaptchaSettings,
+    },
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-    AuthGuardAdmin
+    AuthGuardAdmin,
     // provider used to create fake backend
     // fakeBackendProvider
   ],
@@ -140,10 +153,10 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     ConfirmationDialogComponent,
     TrackingComponent,
     FacilitatorNotesComponent,
-    MainUsersComponent
+    MainUsersComponent,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
- }
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
+}

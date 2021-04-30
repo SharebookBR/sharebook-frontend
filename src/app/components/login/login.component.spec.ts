@@ -1,13 +1,13 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { LoginComponent } from './login.component';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import { UserService } from '../../core/services/user/user.service';
 import { AppConfigModule } from '../../app-config.module';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,24 +15,17 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LoginComponent
-      ] ,
+      declarations: [LoginComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
-        AppConfigModule
+        AppConfigModule,
+        HttpClientTestingModule,
+        ToastrModule.forRoot(),
       ],
-      providers: [
-        AuthenticationService,
-        UserService,
-
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      providers: [AuthenticationService, UserService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,7 +34,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  /*it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });*/
+  });
 });

@@ -1,15 +1,29 @@
 <div class="container">
-  <h1 class="text-center display-4">Doar Livro
+  <h1 class="text-center display-4">
+    Lista de interessados no livro '{{ book.title }}'
     <button class="btn btn-info btn-lg" (click)="back()" title="Voltar">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
     </button>
   </h1>
+
+  <div class="alert alert-warning" role="alert" [hidden]="!showWarning">
+    {{ warningMessage }}
+  </div>
+
+  <div class="alert alert-success" role="alert" [hidden]="!showWarningWinnerChoosed">
+    Você já escolheu o ganhador. =)
+  </div>
+
   <div [hidden]="!isLoading">
     <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
   </div>
   <div class="container mt-5" [hidden]="isLoading">
-    <ng2-smart-table class="table table-responsive" [settings]="settings" [source]="donateUsers"
-      (custom)="onCustom($event)">
+    <ng2-smart-table
+      class="table table-responsive"
+      [settings]="settings"
+      [source]="donateUsers"
+      (custom)="onCustom($event)"
+    >
     </ng2-smart-table>
   </div>
 </div>

@@ -1,7 +1,5 @@
-/* tslint:disable:no-unused-variable */
+import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DonateComponent } from './donate.component';
 
 import { AppConfigModule } from '../../../app-config.module';
-import { ToastrService } from 'ngx-toastr';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DonateComponent', () => {
   let component: DonateComponent;
@@ -18,22 +16,18 @@ describe('DonateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DonateComponent
-      ],
+      declarations: [DonateComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [
         FormsModule,
         ReactiveFormsModule,
         Ng2SmartTableModule,
         AppConfigModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ToastrModule.forRoot(),
       ],
-      providers: [
-        NgbActiveModal,
-        AlertService
-      ]
-    })
-    .compileComponents();
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

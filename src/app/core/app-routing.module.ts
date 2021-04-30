@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardUser } from './guards/auth.guard.user';
 import { AuthGuardAdmin } from './guards/auth.guard.admin';
@@ -21,6 +22,7 @@ import { DonationsComponent } from '../components/book/donations/donations.compo
 import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
 
 const routes: Routes = [
   {
@@ -111,11 +113,15 @@ const routes: Routes = [
   },
   {
     path: 'contact-us',
-    component: ContactUsComponent,
+    component: ContactUsComponent
   },
   {
     path: 'politica-privacidade',
-    component: PrivacyPolicyComponent,
+    component: PrivacyPolicyComponent
+  },
+  {
+    path: 'termos-de-uso',
+    component: TermsOfUseComponent
   },
   // otherwise redirect to home
   {
@@ -125,9 +131,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'enabled',
-  })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled'
+    })
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

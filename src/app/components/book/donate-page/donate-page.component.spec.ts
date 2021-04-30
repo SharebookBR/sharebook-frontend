@@ -1,9 +1,12 @@
-/* tslint:disable:no-unused-variable */
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppConfigModule } from './../../../app-config.module';
+import { AddressService } from './../../../core/services/address/address.service';
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DonatePageComponent } from './donate-page.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DonatePageComponent', () => {
   let component: DonatePageComponent;
@@ -11,9 +14,17 @@ describe('DonatePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DonatePageComponent ]
-    })
-    .compileComponents();
+      declarations: [DonatePageComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        AppConfigModule,
+        HttpClientTestingModule,
+      ],
+      providers: [AddressService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

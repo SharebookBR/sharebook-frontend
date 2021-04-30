@@ -1,46 +1,88 @@
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
-  <input formControlName="userId" type="hidden">
+<form
+  [formGroup]="formGroup"
+  class="container form-horizontal"
+  (ngSubmit)="onAddBook()"
+>
+  <input formControlName="userId" type="hidden" />
 
   <div *ngIf="isSaved" class="text-center">
-    <h1 class="display-4">{{pageTitle}}</h1>
+    <h1 class="display-4">{{ pageTitle }}</h1>
     <div *ngIf="userProfile === 'User'">
-      <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Doar mais um
+      <a
+        href="/livros/doar"
+        class="btn btn-outline-primary"
+        style="margin: 0 3px 3px 0;"
+      >
+        Doar mais um
         <i class="fa fa-heart"></i>
       </a>
     </div>
     <div *ngIf="userProfile === 'Administrator'">
-      <a routerLink="/book/list" class="btn btn-outline-primary" style="margin: 0 3px 3px 0">
+      <a
+        routerLink="/book/list"
+        class="btn btn-outline-primary"
+        style="margin: 0 3px 3px 0;"
+      >
         Voltar ao Painel
       </a>
     </div>
-    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0">
+    <a
+      routerLink="/"
+      class="btn btn-outline-success"
+      style="margin: 0 3px 3px 0;"
+    >
       Veja os ultimos livros doados
     </a>
   </div>
 
   <div *ngIf="!isSaved">
-    <h1 class="text-center display-4">{{pageTitle}}</h1>
+    <h1 class="text-center display-4">{{ pageTitle }}</h1>
     <div class="form-row">
       <div class="col-3 figure">
-        <img [src]="formGroup.value.imageBytes.length
-          ? 'data:image/png;base64,' + formGroup.value.imageBytes
-          : formGroup.value.imageUrl ? formGroup.value.imageUrl : 'assets/img/img-placeholder.png'"
+        <img
+          [src]="
+            formGroup.value.imageBytes.length
+              ? 'data:image/png;base64,' + formGroup.value.imageBytes
+              : formGroup.value.imageUrl
+              ? formGroup.value.imageUrl
+              : 'assets/img/img-placeholder.png'
+          "
           class="figure-img img-fluid rounded"
         />
       </div>
       <div class="col">
         <div class="form-group col-md-8">
           <label class="col-form-label" for="title">Título do livro</label>
-          <input formControlName="title" name="title" type="text" class="form-control" maxlength="200">
+          <input
+            formControlName="title"
+            name="title"
+            type="text"
+            class="form-control"
+            maxlength="200"
+          />
 
-          <div *ngIf="formGroup.controls['title'].touched && !formGroup.controls['title'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('required')">
+          <div
+            *ngIf="
+              formGroup.controls['title'].touched &&
+              !formGroup.controls['title'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['title'].hasError('required')"
+            >
               Titulo do livro obrigatório.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('minlength')">
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['title'].hasError('minlength')"
+            >
               O titúlo deve conter no mínimo 3 caracteres.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('maxlength') ">
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['title'].hasError('maxlength')"
+            >
               O titúlo deve conter no máximo 200 caracteres.
             </small>
           </div>
@@ -48,16 +90,35 @@
 
         <div class="form-group col-md-8">
           <label class="col-form-label" for="author">Autor</label>
-          <input formControlName="author" type="text" class="form-control" maxlength="200">
+          <input
+            formControlName="author"
+            type="text"
+            class="form-control"
+            maxlength="200"
+          />
 
-          <div *ngIf="formGroup.controls['author'].touched && !formGroup.controls['author'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('required')">
+          <div
+            *ngIf="
+              formGroup.controls['author'].touched &&
+              !formGroup.controls['author'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['author'].hasError('required')"
+            >
               Informe o nome do autor do livro.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('minlength')">
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['author'].hasError('minlength')"
+            >
               O nome do autor deve conter no mínimo 3 caracteres.
             </small>
-            <small class="form-text text-danger" *ngIf="formGroup.controls['author'].hasError('maxlength') ">
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['author'].hasError('maxlength')"
+            >
               O nome do autor deve conter no máximo 200 caracteres.
             </small>
           </div>
@@ -67,99 +128,226 @@
           <label class="col-form-label" for="categoryId">Categoria</label>
           <select class="form-control" formControlName="categoryId">
             <option value=""></option>
-            <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            <option
+              *ngFor="let category of categories"
+              value="{{ category.id }}"
+              >{{ category.name }}</option
+            >
           </select>
-          <div *ngIf="formGroup.controls['categoryId'].touched && !formGroup.controls['categoryId'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['categoryId'].hasError('required')">
+          <div
+            *ngIf="
+              formGroup.controls['categoryId'].touched &&
+              !formGroup.controls['categoryId'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['categoryId'].hasError('required')"
+            >
               Informe a categoria do livro.
             </small>
           </div>
         </div>
 
-        <div class="form-group col-md-8 mb-4" *ngIf="userProfile === 'Administrator' && itsEditMode">
-          <label class="col-form-label" for="userIdFacilitator">Facilitador</label>
+        <div
+          class="form-group col-md-8 mb-4"
+          *ngIf="userProfile === 'Administrator' && itsEditMode"
+        >
+          <label class="col-form-label" for="userIdFacilitator"
+            >Facilitador</label
+          >
           <select class="form-control" formControlName="userIdFacilitator">
             <option value=""></option>
-            <option *ngFor="let facilitator of facilitators" value="{{facilitator.id}}">{{facilitator.name}}</option>
+            <option
+              *ngFor="let facilitator of facilitators"
+              value="{{ facilitator.id }}"
+              >{{ facilitator.name }}</option
+            >
           </select>
-          <div *ngIf="formGroup.controls['userIdFacilitator'].touched && !formGroup.controls['userIdFacilitator'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['userIdFacilitator'].hasError('required')">
+          <div
+            *ngIf="
+              formGroup.controls['userIdFacilitator'].touched &&
+              !formGroup.controls['userIdFacilitator'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="
+                formGroup.controls['userIdFacilitator'].hasError('required')
+              "
+            >
               Informe o facilitador do livro.
             </small>
           </div>
-        </div>        
+        </div>
 
         <div class="form-group col-md-8">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" formControlName="imageName" imageUpload (imageSelected)="onConvertImageToBase64($event)" [allowedExtensions]="['jpg','jpeg','png']">
-            <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
+            <input
+              type="file"
+              class="custom-file-input"
+              formControlName="imageName"
+              imageUpload
+              (imageSelected)="onConvertImageToBase64($event)"
+              [allowedExtensions]="['jpg', 'jpeg', 'png']"
+            />
+            <label
+              class="custom-file-label"
+              for="imageName"
+              *ngIf="!formGroup.controls['imageName'].valid"
+            >
               Selecionar imagem da capa do livro
             </label>
-            <label class="custom-file-label" for="imageName" *ngIf="formGroup.controls['imageName'].valid">
-              {{formGroup.value.imageName ? formGroup.value.imageName : formGroup.value.imageSlug}}
+            <label
+              class="custom-file-label"
+              for="imageName"
+              *ngIf="formGroup.controls['imageName'].valid"
+            >
+              {{
+                formGroup.value.imageName
+                  ? formGroup.value.imageName
+                  : formGroup.value.imageSlug
+              }}
             </label>
           </div>
-          <div *ngIf="formGroup.controls['imageName'].touched && !formGroup.controls['imageName'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('InvalidExtension') ">
+          <div
+            *ngIf="
+              formGroup.controls['imageName'].touched &&
+              !formGroup.controls['imageName'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="
+                formGroup.controls['imageName'].hasError('InvalidExtension')
+              "
+            >
               Arquivo de imagem com extensão inválida (jpg, jpeg, png).
             </small>
           </div>
           <div *ngIf="!formGroup.controls['imageName'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['imageName'].hasError('InvalidImage')">
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['imageName'].hasError('InvalidImage')"
+            >
               Selecione a capa do livro.
             </small>
           </div>
         </div>
 
         <ng-template #popContent>
-            <p>Sabia que com o <b>registro módico</b> o envio de livros para todo Brasil fica baratinho? Em média apenas dez reais.</p>
-            <p>Mais detalhes,
-            <a href="https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544" target="_blank">clique aqui.</a></p>
+          <p>
+            Sabia que com o <b>registro módico</b> o envio de livros para todo
+            Brasil fica baratinho? Em média apenas dez reais.
+          </p>
+          <p>
+            Mais detalhes,
+            <a
+              href="https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544"
+              target="_blank"
+              >clique aqui.</a
+            >
+          </p>
         </ng-template>
 
         <div class="form-group col-md-8">
-
-          <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            <label *ngFor="let option of freightOptions" [ngClass]="(formGroup.value.freightOption === option.value)
-                ? 'btn btn-outline-secondary form-control active'
-                : 'btn btn-outline-secondary form-control'" (click)="onChangeFieldFreightOption(option.value, p)"
-                #p="ngbPopover" placement="top" [autoClose]="'outside'" [ngbPopover]="popContent" triggers="manual" popoverTitle="Espere! 🙏">
-              <input type="radio" name="freightOption" formControlName="freightOption"> {{option.text}}
+          <label class="col-form-label" for="freightOption"
+            >Vc pagaria o frete? ❤️</label
+          >
+          <div
+            class="btn-group btn-block btn-group-toggle"
+            data-toggle="buttons"
+          >
+            <label
+              *ngFor="let option of freightOptions"
+              [ngClass]="
+                formGroup.value.freightOption === option.value
+                  ? 'btn btn-outline-secondary form-control active'
+                  : 'btn btn-outline-secondary form-control'
+              "
+              (click)="onChangeFieldFreightOption(option.value, p)"
+              #p="ngbPopover"
+              placement="top"
+              [autoClose]="'outside'"
+              [ngbPopover]="popContent"
+              triggers="manual"
+              popoverTitle="Espere! 🙏"
+            >
+              <input
+                type="radio"
+                name="freightOption"
+                formControlName="freightOption"
+              />
+              {{ option.text }}
             </label>
           </div>
 
-          <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">
+          <div
+            *ngIf="
+              formGroup.controls['freightOption'].touched &&
+              !formGroup.controls['freightOption'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['freightOption'].hasError('required')"
+            >
               Escolha uma opções de frete.
             </small>
           </div>
-
         </div>
 
         <div class="form-group col-md-8">
           <label class="col-form-label" for="synopsis">Sinópse</label>
-          <textarea formControlName="synopsis" type="text" class="form-control" maxlength="2000" style="height: 300px;"></textarea>
+          <textarea
+            formControlName="synopsis"
+            type="text"
+            class="form-control"
+            maxlength="2000"
+            style="height: 300px;"
+          ></textarea>
 
-          <div *ngIf="formGroup.controls['synopsis'].touched && !formGroup.controls['synopsis'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['synopsis'].hasError('maxlength') ">
+          <div
+            *ngIf="
+              formGroup.controls['synopsis'].touched &&
+              !formGroup.controls['synopsis'].valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup.controls['synopsis'].hasError('maxlength')"
+            >
               A sinópse deve conter no máximo 2000 caracteres.
             </small>
           </div>
         </div>
 
-        <div class="form-group col-md-8" *ngIf="userProfile === 'Administrator' && itsEditMode">
-          <label class="col-form-label" for="approved">Situação do livro</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            <label [ngClass]="(formGroup.value.approved === false)
-                ? 'btn btn-outline-info form-control active'
-                : 'btn btn-outline-info form-control'" (click)="onChangeFieldApproved('false')">
-              <input type="radio" name="approved" formControlName="approved"> Não visível
+        <div class="form-group col-md-8" *ngIf="!itsEditMode">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="agreeToTerms"
+              id="agreeToTerms"
+            />
+            <label class="form-check-label" for="agreeToTerms">
+              Declaro que estou ciente da importância desta doação e que irei
+              tratar a mesma com carinho, evitando atrasos no processo. Sei que
+              tem uma pessoa do outro lado que deseja e precisa desse livro.
             </label>
-            <label [ngClass]="(formGroup.value.approved === true)
-                ? 'btn btn-outline-info form-control active'
-                : 'btn btn-outline-info form-control'" (click)="onChangeFieldApproved('true')">
-              <input type="radio" name="approved" formControlName="approved"> Visível
+          </div>
+        </div>
+
+        <div class="form-group col-md-8" *ngIf="canApprove">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="approve"
+              id="approve"
+            />
+            <label class="form-check-label" for="approve">
+              Aprovar essa doação.
             </label>
           </div>
         </div>
@@ -170,13 +358,14 @@
               type="submit"
               class="btn btn-primary"
               [value]="buttonSaveLabel"
-              style="padding-left: 50px; padding-right: 50px"
+              style="padding-left: 50px; padding-right: 50px;"
               [disabled]="!formGroup.valid"
-              [ngStyle]="{'cursor':!formGroup.valid ? 'not-allowed': 'auto'}"/>
+              [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }"
+            />
             <a [routerLink]="['/book/list']" class="btn btn-link">Cancelar</a>
           </div>
           <div class="text-center" [hidden]="!isLoading">
-            <i class="fa fa-spinner fa-spin"></i> {{isLoadingMessage}}
+            <i class="fa fa-spinner fa-spin"></i> {{ isLoadingMessage }}
           </div>
         </div>
       </div>

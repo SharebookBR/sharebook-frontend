@@ -1,10 +1,7 @@
-/* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { TrackingComponent } from './tracking.component';
 import { AppConfigModule } from '../../../app-config.module';
@@ -15,19 +12,15 @@ describe('TrackingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrackingComponent ],
+      declarations: [TrackingComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        AppConfigModule
+        AppConfigModule,
+        HttpClientTestingModule,
       ],
-      providers: [
-        NgbActiveModal,
-        HttpClient,
-        HttpHandler
-      ]
-    })
-    .compileComponents();
+      providers: [NgbActiveModal],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

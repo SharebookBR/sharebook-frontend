@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  example:
+    container_name: sharebook-frontend-local
+    build:
+      context: .
+      dockerfile: Dockerfile-local
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '4200:4200'

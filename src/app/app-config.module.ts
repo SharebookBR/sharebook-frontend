@@ -12,9 +12,11 @@ export const APP_DI_CONFIG: AppConfig = {
 };
 
 @NgModule({
-  providers: [{
-    provide: APP_CONFIG,
-    useValue: APP_DI_CONFIG
-  }]
+  providers: [
+    {
+      provide: APP_CONFIG,
+      useValue: APP_DI_CONFIG
+    }
+  ]
 })
-export class AppConfigModule { }
+export class AppConfigModule {}

@@ -1,3 +1,4 @@
+import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -7,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListComponent } from './list.component';
 
 import { AppConfigModule } from '../../../app-config.module';
-import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from '../../../core/services/confirmation-dialog/confirmation-dialog.service';
 
 describe('ListComponent', () => {
@@ -16,9 +16,7 @@ describe('ListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ListComponent
-      ],
+      declarations: [ListComponent],
       imports: [
         Ng2SmartTableModule,
         AppConfigModule,
@@ -26,14 +24,11 @@ describe('ListComponent', () => {
         NgbModule.forRoot(),
         NgbModalModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ToastrModule.forRoot(),
       ],
-      providers: [
-
-        ConfirmationDialogService
-      ]
-    })
-    .compileComponents();
+      providers: [ConfirmationDialogService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

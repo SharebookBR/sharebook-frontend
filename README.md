@@ -29,11 +29,23 @@ https://trello.com/invite/sharebook6/928f21ef82592b5edafde06f171d338b
 
 https://github.com/SharebookBR/frontend
 
-### 4.2 ESCREVA CÓDIGO
+### 4.2 INSTALE OS PLUGINS RECOMENDADOS
 
-Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie e aguarde o PULL REQUEST ser aprovado.
+Para padronizarmos a formatação do código, é necessário instalar o pluguin no VSCode chamado "Prettier - Code Formatter".
+
+Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e JSHint.
+
+### 4.3 ESCREVA CÓDIGO
+
+Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie sua PULL REQUEST para a branch DEVELOP e aguarde ser aprovado.
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
+
+## Observações:
+
+Verifique a versão do Node - Recomendamos Versão 10.x.x  
+Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
+Use o Angular 7+
 
 # Rodar o app pela primeira vez
 
@@ -45,6 +57,31 @@ npm start
 # crie seu primeiro componente. Exemplo.
 ng generate component book/list nomeDoComponente
 ```
+
+# Rodar o app pela primeira vez com Docker
+
+Os comandos abaixo irão rodar o frontend em container docker com hot reload, ou seja, qualquer alteração feita no front será automaticamente atualizada.
+
+```bash
+# Criando imagem e rodando o container com Backend DEV
+docker-compose up -d --build
+
+# Criando imagem e rodando o container com Backend LOCAL
+docker-compose -f docker-compose-local.yml up -d --build
+
+# Rodando os testes unitários
+docker-compose run --rm sharebook npm run test
+
+# Parando o container
+docker-compose stop
+
+# Parando e eliminando o container
+docker-compose down
+```
+
+## Acessando o frontend no navegador
+
+http://localhost:4200
 
 ## API no ambiente de dev
 
