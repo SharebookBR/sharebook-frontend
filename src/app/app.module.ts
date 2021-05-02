@@ -71,6 +71,7 @@ import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
+import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
     PrivacyPolicyComponent,
     CookieConsentComponent,
     TermsOfUseComponent,
+    DonorModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,9 +156,10 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
+    DonorModalComponent
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
 }

@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h4 class="modal-title">Informações do doador do livro: <br> {{ bookTitle }}</h4>
+
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <ng-template #loading>
+    <div class="text-center"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+  </ng-template>
+
+  <section class="card-body" *ngIf="(userInfo$ | async)?.donor as donor; else loading">
+
+    <ng-container *ngIf="showDonor; else showDonorNotAlowed">
+      <h5 class="card-title">Doador</h5>
+      <p class="card-text">Nome: {{ donor.name }}</p>
+      <p class="card-text">E-mail: {{ donor.email }}</p>
+      <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
+      <p class="card-text">Telefone: {{ donor.phone }}</p>
+      <p class="card-text">
+        {{ donor.address?.street }}, {{ donor.address?.number }}
+        {{ !!donor.address?.complement ? donor.address?.complement : '' }}
+      </p>
+      <p class="card-text">
+        {{ donor.address?.neighborhood }} - {{ donor.address?.city }} - {{ donor.address?.state }}
+      </p>
+      <p class="card-text">CEP: {{ donor.address?.postalCode }} - {{ donor.address?.country }}</p>
+    </ng-container>
+
+    <ng-template #showDonorNotAlowed>
+      <h5 class="card-title">Informações disponível apenas para o ganhador do livro</h5>
+    </ng-template>
+
+  </section>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+</div>
