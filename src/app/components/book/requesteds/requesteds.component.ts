@@ -104,18 +104,13 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   onCustomActionColum(event) {
-    switch (event.action) {
-      case 'showUserBookInfo': {
-        const modalRef = this._modalService.open(DonorModalComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
+    const modalRef = this._modalService.open(DonorModalComponent, {
+      backdropClass: 'light-blue-backdrop',
+      centered: true,
+    });
 
-        modalRef.componentInstance.bookId = event.data.bookId;
-        modalRef.componentInstance.bookTitle = event.data.title;
-        break;
-      }
-    }
+    modalRef.componentInstance.bookId = event.data.bookId;
+    modalRef.componentInstance.bookTitle = event.data.title;
   }
 
   ngOnDestroy() {

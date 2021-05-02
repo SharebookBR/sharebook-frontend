@@ -9,7 +9,7 @@
 <div class="modal-body">
 
   <ng-template #loading>
-    <div class="text-center"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+    <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
   </ng-template>
 
   <section class="card-body" *ngIf="(userInfo$ | async)?.donor as donor; else loading">
