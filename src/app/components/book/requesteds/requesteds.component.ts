@@ -33,7 +33,9 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         map(requestedBooks => {
           requestedBooks.items.map(item => {
             const badgeColor = this.getBadgeColor(item.status);
+            item.statusCode = item.status;
             item.status = this.addBadgeToStatusColumn(badgeColor, item.status);
+
           });
 
           return requestedBooks;
@@ -43,8 +45,8 @@ export class RequestedsComponent implements OnInit, OnDestroy {
 
   private inicializarTabela() {
     const btnShowUserBookInfo =
-      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
-      ' <i class="fa fa-users"></i> </span>';
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver doador">' +
+      ' <i class="fa fa-user"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -104,6 +106,17 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   onCustomActionColum(event) {
+
+    if (event.data.statusCode === BookRequestStatus.AWAITING_ACTION) {
+      alert('Por favor aguarde a decisão do doador.');
+      return;
+    }
+
+    if (event.data.statusCode === BookRequestStatus.REFUSED) {
+      alert('Você não é o ganhador desse livro. =/');
+      return;
+    }
+
     const modalRef = this._modalService.open(DonorModalComponent, {
       backdropClass: 'light-blue-backdrop',
       centered: true,

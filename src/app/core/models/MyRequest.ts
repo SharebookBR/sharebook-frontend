@@ -8,6 +8,7 @@ export class MyRequest {
       title?: string;
       author?: string;
       status?: string;
+      statusCode: string;
       bookStatus?: string;
       trackingNumber?: string;
       bookId?: string;
@@ -24,6 +25,7 @@ export class MyRequest {
       title: '',
       author: '',
       status: '',
+      statusCode: '',
       bookStatus: '',
       trackingNumber: '',
       bookId: '',
