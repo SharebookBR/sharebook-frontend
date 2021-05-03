@@ -63,6 +63,7 @@ import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
 import { MainUsersComponent } from './components/book/main-users/main-users.component';
+import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
@@ -102,6 +103,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
+    WinnerUsersComponent,
     PrivacyPolicyComponent,
     CookieConsentComponent,
     TermsOfUseComponent,
@@ -156,6 +158,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
+    WinnerUsersComponent,
     DonorModalComponent
   ],
   bootstrap: [AppComponent],

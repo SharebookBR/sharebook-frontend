@@ -9,10 +9,10 @@ import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
+import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 
 @Component({
   selector: 'app-donations',
@@ -23,6 +23,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   donatedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
+  statusBtnWinner: boolean;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -60,6 +61,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
     const btnCancelDonation =
       '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
       ' <i class="fa fa-trash"></i> </span>';
+
+    const btnShowWinnerInfo =
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
+      ' <i class="fa fa-users"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -128,6 +133,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
           {
             name: 'CancelDonation',
             title: btnCancelDonation,
+          },
+          {
+            name: 'ShowWinnerInfo',
+            title: btnShowWinnerInfo,
           },
         ],
         position: 'right', // left|right
@@ -283,6 +292,26 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
         break;
       }
+      case 'ShowWinnerInfo': {
+
+        if (event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT &&
+          event.data.status !== BookDonationStatus.RECEIVED) {
+          alert(
+            `Não há ganhador para este livro!`
+          );
+          return;
+        }
+        const modalRef = this._modalService.open(WinnerUsersComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true,
+        });
+
+        modalRef.componentInstance.bookId = event.data.id;
+        modalRef.componentInstance.bookTitle = event.data.title;
+        break;
+      }
+
     }
   }
 
