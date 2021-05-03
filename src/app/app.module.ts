@@ -72,6 +72,7 @@ import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
+import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
     PrivacyPolicyComponent,
     CookieConsentComponent,
     TermsOfUseComponent,
+    DonorModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -157,6 +159,7 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
     FacilitatorNotesComponent,
     MainUsersComponent,
     WinnerUsersComponent,
+    DonorModalComponent
   ],
   bootstrap: [AppComponent],
 })

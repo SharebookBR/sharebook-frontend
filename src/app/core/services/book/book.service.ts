@@ -1,3 +1,4 @@
+import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
@@ -10,6 +11,7 @@ import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
 import { Observable } from 'rxjs';
 import { Requesters } from '../../models/requesters';
+import { MyRequest } from '../../models/MyRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -129,7 +131,7 @@ export class BookService {
   }
 
   public getRequestedBooks(page: number, items: number) {
-    return this._http.get<any>(
+    return this._http.get<MyRequest>(
       `${this.config.apiEndpoint}/book/MyRequests/${page}/${items}`
     );
   }
@@ -167,8 +169,8 @@ export class BookService {
     );
   }
 
-  public getMainUsers(bookId: string) {
-    return this._http.get<any>(
+  public getMainUsers(bookId: string): Observable<UserInfoBook> {
+    return this._http.get<UserInfoBook>(
       `${this.config.apiEndpoint}/book/MainUsers/${bookId}`
     );
   }

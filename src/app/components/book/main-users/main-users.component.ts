@@ -20,26 +20,27 @@ export class MainUsersComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public activeModal: NgbActiveModal, private _scBook: BookService) {}
+  constructor(public activeModal: NgbActiveModal, private _scBook: BookService) { }
 
   ngOnInit() {
     this.isLoading = true;
     this._scBook.getMainUsers(this.bookId)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      resp => {
-        this.isLoading = false;
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
+        resp => {
+          this.isLoading = false;
+          const emptyUserInfo = new UserInfo();
+          this.mainUsers[0] = !!resp.donor ? resp.donor : emptyUserInfo;
+          this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : emptyUserInfo;
+          this.mainUsers[2] = !!resp.winner ? resp.winner : emptyUserInfo;
 
-        this.mainUsers[0] = !!resp.donor ? resp.donor : '';
-        this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : '';
-        this.mainUsers[2] = !!resp.winner ? resp.winner : '';
-      },
-      error => {
-        this.isLoading = false;
-      }
-    );
+        },
+        error => {
+          this.isLoading = false;
+        }
+      );
   }
 
   ngOnDestroy() {
