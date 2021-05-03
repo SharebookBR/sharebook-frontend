@@ -31,7 +31,7 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
       .subscribe(
         resp => {
           this.isLoading = false;
-          this.winnerUsers[0] = !!resp.winner ? resp.winner : '';
+          this.winnerUsers[0] = !!resp.winner ? resp.winner : null;
         },
         error => {
           this.isLoading = false;

@@ -63,8 +63,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
       ' <i class="fa fa-trash"></i> </span>';
 
     const btnShowWinnerInfo =
-      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
-      ' <i class="fa fa-users"></i> </span>';
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver ganhador">' +
+      ' <i class="fa fa-user"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -298,7 +298,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
           event.data.status !== BookDonationStatus.SENT &&
           event.data.status !== BookDonationStatus.RECEIVED) {
           alert(
-            `Não há ganhador para este livro!`
+            `Você ainda não escolheu o ganhador.`
           );
           return;
         }
