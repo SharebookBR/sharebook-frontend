@@ -8,31 +8,23 @@
 
 <div class="modal-body">
 
-  <ng-template #loading>
-    <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
-  </ng-template>
+  <section class="card-body">
 
-  <section class="card-body" *ngIf="(userInfo$ | async)?.donor as donor; else loading">
+    <div [hidden]="!loading">
+      <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
+    </div>
 
-    <ng-container *ngIf="showDonor; else showDonorNotAlowed">
+    <ng-container *ngIf="messageBody !== ''; else showDonor ">
+      <h5 class="card-title">{{messageBody}}</h5>
+    </ng-container>
+
+    <ng-container #showDonor *ngIf="(userInfo$ | async)?.donor as donor">
       <h5 class="card-title">Doador</h5>
       <p class="card-text">Nome: {{ donor.name }}</p>
       <p class="card-text">E-mail: {{ donor.email }}</p>
       <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
       <p class="card-text">Telefone: {{ donor.phone }}</p>
-      <p class="card-text">
-        {{ donor.address?.street }}, {{ donor.address?.number }}
-        {{ !!donor.address?.complement ? donor.address?.complement : '' }}
-      </p>
-      <p class="card-text">
-        {{ donor.address?.neighborhood }} - {{ donor.address?.city }} - {{ donor.address?.state }}
-      </p>
-      <p class="card-text">CEP: {{ donor.address?.postalCode }} - {{ donor.address?.country }}</p>
     </ng-container>
-
-    <ng-template #showDonorNotAlowed>
-      <h5 class="card-title">Informações disponível apenas para o ganhador do livro</h5>
-    </ng-template>
 
   </section>
 </div>

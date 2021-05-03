@@ -6,8 +6,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BookService } from 'src/app/core/services/book/book.service';
 import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
-import { User } from 'src/app/core/models/user';
-import { UserService } from 'src/app/core/services/user/user.service';
 
 @Component({
   selector: 'app-donor-modal',
@@ -17,33 +15,30 @@ import { UserService } from 'src/app/core/services/user/user.service';
 export class DonorModalComponent implements OnInit {
   @Input() bookId;
   @Input() bookTitle;
+  @Input() messageBody;
+  loading: boolean;
 
-  showDonor = false;
   userInfo$: Observable<UserInfoBook>;
 
   constructor(public activeModal: NgbActiveModal,
-    private readonly _bookService: BookService,
-    private readonly _userService: UserService) { }
+    private readonly _bookService: BookService) { }
 
   ngOnInit() {
+    this.loading = true;
+    if (this.messageBody === '') {
+      this.getDonor();
+    } else {
+      this.loading = false;
+    }
+  }
+
+  private getDonor() {
+
     this.userInfo$ = this._bookService.getMainUsers(this.bookId).pipe(
       map(userInfo => {
-
-        const loggedUser = this.getLoggedUser();
-        if (loggedUser.email === userInfo.winner.email) {
-          this.showDonor = true;
-        }
-
+        this.loading = false;
         return userInfo;
       })
     );
-  }
-
-  private getLoggedUser(): User {
-    let loggedUser = new User();
-    if (this._userService.getLoggedUserFromLocalStorage()) {
-      loggedUser = this._userService.getLoggedUserFromLocalStorage();
-    }
-    return loggedUser;
   }
 }
