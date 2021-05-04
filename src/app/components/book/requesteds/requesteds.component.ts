@@ -17,6 +17,7 @@ import { DonorModalComponent } from '../donor-modal/donor-modal.component';
 export class RequestedsComponent implements OnInit, OnDestroy {
   requestedBooks$: Observable<MyRequest>;
   tableSettings: any;
+  private _messageToModalBody: string;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -106,15 +107,14 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   onCustomActionColum(event) {
+    this._messageToModalBody = '';
 
     if (event.data.statusCode === BookRequestStatus.AWAITING_ACTION) {
-      alert('Por favor aguarde a decisão do doador.');
-      return;
+      this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
     }
 
     if (event.data.statusCode === BookRequestStatus.REFUSED) {
-      alert('Você não é o ganhador desse livro. =/');
-      return;
+      this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
     }
 
     const modalRef = this._modalService.open(DonorModalComponent, {
@@ -124,6 +124,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
 
     modalRef.componentInstance.bookId = event.data.bookId;
     modalRef.componentInstance.bookTitle = event.data.title;
+    modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   ngOnDestroy() {
