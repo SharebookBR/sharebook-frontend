@@ -14,11 +14,11 @@
       <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
     </div>
 
-    <ng-container *ngIf="messageBody !== ''; else showDonor ">
+    <ng-container *ngIf="messageBody !== ''">
       <h5 class="card-title">{{messageBody}}</h5>
     </ng-container>
 
-    <ng-container #showDonor *ngIf="(userInfo$ | async)?.donor as donor">
+    <ng-container *ngIf="(userInfo$ | async)?.donor as donor">
       <h5 class="card-title">Doador</h5>
       <p class="card-text">Nome: {{ donor.name }}</p>
       <p class="card-text">E-mail: {{ donor.email }}</p>
