@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h4 class="modal-title">Informações do doador do livro: <br> {{ bookTitle }}</h4>
+
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <section class="card-body">
+
+    <div [hidden]="!loading">
+      <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
+    </div>
+
+    <ng-container *ngIf="messageBody !== ''">
+      <h5 class="card-title">{{messageBody}}</h5>
+    </ng-container>
+
+    <ng-container *ngIf="(userInfo$ | async)?.donor as donor">
+      <h5 class="card-title">Doador</h5>
+      <p class="card-text">Nome: {{ donor.name }}</p>
+      <p class="card-text">E-mail: {{ donor.email }}</p>
+      <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
+      <p class="card-text">Telefone: {{ donor.phone }}</p>
+    </ng-container>
+
+  </section>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
+</div>
