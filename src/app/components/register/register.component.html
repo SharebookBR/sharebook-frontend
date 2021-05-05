@@ -26,7 +26,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
-          <input formControlName="email" type="text" class="form-control" />
+          <input formControlName="email" type="text" class="form-control lowerCase" />
           <div class="input-group-addon append">
             <i class="fa fa-envelope-square"></i>
           </div>
@@ -87,13 +87,8 @@
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
 
-          <input
-            formControlName="phone"
-            type="text"
-            class="form-control"
-            [dropSpecialCharacters]="false"
-            mask="(00) 00000-0000"
-          />
+          <input formControlName="phone" type="text" class="form-control" [dropSpecialCharacters]="false"
+            mask="(00) 00000-0000" />
 
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
@@ -129,14 +124,8 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input
-            formControlName="postalCode"
-            type="text"
-            [dropSpecialCharacters]="false"
-            mask="00000-000"
-            class="form-control"
-            (blur)="getAddressByPostalCode($event.target.value)"
-          />
+          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="00000-000"
+            class="form-control" (blur)="getAddressByPostalCode($event.target.value)" />
 
           <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>
@@ -270,18 +259,27 @@
         </div>
       </div>
 
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="acceptTermOfUse" id="defaultCheck2" required
+            defaultCheck2>
+          <label class="form-check-label" for="defaultCheck2">
+            Aceito os <a routerLink="/termos-de-uso">termos de uso</a>
+          </label>
+        </div>
+      </div>
+
+
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input
-            type="submit"
-            class="btn btn-primary"
-            value="Registrar"
-            style="padding-left: 50px; padding-right: 50px"
-            [disabled]="!formGroup.valid"
-          />
+          <input type="submit" class="btn btn-primary" value="Registrar" style="padding-left: 50px; padding-right: 50px"
+            [disabled]="!formGroup.valid" />
           <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
         </div>
       </div>
+
     </div>
+
   </div>
+
 </form>
