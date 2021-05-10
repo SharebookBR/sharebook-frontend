@@ -11,7 +11,7 @@ export class InputSearchComponent implements OnInit {
   public searchForm: FormGroup;
   public searchAlert = false;
 
-  @ViewChild('alert') alert: ElementRef;
+  @ViewChild('alert', { static: false }) alert: ElementRef;
 
   constructor(private fb: FormBuilder, private _router: Router) {}
 

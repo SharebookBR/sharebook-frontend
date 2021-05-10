@@ -61,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: 'book/search',
-    loadChildren: '../components/book/search-results/search-results.module#SearchResultsModule'
+    loadChildren: () => import('../components/book/search-results/search-results.module').then(m => m.SearchResultsModule)
   },
   {
     path: 'book/donate/:id',

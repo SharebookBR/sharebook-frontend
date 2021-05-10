@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../core/services/authentication/authen
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   // variavel apra selecionar o menu via DOM
-  @ViewChild('menu') menu: ElementRef;
+  @ViewChild('menu', { static: true }) menu: ElementRef;
 
   userLogged = false;
   shareBookUser = new User();
