@@ -116,7 +116,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     ReactiveFormsModule,
     AppConfigModule,
     Ng2SmartTableModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NgbModalModule,
     ImageUploadModule,
     RecaptchaModule.forRoot(),
