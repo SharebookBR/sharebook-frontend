@@ -5,7 +5,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageToDataUrlModule } from "ngx-image2dataurl";
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
