@@ -36,7 +36,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((ebooks) => {
         this.randomEbooks = ebooks;
-        console.log(ebooks);
         this.hasEbook = ebooks.length > 0 ? true : false;
       });
 

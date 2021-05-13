@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ImageResult } from 'ng2-imageupload';
+import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -43,6 +43,14 @@ export class FormComponent implements OnInit, OnDestroy {
   shareBookUser = new User();
 
   private _destroySubscribes$ = new Subject<void>();
+
+  options: Options = {
+    resize: {
+      maxHeight: 10000,
+      maxWidth: 600
+    },
+    allowedExtensions: ['jpg', 'jpeg', 'png']
+  };
 
   constructor(
     private _scBook: BookService,
@@ -247,34 +255,10 @@ export class FormComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
-
-      const reader = new FileReader();
-      reader.readAsDataURL(imageResult.file);
-
-      reader.onload = (event) => {
-        this.src = <string>reader.result;
-        const img = this.src.split(',');
-        this.formGroup.controls['imageBytes'].setValue(img[1]);
-        this.isLoading = false;
-      };
-
-
-
-      // this._ng2ImgMaxService
-      //   .resize([imageResult.file], 600, 10000)
-      //   .pipe(takeUntil(this._destroySubscribes$))
-      //   .subscribe((result) => {
-      //     const reader = new FileReader();
-      //     reader.readAsDataURL(result);
-
-      //     reader.onload = (event) => {
-      //       this.src = <string>reader.result;
-      //       const img = this.src.split(',');
-      //       this.formGroup.controls['imageBytes'].setValue(img[1]);
-      //       this.isLoading = false;
-      //     };
-      //   });
-
+      this.src = <string>imageResult.resized.dataURL;
+      const img = this.src.split(',');
+      this.formGroup.controls['imageBytes'].setValue(img[1]);
+      this.isLoading = false;
     } else {
       this.formGroup.controls['imageName'].setErrors({
         InvalidExtension: true,

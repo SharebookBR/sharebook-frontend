@@ -189,7 +189,7 @@
               formControlName="imageName"
               imageUpload
               (imageSelected)="onConvertImageToBase64($event)"
-              [allowedExtensions]="['jpg', 'jpeg', 'png']"
+              [imageToDataUrl]="options"
             />
             <label
               class="custom-file-label"

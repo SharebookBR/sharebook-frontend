@@ -15,5 +15,6 @@
     "lib": ["es2017", "dom"],
     "resolveJsonModule": true,
     "esModuleInterop": true
-  }
+  },
+  "strictTemplates": true
 }
