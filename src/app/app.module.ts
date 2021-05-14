@@ -5,8 +5,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
-import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -56,8 +55,8 @@ import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
   RecaptchaSettings,
+  RecaptchaFormsModule
 } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
@@ -117,16 +116,15 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     ReactiveFormsModule,
     AppConfigModule,
     Ng2SmartTableModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NgbModalModule,
-    ImageUploadModule,
-    RecaptchaModule.forRoot(),
+    RecaptchaModule,
     RecaptchaFormsModule,
-    Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ImageToDataUrlModule
   ],
   providers: [
     AuthGuardUser,
