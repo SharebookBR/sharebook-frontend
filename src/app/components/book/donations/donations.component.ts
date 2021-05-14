@@ -9,10 +9,10 @@ import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DonateComponent } from '../donate/donate.component';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
+import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 
 @Component({
   selector: 'app-donations',
@@ -23,6 +23,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   donatedBooks = new Array<any>();
   tableSettings: any;
   isLoading: boolean;
+  statusBtnWinner: boolean;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -33,8 +34,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _confirmationDialogService: ConfirmationDialogService,
     private _router: Router,
-    private _activatedRoute: ActivatedRoute
-  ) {}
+    private _activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
     this.getDonations();
@@ -49,14 +50,21 @@ export class DonationsComponent implements OnInit, OnDestroy {
     });
 
     const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
-      ' <i class="fa fa-trophy"></i> </span>';
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver interessados">' +
+      ' <i class="fa fa-list"></i> </span>';
     const btnRenewChooseDate =
       '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
       ' <i class="fa fa-calendar"></i> </span>';
     const btnTrackNumber =
       '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
       ' <i class="fa fa-truck"></i> </span>';
+    const btnCancelDonation =
+      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
+      ' <i class="fa fa-trash"></i> </span>';
+
+    const btnShowWinnerInfo =
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver ganhador">' +
+      ' <i class="fa fa-user"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -122,6 +130,14 @@ export class DonationsComponent implements OnInit, OnDestroy {
             name: 'trackNumber',
             title: btnTrackNumber,
           },
+          {
+            name: 'CancelDonation',
+            title: btnCancelDonation,
+          },
+          {
+            name: 'ShowWinnerInfo',
+            title: btnShowWinnerInfo,
+          },
         ],
         position: 'right', // left|right
       },
@@ -164,36 +180,20 @@ export class DonationsComponent implements OnInit, OnDestroy {
   onCustom(event) {
     switch (event.action) {
       case 'donate': {
-        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
-          alert(
-            `Não é possível escolher ganhador. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-              `status atual = ${event.data.status}`
-          );
-          return;
-        }
 
-        const chooseDate = Math.floor(
-          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
-        );
-        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
-
-        if (!chooseDate || chooseDate - todayDate > 0) {
-          alert('Aguarde a data de escolha!');
-        } else {
-          this._router.navigate([`book/donate/${event.data.id}`], {
-            queryParams: {
-              returnUrl: this._activatedRoute.snapshot.url.join('/'),
-            },
-          });
-        }
-
+        this._router.navigate([`book/donate/${event.data.slug}`], {
+          queryParams: {
+            returnUrl: this._activatedRoute.snapshot.url.join('/'),
+          },
+        });
         break;
+
       }
       case 'renewChooseDate': {
         if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
             `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-              `status atual = ${event.data.status}`
+            `status atual = ${event.data.status}`
           );
           return;
         }
@@ -235,7 +235,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         ) {
           alert(
             `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
-              `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
+            `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
           );
           return;
         }
@@ -263,6 +263,55 @@ export class DonationsComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
         break;
       }
+      case 'CancelDonation': {
+        // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
+        if (
+          event.data.status === BookDonationStatus.RECEIVED ||
+          event.data.status === BookDonationStatus.CANCELED
+        ) {
+          alert(
+            `Não é possível cancelar essa doação com status = ${event.data.status}`
+          );
+          return;
+        }
+        this._confirmationDialogService
+          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
+          .then((confirmed) => {
+            if (confirmed) {
+              this._bookService
+                .cancelDonation(event.data.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe((resp) => {
+                  if (resp['success']) {
+                    this._toastr.success('Doação cancelada com sucesso.');
+                    this.getDonations();
+                  }
+                });
+            }
+          });
+
+        break;
+      }
+      case 'ShowWinnerInfo': {
+
+        if (event.data.status !== BookDonationStatus.WAITING_SEND &&
+          event.data.status !== BookDonationStatus.SENT &&
+          event.data.status !== BookDonationStatus.RECEIVED) {
+          alert(
+            `Você ainda não escolheu o ganhador.`
+          );
+          return;
+        }
+        const modalRef = this._modalService.open(WinnerUsersComponent, {
+          backdropClass: 'light-blue-backdrop',
+          centered: true,
+        });
+
+        modalRef.componentInstance.bookId = event.data.id;
+        modalRef.componentInstance.bookTitle = event.data.title;
+        break;
+      }
+
     }
   }
 

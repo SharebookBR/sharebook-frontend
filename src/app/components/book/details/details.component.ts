@@ -102,17 +102,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
                 const chooseDate = Math.floor(
                   new Date(this.bookInfo.chooseDate).getTime() /
-                    (3600 * 24 * 1000)
+                  (3600 * 24 * 1000)
                 );
                 const todayDate = Math.floor(
                   new Date().getTime() / (3600 * 24 * 1000)
                 );
 
                 this.daysToChoose = chooseDate - todayDate;
-                this.chooseDateInfo =
-                  !this.daysToChoose || this.daysToChoose <= 0
-                    ? 'Hoje'
-                    : 'Daqui a ' + this.daysToChoose + ' dia(s)';
+                const daysLeftMessage = (this.daysToChoose && this.daysToChoose > 1)
+                  ? 'Daqui a ' + this.daysToChoose + ' dias'
+                  : 'Daqui a 1 dia';
+                const isToday = (!this.daysToChoose || this.daysToChoose <= 0);
+                this.chooseDateInfo = isToday ? 'Hoje' : daysLeftMessage;
+
 
                 if (this.myUser.name) {
                   switch (book.freightOption) {

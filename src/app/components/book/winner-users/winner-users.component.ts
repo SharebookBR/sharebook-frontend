@@ -7,16 +7,16 @@ import { UserInfo } from 'src/app/core/models/userInfo';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-main-users',
-  templateUrl: './main-users.component.html',
-  styleUrls: ['./main-users.component.css']
+  selector: 'app-winner-users',
+  templateUrl: './winner-users.component.html',
+  styleUrls: ['./winner-users.component.css']
 })
-export class MainUsersComponent implements OnInit, OnDestroy {
+export class WinnerUsersComponent implements OnInit, OnDestroy {
   @Input() bookId;
   @Input() bookTitle;
 
   isLoading: Boolean;
-  mainUsers: UserInfo[] = [];
+  winnerUsers: UserInfo[] = [];
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -31,11 +31,7 @@ export class MainUsersComponent implements OnInit, OnDestroy {
       .subscribe(
         resp => {
           this.isLoading = false;
-          const emptyUserInfo = new UserInfo();
-          this.mainUsers[0] = !!resp.donor ? resp.donor : emptyUserInfo;
-          this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : emptyUserInfo;
-          this.mainUsers[2] = !!resp.winner ? resp.winner : emptyUserInfo;
-
+          this.winnerUsers[0] = !!resp.winner ? resp.winner : null;
         },
         error => {
           this.isLoading = false;

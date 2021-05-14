@@ -5,7 +5,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
-          <input formControlName="email" id="txtEmail" type="text" class="form-control" />
+          <input formControlName="email" id="txtEmail" type="text" class="form-control lowerCase" />
           <div class="input-group-addon append">
             <i class="fa fa-envelope-square"></i>
           </div>
@@ -39,19 +39,13 @@
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="input-group">
-          <input
-            type="submit"
-            id="btnLogin"
-            class="btn btn-primary btn-block"
-            value="Login"
-            style="padding-left: 50px; padding-right: 50px"
-            [disabled]="!formGroup.valid"
-          />
+          <input type="submit" id="btnLogin" class="btn btn-primary btn-block" value="Login"
+            style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid" />
         </div>
         <div class="text-center">
           <p>
             <a [routerLink]="['/register']" class="btn btn-link">Criar Conta</a> ou
-            <a [routerLink]="['/reset-password']" class="btn btn-link">Redefinir Senha</a>
+            <a [routerLink]="['/reset-password']" class="btn btn-link">Esqueci minha senha</a>
           </p>
         </div>
       </div>

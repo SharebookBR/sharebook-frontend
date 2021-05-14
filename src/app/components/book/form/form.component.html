@@ -108,7 +108,7 @@
               id="imageName"
               imageUpload
               (imageSelected)="onConvertImageToBase64($event)"
-              [allowedExtensions]="['jpg', 'jpeg', 'png']"
+              [imageToDataUrl]="options"
             />
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
               Selecionar imagem da capa do livro
