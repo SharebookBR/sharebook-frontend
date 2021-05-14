@@ -328,7 +328,6 @@ describe('FormComponent', () => {
     fixture.detectChanges();
 
     expect(component.onChangeFieldFreightOption).toHaveBeenCalled();
-    // expect(fixture.debugElement.query(By.css('#ngb-popover-4'))).toBeTruthy();
   }));
 
   it('should add book', () => {
