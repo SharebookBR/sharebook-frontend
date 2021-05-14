@@ -1,9 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookRequestStatus, getStatusDescription } from '../../../core/models/BookRequestStatus';
+import { MyRequest } from 'src/app/core/models/MyRequest';
+import { DonorModalComponent } from '../donor-modal/donor-modal.component';
 
 @Component({
   selector: 'app-requesteds',
@@ -11,25 +15,39 @@ import { BookRequestStatus, getStatusDescription } from '../../../core/models/Bo
   styleUrls: ['./requesteds.component.css'],
 })
 export class RequestedsComponent implements OnInit, OnDestroy {
-  requestedBooks = new Array<any>();
+  requestedBooks$: Observable<MyRequest>;
   tableSettings: any;
-  isLoading: boolean;
+  private _messageToModalBody: string;
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _bookService: BookService) {}
+  constructor(private _bookService: BookService, private _modalService: NgbModal) { }
 
   ngOnInit() {
-    this.isLoading = true;
+    this.buscarDados();
+    this.inicializarTabela();
+  }
 
-    this._bookService
-      .getRequestedBooks(1, 9999)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((resp) => {
-        this.requestedBooks = resp.items;
-        this.addBadgeToStatusColumn();
-        this.isLoading = false;
-      });
+  private buscarDados() {
+    this.requestedBooks$ = this._bookService.getRequestedBooks(1, 9999)
+      .pipe(
+        map(requestedBooks => {
+          requestedBooks.items.map(item => {
+            const badgeColor = this.getBadgeColor(item.status);
+            item.statusCode = item.status;
+            item.status = this.addBadgeToStatusColumn(badgeColor, item.status);
+
+          });
+
+          return requestedBooks;
+        })
+      );
+  }
+
+  private inicializarTabela() {
+    const btnShowUserBookInfo =
+      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver doador">' +
+      ' <i class="fa fa-user"></i> </span>';
 
     this.tableSettings = {
       columns: {
@@ -44,14 +62,22 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         status: {
           title: 'Status',
           width: '25%',
-          type: 'html',
-        },
+          type: 'html'
+        }
       },
       actions: {
         delete: false,
         edit: false,
         add: false,
         update: false,
+        columnTitle: 'Doador',
+        custom: [
+          {
+            name: 'showUserBookInfo',
+            title: btnShowUserBookInfo,
+          }
+        ],
+        position: 'right'
       },
       attr: {
         class: 'table table-bordered table-hover table-striped',
@@ -60,24 +86,45 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     };
   }
 
-  public addBadgeToStatusColumn() {
-    this.requestedBooks.forEach((book) => {
-      let badgeColor = '';
+  private getBadgeColor(status: string): string {
+    let badgeColor = '';
+    switch (status) {
+      case BookRequestStatus.DONATED:
+        badgeColor = 'success';
+        break;
+      case BookRequestStatus.REFUSED:
+        badgeColor = 'danger';
+        break;
+      default:
+        badgeColor = 'light';
+        break;
+    }
+    return badgeColor;
+  }
 
-      switch (book.status) {
-        case BookRequestStatus.DONATED:
-          badgeColor = 'success';
-          break;
-        case BookRequestStatus.REFUSED:
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'light';
-          break;
-      }
+  private addBadgeToStatusColumn(badgeColor: string, itemStatus): string {
+    return `<span class="badge badge-${badgeColor}">${getStatusDescription(itemStatus)}</span>`;
+  }
 
-      book.status = `<span class="badge badge-${badgeColor}">${getStatusDescription(book.status)}</span>`;
+  onCustomActionColum(event) {
+    this._messageToModalBody = '';
+
+    if (event.data.statusCode === BookRequestStatus.AWAITING_ACTION) {
+      this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
+    }
+
+    if (event.data.statusCode === BookRequestStatus.REFUSED) {
+      this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
+    }
+
+    const modalRef = this._modalService.open(DonorModalComponent, {
+      backdropClass: 'light-blue-backdrop',
+      centered: true,
     });
+
+    modalRef.componentInstance.bookId = event.data.bookId;
+    modalRef.componentInstance.bookTitle = event.data.title;
+    modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   ngOnDestroy() {

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,6 +9,8 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
+import { Book } from 'src/app/core/models/book';
+import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-donate-page',
@@ -22,7 +25,12 @@ export class DonatePageComponent implements OnInit, OnDestroy {
   selectedDonatedUser: any;
   showNote: Boolean = false;
   formGroup: FormGroup;
-  bookId: string;
+  bookSlug: string;
+  book: Book = new Book();
+  chooseDateFormated: string;
+  warningMessage: string;
+  showWarning = false;
+  showWarningWinnerChoosed = false;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -43,21 +51,14 @@ export class DonatePageComponent implements OnInit, OnDestroy {
     .pipe(
       takeUntil(this._destroySubscribes$)
     )
-    .subscribe(param => (this.bookId = param.id));
+    .subscribe(param => (this.bookSlug = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
 
-    this._scBook.getRequestersList(this.bookId)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      this.donateUsers = new LocalDataSource(<any>resp);
-      this.isLoading = false;
-    });
+    this.loadBook();
 
     const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher Donatário">' +
+      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher ganhador">' +
       ' <i class="fa fa-trophy"></i> </span>';
 
     this.settings = {
@@ -108,11 +109,34 @@ export class DonatePageComponent implements OnInit, OnDestroy {
 
   onCustom(event) {
     if (event.action === 'donate') {
+
+      switch (this.book.status) {
+        case BookDonationStatus.WAITING_APPROVAL:
+          alert(`Aguarde a aprovação dessa doação.`);
+          return;
+        case BookDonationStatus.AVAILABLE:
+          alert(`Aguarde a data de decisão.`);
+          return;
+
+        // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
+        // é a hora de escolher o ganhador!
+
+        case BookDonationStatus.WAITING_SEND:
+        case BookDonationStatus.SENT:
+        case BookDonationStatus.RECEIVED:
+          alert(`Você já escolheu o ganhador. =)`);
+          return;
+
+        case BookDonationStatus.CANCELED:
+          alert (`Essa doação foi cancelada. =(`);
+          return;
+      }
+
       const modalRef = this._modalService.open(DonateComponent, {
         backdropClass: 'light-blue-backdrop',
         centered: true
       });
-      modalRef.componentInstance.bookId = this.bookId;
+      modalRef.componentInstance.bookId = this.book.id;
       modalRef.componentInstance.userId = event.data.userId;
       modalRef.componentInstance.userNickName = event.data.requesterNickName;
 
@@ -131,5 +155,53 @@ export class DonatePageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  loadBook() {
+    this._scBook
+    .getBySlug(this.bookSlug)
+    .pipe(takeUntil(this._destroySubscribes$))
+    .subscribe(
+      (book) => {
+        this.book = book;
+        this.loadRequestersList();
+        this.chooseDateFormated = new DatePipe('en-US').transform(book.chooseDate, 'dd/MM/yyyy');
+
+        switch (book.status) {
+          case BookDonationStatus.WAITING_APPROVAL:
+            this.showWarning = true;
+            this.warningMessage = `Aguarde a aprovação dessa doação.`;
+            break;
+          case BookDonationStatus.AVAILABLE:
+            this.showWarning = true;
+            this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
+            break;
+
+          // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
+          // é a hora de escolher o ganhador!
+
+          case BookDonationStatus.WAITING_SEND:
+          case BookDonationStatus.SENT:
+          case BookDonationStatus.RECEIVED:
+            this.showWarningWinnerChoosed = true;
+            break;
+
+          case BookDonationStatus.CANCELED:
+            this.showWarning = true;
+            this.warningMessage = `Essa doação foi cancelada. =(`;
+            break;
+        }
+      });
+  }
+
+  loadRequestersList() {
+    this._scBook.getRequestersList(this.book.id)
+    .pipe(
+      takeUntil(this._destroySubscribes$)
+    )
+    .subscribe(resp => {
+      this.donateUsers = new LocalDataSource(<any>resp);
+      this.isLoading = false;
+    });
   }
 }

@@ -11,3 +11,6 @@ form i.fa {
   position: relative;
   padding-left: 45px !important;
 }
+.lowerCase {
+    text-transform : lowercase;
+}

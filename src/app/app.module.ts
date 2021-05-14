@@ -5,8 +5,7 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
-import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -56,13 +55,14 @@ import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
   RecaptchaSettings,
+  RecaptchaFormsModule
 } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
 import { MainUsersComponent } from './components/book/main-users/main-users.component';
+import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
@@ -70,6 +70,8 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
+import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
+import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 
 @NgModule({
   declarations: [
@@ -100,8 +102,11 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
+    WinnerUsersComponent,
     PrivacyPolicyComponent,
     CookieConsentComponent,
+    TermsOfUseComponent,
+    DonorModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,16 +116,15 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     ReactiveFormsModule,
     AppConfigModule,
     Ng2SmartTableModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NgbModalModule,
-    ImageUploadModule,
-    RecaptchaModule.forRoot(),
+    RecaptchaModule,
     RecaptchaFormsModule,
-    Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ImageToDataUrlModule
   ],
   providers: [
     AuthGuardUser,
@@ -152,9 +156,11 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
     TrackingComponent,
     FacilitatorNotesComponent,
     MainUsersComponent,
+    WinnerUsersComponent,
+    DonorModalComponent
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
 }

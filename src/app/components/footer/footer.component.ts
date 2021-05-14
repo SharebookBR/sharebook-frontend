@@ -15,8 +15,9 @@ export class FooterComponent implements OnInit {
     { url: RepositoriesUrls.QA, content: 'QA' },
     { url: RepositoriesUrls.MOBILE, content: 'Mobile' }
   ];
+  currentYear: number = new Date().getFullYear();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ImageResult } from 'ng2-imageupload';
-import { Ng2ImgMaxService } from 'ng2-img-max';
+import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
@@ -45,6 +44,14 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
+  options: Options = {
+    resize: {
+      maxHeight: 10000,
+      maxWidth: 600
+    },
+    allowedExtensions: ['jpg', 'jpeg', 'png']
+  };
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
@@ -52,7 +59,6 @@ export class FormComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    private _ng2ImgMaxService: Ng2ImgMaxService,
     private _seo: SeoService
   ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
@@ -249,21 +255,10 @@ export class FormComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
-
-      this._ng2ImgMaxService
-        .resize([imageResult.file], 600, 10000)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe((result) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(result);
-
-          reader.onload = (event) => {
-            this.src = <string>reader.result;
-            const img = this.src.split(',');
-            this.formGroup.controls['imageBytes'].setValue(img[1]);
-            this.isLoading = false;
-          };
-        });
+      this.src = <string>imageResult.resized.dataURL;
+      const img = this.src.split(',');
+      this.formGroup.controls['imageBytes'].setValue(img[1]);
+      this.isLoading = false;
     } else {
       this.formGroup.controls['imageName'].setErrors({
         InvalidExtension: true,
