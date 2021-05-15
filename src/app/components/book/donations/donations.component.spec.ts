@@ -21,7 +21,7 @@ describe('DonationsComponent', () => {
       imports: [
         Ng2SmartTableModule,
         AppConfigModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
         ToastrModule.forRoot(),
         RouterTestingModule,

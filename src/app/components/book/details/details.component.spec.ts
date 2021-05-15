@@ -20,7 +20,7 @@ describe('DetailsComponent', () => {
       imports: [
         RouterTestingModule,
         AppConfigModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
         HttpClientTestingModule,
         FormsModule,

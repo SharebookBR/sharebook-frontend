@@ -5,11 +5,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2ImgMaxService, ImgMaxSizeService, ImgExifService, ImgMaxPXSizeService } from 'ng2-img-max';
-import { Ng2PicaService, ImgExifService as ImgPicaService } from 'ng2-pica';
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
 import { FormComponent } from './form.component';
 
@@ -99,22 +97,16 @@ describe('FormComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        ImageUploadModule,
         NgbModule,
         NgbModalModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
         HttpClientTestingModule,
+        ImageToDataUrlModule
       ],
       providers: [
         UserService,
-        Ng2ImgMaxService,
-        ImgMaxSizeService,
-        ImgExifService,
-        ImgMaxPXSizeService,
-        Ng2PicaService,
-        ImgPicaService,
         UserService,
         BookService,
       ],
@@ -398,22 +390,16 @@ describe('FormComponent Editing book', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        ImageUploadModule,
         NgbModule,
         NgbModalModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
         HttpClientTestingModule,
+        ImageToDataUrlModule
       ],
       providers: [
         UserService,
-        Ng2ImgMaxService,
-        ImgMaxSizeService,
-        ImgExifService,
-        ImgMaxPXSizeService,
-        Ng2PicaService,
-        ImgPicaService,
         UserService,
         BookService,
         {

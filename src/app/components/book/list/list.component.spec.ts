@@ -21,7 +21,7 @@ describe('ListComponent', () => {
         Ng2SmartTableModule,
         AppConfigModule,
         RouterTestingModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
         FormsModule,
         ReactiveFormsModule,

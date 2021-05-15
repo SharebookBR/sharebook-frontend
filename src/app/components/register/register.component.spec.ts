@@ -177,7 +177,9 @@ describe('RegisterComponent', () => {
     spyOn(addressService, 'getAddressByPostalCode').and.returnValue(
       of({
         erro: true,
-      }).pipe(map((data) => (this.resultado = addressService.convertResponseToAddress(data))))
+      }).pipe(map((data) => {
+        return addressService.convertResponseToAddress(data)
+      }))
     );
     fixture.detectChanges();
 
@@ -206,7 +208,9 @@ describe('RegisterComponent', () => {
         unidade: '',
         ibge: '3550308',
         gia: '1004',
-      }).pipe(map((data) => (this.resultado = addressService.convertResponseToAddress(data))))
+      }).pipe(map((data) => {
+        return addressService.convertResponseToAddress(data);
+      }))
     );
     fixture.detectChanges();
 
@@ -297,5 +301,10 @@ describe('RegisterComponent', () => {
   it('allowSendingEmail field validity', () => {
     const allowSendingEmail = component.formGroup.controls['allowSendingEmail'];
     expect(allowSendingEmail.valid).toBeTruthy();
+  });
+
+  it('acceptTermOfUse field validity', () => {
+    const acceptTermOfUse = component.formGroup.controls['acceptTermOfUse'];
+    expect(acceptTermOfUse.valid).toBeFalsy();
   });
 });

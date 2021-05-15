@@ -22,7 +22,7 @@ describe('RequestComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
         Ng2SmartTableModule,
         AppConfigModule,
