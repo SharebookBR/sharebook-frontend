@@ -69,8 +69,14 @@ docker-compose up -d --build
 # Criando imagem e rodando o container com Backend LOCAL
 docker-compose -f docker-compose-local.yml up -d --build
 
-# Rodando os testes unitários
+# Rodando todos os testes unitários
 docker-compose run --rm sharebook npm run test
+
+# Para rodar o teste unitário dentro do container e verificar os possíveis erros
+docker exec -it sharebook-frontend-dev bash
+npm run test-debug
+acessar a URL que aparece no console: http://localhost:9876/
+clicar no botão DEBUG
 
 # Parando o container
 docker-compose stop
