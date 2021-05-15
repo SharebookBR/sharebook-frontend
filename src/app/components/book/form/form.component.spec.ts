@@ -363,7 +363,7 @@ describe('FormComponent Editing book', () => {
     categoryId: '15395d99-6077-4cce-ba00-e99beffc628e',
     category: 'Informática',
     imageSlug: 'teste-aws-dev.jpeg',
-    imageUrl: 'http://dev.sharebook.com.br/Images/Books/teste-aws-dev.jpeg',
+    imageUrl: 'https://dev.sharebook.com.br/Images/Books/teste-aws-dev.jpeg',
     city: 'São Paulo',
     state: 'SP',
     synopsis: 'Livro de teste sobre AWS.',
