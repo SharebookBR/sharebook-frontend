@@ -2,15 +2,14 @@
   <h1 class="text-center display-4">Meus Pedidos</h1>
 
   <ng-template #loading>
-    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
+    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%"></i>
   </ng-template>
 
   <div class="container mt-5 table-responsive" *ngIf="(requestedBooks$ | async)?.items as items; else loading">
-    <ng2-smart-table [settings]="tableSettings" [source]="items" (custom)="onCustomActionColum($event)">
-    </ng2-smart-table>
+    <!-- <ng2-smart-table [settings]="tableSettings" [source]="items" (custom)="onCustomActionColum($event)">
+    </ng2-smart-table> -->
     <p class="mt-2">
       <a routerLink="/panel" class="btn btn-link">Voltar</a>
     </p>
   </div>
-
 </div>

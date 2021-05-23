@@ -1,5 +1,7 @@
 import { CardItem } from '../../models/card';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class CareersService {
   linkedinUrl: string;
 

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { LocalDataSource } from 'ng2-smart-table';
+//import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,8 @@ import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, OnDestroy {
-  books: LocalDataSource;
+  //books: LocalDataSource;
+  books;
   settings: any;
   myBookArray = Array();
   isLoading: boolean;
@@ -98,8 +99,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAllBooks();
-    this.books = new LocalDataSource(this.myBookArray);
-    this.books.setSort([{ field: 'creationDate', direction: 'desc' }]);
+    //this.books = new LocalDataSource(this.myBookArray);
+    //this.books.setSort([{ field: 'creationDate', direction: 'desc' }]);
 
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();

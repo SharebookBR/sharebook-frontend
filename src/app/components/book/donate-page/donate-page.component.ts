@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from 'src/app/core/services/book/book.service';
-import { LocalDataSource } from 'ng2-smart-table';
+//import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { Book } from 'src/app/core/models/book';
@@ -18,7 +18,8 @@ import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
   styleUrls: ['./donate-page.component.css']
 })
 export class DonatePageComponent implements OnInit, OnDestroy {
-  donateUsers: LocalDataSource;
+  //donateUsers: LocalDataSource;
+  donateUsers;
   isLoading: Boolean = true;
   settings: any;
   returnUrl: string;
@@ -200,7 +201,7 @@ export class DonatePageComponent implements OnInit, OnDestroy {
       takeUntil(this._destroySubscribes$)
     )
     .subscribe(resp => {
-      this.donateUsers = new LocalDataSource(<any>resp);
+      //this.donateUsers = new LocalDataSource(<any>resp);
       this.isLoading = false;
     });
   }

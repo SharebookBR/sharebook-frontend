@@ -10,6 +10,7 @@ import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { MatTableModule } from '@angular/material/table';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -49,7 +50,6 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   RecaptchaModule,
@@ -115,7 +115,6 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     FormsModule,
     ReactiveFormsModule,
     AppConfigModule,
-    Ng2SmartTableModule,
     NgbModule,
     NgbModalModule,
     RecaptchaModule,
@@ -124,7 +123,8 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ImageToDataUrlModule
+    ImageToDataUrlModule,
+    MatTableModule
   ],
   providers: [
     AuthGuardUser,
