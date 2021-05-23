@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from 'src/app/core/services/book/book.service';
-//import { LocalDataSource } from 'ng2-smart-table';
+// import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { Book } from 'src/app/core/models/book';
@@ -18,7 +18,7 @@ import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
   styleUrls: ['./donate-page.component.css']
 })
 export class DonatePageComponent implements OnInit, OnDestroy {
-  //donateUsers: LocalDataSource;
+  // donateUsers: LocalDataSource;
   donateUsers;
   isLoading: Boolean = true;
   settings: any;
@@ -49,10 +49,10 @@ export class DonatePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._activatedRoute.params
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(param => (this.bookSlug = param.id));
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(param => (this.bookSlug = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
 
@@ -129,7 +129,7 @@ export class DonatePageComponent implements OnInit, OnDestroy {
           return;
 
         case BookDonationStatus.CANCELED:
-          alert (`Essa doação foi cancelada. =(`);
+          alert(`Essa doação foi cancelada. =(`);
           return;
       }
 
@@ -160,49 +160,49 @@ export class DonatePageComponent implements OnInit, OnDestroy {
 
   loadBook() {
     this._scBook
-    .getBySlug(this.bookSlug)
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(
-      (book) => {
-        this.book = book;
-        this.loadRequestersList();
-        this.chooseDateFormated = new DatePipe('en-US').transform(book.chooseDate, 'dd/MM/yyyy');
+      .getBySlug(this.bookSlug)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        (book) => {
+          this.book = book;
+          this.loadRequestersList();
+          this.chooseDateFormated = new DatePipe('en-US').transform(book.chooseDate, 'dd/MM/yyyy');
 
-        switch (book.status) {
-          case BookDonationStatus.WAITING_APPROVAL:
-            this.showWarning = true;
-            this.warningMessage = `Aguarde a aprovação dessa doação.`;
-            break;
-          case BookDonationStatus.AVAILABLE:
-            this.showWarning = true;
-            this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
-            break;
+          switch (book.status) {
+            case BookDonationStatus.WAITING_APPROVAL:
+              this.showWarning = true;
+              this.warningMessage = `Aguarde a aprovação dessa doação.`;
+              break;
+            case BookDonationStatus.AVAILABLE:
+              this.showWarning = true;
+              this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
+              break;
 
-          // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-          // é a hora de escolher o ganhador!
+            // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
+            // é a hora de escolher o ganhador!
 
-          case BookDonationStatus.WAITING_SEND:
-          case BookDonationStatus.SENT:
-          case BookDonationStatus.RECEIVED:
-            this.showWarningWinnerChoosed = true;
-            break;
+            case BookDonationStatus.WAITING_SEND:
+            case BookDonationStatus.SENT:
+            case BookDonationStatus.RECEIVED:
+              this.showWarningWinnerChoosed = true;
+              break;
 
-          case BookDonationStatus.CANCELED:
-            this.showWarning = true;
-            this.warningMessage = `Essa doação foi cancelada. =(`;
-            break;
-        }
-      });
+            case BookDonationStatus.CANCELED:
+              this.showWarning = true;
+              this.warningMessage = `Essa doação foi cancelada. =(`;
+              break;
+          }
+        });
   }
 
   loadRequestersList() {
     this._scBook.getRequestersList(this.book.id)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      //this.donateUsers = new LocalDataSource(<any>resp);
-      this.isLoading = false;
-    });
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(resp => {
+        // this.donateUsers = new LocalDataSource(<any>resp);
+        this.isLoading = false;
+      });
   }
 }

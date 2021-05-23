@@ -1,5 +1,5 @@
 import { Contributor } from '../../models/contributor';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ContributorsService {

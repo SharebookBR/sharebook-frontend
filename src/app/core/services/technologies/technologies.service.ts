@@ -1,7 +1,7 @@
 import { CardItem } from '../../models/card';
 import { TrelloUrls } from '../../models/TrelloUrls';
 import { RepositoriesUrls } from '../../models/RepositoriesUrls';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TechnologiesService {
