@@ -1,20 +1,10 @@
+import { MyRequestItem } from './MyRequestItem';
+
 export class MyRequest {
   page: number;
   itemsPerPage: number;
   totalItems: number;
-  items?: [
-    {
-      requestId?: string;
-      title?: string;
-      author?: string;
-      status?: string;
-      statusCode: string;
-      bookStatus?: string;
-      trackingNumber?: string;
-      bookId?: string;
-      slug?: string;
-    }
-  ];
+  items?: MyRequestItem[];
 
   constructor(myRequest?: MyRequest) {
     this.page = 0;

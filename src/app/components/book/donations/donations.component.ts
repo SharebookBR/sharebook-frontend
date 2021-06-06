@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -30,7 +29,6 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
   statusBtnWinner: boolean;
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);

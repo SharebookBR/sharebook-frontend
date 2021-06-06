@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
+import { MyRequestItem } from '../../models/MyRequestItem';
 
 @Injectable({
   providedIn: 'root',
@@ -131,7 +132,7 @@ export class BookService {
     );
   }
 
-  public getRequestedBooks(page: number, items: number) {
+  public getRequestedBooks(page: number, items: number): Observable<MyRequest> {
     return this._http.get<MyRequest>(
       `${this.config.apiEndpoint}/book/MyRequests/${page}/${items}`
     );

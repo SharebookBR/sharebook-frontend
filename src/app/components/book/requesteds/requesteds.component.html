@@ -1,13 +1,61 @@
 <div class="container">
   <h1 class="text-center display-4">Meus Pedidos</h1>
 
-  <ng-template #loading>
-    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%"></i>
-  </ng-template>
+  <div class="container mt-5" matSort>
+    <div fxLayout fxLayoutAlign="center center">
+      <mat-form-field>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="requestedBooks" class="mat-elevation-z1">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Titulo</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
 
-  <div class="container mt-5 table-responsive" *ngIf="(requestedBooks$ | async)?.items as items; else loading">
-    <!-- <ng2-smart-table [settings]="tableSettings" [source]="items" (custom)="onCustomActionColum($event)">
-    </ng2-smart-table> -->
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Autor</th>
+        <td mat-cell *matCellDef="let element">{{ element.author }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Status</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            class="custom-badge"
+            [ngStyle]="{
+              backgroundColor: getStatusBadgeBackgroundColor(element.status),
+              color: getStatusBadgeTextColor(element.status)
+            }"
+            >{{ getTranslatedStatusDescription(element.status) }}</span
+          >
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="doador">
+        <th mat-header-cell *matHeaderCellDef class="header">Doador</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            (click)="onCustomActionColum(element)"
+            class="btn btn-light btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Ver doador"
+          >
+            <i class="fa fa-user"></i>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div class="empty-data" *ngIf="requestedBooks.data.length === 0">Nenhum registro encontrado.</div>
+
+    <div class="spinner-container" *ngIf="isLoading$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
+
     <p class="mt-2">
       <a routerLink="/panel" class="btn btn-link">Voltar</a>
     </p>
