@@ -4,6 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { ToastrService } from 'ngx-toastr';
@@ -36,6 +37,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private _scBook: BookService,
@@ -48,6 +50,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.myBookArray.sort = this.sort;
+    this.myBookArray.paginator = this.paginator;
   }
 
   getAllBooks() {

@@ -6,13 +6,21 @@
     </button>
   </h1>
 
-  <div class="container mt-5" matSort>
+  <div class="container mt-5">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
         <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
       </mat-form-field>
     </div>
-    <table mat-table [dataSource]="myBookArray" class="mat-elevation-z1">
+    <table
+      mat-table
+      [dataSource]="myBookArray"
+      matSort
+      matSortActive="creationDate"
+      matSortDirection="desc"
+      matSortDisableClear
+      class="mat-elevation-z1"
+    >
       <ng-container matColumnDef="creationDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Inclusão</th>
         <td mat-cell *matCellDef="let element">
@@ -127,6 +135,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 15, 20]"> </mat-paginator>
 
     <div class="empty-data" *ngIf="myBookArray.data.length === 0">Nenhum registro encontrado.</div>
 

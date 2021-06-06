@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -133,7 +134,8 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,
-    MatInputModule
+    MatInputModule,
+    MatPaginatorModule
   ],
   providers: [
     AuthGuardUser,
