@@ -1,6 +1,6 @@
 import { ToastrModule } from 'ngx-toastr';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { MatTableModule } from '@angular/material/table';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,10 +18,10 @@ describe('ListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ListComponent],
       imports: [
-        Ng2SmartTableModule,
+        MatTableModule,
         AppConfigModule,
         RouterTestingModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
         FormsModule,
         ReactiveFormsModule,

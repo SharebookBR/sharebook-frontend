@@ -16,8 +16,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatBadgeModule } from '@angular/material/badge';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -135,9 +133,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatBadgeModule
+    MatInputModule
   ],
   providers: [
     AuthGuardUser,

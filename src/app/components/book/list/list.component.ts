@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
-// import { LocalDataSource } from 'ng2-smart-table';
 import { BookService } from '../../../core/services/book/book.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,26 +13,32 @@ import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
-import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
+import { BookVMItem } from './../../../core/models/bookVMItem';
+import { BookVM } from './../../../core/models/bookVM';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
-export class ListComponent implements OnInit, OnDestroy {
-  // books: LocalDataSource;
-  books;
-  settings: any;
-  myBookArray = Array();
-  isLoading: boolean;
+export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
+  displayedColumns: string[] = ['creationDate',
+    'chooseDate',
+    'title',
+    'users',
+    'status',
+    'action'];
+
+  myBookArray = new MatTableDataSource<BookVMItem>();
 
   private _destroySubscribes$ = new Subject<void>();
+  public isLoadingSubject = new BehaviorSubject<boolean>(false);
+  public isLoading$ = this.isLoadingSubject.asObservable();
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private _scBook: BookService,
-    private _sanitizer: DomSanitizer,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
@@ -41,67 +46,24 @@ export class ListComponent implements OnInit, OnDestroy {
     private confirmationDialogService: ConfirmationDialogService
   ) { }
 
-  getHtmlForCell(value: string, row: any) {
-    switch (row.status) {
-      case BookDonationStatus.AVAILABLE:
-      case BookDonationStatus.RECEIVED:
-        return '<font color="green">' + value + '</font>';
-      case BookDonationStatus.CANCELED:
-      case BookDonationStatus.WAITING_DECISION:
-        return '<font color="red">' + value + '</font>';
-      default:
-        return '<font>' + value + '</font>';
-    }
+  ngAfterViewInit(): void {
+    this.myBookArray.sort = this.sort;
   }
 
   getAllBooks() {
-    this.isLoading = true;
-
+    this.isLoadingSubject.next(true);
     this._scBook
       .getAll()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((resp) => {
-        this.myBookArray = new Array();
-        resp['items'].forEach((items) => {
-          this.myBookArray.push({
-            id: items.id,
-            creationDate: items.creationDate,
-            chooseDate: items.chooseDate,
-            bookTitle: items.title,
-            title:
-              items.title +
-              '<br>' +
-              items.author +
-              '<br>' +
-              items.totalInterested +
-              ' interessado(s)<br>' +
-              items.daysInShowcase +
-              ' dia(s) na vitrine',
-            users:
-              items.donor +
-              '<br>' +
-              (!!items.winner ? items.winner : '') +
-              '<br>' +
-              (!!items.facilitator ? items.facilitator : ''),
-            status: items.status,
-            donated: items.donated,
-            slug: items.slug,
-            facilitatorNotes: !!items.facilitatorNotes
-              ? items.facilitatorNotes
-              : '',
-            trackingNumber: !!items.trackingNumber ? items.trackingNumber : '',
-          });
-        });
-        this.books.load(this.myBookArray);
-        this.isLoading = false;
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        finalize(() => this.isLoadingSubject.next(false)))
+      .subscribe((resp: BookVM) => {
+        this.myBookArray.data = resp.items;
       });
   }
 
   ngOnInit() {
     this.getAllBooks();
-    // this.books = new LocalDataSource(this.myBookArray);
-    // this.books.setSort([{ field: 'creationDate', direction: 'desc' }]);
-
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
     Object.keys(BookDonationStatus).forEach((key) => {
@@ -110,131 +72,18 @@ export class ListComponent implements OnInit, OnDestroy {
         title: BookDonationStatus[key],
       });
     });
-
-    const btnEdit =
-      '<span class="btn btn-primary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Editar Livro">' +
-      ' <i class="fa fa-edit"></i> </span>';
-    const btnCancelDonation =
-      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
-      ' <i class="fa fa-trash"></i> </span>';
-    const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver lista de interessados">' +
-      ' <i class="fa fa-list"></i> </span>';
-    const btnFacilitatorNotes =
-      '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Comentários">' +
-      ' <i class="fa fa-sticky-note"></i> </span>';
-    const btnTrackNumber =
-      '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
-      ' <i class="fa fa-truck"></i> </span>';
-    const btnShowUsersInfo =
-      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informações de Usuários">' +
-      ' <i class="fa fa-users"></i> </span>';
-
-    this.settings = {
-      columns: {
-        creationDate: {
-          title: 'Inclusão',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(
-              new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'),
-              row
-            );
-          },
-          width: '10%',
-        },
-        chooseDate: {
-          title: 'Escolha',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(
-              new DatePipe('en-US').transform(cell, 'dd/MM/yyyy'),
-              row
-            );
-          },
-          width: '10%',
-        },
-        title: {
-          title: 'Título / Autor / Total Interessados / Dias na Vitrine',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(cell, row);
-          },
-          width: '28%',
-        },
-        users: {
-          title: 'Doador / Donatário / Facilitador',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(cell, row);
-          },
-          width: '28%',
-        },
-        status: {
-          title: 'Status',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return this.getHtmlForCell(getStatusDescription(row.status), row);
-          },
-          filter: {
-            type: 'list',
-            config: {
-              selectText: 'Selecionar...',
-              list: myBookDonationStatus,
-            },
-          },
-          width: '10%',
-        },
-      },
-      actions: {
-        delete: false,
-        edit: false,
-        add: false,
-        update: false,
-        custom: [
-          {
-            name: 'edit',
-            title: btnEdit,
-          },
-          {
-            name: 'CancelDonation',
-            title: btnCancelDonation,
-          },
-          {
-            name: 'donate',
-            title: btnDonate,
-          },
-          {
-            name: 'FacilitatorNotes',
-            title: btnFacilitatorNotes,
-          },
-          {
-            name: 'trackNumber',
-            title: btnTrackNumber,
-          },
-          {
-            name: 'showUsersInfo',
-            title: btnShowUsersInfo,
-          },
-        ],
-        position: 'right', // left|right
-      },
-      attr: {
-        class: 'table table-bordered',
-      },
-    };
   }
 
-  onCustom(event) {
-    switch (event.action) {
-      case 'CancelDonation': {
+  onCustom(iconClicked: string, param: BookVMItem) {
+    switch (iconClicked) {
+      case 'cancelDonation': {
         // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
         if (
-          event.data.status === BookDonationStatus.RECEIVED ||
-          event.data.status === BookDonationStatus.CANCELED
+          param.status === BookDonationStatus.RECEIVED ||
+          param.status === BookDonationStatus.CANCELED
         ) {
           alert(
-            `Não é possível cancelar essa doação com status = ${event.data.status}`
+            `Não é possível cancelar essa doação com status = ${param.status}`
           );
           return;
         }
@@ -243,7 +92,7 @@ export class ListComponent implements OnInit, OnDestroy {
           .then((confirmed) => {
             if (confirmed) {
               this._scBook
-                .cancelDonation(event.data.id)
+                .cancelDonation(param.id)
                 .pipe(takeUntil(this._destroySubscribes$))
                 .subscribe((resp) => {
                   if (resp['success']) {
@@ -257,8 +106,7 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'donate': {
-
-        this._router.navigate([`book/donate/${event.data.slug}`], {
+        this._router.navigate([`book/donate/${param.slug}`], {
           queryParams: {
             returnUrl: this._activatedRoute.snapshot.url.join('/'),
           },
@@ -267,10 +115,10 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'edit': {
-        this._router.navigate([`book/form/${event.data.id}`]);
+        this._router.navigate([`book/form/${param.id}`]);
         break;
       }
-      case 'FacilitatorNotes': {
+      case 'facilitatorNotes': {
         const modalRef = this._modalService.open(FacilitatorNotesComponent, {
           backdropClass: 'light-blue-backdrop',
           centered: true,
@@ -289,20 +137,19 @@ export class ListComponent implements OnInit, OnDestroy {
           }
         );
 
-        modalRef.componentInstance.bookId = event.data.id;
-        modalRef.componentInstance.bookTitle = event.data.bookTitle;
-        modalRef.componentInstance.facilitatorNotes =
-          event.data.facilitatorNotes;
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
+        modalRef.componentInstance.facilitatorNotes = (param.facilitatorNotes === null) ? '' : param.facilitatorNotes;
         break;
       }
       case 'trackNumber': {
         if (
-          event.data.status !== BookDonationStatus.WAITING_SEND &&
-          event.data.status !== BookDonationStatus.SENT
+          param.status !== BookDonationStatus.WAITING_SEND &&
+          param.status !== BookDonationStatus.SENT
         ) {
           alert(
             `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ou` +
-            `${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
+            `${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
           );
           return;
         }
@@ -325,9 +172,9 @@ export class ListComponent implements OnInit, OnDestroy {
           }
         );
 
-        modalRef.componentInstance.bookId = event.data.id;
-        modalRef.componentInstance.bookTitle = event.data.bookTitle;
-        modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
+        modalRef.componentInstance.trackingNumber = param.trackingNumber;
 
         break;
       }
@@ -350,16 +197,36 @@ export class ListComponent implements OnInit, OnDestroy {
           }
         );
 
-        modalRef.componentInstance.bookId = event.data.id;
-        modalRef.componentInstance.bookTitle = event.data.bookTitle;
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
         break;
       }
     }
   }
 
+  public getTranslatedStatusDescription(status: string): string {
+    return getStatusDescription(status);
+  }
+
+  public getTextColor(status) {
+    switch (status) {
+      case BookDonationStatus.AVAILABLE:
+      case BookDonationStatus.RECEIVED:
+        return '#28a745';
+      case BookDonationStatus.CANCELED:
+      case BookDonationStatus.WAITING_DECISION:
+        return 'red';
+      default:
+        return '#444444';
+    }
+  }
+
   reloadData() {
     this.getAllBooks();
-    this.books.refresh();
+  }
+
+  public doFilter = (value: string) => {
+    this.myBookArray.filter = value.trim().toLocaleLowerCase();
   }
 
   ngOnDestroy() {

@@ -2,7 +2,7 @@ import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
-import { BooksVM } from '../../models/booksVM';
+import { BookVM } from '../../models/bookVM';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map } from 'rxjs/operators';
 
@@ -25,8 +25,8 @@ export class BookService {
     @Inject(APP_CONFIG) private config: AppConfig
   ) { }
 
-  public getAll() {
-    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/9999`);
+  public getAll(): Observable<BookVM> {
+    return this._http.get<BookVM>(`${this.config.apiEndpoint}/book/1/9999`);
   }
 
   public getAvailableBooks() {
