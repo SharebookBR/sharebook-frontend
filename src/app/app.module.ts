@@ -10,7 +10,14 @@ import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+
+// Angular Material
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatBadgeModule } from '@angular/material/badge';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -124,7 +131,13 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ImageToDataUrlModule,
-    MatTableModule
+
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatBadgeModule
   ],
   providers: [
     AuthGuardUser,

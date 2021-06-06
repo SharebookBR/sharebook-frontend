@@ -12,6 +12,7 @@ import { FacilitatorNotes } from '../../models/facilitatorNotes';
 import { Observable } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
+import { MyDonation } from '../../models/MyDonation';
 
 @Injectable({
   providedIn: 'root',
@@ -66,11 +67,11 @@ export class BookService {
     );
   }
 
-  public delete(bookId: number) {
+  public delete(bookId: string) {
     return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
-  public cancelDonation(bookId: number) {
+  public cancelDonation(bookId: string) {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/cancel/${bookId}`,
       null
@@ -136,8 +137,8 @@ export class BookService {
     );
   }
 
-  public getDonatedBooks() {
-    return this._http.get<any>(`${this.config.apiEndpoint}/book/MyDonations`);
+  public getDonatedBooks(): Observable<MyDonation[]> {
+    return this._http.get<MyDonation[]>(`${this.config.apiEndpoint}/book/MyDonations`);
   }
 
   public setTrackingNumber(
