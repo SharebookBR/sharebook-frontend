@@ -95,8 +95,8 @@ export class BookService {
     );
   }
 
-  public getRequestersList(bookId: string) {
-    return this._http.get<Requesters>(
+  public getRequestersList(bookId: string): Observable<Requesters[]> {
+    return this._http.get<Requesters[]>(
       `${this.config.apiEndpoint}/book/RequestersList/${bookId}`
     );
   }
