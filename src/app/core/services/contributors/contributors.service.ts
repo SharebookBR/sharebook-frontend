@@ -1,5 +1,7 @@
 import { Contributor } from '../../models/contributor';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class ContributorsService {
   public getContributors(): Contributor[] {
     const contributors: Contributor[] = [

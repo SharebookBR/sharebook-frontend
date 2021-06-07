@@ -1,0 +1,33 @@
+table {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 500px;
+}
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
+}
+.header {
+  color: rgb(10, 10, 190);
+  font-size: 14px;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+}
+.empty-data {
+  padding-top: 15px;
+  font-size: 18px;
+}
+
+.custom-badge {
+  width: fit-content;
+  text-align: center;
+  border-radius: 7px;
+  left: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}

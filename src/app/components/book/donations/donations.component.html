@@ -1,11 +1,110 @@
 <div class="container">
   <h1 class="text-center display-4">Minhas Doações</h1>
-  <div [hidden]="!isLoading">
-    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
-  </div>
-  <div class="container mt-5 table-responsive" [hidden]="isLoading">
-    <ng2-smart-table [settings]="tableSettings" [source]="donatedBooks" (custom)="onCustom($event)"></ng2-smart-table>
+  <div class="container mt-5" matSort>
+    <div fxLayout fxLayoutAlign="center center">
+      <mat-form-field>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="donatedBooks" class="mat-elevation-z1">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Titulo</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
 
+      <ng-container matColumnDef="totalInterested">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Total interessados</th>
+        <td mat-cell *matCellDef="let element">{{ element.totalInterested }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="daysInShowcase">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Dias na vitrine</th>
+        <td mat-cell *matCellDef="let element">{{ element.daysInShowcase }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="chooseDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Data Escolha</th>
+        <td mat-cell *matCellDef="let element">{{ element.chooseDate | date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="trackingNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Código Ratreio</th>
+        <td mat-cell *matCellDef="let element">{{ element.trackingNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Status</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            class="custom-badge"
+            [ngStyle]="{
+              backgroundColor: getStatusBadgeBackgroundColor(element.status),
+              color: getStatusBadgeTextColor(element.status)
+            }"
+            >{{ getTranslatedStatusDescription(element.status) }}</span
+          >
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="header">Ação</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            (click)="onCustom('donate', element)"
+            class="btn btn-warning btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Ver interessados"
+          >
+            <i class="fa fa-list"></i>
+          </span>
+
+          <span
+            (click)="onCustom('renewChooseDate', element)"
+            class="btn btn-info btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Renovar Data de Escolha"
+          >
+            <i class="fa fa-calendar"></i>
+          </span>
+
+          <span
+            (click)="onCustom('trackNumber', element)"
+            class="btn btn-secondary btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Informar Código Rastreio"
+          >
+            <i class="fa fa-truck"></i>
+          </span>
+
+          <span
+            (click)="onCustom('CancelDonation', element)"
+            class="btn btn-danger btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Cancelar Doação"
+          >
+            <i class="fa fa-trash"></i>
+          </span>
+
+          <span
+            (click)="onCustom('ShowWinnerInfo', element)"
+            class="btn btn-light btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Ver ganhador"
+          >
+            <i class="fa fa-user"></i>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div class="empty-data" *ngIf="donatedBooks.data.length === 0">Nenhum registro encontrado.</div>
+
+    <div class="spinner-container" *ngIf="isLoading$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
     <p class="mt-2">
       <a routerLink="/panel" class="btn btn-link">Voltar</a>
     </p>
