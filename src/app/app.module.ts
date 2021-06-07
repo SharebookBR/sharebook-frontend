@@ -11,6 +11,13 @@ import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+// Angular Material
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
 
@@ -49,7 +56,6 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   RecaptchaModule,
@@ -115,7 +121,6 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     FormsModule,
     ReactiveFormsModule,
     AppConfigModule,
-    Ng2SmartTableModule,
     NgbModule,
     NgbModalModule,
     RecaptchaModule,
@@ -124,7 +129,13 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ImageToDataUrlModule
+    ImageToDataUrlModule,
+
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatTableModule,
+    MatInputModule,
+    MatPaginatorModule
   ],
   providers: [
     AuthGuardUser,

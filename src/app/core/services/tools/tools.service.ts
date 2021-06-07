@@ -1,6 +1,8 @@
 import { CardItem } from '../../models/card';
 import { TrelloUrls } from '../../models/TrelloUrls';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class ToolsService {
   public getTools(): CardItem[] {
     const tools: CardItem[] = [

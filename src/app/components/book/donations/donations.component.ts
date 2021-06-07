@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MyDonation } from '../../../core/models/MyDonation';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil, finalize } from 'rxjs/operators';
+import { MatSort } from '@angular/material/sort';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -13,23 +13,29 @@ import { ConfirmationDialogService } from 'src/app/core/services/confirmation-di
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css'],
 })
-export class DonationsComponent implements OnInit, OnDestroy {
-  donatedBooks = new Array<any>();
+export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
+  displayedColumns: string[] = ['title', 'totalInterested', 'daysInShowcase', 'chooseDate', 'trackingNumber', 'status', 'action'];
+  donatedBooks = new MatTableDataSource<MyDonation>();
+
   tableSettings: any;
-  isLoading: boolean;
+
   statusBtnWinner: boolean;
 
+  @ViewChild(MatSort) sort: MatSort;
+
   private _destroySubscribes$ = new Subject<void>();
+  public isLoadingSubject = new BehaviorSubject<boolean>(false);
+  public isLoading$ = this.isLoadingSubject.asObservable();
 
   constructor(
     private _bookService: BookService,
-    private _sanitizer: DomSanitizer,
     private _modalService: NgbModal,
     private _toastr: ToastrService,
     private _confirmationDialogService: ConfirmationDialogService,
@@ -39,7 +45,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getDonations();
-
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
     Object.keys(BookDonationStatus).forEach((key) => {
@@ -48,140 +53,66 @@ export class DonationsComponent implements OnInit, OnDestroy {
         title: BookDonationStatus[key],
       });
     });
-
-    const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver interessados">' +
-      ' <i class="fa fa-list"></i> </span>';
-    const btnRenewChooseDate =
-      '<span class="btn btn-info btn-sm ml-1 mb-1" data-toggle="tooltip" title="Renovar Data de Escolha">' +
-      ' <i class="fa fa-calendar"></i> </span>';
-    const btnTrackNumber =
-      '<span class="btn btn-secondary btn-sm ml-1 mb-1" data-toggle="tooltip" title="Informar Código Rastreio">' +
-      ' <i class="fa fa-truck"></i> </span>';
-    const btnCancelDonation =
-      '<span class="btn btn-danger btn-sm ml-1 mb-1" data-toggle="tooltip" title="Cancelar Doação">' +
-      ' <i class="fa fa-trash"></i> </span>';
-
-    const btnShowWinnerInfo =
-      '<span class="btn btn-light btn-sm ml-1 mb-1" data-toggle="tooltip" title="Ver ganhador">' +
-      ' <i class="fa fa-user"></i> </span>';
-
-    this.tableSettings = {
-      columns: {
-        title: {
-          title: 'Titulo',
-          width: '27%',
-        },
-        totalInterested: {
-          title: 'Total interessados',
-          width: '08%',
-        },
-        daysInShowcase: {
-          title: 'Dias na vitrine',
-          width: '08%',
-        },
-        chooseDate: {
-          title: 'Data Escolha',
-          width: '10%',
-          type: 'html',
-          valuePrepareFunction: (cell, row) => {
-            return new DatePipe('en-US').transform(cell, 'dd/MM/yyyy');
-          },
-        },
-        trackingNumber: {
-          title: 'Código Ratreio',
-          width: '15%',
-        },
-        status: {
-          title: 'Status',
-          width: '15%',
-          type: 'html',
-          valuePrepareFunction: (value) => {
-            return this._sanitizer.bypassSecurityTrustHtml(
-              `<span class="badge badge-${this.getStatusBadge(
-                value
-              )}">${getStatusDescription(value)}</span>`
-            );
-          },
-          filter: {
-            type: 'list',
-            config: {
-              selectText: 'Selecionar...',
-              list: myBookDonationStatus,
-            },
-          },
-        },
-      },
-      actions: {
-        delete: false,
-        edit: false,
-        add: false,
-        update: false,
-        custom: [
-          {
-            name: 'donate',
-            title: btnDonate,
-          },
-          {
-            name: 'renewChooseDate',
-            title: btnRenewChooseDate,
-          },
-          {
-            name: 'trackNumber',
-            title: btnTrackNumber,
-          },
-          {
-            name: 'CancelDonation',
-            title: btnCancelDonation,
-          },
-          {
-            name: 'ShowWinnerInfo',
-            title: btnShowWinnerInfo,
-          },
-        ],
-        position: 'right', // left|right
-      },
-      attr: {
-        class: 'table table-bordered table-hover table-striped',
-      },
-      noDataMessage: 'Nenhum registro encontrado.',
-    };
   }
 
-  private getStatusBadge(status) {
+  ngAfterViewInit(): void {
+    this.donatedBooks.sort = this.sort;
+  }
+
+  public getTranslatedStatusDescription(status: string): string {
+    return getStatusDescription(status);
+  }
+
+  public getStatusBadgeBackgroundColor(status) {
     switch (status) {
       case BookDonationStatus.WAITING_APPROVAL:
       case BookDonationStatus.WAITING_DECISION:
       case BookDonationStatus.WAITING_SEND:
       case BookDonationStatus.SENT:
-        return 'warning';
+        return '#ffc107'; // warning
       case BookDonationStatus.AVAILABLE:
       case BookDonationStatus.RECEIVED:
-        return 'success';
+        return '#28a745'; // success
       case BookDonationStatus.CANCELED:
-        return 'danger';
+        return '#dc3545'; // danger
       default:
-        return 'secondary';
+        return '#6c757d'; // secondary
+    }
+  }
+
+  public getStatusBadgeTextColor(status) {
+    switch (status) {
+      case BookDonationStatus.WAITING_APPROVAL:
+      case BookDonationStatus.WAITING_DECISION:
+      case BookDonationStatus.WAITING_SEND:
+      case BookDonationStatus.SENT:
+        return '#212529';
+      case BookDonationStatus.AVAILABLE:
+      case BookDonationStatus.RECEIVED:
+        return '#fff';
+      case BookDonationStatus.CANCELED:
+        return '#fff';
+      default:
+        return '#fff';
     }
   }
 
   getDonations() {
-    this.isLoading = true;
-
+    this.isLoadingSubject.next(true);
     this._bookService
       .getDonatedBooks()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((resp) => {
-        this.donatedBooks = resp;
-        this.isLoading = false;
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        finalize(() => this.isLoadingSubject.next(false)))
+      .subscribe((resp: MyDonation[]) => {
+        this.donatedBooks.data = resp;
       });
   }
 
-  onCustom(event) {
-    switch (event.action) {
+  onCustom(iconClicked: string, param: MyDonation) {
+    switch (iconClicked) {
       case 'donate': {
-
-        this._router.navigate([`book/donate/${event.data.slug}`], {
+        this._router.navigate([`book/donate/${param.slug}`], {
           queryParams: {
             returnUrl: this._activatedRoute.snapshot.url.join('/'),
           },
@@ -190,16 +121,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
       }
       case 'renewChooseDate': {
-        if (event.data.status !== BookDonationStatus.WAITING_DECISION) {
+        if (param.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
             `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-            `status atual = ${event.data.status}`
+            `status atual = ${param.status}`
           );
           return;
         }
 
         const chooseDate = Math.floor(
-          new Date(event.data.chooseDate).getTime() / (3600 * 24 * 1000)
+          new Date(param.chooseDate).getTime() / (3600 * 24 * 1000)
         );
         const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
@@ -211,7 +142,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
             .then((confirmed) => {
               if (confirmed) {
                 this._bookService
-                  .renewChooseDate(event.data.id)
+                  .renewChooseDate(param.id)
                   .pipe(takeUntil(this._destroySubscribes$))
                   .subscribe(
                     () => {
@@ -230,12 +161,12 @@ export class DonationsComponent implements OnInit, OnDestroy {
       }
       case 'trackNumber': {
         if (
-          event.data.status !== BookDonationStatus.WAITING_SEND &&
-          event.data.status !== BookDonationStatus.SENT
+          param.status !== BookDonationStatus.WAITING_SEND &&
+          param.status !== BookDonationStatus.SENT
         ) {
           alert(
             `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
-            `ou ${BookDonationStatus.SENT}\nstatus atual = ${event.data.status}`
+            `ou ${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
           );
           return;
         }
@@ -258,19 +189,19 @@ export class DonationsComponent implements OnInit, OnDestroy {
           }
         );
 
-        modalRef.componentInstance.bookId = event.data.id;
-        modalRef.componentInstance.bookTitle = event.data.title;
-        modalRef.componentInstance.trackingNumber = event.data.trackingNumber;
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
+        modalRef.componentInstance.trackingNumber = param.trackingNumber;
         break;
       }
       case 'CancelDonation': {
         // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
         if (
-          event.data.status === BookDonationStatus.RECEIVED ||
-          event.data.status === BookDonationStatus.CANCELED
+          param.status === BookDonationStatus.RECEIVED ||
+          param.status === BookDonationStatus.CANCELED
         ) {
           alert(
-            `Não é possível cancelar essa doação com status = ${event.data.status}`
+            `Não é possível cancelar essa doação com status = ${param.status}`
           );
           return;
         }
@@ -279,7 +210,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
           .then((confirmed) => {
             if (confirmed) {
               this._bookService
-                .cancelDonation(event.data.id)
+                .cancelDonation(param.id)
                 .pipe(takeUntil(this._destroySubscribes$))
                 .subscribe((resp) => {
                   if (resp['success']) {
@@ -294,9 +225,9 @@ export class DonationsComponent implements OnInit, OnDestroy {
       }
       case 'ShowWinnerInfo': {
 
-        if (event.data.status !== BookDonationStatus.WAITING_SEND &&
-          event.data.status !== BookDonationStatus.SENT &&
-          event.data.status !== BookDonationStatus.RECEIVED) {
+        if (param.status !== BookDonationStatus.WAITING_SEND &&
+          param.status !== BookDonationStatus.SENT &&
+          param.status !== BookDonationStatus.RECEIVED) {
           alert(
             `Você ainda não escolheu o ganhador.`
           );
@@ -307,12 +238,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
           centered: true,
         });
 
-        modalRef.componentInstance.bookId = event.data.id;
-        modalRef.componentInstance.bookTitle = event.data.title;
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
         break;
       }
 
     }
+  }
+
+  public doFilter = (value: string) => {
+    this.donatedBooks.filter = value.trim().toLocaleLowerCase();
   }
 
   ngOnDestroy() {

@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RequestedsComponent } from './requesteds.component';
@@ -13,7 +16,7 @@ describe('RequestedsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RequestedsComponent],
-      imports: [Ng2SmartTableModule, AppConfigModule, FormsModule, ReactiveFormsModule]
+      imports: [MatTableModule, MatSortModule, MatProgressSpinnerModule, MatInputModule, AppConfigModule, FormsModule, ReactiveFormsModule]
     }).compileComponents();
   }));
 

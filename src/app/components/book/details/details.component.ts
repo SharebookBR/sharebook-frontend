@@ -207,7 +207,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event) => {
-        const img = event.target['result'].split(',');
+        const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
       };
     }
