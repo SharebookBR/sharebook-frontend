@@ -178,7 +178,7 @@ describe('RegisterComponent', () => {
       of({
         erro: true,
       }).pipe(map((data) => {
-        return addressService.convertResponseToAddress(data)
+        return addressService.convertResponseToAddress(data);
       }))
     );
     fixture.detectChanges();
