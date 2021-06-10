@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-// import { LocalDataSource } from 'ng2-smart-table';
 import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
@@ -18,7 +17,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RequestComponent implements OnInit, OnDestroy {
   @Input() bookId;
-  // donateUsers: LocalDataSource;
   donateUsers;
   settings: any;
   isLoading: Boolean = true;

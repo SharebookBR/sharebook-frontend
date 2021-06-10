@@ -136,7 +136,7 @@ describe('RegisterComponent', () => {
     expect(phone.hasError('pattern')).toBeTruthy();
 
     phone.setValue('99999999999');
-    expect(phone.valid).toBeTruthy();
+    expect(phone.valid).toBeFalsy();
 
     phone.setValue('(99) 99999-9999');
     expect(phone.valid).toBeTruthy();
@@ -161,13 +161,13 @@ describe('RegisterComponent', () => {
     expect(postalCode.hasError('required')).toBeTruthy();
 
     postalCode.setValue('A');
-    expect(postalCode.hasError('required')).toBeTruthy();
+    expect(postalCode.hasError('pattern')).toBeTruthy();
 
     postalCode.setValue('99999');
     expect(postalCode.hasError('pattern')).toBeTruthy();
 
     postalCode.setValue('99999999');
-    expect(postalCode.valid).toBeTruthy();
+    expect(postalCode.valid).toBeFalsy();
 
     postalCode.setValue('99999-999');
     expect(postalCode.valid).toBeTruthy();
