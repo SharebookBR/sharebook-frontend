@@ -5,7 +5,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="name">Nome</label>
         <div class="input-group">
-          <input formControlName="name" name="name" type="text" class="form-control" />
+          <input formControlName="name" id="name" name="name" type="text" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-address-book"></i>
           </div>
@@ -26,7 +26,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
-          <input formControlName="email" type="text" class="form-control lowerCase" />
+          <input formControlName="email" id="email" type="text" class="form-control lowerCase" />
           <div class="input-group-addon append">
             <i class="fa fa-envelope-square"></i>
           </div>
@@ -45,7 +45,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="password">Senha</label>
         <div class="input-group">
-          <input formControlName="password" type="password" class="form-control" />
+          <input formControlName="password" id="password" type="password" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-unlock-alt"></i>
           </div>
@@ -67,7 +67,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="confirmPassword">Confirmar Senha</label>
         <div class="input-group">
-          <input formControlName="confirmPassword" type="password" class="form-control" />
+          <input formControlName="confirmPassword" id="confirmPassword" type="password" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-unlock-alt"></i>
           </div>
@@ -86,10 +86,8 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-
-          <input formControlName="phone" type="text" class="form-control" [dropSpecialCharacters]="false"
+          <input formControlName="phone" id="phone" type="text" class="form-control" [dropSpecialCharacters]="false"
             mask="(00) 00000-0000" />
-
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
@@ -108,7 +106,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="linkedin">LinkedIn</label>
         <div class="input-group">
-          <input formControlName="linkedin" type="text" class="form-control" />
+          <input formControlName="linkedin" id="linkedin" type="text" class="form-control" />
           <div class="input-group-addon append">
             <i class="fa fa-linkedin"></i>
           </div>
@@ -124,7 +122,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" type="text" [dropSpecialCharacters]="false" mask="00000-000"
+          <input formControlName="postalCode" id="postalCode" type="text" [dropSpecialCharacters]="false" mask="00000-000"
             class="form-control" (blur)="getAddressByPostalCode($event.target.value)" />
 
           <div class="input-group-addon append" [hidden]="isGettingAddress">
@@ -148,7 +146,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="street">Logradouro</label>
         <div class="input-group">
-          <input formControlName="street" type="text" class="form-control" maxlength="80" />
+          <input formControlName="street" id="street" type="text" class="form-control" maxlength="80" />
           <div class="input-group-addon append">
             <i class="fa fa-road"></i>
           </div>
@@ -164,7 +162,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="number">Número</label>
         <div class="input-group">
-          <input formControlName="number" type="text" class="form-control" maxlength="10" />
+          <input formControlName="number" id="number" type="text" class="form-control" maxlength="10" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -180,7 +178,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="complement">Complemento</label>
         <div class="input-group">
-          <input formControlName="complement" type="text" class="form-control" maxlength="50" />
+          <input formControlName="complement" id="complement" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -190,7 +188,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="neighborhood">Bairro</label>
         <div class="input-group">
-          <input formControlName="neighborhood" type="text" class="form-control" maxlength="50" />
+          <input formControlName="neighborhood" id="neighborhood" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -206,7 +204,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="city">Cidade</label>
         <div class="input-group">
-          <input formControlName="city" type="text" class="form-control" maxlength="50" />
+          <input formControlName="city" id="city" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -222,7 +220,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="state">Estado</label>
         <div class="input-group">
-          <input formControlName="state" type="text" class="form-control" maxlength="30" />
+          <input formControlName="state" id="state" type="text" class="form-control" maxlength="30" />
           <div class="input-group-addon append">
             <i class="fa fa-map-marker"></i>
           </div>
@@ -238,7 +236,7 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="country">País</label>
         <div class="input-group">
-          <input formControlName="country" type="text" class="form-control" maxlength="50" />
+          <input formControlName="country" id="country" type="text" class="form-control" maxlength="50" />
           <div class="input-group-addon append">
             <i class="fa fa-globe"></i>
           </div>
@@ -252,8 +250,8 @@
       </div>
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="allowSendingEmail" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">
+          <input class="form-check-input" type="checkbox" formControlName="allowSendingEmail" id="allowSendingEmail" />
+          <label class="form-check-label" for="allowSendingEmail">
             Aceito receber e-mails e newletter do Sharebook
           </label>
         </div>

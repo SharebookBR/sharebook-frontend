@@ -5,12 +5,18 @@ import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
-import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+
+// Angular Material
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -50,14 +56,13 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
   RecaptchaSettings,
+  RecaptchaFormsModule
 } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
@@ -116,17 +121,21 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     FormsModule,
     ReactiveFormsModule,
     AppConfigModule,
-    Ng2SmartTableModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NgbModalModule,
-    ImageUploadModule,
-    RecaptchaModule.forRoot(),
+    RecaptchaModule,
     RecaptchaFormsModule,
-    Ng2ImgMaxModule,
     NgxMaskModule.forRoot(),
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ImageToDataUrlModule,
+
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatTableModule,
+    MatInputModule,
+    MatPaginatorModule
   ],
   providers: [
     AuthGuardUser,

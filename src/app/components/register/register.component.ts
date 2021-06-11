@@ -16,7 +16,7 @@ import { Address } from '../../core/models/address';
 @Component({
   selector: 'app-form',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;

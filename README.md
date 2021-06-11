@@ -6,7 +6,7 @@ https://www.linkedin.com/pulse/projeto-sharebook-raffaello-damgaard/
 
 ## 2 - ENTRE NO SLACK
 
-https://join.slack.com/t/sharebookworkspace/shared_invite/enQtMzQ2Nzc5OTk3MDc4LTZlMmJlMjA3NGE1NDczN2QxYzc2ZWZhM2UxMzFkMDIyYjliMGI3YzdlYzg2ZjZhYjQ2YWY1ZTUyZGViNzViOWQ
+https://join.slack.com/t/sharebookworkspace/shared_invite/zt-4fb3uu8m-VPrkhzdI9u3lsOlS1OkVvg
 
 ### 2.2 - LÁ NO SLACK, ENTRE NO CANAL #FRONTEND
 
@@ -45,7 +45,7 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 Verifique a versão do Node - Recomendamos Versão 10.x.x  
 Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
-Use o Angular 7+
+Use o Angular 9+
 
 # Rodar o app pela primeira vez
 
@@ -69,8 +69,14 @@ docker-compose up -d --build
 # Criando imagem e rodando o container com Backend LOCAL
 docker-compose -f docker-compose-local.yml up -d --build
 
-# Rodando os testes unitários
+# Rodando todos os testes unitários
 docker-compose run --rm sharebook npm run test
+
+# Para rodar o teste unitário dentro do container e verificar os possíveis erros
+docker exec -it sharebook-frontend-dev bash
+npm run test-debug
+acessar a URL que aparece no console: http://localhost:9876/
+clicar no botão DEBUG
 
 # Parando o container
 docker-compose stop

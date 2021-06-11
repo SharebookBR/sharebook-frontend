@@ -5,7 +5,6 @@ import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { RequestComponent } from './request.component';
 
@@ -22,9 +21,8 @@ describe('RequestComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgbModule.forRoot(),
+        NgbModule,
         NgbModalModule,
-        Ng2SmartTableModule,
         AppConfigModule,
         RouterTestingModule,
         ToastrModule.forRoot(),

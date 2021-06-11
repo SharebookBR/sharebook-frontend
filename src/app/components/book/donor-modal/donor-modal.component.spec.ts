@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DonorModalComponent } from './donor-modal.component';
+import { AppConfigModule } from '../../../app-config.module';
 
 describe('DonorModalComponent', () => {
   let component: DonorModalComponent;
@@ -8,9 +11,14 @@ describe('DonorModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DonorModalComponent ]
+      declarations: [DonorModalComponent],
+      imports: [
+        HttpClientTestingModule,
+        AppConfigModule
+      ],
+      providers: [NgbActiveModal]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

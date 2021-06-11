@@ -2,7 +2,7 @@ import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../../models/book';
-import { BooksVM } from '../../models/booksVM';
+import { BookVM } from '../../models/bookVM';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map } from 'rxjs/operators';
 
@@ -12,6 +12,8 @@ import { FacilitatorNotes } from '../../models/facilitatorNotes';
 import { Observable } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
+import { MyDonation } from '../../models/MyDonation';
+import { MyRequestItem } from '../../models/MyRequestItem';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +25,8 @@ export class BookService {
     @Inject(APP_CONFIG) private config: AppConfig
   ) { }
 
-  public getAll() {
-    return this._http.get<BooksVM[]>(`${this.config.apiEndpoint}/book/1/9999`);
+  public getAll(): Observable<BookVM> {
+    return this._http.get<BookVM>(`${this.config.apiEndpoint}/book/1/9999`);
   }
 
   public getAvailableBooks() {
@@ -66,11 +68,11 @@ export class BookService {
     );
   }
 
-  public delete(bookId: number) {
+  public delete(bookId: string) {
     return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
-  public cancelDonation(bookId: number) {
+  public cancelDonation(bookId: string) {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/cancel/${bookId}`,
       null
@@ -93,8 +95,8 @@ export class BookService {
     );
   }
 
-  public getRequestersList(bookId: string) {
-    return this._http.get<Requesters>(
+  public getRequestersList(bookId: string): Observable<Requesters[]> {
+    return this._http.get<Requesters[]>(
       `${this.config.apiEndpoint}/book/RequestersList/${bookId}`
     );
   }
@@ -130,14 +132,14 @@ export class BookService {
     );
   }
 
-  public getRequestedBooks(page: number, items: number) {
+  public getRequestedBooks(page: number, items: number): Observable<MyRequest> {
     return this._http.get<MyRequest>(
       `${this.config.apiEndpoint}/book/MyRequests/${page}/${items}`
     );
   }
 
-  public getDonatedBooks() {
-    return this._http.get<any>(`${this.config.apiEndpoint}/book/MyDonations`);
+  public getDonatedBooks(): Observable<MyDonation[]> {
+    return this._http.get<MyDonation[]>(`${this.config.apiEndpoint}/book/MyDonations`);
   }
 
   public setTrackingNumber(

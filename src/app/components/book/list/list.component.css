@@ -9,12 +9,33 @@
   background-color: #5cb3fd;
 }
 
-:host /deep/ ng2-smart-table table tr td {
-  font-size: 0.9em;
-  word-break: break-all;
+table {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 500px;
+}
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
+}
+.header {
+  color: rgb(10, 10, 190);
+  font-size: 14px;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+}
+.empty-data {
+  padding-top: 15px;
+  font-size: 18px;
 }
 
-:host /deep/ ng2-smart-table ng2-smart-table-pager .ng2-smart-pagination-nav .ng2-smart-pagination li a.page-link-prev,
-:host /deep/ ng2-smart-table ng2-smart-table-pager .ng2-smart-pagination-nav .ng2-smart-pagination li a.page-link-next {
-  font-size: inherit;
+.mat-column-chooseDate {
+  padding-left: 10px;
+}
+
+.mat-column-title {
+  padding-left: 10px;
 }

@@ -1,29 +1,38 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil, finalize } from 'rxjs/operators';
 
 import { BookService } from 'src/app/core/services/book/book.service';
-import { LocalDataSource } from 'ng2-smart-table';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DonateComponent } from '../donate/donate.component';
 import { Book } from 'src/app/core/models/book';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
+import { Requesters } from 'src/app/core/models/requesters';
 
 @Component({
   selector: 'app-donate-page',
   templateUrl: './donate-page.component.html',
   styleUrls: ['./donate-page.component.css']
 })
-export class DonatePageComponent implements OnInit, OnDestroy {
-  donateUsers: LocalDataSource;
-  isLoading: Boolean = true;
-  settings: any;
+export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
+  displayedColumns: string[] = [
+    'requesterNickName',
+    'location',
+    'totalBooksWon',
+    'totalBooksDonated',
+    'requestText',
+    'action'];
+
+  donateUsers = new MatTableDataSource<Requesters>();
+  public isLoadingSubject = new BehaviorSubject<boolean>(false);
+  public isLoading$ = this.isLoadingSubject.asObservable();
+  @ViewChild(MatSort) sort: MatSort;
   returnUrl: string;
-  selectedDonatedUser: any;
-  showNote: Boolean = false;
   formGroup: FormGroup;
   bookSlug: string;
   book: Book = new Book();
@@ -48,67 +57,21 @@ export class DonatePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._activatedRoute.params
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(param => (this.bookSlug = param.id));
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(param => (this.bookSlug = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
-
     this.loadBook();
-
-    const btnDonate =
-      '<span class="btn btn-warning btn-sm ml-1 mb-1" data-toggle="tooltip" title="Escolher ganhador">' +
-      ' <i class="fa fa-trophy"></i> </span>';
-
-    this.settings = {
-      mode: 'inline',
-      hideSubHeader: true,
-      columns: {
-        requesterNickName: {
-          title: 'Apelido',
-          filter: false,
-          width: '15%'
-        },
-        location: {
-          title: 'Destino',
-          filter: false,
-          width: '15%'
-        },
-        totalBooksWon: {
-          title: 'Livros Ganhos',
-          filter: false,
-          width: '5%'
-        },
-        totalBooksDonated: {
-          title: 'Livros Doados',
-          filter: false,
-          width: '5%'
-        },
-        requestText: {
-          title: 'Motivo',
-          filter: false,
-          width: '40%'
-        }
-      },
-      actions: {
-        delete: false,
-        edit: false,
-        add: false,
-        update: false,
-        custom: [
-          {
-            name: 'donate',
-            title: btnDonate
-          }
-        ],
-        position: 'right' // left|right
-      }
-    };
   }
 
-  onCustom(event) {
-    if (event.action === 'donate') {
+  ngAfterViewInit(): void {
+    this.donateUsers.sort = this.sort;
+  }
+
+  onCustom(iconClicked: string, param: Requesters) {
+    if (iconClicked === 'donate') {
 
       switch (this.book.status) {
         case BookDonationStatus.WAITING_APPROVAL:
@@ -128,7 +91,7 @@ export class DonatePageComponent implements OnInit, OnDestroy {
           return;
 
         case BookDonationStatus.CANCELED:
-          alert (`Essa doação foi cancelada. =(`);
+          alert(`Essa doação foi cancelada. =(`);
           return;
       }
 
@@ -137,8 +100,8 @@ export class DonatePageComponent implements OnInit, OnDestroy {
         centered: true
       });
       modalRef.componentInstance.bookId = this.book.id;
-      modalRef.componentInstance.userId = event.data.userId;
-      modalRef.componentInstance.userNickName = event.data.requesterNickName;
+      modalRef.componentInstance.userId = param.userId;
+      modalRef.componentInstance.userNickName = (param.requesterNickName === null) ? '' : param.requesterNickName;
 
       modalRef.result.then(data => {
         if (data === 'ok') {
@@ -152,56 +115,61 @@ export class DonatePageComponent implements OnInit, OnDestroy {
     this._router.navigate([this.returnUrl]);
   }
 
-  ngOnDestroy() {
-    this._destroySubscribes$.next();
-    this._destroySubscribes$.complete();
-  }
 
   loadBook() {
     this._scBook
-    .getBySlug(this.bookSlug)
-    .pipe(takeUntil(this._destroySubscribes$))
-    .subscribe(
-      (book) => {
-        this.book = book;
-        this.loadRequestersList();
-        this.chooseDateFormated = new DatePipe('en-US').transform(book.chooseDate, 'dd/MM/yyyy');
+      .getBySlug(this.bookSlug)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        (book) => {
+          this.book = book;
+          this.loadRequestersList();
+          this.chooseDateFormated = new DatePipe('en-US').transform(book.chooseDate, 'dd/MM/yyyy');
 
-        switch (book.status) {
-          case BookDonationStatus.WAITING_APPROVAL:
-            this.showWarning = true;
-            this.warningMessage = `Aguarde a aprovação dessa doação.`;
-            break;
-          case BookDonationStatus.AVAILABLE:
-            this.showWarning = true;
-            this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
-            break;
+          switch (book.status) {
+            case BookDonationStatus.WAITING_APPROVAL:
+              this.showWarning = true;
+              this.warningMessage = `Aguarde a aprovação dessa doação.`;
+              break;
+            case BookDonationStatus.AVAILABLE:
+              this.showWarning = true;
+              this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
+              break;
 
-          // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-          // é a hora de escolher o ganhador!
+            // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
+            // é a hora de escolher o ganhador!
 
-          case BookDonationStatus.WAITING_SEND:
-          case BookDonationStatus.SENT:
-          case BookDonationStatus.RECEIVED:
-            this.showWarningWinnerChoosed = true;
-            break;
+            case BookDonationStatus.WAITING_SEND:
+            case BookDonationStatus.SENT:
+            case BookDonationStatus.RECEIVED:
+              this.showWarningWinnerChoosed = true;
+              break;
 
-          case BookDonationStatus.CANCELED:
-            this.showWarning = true;
-            this.warningMessage = `Essa doação foi cancelada. =(`;
-            break;
-        }
-      });
+            case BookDonationStatus.CANCELED:
+              this.showWarning = true;
+              this.warningMessage = `Essa doação foi cancelada. =(`;
+              break;
+          }
+        });
   }
 
   loadRequestersList() {
+    this.isLoadingSubject.next(true);
     this._scBook.getRequestersList(this.book.id)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(resp => {
-      this.donateUsers = new LocalDataSource(<any>resp);
-      this.isLoading = false;
-    });
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        finalize(() => this.isLoadingSubject.next(false)))
+      .subscribe(resp => {
+        this.donateUsers.data = resp;
+      });
+  }
+
+  public doFilter = (value: string) => {
+    this.donateUsers.filter = value.trim().toLocaleLowerCase();
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
   }
 }

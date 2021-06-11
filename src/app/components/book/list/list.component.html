@@ -5,11 +5,142 @@
       <i class="fa fa-refresh" aria-hidden="true"></i>
     </button>
   </h1>
-  <div [hidden]="!isLoading">
-    <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
-  </div>
-  <div class="container mt-5 table-responsive" [hidden]="isLoading">
-    <ng2-smart-table class="table" [settings]="settings" [source]="books" (custom)="onCustom($event)">
-    </ng2-smart-table>
+
+  <div class="container mt-5">
+    <div fxLayout fxLayoutAlign="center center">
+      <mat-form-field>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+      </mat-form-field>
+    </div>
+    <table
+      mat-table
+      [dataSource]="myBookArray"
+      matSort
+      matSortActive="creationDate"
+      matSortDirection="desc"
+      matSortDisableClear
+      class="mat-elevation-z1"
+    >
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Inclusão</th>
+        <td mat-cell *matCellDef="let element">
+          <font [color]="getTextColor(element.status)">
+            {{ element.creationDate | date: 'dd/MM/yyyy' }}
+          </font>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="chooseDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Escolha</th>
+        <td mat-cell *matCellDef="let element">
+          <font [color]="getTextColor(element.status)">
+            {{ element.chooseDate | date: 'dd/MM/yyyy' }}
+          </font>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">
+          Título / Autor / Total Interessados / Dias na Vitrine
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <font [color]="getTextColor(element.status)">
+            {{ element.title }}, <br />
+            {{ element.author }}, <br />
+            {{ element.totalInterested }} interessado(s), <br />
+            {{ element.daysInShowcase }} dia(s) na vitrine
+          </font>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="users">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Doador / Donatário / Facilitador</th>
+        <td mat-cell *matCellDef="let element">
+          <font [color]="getTextColor(element.status)">
+            Doador: {{ element.donor }} <br />
+            Donatário: {{ element.winner }} <br />
+            Facilitador: {{ element.facilitator }}
+          </font>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Status</th>
+        <td mat-cell *matCellDef="let element">
+          <font [color]="getTextColor(element.status)">
+            {{ getTranslatedStatusDescription(element.status) }}
+          </font>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="header">Ação</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            (click)="onCustom('edit', element)"
+            class="btn btn-primary btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Editar Livro"
+          >
+            <i class="fa fa-edit"></i>
+          </span>
+
+          <span
+            (click)="onCustom('cancelDonation', element)"
+            class="btn btn-danger btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Cancelar Doação"
+          >
+            <i class="fa fa-trash"></i>
+          </span>
+
+          <span
+            (click)="onCustom('donate', element)"
+            class="btn btn-warning btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Ver lista de interessados"
+          >
+            <i class="fa fa-list"></i>
+          </span>
+
+          <span
+            (click)="onCustom('facilitatorNotes', element)"
+            class="btn btn-info btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Informar Comentários"
+          >
+            <i class="fa fa-sticky-note"></i>
+          </span>
+
+          <span
+            (click)="onCustom('trackNumber', element)"
+            class="btn btn-secondary btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Informar Código Rastreio"
+          >
+            <i class="fa fa-truck"></i>
+          </span>
+
+          <span
+            (click)="onCustom('showUsersInfo', element)"
+            class="btn btn-light btn-sm ml-1 mb-1"
+            data-toggle="tooltip"
+            title="Informações de Usuários"
+          >
+            <i class="fa fa-users"></i>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 15, 20]"> </mat-paginator>
+
+    <div class="empty-data" *ngIf="myBookArray.data.length === 0">Nenhum registro encontrado.</div>
+
+    <div class="spinner-container" *ngIf="isLoading$ | async">
+      <mat-spinner></mat-spinner>
+    </div>
   </div>
 </div>

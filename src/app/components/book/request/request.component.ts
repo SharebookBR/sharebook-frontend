@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { LocalDataSource } from 'ng2-smart-table';
 import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
@@ -18,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RequestComponent implements OnInit, OnDestroy {
   @Input() bookId;
-  donateUsers: LocalDataSource;
+  donateUsers;
   settings: any;
   isLoading: Boolean = true;
   showNote: Boolean = false;
@@ -54,46 +53,46 @@ export class RequestComponent implements OnInit, OnDestroy {
     this.modalTitle = 'Quanto você quer esse livro?';
 
     this._scUser.getUserData()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(userInfo => {
-      this.addressLine01 =
-        userInfo.address.street +
-        ',' +
-        userInfo.address.number +
-        ' ' +
-        (!userInfo.address.complement ? '' : userInfo.address.complement);
-      this.addressLine02 =
-        userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
-      this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
-    });
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(userInfo => {
+        this.addressLine01 =
+          userInfo.address.street +
+          ',' +
+          userInfo.address.number +
+          ' ' +
+          (!userInfo.address.complement ? '' : userInfo.address.complement);
+        this.addressLine02 =
+          userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
+        this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
+      });
   }
 
   onRequest() {
     this.state = 'loading';
     const reason = this.formGroup.value.myNote;
     this._scBook.requestBook(this.bookId, reason)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      resp => {
-        if (resp.success) {
-          this.state = 'request-success';
-          this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
-        } else {
-          this.lastError = resp.messages[0];
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
+        resp => {
+          if (resp.success) {
+            this.state = 'request-success';
+            this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
+          } else {
+            this.lastError = resp.messages[0];
+            this.state = 'request-error';
+            this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
+          }
+        },
+        error => {
+          this.lastError = error;
           this.state = 'request-error';
           this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
         }
-      },
-      error => {
-        this.lastError = error;
-        this.state = 'request-error';
-        this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
-      }
-    );
+      );
   }
 
   updateAddress() {
