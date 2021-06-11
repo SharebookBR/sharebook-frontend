@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RequestedsComponent } from './requesteds.component';
 
 import { AppConfigModule } from '../../../app-config.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('RequestedsComponent', () => {
   let component: RequestedsComponent;
@@ -16,7 +18,17 @@ describe('RequestedsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RequestedsComponent],
-      imports: [MatTableModule, MatSortModule, MatProgressSpinnerModule, MatInputModule, AppConfigModule, FormsModule, ReactiveFormsModule]
+      imports: [
+        MatTableModule,
+        MatSortModule,
+        MatProgressSpinnerModule,
+        MatInputModule,
+        AppConfigModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        BrowserAnimationsModule
+      ]
     }).compileComponents();
   }));
 

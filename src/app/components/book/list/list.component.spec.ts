@@ -9,6 +9,7 @@ import { ListComponent } from './list.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { ConfirmationDialogService } from '../../../core/services/confirmation-dialog/confirmation-dialog.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -26,6 +27,7 @@ describe('ListComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         ToastrModule.forRoot(),
+        HttpClientTestingModule
       ],
       providers: [ConfirmationDialogService],
     }).compileComponents();

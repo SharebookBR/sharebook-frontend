@@ -12,6 +12,8 @@ import { AppConfigModule } from '../../../app-config.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DonationsComponent', () => {
   let component: DonationsComponent;
@@ -31,6 +33,8 @@ describe('DonationsComponent', () => {
         NgbModalModule,
         ToastrModule.forRoot(),
         RouterTestingModule,
+        HttpClientTestingModule,
+        BrowserAnimationsModule
       ],
       providers: [ConfirmationDialogService],
     }).compileComponents();

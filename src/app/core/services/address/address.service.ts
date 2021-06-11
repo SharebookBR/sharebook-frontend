@@ -15,10 +15,10 @@ export class AddressService {
   getAddressByPostalCode(cep: string) {
     return this.http
       .get(AppConst.postalCodeWebService + `${cep}/json/`)
-      .pipe(map(data => (this.resultado = this.convertResponseToAddress(data))));
+      .pipe(map((data) => (this.resultado = this.convertResponseToAddress(data))));
   }
 
-  private convertResponseToAddress(addressResponse): Address {
+  convertResponseToAddress(addressResponse): Address {
     const address = new Address();
 
     address.postalCode = addressResponse.cep;

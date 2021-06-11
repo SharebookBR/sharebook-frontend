@@ -96,7 +96,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   createFormGroup() {
     this.formGroup = this._formBuilder.group({
-      id: '',
+      bookId: '',
       title: [
         '',
         [
@@ -150,21 +150,21 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   getBookSaved() {
-    let id = '';
+    let bookId = '';
     this._activatedRoute.params
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((param) => (id = param.id));
-    this.itsEditMode = !!id;
+      .subscribe((param) => (bookId = param.id));
+    this.itsEditMode = !!bookId;
 
-    if (this.userProfile === 'Administrator' && id) {
+    if (this.userProfile === 'Administrator' && bookId) {
       this._scBook
-        .getById(id)
+        .getById(bookId)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe((book) => {
           this.status = book.status;
           this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
-            id: book.id,
+            bookId: book.id,
             title: book.title,
             author: book.author,
             categoryId: book.categoryId,
@@ -208,7 +208,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
     this.isLoadingMessage = 'Aguarde...';
-    if (!this.formGroup.value.id) {
+    if (!this.formGroup.value.bookId) {
       if (!this.formGroup.value.imageName) {
         this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
       }
@@ -282,7 +282,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   approve() {
     this._scBook
-      .approve(this.formGroup.value.id)
+      .approve(this.formGroup.value.bookId)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((resp) => {
         this.happyEnd();
