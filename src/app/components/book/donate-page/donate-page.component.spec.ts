@@ -2,7 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppConfigModule } from './../../../app-config.module';
 import { AddressService } from './../../../core/services/address/address.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DonatePageComponent } from './donate-page.component';
@@ -12,7 +12,7 @@ describe('DonatePageComponent', () => {
   let component: DonatePageComponent;
   let fixture: ComponentFixture<DonatePageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DonatePageComponent],
       schemas: [NO_ERRORS_SCHEMA],

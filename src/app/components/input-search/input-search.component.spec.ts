@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InputSearchComponent } from './input-search.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ describe('InputSearchComponent', () => {
   let component: InputSearchComponent;
   let fixture: ComponentFixture<InputSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InputSearchComponent],
       imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
