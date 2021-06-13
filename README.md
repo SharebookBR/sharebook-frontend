@@ -45,7 +45,7 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 Verifique a versão do Node - Recomendamos Versão 12.x.x  
 Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
-Use o Angular 10+
+Use o Angular 11+
 
 # Rodar o app pela primeira vez
 
