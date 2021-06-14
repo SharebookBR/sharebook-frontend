@@ -227,8 +227,10 @@ export class FormComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         });
     } else {
+      const book = this.formGroup.value;
+      book.id = this.formGroup.value.bookId;
       this._scBook
-        .update(this.formGroup.value)
+        .update(book)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe((resp) => {
           if (!this.formGroup.value.approve) {
