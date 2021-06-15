@@ -4,13 +4,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
-import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { DonationsComponent } from './donations.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
+
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,14 +29,13 @@ describe('DonationsComponent', () => {
         MatSortModule,
         MatInputModule,
         MatProgressSpinnerModule,
-        NgbModule,
-        NgbModalModule,
+        MatDialogModule,
         ToastrModule.forRoot(),
         RouterTestingModule,
         HttpClientTestingModule,
         BrowserAnimationsModule
       ],
-      providers: [ConfirmationDialogService],
+      providers: [],
     }).compileComponents();
   }));
 

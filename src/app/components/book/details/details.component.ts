@@ -9,7 +9,7 @@ import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { Book } from '../../../core/models/book';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
@@ -48,7 +48,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _scUser: UserService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    private _modalService: NgbModal,
+    public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
     private _seo: SeoService
   ) {
@@ -173,23 +173,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   onRequestBook() {
-    const modalRef = this._modalService.open(RequestComponent, {
-      backdropClass: 'light-blue-backdrop',
-      centered: true,
-    });
+    const modalRef = this.dialog.open(RequestComponent, { minWidth: 450 });
 
-    modalRef.result.then(
-      (result) => {
-        if (result === 'Success') {
-          this.requested = true;
-        }
-      },
-      (reason) => {
-        if (reason === 'Success') {
-          this.requested = true;
-        }
+    modalRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.requested = true;
       }
-    );
+    });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
   }

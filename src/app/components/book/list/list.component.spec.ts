@@ -2,7 +2,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTableModule } from '@angular/material/table';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ListComponent } from './list.component';
@@ -22,8 +22,7 @@ describe('ListComponent', () => {
         MatTableModule,
         AppConfigModule,
         RouterTestingModule,
-        NgbModule,
-        NgbModalModule,
+        MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
         ToastrModule.forRoot(),

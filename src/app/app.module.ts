@@ -17,6 +17,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -70,7 +72,6 @@ import { FacilitatorNotesComponent } from './components/book/facilitator-notes/f
 import { MainUsersComponent } from './components/book/main-users/main-users.component';
 import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationDialogService } from './core/services/confirmation-dialog/confirmation-dialog.service';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
@@ -135,7 +136,10 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     MatSortModule,
     MatTableModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [
     AuthGuardUser,
@@ -146,7 +150,6 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     GoogleAnalyticsService,
     AddressService,
     UserService,
-    ConfirmationDialogService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     {

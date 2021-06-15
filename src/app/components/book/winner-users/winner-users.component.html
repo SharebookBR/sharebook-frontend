@@ -1,24 +1,28 @@
-<div class="modal-header">
-  <h4 class="modal-title">Informações de usuários para o livro: {{ bookTitle }}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<div class="modal-body">
-  <div class="text-center" [hidden]="!isLoading"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
-
+<h4 class="modal-title">Informações de usuários para o livro:</h4>
+<mat-dialog-content>
+  <h4>{{ bookTitle }}</h4>
+  <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
   <!--Carousel Wrapper-->
-  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+  <div id="myCarousel" class="carousel carousel-fade" data-ride="carousel">
     <!--Indicators-->
     <ol class="carousel-indicators">
-      <li data-target="#myCarousel" *ngFor="let winnerUser of winnerUsers; let i = index" [attr.data-slide-to]="i"
-        [ngClass]="i == 0 ? 'active' : ''"></li>
+      <li
+        data-target="#myCarousel"
+        *ngFor="let winnerUser of winnerUsers; let i = index"
+        [attr.data-slide-to]="i"
+        [ngClass]="i == 0 ? 'active' : ''"
+      ></li>
     </ol>
     <!--/.Indicators-->
     <!--Slides-->
     <div class="carousel-inner" role="listbox">
-      <div *ngFor="let winnerUser of winnerUsers; let k = index"
-        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'">
+      <div
+        *ngFor="let winnerUser of winnerUsers; let k = index"
+        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'"
+      >
         <div class="card text-center">
           <div class="card-body">
             <h5 class="card-title">Vencedor</h5>
@@ -51,7 +55,7 @@
     <!--/.Controls-->
   </div>
   <!--/.Carousel Wrapper-->
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" mat-dialog-close>Ok entendi</button>
+</mat-dialog-actions>

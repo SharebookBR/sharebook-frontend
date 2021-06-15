@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
@@ -97,8 +97,7 @@ describe('FormComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgbModule,
-        NgbModalModule,
+        MatDialogModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),

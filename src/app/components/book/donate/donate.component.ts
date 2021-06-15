@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class DonateComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
-    public activeModal: NgbActiveModal,
+    public dialogRef: MatDialogRef<DonateComponent>,
     private _scBook: BookService,
     private _toastr: ToastrService,
     private _formBuilder: FormBuilder
@@ -63,7 +63,7 @@ export class DonateComponent implements OnInit, OnDestroy {
           if (!resp.success) {
             this._toastr.error(resp.messages[0]);
           } else {
-            this.activeModal.close('ok');
+            this.dialogRef.close(true);
             this._toastr.success(resp.successMessage);
           }
           this.isLoading = false;

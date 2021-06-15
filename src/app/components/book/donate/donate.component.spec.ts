@@ -1,7 +1,7 @@
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { DonateComponent } from './donate.component';
@@ -26,7 +26,7 @@ describe('DonateComponent', () => {
         ToastrModule.forRoot(),
         HttpClientTestingModule
       ],
-      providers: [NgbActiveModal],
+      providers: [MatDialogModule],
     }).compileComponents();
   }));
 

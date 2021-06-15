@@ -1,6 +1,6 @@
 import { AppConfigModule } from './../../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MainUsersComponent } from './main-users.component';
@@ -13,7 +13,7 @@ describe('MainUsersComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MainUsersComponent],
       imports: [HttpClientTestingModule, AppConfigModule],
-      providers: [NgbActiveModal],
+      providers: [MatDialogModule],
     }).compileComponents();
   }));
 

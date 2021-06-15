@@ -14,6 +14,7 @@ import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
 import { MyRequestItem } from '../../models/MyRequestItem';
+import { FullSearch } from '../../models/FullSearch';
 
 @Injectable({
   providedIn: 'root',
@@ -163,8 +164,8 @@ export class BookService {
     criteria: string,
     page: number,
     items: number
-  ): Observable<any[]> {
-    return this._http.get<any[]>(
+  ): Observable<FullSearch> {
+    return this._http.get<FullSearch>(
       `${this.config.apiEndpoint}/book/FullSearch/${encodeURIComponent(
         criteria
       )}/${page}/${items}`
