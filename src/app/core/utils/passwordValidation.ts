@@ -7,8 +7,11 @@ export class PasswordValidation {
 
     if (password !== confirmPassword) {
       AC.get('confirmPassword').setErrors({ MatchPassword: true });
+      return ({ MatchPassword: true });
     } else {
-      return null;
+      AC.get('confirmPassword')?.setErrors(null);
     }
+
+    return null;
   }
 }

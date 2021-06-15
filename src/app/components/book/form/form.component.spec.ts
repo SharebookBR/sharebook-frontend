@@ -115,9 +115,9 @@ describe('FormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
-    bookService = TestBed.get(BookService);
-    categoryService = TestBed.get(CategoryService);
+    userService = TestBed.inject(UserService);
+    bookService = TestBed.inject(BookService);
+    categoryService = TestBed.inject(CategoryService);
     spyOn(userService, 'getProfile').and.returnValue(of({ profile: 'User' }));
     spyOn(userService, 'getLoggedUserFromLocalStorage').and.returnValue({
       authenticated: true,
@@ -415,9 +415,9 @@ describe('FormComponent Editing book', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
-    userService = TestBed.get(UserService);
-    bookService = TestBed.get(BookService);
-    categoryService = TestBed.get(CategoryService);
+    userService = TestBed.inject(UserService);
+    bookService = TestBed.inject(BookService);
+    categoryService = TestBed.inject(CategoryService);
     spyOn(userService, 'getProfile').and.returnValue(of({ profile: 'Administrator' }));
     spyOn(userService, 'getLoggedUserFromLocalStorage').and.returnValue({
       authenticated: true,

@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       allowSendingEmail: [true, null],
       acceptTermOfUse: [false, null],
     }, {
-      validator: PasswordValidation.MatchPassword
+      validators: PasswordValidation.MatchPassword
     });
 
   }

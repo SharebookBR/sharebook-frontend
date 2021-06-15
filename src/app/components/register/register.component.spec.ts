@@ -41,7 +41,7 @@ describe('RegisterComponent', () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    addressService = TestBed.get(AddressService);
+    addressService = TestBed.inject(AddressService);
     fixture.detectChanges();
   });
 

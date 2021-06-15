@@ -140,10 +140,10 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
           const modalRef = this.dialog.open(ConfirmationDialogComponent,
             {
               data: {
-                title: "Atenção!",
-                message: "Confirma a renovação da data de doação?",
-                btnOkText: "Confirmar",
-                btnCancelText: "Cancelar"
+                title: 'Atenção!',
+                message: 'Confirma a renovação da data de doação?',
+                btnOkText: 'Confirmar',
+                btnCancelText: 'Cancelar'
               }
             });
 
@@ -207,10 +207,10 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         const modalRef = this.dialog.open(ConfirmationDialogComponent,
           {
             data: {
-              title: "Atenção!",
-              message: "Confirma o cancelamento da doação?",
-              btnOkText: "Confirmar",
-              btnCancelText: "Cancelar"
+              title: 'Atenção!',
+              message: 'Confirma o cancelamento da doação?',
+              btnOkText: 'Confirmar',
+              btnCancelText: 'Cancelar'
             }
           });
 
