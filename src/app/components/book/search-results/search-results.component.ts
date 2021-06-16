@@ -75,7 +75,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   public togglePage(pagination: PageEvent): void {
 
-    var currentPage = pagination.pageIndex + 1;
+    const currentPage = pagination.pageIndex + 1;
 
     this.isLoading = true;
     this._bookService
