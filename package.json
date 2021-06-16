@@ -49,7 +49,7 @@
     "core-js": "^2.5.4",
     "moment-timezone": "^0.5.33",
     "ng-recaptcha": "^7.0.1",
-    "ngx-image2dataurl": "^10.0.0",
+    "ngx-image2dataurl": "^10.0.1",
     "ngx-mask": "^11.1.5",
     "ngx-toastr": "^13.2.1",
     "rxjs": "~6.6.7",
