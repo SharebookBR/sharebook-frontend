@@ -1,9 +1,11 @@
+import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -59,7 +61,8 @@ export class FormComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    public dialog: MatDialog
   ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
@@ -240,13 +243,11 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeFieldFreightOption(freightOption: string, p) {
+  onChangeFieldFreightOption(freightOption: string) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
 
     if (freightOption === 'WithoutFreight') {
-      p.open();
-    } else {
-      p.close();
+      this.dialog.open(FreightIncentiveDialogComponent, { maxWidth: 350 });
     }
   }
 

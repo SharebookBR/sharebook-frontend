@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -79,6 +80,7 @@ import { InputSearchModule } from './components/input-search/input-search.module
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
+import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +116,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     CookieConsentComponent,
     TermsOfUseComponent,
     DonorModalComponent,
+    FreightIncentiveDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,7 +142,8 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
     MatPaginatorModule,
 
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   providers: [
     AuthGuardUser,
