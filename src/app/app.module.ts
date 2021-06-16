@@ -59,7 +59,6 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
@@ -125,8 +124,6 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
     FormsModule,
     ReactiveFormsModule,
     AppConfigModule,
-    NgbModule,
-    NgbModalModule,
     RecaptchaModule,
     RecaptchaFormsModule,
     NgxMaskModule.forRoot(),

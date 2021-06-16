@@ -44,7 +44,6 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
-    "@ng-bootstrap/ng-bootstrap": "^9.1.2",
     "base64-img": "^1.0.4",
     "bootstrap": "^4.5.0",
     "core-js": "^2.5.4",
