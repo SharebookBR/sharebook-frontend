@@ -241,9 +241,9 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.doFilter(status);
   }
 
-  search(status: string) {
+  search(searchStr: string) {
     const mySelect = document.getElementById('selectSearchByStatus') as HTMLInputElement;
     mySelect.value = '';
-    this.doFilter(status);
+    this.doFilter(searchStr);
   }
 }
