@@ -12,8 +12,7 @@ export class ToolsService {
         text: 'Comunicação, colaboração e integração. Uma das ferramentas favoritas dos devs.',
         links: [
           {
-            url: `https://join.slack.com/t/sharebookworkspace/shared_invite/enQtMzQ2Nzc5OTk3MDc4L
-          TZlMmJlMjA3NGE1NDczN2QxYzc2ZWZhM2UxMzFkMDIyYjliMGI3YzdlYzg2ZjZhYjQ2YWY1ZTUyZGViNzViOWQ`,
+            url: `https://join.slack.com/t/sharebookworkspace/shared_invite/zt-4fb3uu8m-VPrkhzdI9u3lsOlS1OkVvg`,
             content: 'Convite Slack'
           }
         ]
