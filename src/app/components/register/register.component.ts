@@ -39,7 +39,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
       confirmPassword: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
-      linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
       postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
       street: ['', [Validators.required]],
       number: ['', [Validators.required]],
