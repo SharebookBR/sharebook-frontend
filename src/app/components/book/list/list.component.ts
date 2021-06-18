@@ -32,6 +32,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     'action'];
 
   myBookArray = new MatTableDataSource<BookVMItem>();
+  statusSearchValues = [];
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -73,6 +74,11 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       myBookDonationStatus.push({
         value: BookDonationStatus[key],
         title: BookDonationStatus[key],
+      });
+
+      this.statusSearchValues.push({
+        value: BookDonationStatus[key],
+        title: getStatusDescription(BookDonationStatus[key]),
       });
     });
   }

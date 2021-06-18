@@ -11,17 +11,17 @@
       <mat-form-field>
         <input matInput type="text" (keyup)="search($event.target.value);" placeholder="Pesquisar" />
       </mat-form-field>
+      &nbsp;&nbsp;
 
-      <select (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
+      <mat-form-field>
+        <select matNativeControl (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
         <option value="">Busca por Status</option>
-        <option value="WaitingApproval">Aguardando aprovação</option>
-        <option value="Available">Disponível</option>
-        <option value="AwaitingDonorDecision">Aguardando decisão do doador</option>
-        <option value="WaitingSend">Aguardando envio</option>
-        <option value="Sent">Enviado</option>
-        <option value="Received">Entregue</option>
-        <option value="Canceled">Cancelado</option>
+        <option *ngFor="let status of statusSearchValues; let i = index" [value]="statusSearchValues[i].value">
+          {{statusSearchValues[i].title}}
+        </option>
       </select>
+      </mat-form-field>
+
     </div>
     <table
       mat-table
