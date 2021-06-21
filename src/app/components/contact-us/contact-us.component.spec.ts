@@ -21,7 +21,7 @@ describe('ContactUsComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
-        RecaptchaModule.forRoot(),
+        RecaptchaModule,
         RecaptchaFormsModule,
         AppConfigModule,
         RouterTestingModule,

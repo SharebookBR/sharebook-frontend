@@ -1,3 +1,5 @@
+import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
+import { User } from './../../../core/models/user';
 import { CategoryService } from './../../../core/services/category/category.service';
 import { BookService } from './../../../core/services/book/book.service';
 import { UserService } from './../../../core/services/user/user.service';
@@ -21,6 +23,25 @@ let fixture: ComponentFixture<FormComponent>;
 let userService: UserService;
 let bookService: BookService;
 let categoryService: CategoryService;
+
+const userArray: User[] = [
+  {
+    id: '54338afc-7674-46a3-9e35-1f8babd99d6b',
+    name: 'Cussa (3)',
+    email: null,
+    linkedin: null,
+    phone: null,
+    address: null,
+  },
+  {
+    id: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
+    name: 'Vagner (1)',
+    email: null,
+    linkedin: null,
+    phone: null,
+    address: null,
+  },
+];
 
 const validForm = {
   title: 'Book Title',
@@ -342,6 +363,39 @@ describe('FormComponent', () => {
 });
 
 describe('FormComponent Editing book', () => {
+  const bookToAdminProfile: BookToAdminProfile = {
+    author: 'teste',
+    category: 'Administração',
+    categoryId: '7f6cd8dd-bc79-40b6-9b41-47ffe71e2d34',
+    chooseDate: null,
+    city: 'Cabo Frio',
+    creationDate: new Date('2021-06-17T12:55:40.7898738'),
+    daysInShowcase: 0,
+    daysLate: 0,
+    donor: 'VAGNER',
+    eBookDownloadLink: null,
+    eBookPdfFile: null,
+    facilitator: null,
+    facilitatorNotes: null,
+    freightOption: 'WithoutFreight',
+    id: 'e2260775-b46e-4cd4-4651-08d931a7c4de',
+    imageSlug: 'o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
+    imageUrl: 'http://dev.sharebook.com.br/Images/Books/o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
+    phoneDonor: '(22) 22222-2222',
+    slug: 'o-orfanato-da-srta-peregrine-para-criancas-pe_copy3',
+    state: 'RJ',
+    status: 'WaitingApproval',
+    synopsis: '',
+    title: 'O Orfanato da Srta. Peregrine Para Crianças Peculiares',
+    totalInterested: 0,
+    trackingNumber: null,
+    type: 'Printed',
+    userId: '29152b79-effd-4827-8002-0394ffa735e3',
+    userIdFacilitator: null,
+    winner: '',
+  };
+
+
   const bookObject = {
     id: '1c31d9c2-54e6-4d69-094d-08d80b184d9b',
     title: 'TESTE AWS DEV',
@@ -389,8 +443,6 @@ describe('FormComponent Editing book', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgbModule,
-        NgbModalModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
@@ -430,29 +482,10 @@ describe('FormComponent Editing book', () => {
       profile: 'Administrator',
       message: 'OK',
     });
-    spyOn(userService, 'getAllFacilitators').and.returnValue(
-      of([
-        {
-          id: '54338afc-7674-46a3-9e35-1f8babd99d6b',
-          name: 'Cussa (3)',
-          email: null,
-          linkedin: null,
-          phone: null,
-          address: null,
-        },
-        {
-          id: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
-          name: 'Vagner (1)',
-          email: null,
-          linkedin: null,
-          phone: null,
-          address: null,
-        },
-      ])
-    );
+    spyOn(userService, 'getAllFacilitators').and.returnValue(of(userArray));
     spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
     spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray));
-    spyOn(bookService, 'getById').and.returnValue(of(bookObject));
+    spyOn(bookService, 'getById').and.returnValue(of(bookToAdminProfile));
     fixture.detectChanges();
   });
 

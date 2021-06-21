@@ -13,6 +13,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('DonateComponent', () => {
   let component: DonateComponent;
   let fixture: ComponentFixture<DonateComponent>;
+  const mockDialogRef = {
+    close: jasmine.createSpy('close')
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -38,5 +41,9 @@ describe('DonateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should close the dialog', () => {
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });

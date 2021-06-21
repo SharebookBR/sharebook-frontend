@@ -77,11 +77,19 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
     }
 
-    const modalRef = this.dialog.open(DonorModalComponent, { minWidth: 450 });
+    const modalRef = this.dialog.open(DonorModalComponent,
+      {
+        minWidth: 450,
+        data: {
+          bookId: param.bookId,
+          bookTitle: param.title,
+          messageBody: this._messageToModalBody
+        }
+      });
 
-    modalRef.componentInstance.bookId = param.bookId;
-    modalRef.componentInstance.bookTitle = param.title;
-    modalRef.componentInstance.messageBody = this._messageToModalBody;
+    // modalRef.componentInstance.bookId = param.bookId;
+    // modalRef.componentInstance.bookTitle = param.title;
+    // modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   public doFilter = (value: string) => {

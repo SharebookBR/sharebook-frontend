@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,8 +20,6 @@ describe('RequestComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        NgbModule,
-        NgbModalModule,
         AppConfigModule,
         RouterTestingModule,
         ToastrModule.forRoot(),
