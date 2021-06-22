@@ -142,17 +142,6 @@ describe('RegisterComponent', () => {
     expect(phone.valid).toBeTruthy();
   });
 
-  it('linkedin field validity', () => {
-    const linkedin = component.formGroup.controls['linkedin'];
-    expect(linkedin.valid).toBeTruthy();
-
-    linkedin.setValue('A');
-    expect(linkedin.hasError('pattern')).toBeTruthy();
-
-    linkedin.setValue('https://www.linkedin.com/myUser');
-    expect(linkedin.valid).toBeTruthy();
-  });
-
   it('postalCode field validity', () => {
     const postalCode = component.formGroup.controls['postalCode'];
     expect(postalCode.valid).toBeFalsy();

@@ -32,6 +32,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     'action'];
 
   myBookArray = new MatTableDataSource<BookVMItem>();
+  statusSearchValues = [];
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -72,6 +73,11 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       myBookDonationStatus.push({
         value: BookDonationStatus[key],
         title: BookDonationStatus[key],
+      });
+
+      this.statusSearchValues.push({
+        value: BookDonationStatus[key],
+        title: getStatusDescription(BookDonationStatus[key]),
       });
     });
   }
@@ -206,5 +212,15 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  searchByStatus(status: string) {
+    this.doFilter(status);
+  }
+
+  search(searchStr: string) {
+    const mySelect = document.getElementById('selectSearchByStatus') as HTMLInputElement;
+    mySelect.value = '';
+    this.doFilter(searchStr);
   }
 }

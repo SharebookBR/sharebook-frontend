@@ -104,26 +104,10 @@
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
-        <label class="col-form-label" for="linkedin">LinkedIn</label>
-        <div class="input-group">
-          <input formControlName="linkedin" id="linkedin" type="text" class="form-control" />
-          <div class="input-group-addon append">
-            <i class="fa fa-linkedin"></i>
-          </div>
-        </div>
-
-        <div *ngIf="formGroup.controls['linkedin'].touched && !formGroup.controls['linkedin'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['linkedin'].hasError('pattern')">
-            O LinkedIn deve ser uma URL para o seu perfil no LinkedIn.
-          </small>
-        </div>
-      </div>
-
-      <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" id="postalCode" type="text" [dropSpecialCharacters]="false" mask="00000-000"
-            class="form-control" (blur)="getAddressByPostalCode($event.target.value)" />
+          <input formControlName="postalCode" id="postalCode" type="text" [dropSpecialCharacters]="false"
+            mask="00000-000" class="form-control" (blur)="getAddressByPostalCode($event.target.value)" />
 
           <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>

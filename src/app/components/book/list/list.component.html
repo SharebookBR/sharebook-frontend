@@ -9,8 +9,19 @@
   <div class="container mt-5">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
-        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+        <input matInput type="text" (keyup)="search($event.target.value);" placeholder="Pesquisar" />
       </mat-form-field>
+      &nbsp;&nbsp;
+
+      <mat-form-field>
+        <select matNativeControl (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
+        <option value="">Busca por Status</option>
+        <option *ngFor="let status of statusSearchValues; let i = index" [value]="statusSearchValues[i].value">
+          {{statusSearchValues[i].title}}
+        </option>
+      </select>
+      </mat-form-field>
+
     </div>
     <table
       mat-table
