@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { TrackingComponent } from './tracking.component';
 import { AppConfigModule } from '../../../app-config.module';
@@ -18,8 +18,14 @@ describe('TrackingComponent', () => {
         ReactiveFormsModule,
         AppConfigModule,
         HttpClientTestingModule,
+        MatDialogModule
       ],
-      providers: [MatDialogModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        }
+      ],
     }).compileComponents();
   }));
 

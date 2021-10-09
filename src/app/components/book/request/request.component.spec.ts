@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { RequestComponent } from './request.component';
@@ -24,8 +24,14 @@ describe('RequestComponent', () => {
         RouterTestingModule,
         ToastrModule.forRoot(),
         HttpClientTestingModule,
+        MatDialogModule
       ],
-      providers: [MatDialogModule, UserService],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        }
+      ],
     }).compileComponents();
   }));
 

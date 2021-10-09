@@ -1,6 +1,6 @@
 import { AppConfigModule } from './../../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MainUsersComponent } from './main-users.component';
@@ -12,8 +12,13 @@ describe('MainUsersComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MainUsersComponent],
-      imports: [HttpClientTestingModule, AppConfigModule],
-      providers: [MatDialogModule],
+      imports: [HttpClientTestingModule, AppConfigModule, MatDialogModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        }
+      ],
     }).compileComponents();
   }));
 

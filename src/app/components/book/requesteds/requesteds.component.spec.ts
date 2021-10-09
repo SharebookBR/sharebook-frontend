@@ -39,8 +39,14 @@ describe('RequestedsComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        MatDialogModule
       ],
-      providers: [MatDialogModule, MatDialogRef]
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        }
+      ]
     }).compileComponents();
   }));
 

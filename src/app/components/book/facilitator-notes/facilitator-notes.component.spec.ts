@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FacilitatorNotesComponent } from './facilitator-notes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('FacilitatorNotesComponent', () => {
   let component: FacilitatorNotesComponent;
@@ -17,9 +17,15 @@ describe('FacilitatorNotesComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         AppConfigModule,
+        MatDialogModule
       ],
       declarations: [FacilitatorNotesComponent],
-      providers: [MatDialogModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        }
+      ],
     }).compileComponents();
   }));
 
