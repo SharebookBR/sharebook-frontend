@@ -46,8 +46,4 @@ describe('DonateComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should close the dialog', () => {
-    expect(mockDialogRef.close).toHaveBeenCalled();
-  });
 });
