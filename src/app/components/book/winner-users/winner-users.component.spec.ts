@@ -2,7 +2,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppConfigModule } from '../../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { WinnerUsersComponent } from './winner-users.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -16,8 +16,11 @@ describe('WinnerUsersComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [WinnerUsersComponent],
-      imports: [HttpClientTestingModule, AppConfigModule, BrowserAnimationsModule],
-      providers: [MatDialogModule],
+      imports: [HttpClientTestingModule, AppConfigModule, BrowserAnimationsModule, MatDialogModule],
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }],
     }).compileComponents();
   }));
 

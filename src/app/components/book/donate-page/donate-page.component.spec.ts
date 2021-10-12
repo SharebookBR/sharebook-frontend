@@ -4,6 +4,7 @@ import { AddressService } from './../../../core/services/address/address.service
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { DonatePageComponent } from './donate-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -22,8 +23,12 @@ describe('DonatePageComponent', () => {
         RouterTestingModule,
         AppConfigModule,
         HttpClientTestingModule,
+        MatDialogModule
       ],
-      providers: [AddressService],
+      providers: [AddressService, {
+        provide: MatDialogRef,
+        useValue: {}
+      }],
     }).compileComponents();
   }));
 

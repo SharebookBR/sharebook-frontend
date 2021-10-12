@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DonorModalComponent } from './donor-modal.component';
@@ -14,9 +14,13 @@ describe('DonorModalComponent', () => {
       declarations: [DonorModalComponent],
       imports: [
         HttpClientTestingModule,
-        AppConfigModule
+        AppConfigModule,
+        MatDialogModule
       ],
-      providers: [MatDialogModule]
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }]
     })
       .compileComponents();
   }));
