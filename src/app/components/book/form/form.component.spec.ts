@@ -384,7 +384,7 @@ describe('FormComponent Editing book', () => {
     freightOption: 'WithoutFreight',
     id: 'e2260775-b46e-4cd4-4651-08d931a7c4de',
     imageSlug: 'o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
-    imageUrl: 'http://dev.sharebook.com.br/Images/Books/o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
+    imageUrl: 'https://dev.sharebook.com.br/Images/Books/o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
     phoneDonor: '(22) 22222-2222',
     slug: 'o-orfanato-da-srta-peregrine-para-criancas-pe_copy3',
     state: 'RJ',
