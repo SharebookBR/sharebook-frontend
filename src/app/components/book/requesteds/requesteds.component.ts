@@ -87,9 +87,6 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         }
       });
 
-    // modalRef.componentInstance.bookId = param.bookId;
-    // modalRef.componentInstance.bookTitle = param.title;
-    // modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   public doFilter = (value: string) => {
