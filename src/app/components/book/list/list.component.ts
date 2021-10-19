@@ -5,11 +5,11 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 import { BookService } from '../../../core/services/book/book.service';
-import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationDialogService } from './../../../core/services/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
 import { FacilitatorNotesComponent } from '../facilitator-notes/facilitator-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
@@ -45,8 +45,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    private _modalService: NgbModal,
-    private confirmationDialogService: ConfirmationDialogService
+    public dialog: MatDialog
   ) { }
 
   ngAfterViewInit(): void {
@@ -96,21 +95,30 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
           );
           return;
         }
-        this.confirmationDialogService
-          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
-          .then((confirmed) => {
-            if (confirmed) {
-              this._scBook
-                .cancelDonation(param.id)
-                .pipe(takeUntil(this._destroySubscribes$))
-                .subscribe((resp) => {
-                  if (resp['success']) {
-                    this._toastr.success('Doação cancelada com sucesso.');
-                    this.reloadData();
-                  }
-                });
+
+        const modalRef = this.dialog.open(ConfirmationDialogComponent,
+          {
+            data: {
+              title: 'Atenção!',
+              message: 'Confirma o cancelamento da doação?',
+              btnOkText: 'Confirmar',
+              btnCancelText: 'Cancelar'
             }
           });
+
+        modalRef.afterClosed().subscribe(result => {
+          if (result) {
+            this._scBook
+              .cancelDonation(param.id)
+              .pipe(takeUntil(this._destroySubscribes$))
+              .subscribe((resp) => {
+                if (resp['success']) {
+                  this._toastr.success('Doação cancelada com sucesso.');
+                  this.reloadData();
+                }
+              });
+          }
+        });
 
         break;
       }
@@ -128,23 +136,13 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'facilitatorNotes': {
-        const modalRef = this._modalService.open(FacilitatorNotesComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
+        const modalRef = this.dialog.open(FacilitatorNotesComponent, { minWidth: 450 });
 
-        modalRef.result.then(
-          (result) => {
-            if (result === 'Success') {
-              this.reloadData();
-            }
-          },
-          (reason) => {
-            if (reason === 'Success') {
-              this.reloadData();
-            }
+        modalRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.reloadData();
           }
-        );
+        });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
@@ -163,23 +161,13 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         }
 
-        const modalRef = this._modalService.open(TrackingComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
+        const modalRef = this.dialog.open(TrackingComponent, { minWidth: 550 });
 
-        modalRef.result.then(
-          (result) => {
-            if (result === 'Success') {
-              this.reloadData();
-            }
-          },
-          (reason) => {
-            if (reason === 'Success') {
-              this.reloadData();
-            }
+        modalRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.reloadData();
           }
-        );
+        });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
@@ -188,24 +176,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'showUsersInfo': {
-        const modalRef = this._modalService.open(MainUsersComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
-
-        modalRef.result.then(
-          (result) => {
-            if (result === 'Success') {
-              this.reloadData();
-            }
-          },
-          (reason) => {
-            if (reason === 'Success') {
-              this.reloadData();
-            }
-          }
-        );
-
+        const modalRef = this.dialog.open(MainUsersComponent);
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
         break;

@@ -14,14 +14,14 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scUser: UserService) {}
+  constructor(private _scUser: UserService) { }
 
   ngOnInit() {
     this._scUser.getProfile()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(({ profile }) => (this.isAdmin = profile === 'Administrator' ? true : false));
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(profile => (this.isAdmin = profile.profile === 'Administrator' ? true : false));
   }
 
   ngOnDestroy() {

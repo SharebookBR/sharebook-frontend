@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
@@ -24,7 +24,8 @@ export class FacilitatorNotesComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public activeModal: NgbActiveModal, private _scBook: BookService, private _formBuilder: FormBuilder) {
+  constructor(public dialogRef: MatDialogRef<FacilitatorNotesComponent>, private _scBook: BookService, private _formBuilder: FormBuilder) {
+
     this.formGroup = _formBuilder.group({
       bookId: '',
       facilitatorNotes: ['', [Validators.required]]
@@ -42,20 +43,20 @@ export class FacilitatorNotesComponent implements OnInit, OnDestroy {
   onTracking() {
     this.isLoading = true;
     this._scBook.setFacilitatorNotes(this.formGroup.value)
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(
-      resp => {
-        this.isLoading = false;
-        this.activeModal.close('Success');
-      },
-      error => {
-        this.lastError = error;
-        this.state = 'request-error';
-        this.isLoading = false;
-      }
-    );
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
+        () => {
+          this.isLoading = false;
+          this.dialogRef.close(true);
+        },
+        error => {
+          this.lastError = error;
+          this.state = 'request-error';
+          this.isLoading = false;
+        }
+      );
   }
 
   ngOnDestroy() {

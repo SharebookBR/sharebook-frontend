@@ -1,9 +1,7 @@
-<div class="modal-header">
-  <h4 class="modal-title">{{ modalTitle }}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cancel')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
+<h4 class="modal-title">{{ modalTitle }}</h4>
 
 <div class="text-center" *ngIf="state == 'loading'"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 
@@ -15,36 +13,41 @@
 </div>
 
 <div class="text-center" *ngIf="state == 'request-success'">
-  <div class="alert alert-success" role="alert">
-    Seu pedido foi efetuado com sucesso.
-  </div>
+  <div class="alert alert-success" role="alert">Seu pedido foi efetuado com sucesso.</div>
   <p><strong>O endereço de entrega abaixo está correto?</strong></p>
   <p>{{ addressLine01 }}<br />{{ addressLine02 }}<br />{{ addressLine03 }}</p>
 </div>
 
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state == 'form'">
-  <div class="modal-body">
-    <div class="text-center" [hidden]="state == 'form'"></div>
+  <mat-dialog-content>
+    <div class="modal-body">
+      <div class="text-center" [hidden]="state == 'form'"></div>
 
-    <p>
-      1 - Fale um pouco sobre você.<br />
-      2 - Por que esse livro é importante?<br />
-      3 - Planeja doar novamente?
-    </p>
-    <textarea formControlName="myNote" name="myNote" type="text" id="myNote" class="md-textarea form-control" rows="3"
-      maxlength="2000"></textarea>
-    <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
-      <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
-        Faça uma boa defesa do seu pedido. Aumente suas chances de ganhar o livro.
-      </small>
+      <p>
+        1 - Fale um pouco sobre você.<br />
+        2 - Por que esse livro é importante?<br />
+        3 - Planeja doar novamente?
+      </p>
+      <textarea
+        formControlName="myNote"
+        name="myNote"
+        type="text"
+        id="myNote"
+        class="md-textarea form-control"
+        rows="3"
+        maxlength="2000"
+      ></textarea>
+      <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
+        <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
+          Faça uma boa defesa do seu pedido. Aumente suas chances de ganhar o livro.
+        </small>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <input type="submit" class="btn btn-primary" value="Quero esse livro."
-      style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid"
-      [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }" />
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cancel')">Cancelar</button>
-  </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Quero esse livro</button>
+    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+  </mat-dialog-actions>
 </form>
 
 <div *ngIf="state != 'form'">
@@ -52,18 +55,22 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <input type="button" class="btn btn-primary btn-block" value="Tudo certo. Obrigado."
-            *ngIf="state == 'request-success'" (click)="activeModal.dismiss('Success')" />
-        </div>
-        <div class="col-lg-6">
-          <input type="button" class="btn btn-warning btn-block" value="Atualizar endereço"
-            *ngIf="state == 'request-success'" (click)="updateAddress(); activeModal.dismiss('Success')" />
-        </div>
-        <div class="col-lg-6">
-          <button type="button" class="btn btn-outline-dark btn-block" (click)="activeModal.dismiss('Cancel')"
-            *ngIf="state != 'request-success'">
-            Cancelar
+          <button *ngIf="state == 'request-success'" mat-flat-button color="primary" mat-dialog-close>
+            Tudo certo, obrigado.
           </button>
+        </div>
+        <div class="col-lg-6">
+          <input
+            type="button"
+            class="btn btn-warning btn-block"
+            value="Atualizar endereço"
+            *ngIf="state == 'request-success'"
+            mat-dialog-close
+            (click)="updateAddress(); activeModal.dismiss('Success')"
+          />
+        </div>
+        <div class="col-lg-6">
+          <button mat-flat-button mat-dialog-close *ngIf="state != 'request-success'">Cancelar</button>
         </div>
       </div>
     </div>

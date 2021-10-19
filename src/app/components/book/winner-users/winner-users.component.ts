@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { BookService } from 'src/app/core/services/book/book.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-winner-users',
@@ -20,7 +20,7 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public activeModal: NgbActiveModal, private _scBook: BookService) { }
+  constructor(public dialogRef: MatDialogRef<WinnerUsersComponent>, private _scBook: BookService) { }
 
   ngOnInit() {
     this.isLoading = true;

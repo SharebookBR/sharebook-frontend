@@ -1,4 +1,41 @@
-<div class="modal-header">
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
+</div>
+<h4 mat-dialog-title>Inclua novo comentário para o livro:</h4>
+<form [formGroup]="formGroup" (ngSubmit)="onTracking()">
+  <mat-dialog-content>
+    <h4>{{ bookTitle }}</h4>
+    <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+    <div class="text-center" *ngIf="state == 'request-error'">
+      <p>:/ ocorreu um erro.</p>
+      <div class="alert alert-danger" role="alert">
+        {{ lastError }}
+      </div>
+    </div>
+    <h5>Comentários:</h5>
+    <h6 *ngFor="let facilitatorNote of facilitatorNotes.split('\n')">{{ facilitatorNote }}</h6>
+    <textarea
+      formControlName="facilitatorNotes"
+      name="facilitatorNotes"
+      type="text"
+      id="facilitatorNotes"
+      class="md-textarea form-control"
+      rows="3"
+      maxlength="2000"
+    ></textarea>
+    <div *ngIf="formGroup.controls['facilitatorNotes'].touched && !formGroup.controls['facilitatorNotes'].valid">
+      <small class="form-text text-danger" *ngIf="formGroup.controls['facilitatorNotes'].hasError('required')">
+        Informe o código de rastreio.
+      </small>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Confirmar</button>
+    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+  </mat-dialog-actions>
+</form>
+
+<!-- <div class="modal-header">
   <h4 class="modal-title">Inclua novo comentário para o livro: {{ bookTitle }}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -41,4 +78,4 @@
     />
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
   </div>
-</form>
+</form> -->

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -36,7 +36,7 @@ export class RequestComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
-    public activeModal: NgbActiveModal,
+    public dialogRef: MatDialogRef<RequestComponent>,
     private _scBook: BookService,
     private _scUser: UserService,
     private _router: Router,

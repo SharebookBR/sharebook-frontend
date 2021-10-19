@@ -4,32 +4,32 @@
   <div *ngIf="isSaved" class="text-center">
     <h1 class="display-4">{{ pageTitle }}</h1>
     <div *ngIf="userProfile === 'User'">
-      <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0;">
+      <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0">
         Doar mais um
         <i class="fa fa-heart"></i>
       </a>
     </div>
     <div *ngIf="userProfile === 'Administrator'">
-      <a routerLink="/book/list" class="btn btn-outline-primary" style="margin: 0 3px 3px 0;">
-        Voltar ao Painel
-      </a>
+      <a routerLink="/book/list" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Voltar ao Painel </a>
     </div>
-    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0;">
-      Veja os ultimos livros doados
-    </a>
+    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0"> Veja os ultimos livros doados </a>
   </div>
 
   <div *ngIf="!isSaved">
     <h1 class="text-center display-4">{{ pageTitle }}</h1>
     <div class="form-row">
       <div class="col-3 figure">
-        <img [src]="
+        <img
+          [src]="
             formGroup.value.imageBytes.length
               ? 'data:image/png;base64,' + formGroup.value.imageBytes
               : formGroup.value.imageUrl
               ? formGroup.value.imageUrl
               : 'assets/img/img-placeholder.png'
-          " class="figure-img img-fluid rounded" alt="Book image" />
+          "
+          class="figure-img img-fluid rounded"
+          alt="Book image"
+        />
       </div>
       <div class="col">
         <div class="form-group col-md-8">
@@ -83,12 +83,13 @@
           <label class="col-form-label" for="userIdFacilitator">Facilitador</label>
           <select class="form-control" formControlName="userIdFacilitator" id="userIdFacilitator">
             <option value=""></option>
-            <option *ngFor="let facilitator of facilitators" value="{{ facilitator.id }}">{{
-              facilitator.name
-              }}</option>
+            <option *ngFor="let facilitator of facilitators" value="{{ facilitator.id }}">
+              {{ facilitator.name }}
+            </option>
           </select>
           <div
-            *ngIf="formGroup.controls['userIdFacilitator'].touched && !formGroup.controls['userIdFacilitator'].valid">
+            *ngIf="formGroup.controls['userIdFacilitator'].touched && !formGroup.controls['userIdFacilitator'].valid"
+          >
             <small class="form-text text-danger" *ngIf="formGroup.controls['userIdFacilitator'].hasError('required')">
               Informe o facilitador do livro.
             </small>
@@ -97,8 +98,15 @@
 
         <div class="form-group col-md-8">
           <div class="custom-file">
-            <input type="file" class="custom-file-input" formControlName="imageName" id="imageName" imageUpload
-              (imageSelected)="onConvertImageToBase64($event)" [imageToDataUrl]="options" />
+            <input
+              type="file"
+              class="custom-file-input"
+              formControlName="imageName"
+              id="imageName"
+              imageUpload
+              (imageSelected)="onConvertImageToBase64($event)"
+              [imageToDataUrl]="options"
+            />
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
               Selecionar imagem da capa do livro
             </label>
@@ -118,33 +126,17 @@
           </div>
         </div>
 
-        <ng-template #popContent>
-          <p>
-            Sabia que com o <strong>registro módico</strong> o envio de livros para todo Brasil fica baratinho? Em média
-            apenas
-            dez reais.
-          </p>
-          <p>
-            Mais detalhes,
-            <a href="https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544" target="_blank"
-              rel="noopener">clique aqui.</a>
-          </p>
-        </ng-template>
-
         <div class="form-group col-md-8">
-          <label class="col-form-label" for="freightOption">Vc pagaria o frete? ❤️</label>
-          <div class="btn-group btn-block btn-group-toggle" data-toggle="buttons">
-            <label *ngFor="let option of freightOptions" [ngClass]="
-                formGroup.value.freightOption === option.value
-                  ? 'btn btn-outline-secondary form-control active'
-                  : 'btn btn-outline-secondary form-control'
-              " (click)="onChangeFieldFreightOption(option.value, p)" #p="ngbPopover" placement="top"
-              [autoClose]="'outside'" [ngbPopover]="popContent" triggers="manual" popoverTitle="Espere! 🙏"
-              id="freightOptionLabel">
-              <input type="radio" name="freightOption" formControlName="freightOption" id="freightOption" />
-              {{ option.text }}
-            </label>
-          </div>
+          <label for="freightOption">Vc pagaria o frete? ❤️</label>
+          <mat-button-toggle-group style="width: 100%">
+            <mat-button-toggle
+              style="width: 100%"
+              *ngFor="let option of freightOptions"
+              (value)="(option.text)"
+              (click)="onChangeFieldFreightOption(option.value)"
+              >{{ option.text }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
 
           <div *ngIf="formGroup.controls['freightOption'].touched && !formGroup.controls['freightOption'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['freightOption'].hasError('required')">
@@ -155,8 +147,14 @@
 
         <div class="form-group col-md-8">
           <label class="col-form-label" for="synopsis">Sinópse</label>
-          <textarea formControlName="synopsis" id="synopsis" type="text" class="form-control" maxlength="2000"
-            style="height: 300px;"></textarea>
+          <textarea
+            formControlName="synopsis"
+            id="synopsis"
+            type="text"
+            class="form-control"
+            maxlength="2000"
+            style="height: 300px"
+          ></textarea>
 
           <div *ngIf="formGroup.controls['synopsis'].touched && !formGroup.controls['synopsis'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['synopsis'].hasError('maxlength')">
@@ -178,17 +176,21 @@
         <div class="form-group col-md-8" *ngIf="canApprove">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" formControlName="approve" id="approve" />
-            <label class="form-check-label" for="approve">
-              Aprovar essa doação.
-            </label>
+            <label class="form-check-label" for="approve"> Aprovar essa doação. </label>
           </div>
         </div>
 
         <div class="form-group col-md-8">
           <div class="text-center" [hidden]="isLoading">
-            <input type="submit" class="btn btn-primary" id="buttonSave" [value]="buttonSaveLabel"
-              style="padding-left: 50px; padding-right: 50px;" [disabled]="!formGroup.valid"
-              [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }" />
+            <input
+              type="submit"
+              class="btn btn-primary"
+              id="buttonSave"
+              [value]="buttonSaveLabel"
+              style="padding-left: 50px; padding-right: 50px"
+              [disabled]="!formGroup.valid"
+              [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }"
+            />
             <a [routerLink]="['/book/list']" class="btn btn-link">Cancelar</a>
           </div>
           <div class="text-center" [hidden]="!isLoading">

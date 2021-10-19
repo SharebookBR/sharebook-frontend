@@ -1,25 +1,29 @@
 import { AppConfigModule } from './../../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FacilitatorNotesComponent } from './facilitator-notes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('FacilitatorNotesComponent', () => {
   let component: FacilitatorNotesComponent;
   let fixture: ComponentFixture<FacilitatorNotesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
         AppConfigModule,
+        MatDialogModule
       ],
       declarations: [FacilitatorNotesComponent],
-      providers: [NgbActiveModal],
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }],
     }).compileComponents();
   }));
 

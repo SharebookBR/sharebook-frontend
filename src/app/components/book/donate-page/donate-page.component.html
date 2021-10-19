@@ -60,7 +60,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <div class="empty-data" *ngIf="donateUsers.data.length === 0">Nenhum registro encontrado.</div>
+    <div class="empty-data" *ngIf="donateUsers.data.length === 0 && (isLoading$ | async) === false">
+      Nenhum registro encontrado.
+    </div>
 
     <div class="spinner-container" *ngIf="isLoading$ | async">
       <mat-spinner></mat-spinner>

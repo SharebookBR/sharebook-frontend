@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { BookService } from 'src/app/core/services/book/book.service';
 import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
@@ -20,7 +20,7 @@ export class DonorModalComponent implements OnInit {
 
   userInfo$: Observable<UserInfoBook>;
 
-  constructor(public activeModal: NgbActiveModal,
+  constructor(public dialogRef: MatDialogRef<DonorModalComponent>,
     private readonly _bookService: BookService) { }
 
   ngOnInit() {

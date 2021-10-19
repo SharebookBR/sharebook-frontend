@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
-  constructor(private _bookService: BookService, private _modalService: NgbModal) { }
+  constructor(private _bookService: BookService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.buscarDados();
@@ -77,14 +77,16 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
     }
 
-    const modalRef = this._modalService.open(DonorModalComponent, {
-      backdropClass: 'light-blue-backdrop',
-      centered: true,
-    });
+    const modalRef = this.dialog.open(DonorModalComponent,
+      {
+        minWidth: 450,
+        data: {
+          bookId: param.bookId,
+          bookTitle: param.title,
+          messageBody: this._messageToModalBody
+        }
+      });
 
-    modalRef.componentInstance.bookId = param.bookId;
-    modalRef.componentInstance.bookTitle = param.title;
-    modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   public doFilter = (value: string) => {
