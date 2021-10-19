@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DonorModalComponent } from './donor-modal.component';
@@ -9,14 +9,18 @@ describe('DonorModalComponent', () => {
   let component: DonorModalComponent;
   let fixture: ComponentFixture<DonorModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DonorModalComponent],
       imports: [
         HttpClientTestingModule,
-        AppConfigModule
+        AppConfigModule,
+        MatDialogModule
       ],
-      providers: [NgbActiveModal]
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }]
     })
       .compileComponents();
   }));

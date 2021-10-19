@@ -1,5 +1,5 @@
 <div [hidden]="!isLoading">
-  <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%;"></i>
+  <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%"></i>
 </div>
 
 <div class="container" [hidden]="isLoading">
@@ -19,16 +19,13 @@
       <!-- End Card Book -->
     </div>
   </section>
-  <section class="row">
-    <div class="col-xs-12 col-md-3" *ngIf="books?.totalItems > 0">
-      <ngb-pagination
-        class="d-flex justify-content-center"
-        [pageSize]="itemsPerPage"
-        [collectionSize]="books?.totalItems"
-        [(page)]="currentPage"
-        size="sm"
-        (pageChange)="togglePage(currentPage)"
-      ></ngb-pagination>
-    </div>
+  <section class="row" *ngIf="books?.totalItems > 0">
+    <mat-paginator
+      [length]="books?.totalItems"
+      [pageSize]="itemsPerPage"
+      (page)="togglePage($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
   </section>
 </div>

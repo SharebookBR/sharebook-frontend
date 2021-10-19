@@ -1,11 +1,10 @@
-<div class="modal-header">
-  <h4 class="modal-title">Informe o código de rastreio para o livro: {{ bookTitle }}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onTracking()">
-  <div class="modal-body">
+<h4 class="modal-title">Informe o código de rastreio para o livro:</h4>
+<form [formGroup]="formGroup" (ngSubmit)="onTracking()">
+  <mat-dialog-content>
+    <h4>{{ bookTitle }}</h4>
     <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
     <div class="text-center" *ngIf="state == 'request-error'">
       <p>:/ ocorreu um erro.</p>
@@ -27,16 +26,9 @@
         Informe o código de rastreio.
       </small>
     </div>
-  </div>
-  <div class="modal-footer">
-    <input
-      type="submit"
-      class="btn btn-primary"
-      value="Confirmar"
-      style="padding-left: 50px; padding-right: 50px"
-      [disabled]="!formGroup.valid"
-      [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }"
-    />
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
-  </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Confirmar</button>
+    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+  </mat-dialog-actions>
 </form>

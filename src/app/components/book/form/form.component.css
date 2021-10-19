@@ -43,3 +43,7 @@ input.ng-invalid.ng-touched {
     min-width: 320px;
   }
 }
+
+mat-button-toggle-group {
+  flex-grow: 1;
+}

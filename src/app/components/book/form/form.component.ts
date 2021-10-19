@@ -1,9 +1,13 @@
+import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
+import { Profile } from './../../../core/models/profile';
+import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -28,7 +32,7 @@ export class FormComponent implements OnInit, OnDestroy {
   facilitators: User[] = [];
   isSaved: Boolean;
 
-  userProfile: string;
+  userProfile: Profile;
   buttonSaveLabel: string;
   pageTitle: string;
   isLoading: Boolean = false;
@@ -59,7 +63,8 @@ export class FormComponent implements OnInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    public dialog: MatDialog
   ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
@@ -131,7 +136,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scUser
       .getProfile()
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(({ profile }) => {
+      .subscribe(profile => {
         this.userProfile = profile;
         this.createFormGroup();
         this.getBookSaved();
@@ -140,7 +145,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   buildFormsLabels() {
-    if (this.userProfile === 'User' || !this.itsEditMode) {
+    if (this.userProfile.profile === 'User' || !this.itsEditMode) {
       this.buttonSaveLabel = 'Doar este livro';
       this.pageTitle = 'Quero doar um livro';
     } else {
@@ -156,11 +161,12 @@ export class FormComponent implements OnInit, OnDestroy {
       .subscribe((param) => (bookId = param.id));
     this.itsEditMode = !!bookId;
 
-    if (this.userProfile === 'Administrator' && bookId) {
+    if (this.userProfile.profile === 'Administrator' && bookId) {
       this._scBook
         .getById(bookId)
         .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe((book) => {
+        .subscribe((book: BookToAdminProfile) => {
+          console.log(book);
           this.status = book.status;
           this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
@@ -201,7 +207,7 @@ export class FormComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    if (this.userProfile === 'User' && !this.isImageLoaded) {
+    if (this.userProfile.profile === 'User' && !this.isImageLoaded) {
       this._toastr.error('Selecionar imagem da capa do livro.');
       return false;
     }
@@ -242,13 +248,11 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeFieldFreightOption(freightOption: string, p) {
+  onChangeFieldFreightOption(freightOption: string) {
     this.formGroup.controls['freightOption'].setValue(freightOption);
 
     if (freightOption === 'WithoutFreight') {
-      p.open();
-    } else {
-      p.close();
+      this.dialog.open(FreightIncentiveDialogComponent, { maxWidth: 350 });
     }
   }
 
@@ -274,7 +278,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scUser
       .getAllFacilitators(this.formGroup.get('userId').value)
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((data) => (this.facilitators = data));
+      .subscribe(data => this.facilitators = data);
   }
 
   ngOnDestroy() {

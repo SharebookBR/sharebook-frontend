@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 import { TrackingComponent } from './tracking.component';
 import { AppConfigModule } from '../../../app-config.module';
@@ -10,7 +10,7 @@ describe('TrackingComponent', () => {
   let component: TrackingComponent;
   let fixture: ComponentFixture<TrackingComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TrackingComponent],
       imports: [
@@ -18,8 +18,12 @@ describe('TrackingComponent', () => {
         ReactiveFormsModule,
         AppConfigModule,
         HttpClientTestingModule,
+        MatDialogModule
       ],
-      providers: [NgbActiveModal],
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }],
     }).compileComponents();
   }));
 

@@ -5,6 +5,7 @@
   "javascript.preferences.quoteStyle": "single",
   "files.encoding": "utf8",
   "files.eol": "\n",
+  "files.insertFinalNewline": true,
   "editor.detectIndentation": false,
   "prettier.tabWidth": 2,
   "prettier.printWidth": 120,
