@@ -39,6 +39,12 @@ Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e 
 
 Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie sua PULL REQUEST para a branch DEVELOP e aguarde ser aprovado.
 
+### 4.4 LOGIN DE TESTES EM DEV
+
+Caso você necessite logar para testar localmente o projeto, pode utilizar o login abaixo:
+Login: vagner@sharebook.com
+Senha: 132456
+
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
 ## Observações:
