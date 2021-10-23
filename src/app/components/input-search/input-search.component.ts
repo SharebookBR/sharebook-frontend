@@ -24,10 +24,7 @@ export class InputSearchComponent implements OnInit {
   public search(): void {
     // verifica se há alguma coisa na busca - senão houver exibe um alerta e não direciona pesquisa
     if (this.searchForm.value.paramSearch) {
-      this._router.navigate([
-        '/book/search',
-        this.searchForm.value.paramSearch
-      ]);
+      window.location.href = `/book/search/${this.searchForm.value.paramSearch}`
       this.searchAlert = false;
     } else {
       this.searchAlert = true;

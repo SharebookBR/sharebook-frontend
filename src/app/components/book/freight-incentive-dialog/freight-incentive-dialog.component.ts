@@ -12,4 +12,7 @@ export class FreightIncentiveDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  AbrirRegistroModico(): void {
+    window.open('https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544');
+  }
 }
