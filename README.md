@@ -41,9 +41,9 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 ### 4.4 LOGIN DE TESTES EM DEV
 
-Caso você necessite logar para testar localmente o projeto, pode utilizar o login abaixo:
-Login: vagner@sharebook.com
-Senha: 132456
+Caso você necessite logar para testar localmente o projeto, pode utilizar o login abaixo:\
+Login: vagner@sharebook.com\
+Senha: 132456\
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
