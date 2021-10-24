@@ -43,7 +43,7 @@ Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fo
 
 Caso você necessite logar para testar localmente o projeto, pode utilizar o login abaixo:\
 Login: vagner@sharebook.com\
-Senha: 132456\
+Senha: 132456
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
