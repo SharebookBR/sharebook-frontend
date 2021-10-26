@@ -8,7 +8,7 @@ import { takeUntil, finalize } from 'rxjs/operators';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatDialog } from '@angular/material/dialog';
 import { DonateComponent } from '../donate/donate.component';
 import { Book } from 'src/app/core/models/book';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
@@ -47,7 +47,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _scBook: BookService,
-    private _modalService: NgbModal,
+    public dialog: MatDialog,
     private _formBuilder: FormBuilder
   ) {
     this.formGroup = _formBuilder.group({
@@ -95,16 +95,14 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
       }
 
-      const modalRef = this._modalService.open(DonateComponent, {
-        backdropClass: 'light-blue-backdrop',
-        centered: true
-      });
+      const modalRef = this.dialog.open(DonateComponent, { minWidth: 450 });
+
       modalRef.componentInstance.bookId = this.book.id;
       modalRef.componentInstance.userId = param.userId;
       modalRef.componentInstance.userNickName = (param.requesterNickName === null) ? '' : param.requesterNickName;
 
-      modalRef.result.then(data => {
-        if (data === 'ok') {
+      modalRef.afterClosed().subscribe(result => {
+        if (result) {
           this.back();
         }
       });

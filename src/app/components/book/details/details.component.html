@@ -2,14 +2,10 @@
   <h1 class="text-center display-4">{{ pageTitle }}</h1>
 
   <div *ngIf="state == 'not-found'" class="text-center">
-    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0;">
-      Voltar para página inicial.
-    </a>
+    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0"> Voltar para página inicial. </a>
   </div>
 
-  <div class="text-center" *ngIf="state == 'loading'">
-    <i class="fa fa-spinner fa-spin"></i> Aguarde...
-  </div>
+  <div class="text-center" *ngIf="state == 'loading'"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
 
   <div class="container" *ngIf="state == 'ready'">
     <div class="form-row">
@@ -26,26 +22,21 @@
         <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
         <p><strong>Autor:</strong><br />{{ bookInfo.author }}</p>
         <p><strong>Categoria:</strong><br />{{ bookInfo.category }}</p>
-        <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap;">
+        <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
           <strong>Sinópse:</strong><br />{{ bookInfo.synopsis }}
         </p>
         <p *ngIf="available">
-          <strong>Quando será anunciado o ganhador desse livro?</strong><br />{{
-          chooseDateInfo
-          }}
+          <strong>Quando será anunciado o ganhador desse livro?</strong><br />{{ chooseDateInfo }}
         </p>
         <p>
           <strong>Local de Origem</strong><br />{{ bookInfo.city }} -
           {{ bookInfo.state }}
         </p>
-        <p *ngIf="available && userProfile">
-          <strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}
-        </p>
+        <p *ngIf="available && userProfile"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
         <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight">
           <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight" />
           <label class="custom-control-label" for="checkFreight">Estou ciente que o frete não é grátis. Caso seja
-            escolhido, me
-            comprometo a reembolsar o doador.</label>
+            escolhido, me comprometo a reembolsar o doador.</label>
         </div>
       </div>
     </div>

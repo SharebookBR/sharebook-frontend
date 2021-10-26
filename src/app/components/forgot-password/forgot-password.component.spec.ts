@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -16,7 +16,7 @@ describe('ForgotPasswordComponent', () => {
   let fixture: ComponentFixture<ForgotPasswordComponent>;
   const hashCodeValue = '961bf5da-cdfc-4603-a03b-dcfcbba1e5af';
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ForgotPasswordComponent],
       imports: [

@@ -31,7 +31,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
         confirmPassword: ['', [Validators.required]]
       },
       {
-        validator: PasswordValidation.MatchPassword
+        validators: PasswordValidation.MatchPassword
       }
     );
   }

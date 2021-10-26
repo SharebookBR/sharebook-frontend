@@ -1,3 +1,4 @@
+import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -13,7 +14,7 @@ import { Observable } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
-import { MyRequestItem } from '../../models/MyRequestItem';
+import { FullSearch } from '../../models/FullSearch';
 
 @Injectable({
   providedIn: 'root',
@@ -51,8 +52,8 @@ export class BookService {
     return this._http.post<any>(`${this.config.apiEndpoint}/book`, book);
   }
 
-  public getById(bookId: string) {
-    return this._http.get<Book>(`${this.config.apiEndpoint}/book/${bookId}`);
+  public getById(bookId: string): Observable<BookToAdminProfile> {
+    return this._http.get<BookToAdminProfile>(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
   public getBySlug(bookSlug: string) {
@@ -62,7 +63,7 @@ export class BookService {
   }
 
   public update(book: Book) {
-    return this._http.put<Book>(
+    return this._http.put<any>(
       `${this.config.apiEndpoint}/book/${book.id}`,
       book
     );
@@ -163,8 +164,8 @@ export class BookService {
     criteria: string,
     page: number,
     items: number
-  ): Observable<any[]> {
-    return this._http.get<any[]>(
+  ): Observable<FullSearch> {
+    return this._http.get<FullSearch>(
       `${this.config.apiEndpoint}/book/FullSearch/${encodeURIComponent(
         criteria
       )}/${page}/${items}`

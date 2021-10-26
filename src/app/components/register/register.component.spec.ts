@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +21,7 @@ describe('RegisterComponent', () => {
   let debugElement: DebugElement;
   let addressService: AddressService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterComponent],
       imports: [
@@ -41,7 +41,7 @@ describe('RegisterComponent', () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    addressService = TestBed.get(AddressService);
+    addressService = TestBed.inject(AddressService);
     fixture.detectChanges();
   });
 

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
@@ -14,14 +14,14 @@ describe('ContactUsComponent', () => {
   let component: ContactUsComponent;
   let fixture: ComponentFixture<ContactUsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContactUsComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
-        RecaptchaModule.forRoot(),
+        RecaptchaModule,
         RecaptchaFormsModule,
         AppConfigModule,
         RouterTestingModule,

@@ -1,5 +1,4 @@
 import { Category } from './category';
-import { User } from './user';
 import { BookDonationStatus } from './BookDonationStatus';
 
 export class Book {

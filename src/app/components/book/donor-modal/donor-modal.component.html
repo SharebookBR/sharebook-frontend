@@ -1,21 +1,16 @@
-<div class="modal-header">
-  <h4 class="modal-title">Informações do doador do livro: <br> {{ bookTitle }}</h4>
-
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-
-<div class="modal-body">
-
+<h4 class="modal-title">Informações do doador do livro:</h4>
+<mat-dialog-content>
+  <h4>{{ bookTitle }}</h4>
   <section class="card-body">
-
     <div [hidden]="!loading">
       <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
     </div>
 
     <ng-container *ngIf="messageBody !== ''">
-      <h5 class="card-title">{{messageBody}}</h5>
+      <h5 class="card-title">{{ messageBody }}</h5>
     </ng-container>
 
     <ng-container *ngIf="(userInfo$ | async)?.donor as donor">
@@ -25,10 +20,8 @@
       <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
       <p class="card-text">Telefone: {{ donor.phone }}</p>
     </ng-container>
-
   </section>
-</div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Cancelar</button>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" mat-dialog-close>Ok entendi</button>
+</mat-dialog-actions>

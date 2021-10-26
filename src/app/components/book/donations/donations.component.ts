@@ -4,12 +4,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
 import { TrackingComponent } from '../tracking/tracking.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationDialogService } from 'src/app/core/services/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
@@ -36,11 +36,10 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private _bookService: BookService,
-    private _modalService: NgbModal,
     private _toastr: ToastrService,
-    private _confirmationDialogService: ConfirmationDialogService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -137,24 +136,33 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!chooseDate || chooseDate - todayDate > 0) {
           alert('Aguarde a data de escolha!');
         } else {
-          this._confirmationDialogService
-            .confirm('Atenção!', 'Confirma a renovação da data de doação?')
-            .then((confirmed) => {
-              if (confirmed) {
-                this._bookService
-                  .renewChooseDate(param.id)
-                  .pipe(takeUntil(this._destroySubscribes$))
-                  .subscribe(
-                    () => {
-                      this._toastr.success('Doação renovada com sucesso.');
-                      this.getDonations();
-                    },
-                    (error) => {
-                      this._toastr.error(error);
-                    }
-                  );
+
+          const modalRef = this.dialog.open(ConfirmationDialogComponent,
+            {
+              data: {
+                title: 'Atenção!',
+                message: 'Confirma a renovação da data de doação?',
+                btnOkText: 'Confirmar',
+                btnCancelText: 'Cancelar'
               }
             });
+
+          modalRef.afterClosed().subscribe(result => {
+            if (result) {
+              this._bookService
+                .renewChooseDate(param.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe(
+                  () => {
+                    this._toastr.success('Doação renovada com sucesso.');
+                    this.getDonations();
+                  },
+                  (error) => {
+                    this._toastr.error(error);
+                  }
+                );
+            }
+          });
         }
 
         break;
@@ -171,23 +179,13 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         }
 
-        const modalRef = this._modalService.open(TrackingComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
+        const modalRef = this.dialog.open(TrackingComponent, { minWidth: 450 });
 
-        modalRef.result.then(
-          (result) => {
-            if (result === 'Success') {
-              this.getDonations();
-            }
-          },
-          (reason) => {
-            if (reason === 'Success') {
-              this.getDonations();
-            }
+        modalRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.getDonations();
           }
-        );
+        });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
@@ -205,21 +203,30 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
           );
           return;
         }
-        this._confirmationDialogService
-          .confirm('Atenção!', 'Confirma o cancelamento da doação?')
-          .then((confirmed) => {
-            if (confirmed) {
-              this._bookService
-                .cancelDonation(param.id)
-                .pipe(takeUntil(this._destroySubscribes$))
-                .subscribe((resp) => {
-                  if (resp['success']) {
-                    this._toastr.success('Doação cancelada com sucesso.');
-                    this.getDonations();
-                  }
-                });
+
+        const modalRef = this.dialog.open(ConfirmationDialogComponent,
+          {
+            data: {
+              title: 'Atenção!',
+              message: 'Confirma o cancelamento da doação?',
+              btnOkText: 'Confirmar',
+              btnCancelText: 'Cancelar'
             }
           });
+
+        modalRef.afterClosed().subscribe(result => {
+          if (result) {
+            this._bookService
+              .cancelDonation(param.id)
+              .pipe(takeUntil(this._destroySubscribes$))
+              .subscribe((resp) => {
+                if (resp['success']) {
+                  this._toastr.success('Doação cancelada com sucesso.');
+                  this.getDonations();
+                }
+              });
+          }
+        });
 
         break;
       }
@@ -233,10 +240,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
           );
           return;
         }
-        const modalRef = this._modalService.open(WinnerUsersComponent, {
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-        });
+        const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
