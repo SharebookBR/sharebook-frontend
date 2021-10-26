@@ -4,36 +4,28 @@
   <div class="example-table-container">
 
     <table mat-table [dataSource]="quem" class="example-table"
-           matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+           matSort matSortActive="created" matSortDisableClear matSortDirection="desc" aria-label="tableWhoaccessed">
       <!-- Number Column -->
       <ng-container matColumnDef="Data">
-        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <th id="data"mat-header-cell *matHeaderCellDef>Data</th>
         <td mat-cell *matCellDef="let row">{{row.date | date:  'dd/MM/yyyy'}}  </td>
       </ng-container>
 
       <!-- Title Column -->
       <ng-container matColumnDef="Hora">
-        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <th id="hora"mat-header-cell *matHeaderCellDef>Hora</th>
         <td mat-cell *matCellDef="let row">{{row.time}}</td>
       </ng-container>
 
       <!-- State Column -->
       <ng-container matColumnDef="Usuário">
-        <th mat-header-cell *matHeaderCellDef>Usuário</th>
+        <th id="user"mat-header-cell *matHeaderCellDef>Usuário</th>
         <td mat-cell *matCellDef="let row">{{row.name}}</td>
       </ng-container>
       <!-- State Column -->
       <ng-container matColumnDef="Perfil">
-        <th mat-header-cell *matHeaderCellDef>Perfil</th>
+        <th id="perfil"mat-header-cell *matHeaderCellDef>Perfil</th>
         <td mat-cell *matCellDef="let row">{{row.profile}}</td>
-      </ng-container>
-
-      <!-- Created Column -->
-      <ng-container matColumnDef="created">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-          Created
-        </th>
-        <td mat-cell *matCellDef="let row">{{row.created_at | date}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
