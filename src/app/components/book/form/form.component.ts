@@ -5,7 +5,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
@@ -41,6 +41,7 @@ export class FormComponent implements OnInit, OnDestroy {
   isImageLoaded: Boolean = false;
   canApprove: Boolean = false;
   status = '';
+  freightStartSelected = '';
 
   src: string;
 
@@ -68,6 +69,7 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
+    this.userProfile = new Profile('');
   }
 
   ngOnInit() {
@@ -90,7 +92,14 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this._scBook
       .getFreightOptions()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        finalize(() => {
+          setTimeout(() => {
+            this.onChangeFieldFreightOption('State');
+          }, 350);
+        })
+      )
       .subscribe((data) => (this.freightOptions = data));
 
     this._scCategory
@@ -160,13 +169,11 @@ export class FormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((param) => (bookId = param.id));
     this.itsEditMode = !!bookId;
-
     if (this.userProfile.profile === 'Administrator' && bookId) {
       this._scBook
         .getById(bookId)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe((book: BookToAdminProfile) => {
-          console.log(book);
           this.status = book.status;
           this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
