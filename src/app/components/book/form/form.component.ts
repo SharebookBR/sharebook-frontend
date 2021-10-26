@@ -4,8 +4,8 @@ import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/f
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
@@ -41,7 +41,6 @@ export class FormComponent implements OnInit, OnDestroy {
   isImageLoaded: Boolean = false;
   canApprove: Boolean = false;
   status = '';
-  freightStartSelected = '';
 
   src: string;
 
@@ -56,6 +55,9 @@ export class FormComponent implements OnInit, OnDestroy {
     },
     allowedExtensions: ['jpg', 'jpeg', 'png']
   };
+
+  public freightStartSubject = new BehaviorSubject<string>('');
+  public freightStart$ = this.freightStartSubject.asObservable();
 
   constructor(
     private _scBook: BookService,
@@ -93,12 +95,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scBook
       .getFreightOptions()
       .pipe(
-        takeUntil(this._destroySubscribes$),
-        finalize(() => {
-          setTimeout(() => {
-            this.onChangeFieldFreightOption('State');
-          }, 350);
-        })
+        takeUntil(this._destroySubscribes$)
       )
       .subscribe((data) => (this.freightOptions = data));
 
@@ -194,6 +191,9 @@ export class FormComponent implements OnInit, OnDestroy {
             agreeToTerms: true,
             approve: false,
           };
+
+          this.formGroup.controls['freightOption'].setValue(book.freightOption);
+          this.freightStartSubject.next(this.freightOptions.find(frete => frete.value === book.freightOption).text);
           this.formGroup
             .get('userIdFacilitator')
             .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin

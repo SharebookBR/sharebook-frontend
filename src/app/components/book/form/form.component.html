@@ -128,11 +128,11 @@
 
         <div class="form-group col-md-8">
           <label for="freightOption">Vc pagaria o frete? ❤️</label>
-          <mat-button-toggle-group style="width: 100%" [value]="freightOptions[1].text">
+          <mat-button-toggle-group style="width: 100%" [value]="freightStart$ | async">
             <mat-button-toggle
               style="width: 100%"
               *ngFor="let option of freightOptions"
-              [value]="(option.text)"
+              [value]="option.text"
               (click)="onChangeFieldFreightOption(option.value)"
               >{{ option.text }}
             </mat-button-toggle>
