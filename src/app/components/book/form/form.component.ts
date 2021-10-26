@@ -4,7 +4,7 @@ import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/f
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -56,6 +56,9 @@ export class FormComponent implements OnInit, OnDestroy {
     allowedExtensions: ['jpg', 'jpeg', 'png']
   };
 
+  public freightStartSubject = new BehaviorSubject<string>('');
+  public freightStart$ = this.freightStartSubject.asObservable();
+
   constructor(
     private _scBook: BookService,
     private _scCategory: CategoryService,
@@ -68,6 +71,7 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {
     /*  Inicializa o formGroup defatult por que é obrigatório  */
     this.createFormGroup();
+    this.userProfile = new Profile('');
   }
 
   ngOnInit() {
@@ -90,7 +94,9 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this._scBook
       .getFreightOptions()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
       .subscribe((data) => (this.freightOptions = data));
 
     this._scCategory
@@ -160,13 +166,11 @@ export class FormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((param) => (bookId = param.id));
     this.itsEditMode = !!bookId;
-
     if (this.userProfile.profile === 'Administrator' && bookId) {
       this._scBook
         .getById(bookId)
         .pipe(takeUntil(this._destroySubscribes$))
         .subscribe((book: BookToAdminProfile) => {
-          console.log(book);
           this.status = book.status;
           this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
@@ -187,6 +191,9 @@ export class FormComponent implements OnInit, OnDestroy {
             agreeToTerms: true,
             approve: false,
           };
+
+          this.formGroup.controls['freightOption'].setValue(book.freightOption);
+          this.freightStartSubject.next(this.freightOptions.find(frete => frete.value === book.freightOption).text);
           this.formGroup
             .get('userIdFacilitator')
             .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin

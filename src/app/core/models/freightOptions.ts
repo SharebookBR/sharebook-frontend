@@ -1,5 +1,5 @@
 export class FreightOptions {
-  value: number;
+  value: string;
   text: string;
 
   constructor(value, text) {
