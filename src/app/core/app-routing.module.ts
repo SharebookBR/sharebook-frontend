@@ -1,3 +1,4 @@
+import { MyaccountComponent } from './../components/myaccount/myaccount.component';
 
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -91,6 +92,11 @@ const routes: Routes = [
   {
     path: 'panel',
     component: PanelComponent,
+    canActivate: [AuthGuardUser]
+  },
+  {
+    path: 'myaccount',
+    component: MyaccountComponent,
     canActivate: [AuthGuardUser]
   },
   {

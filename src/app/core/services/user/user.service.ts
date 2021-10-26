@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import 'rxjs/Rx';
 import { User } from '../../models/user';
 import { UserInfo } from '../../models/userInfo';
 import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
@@ -84,5 +84,13 @@ export class UserService {
 
   getAllFacilitators(userIdDonator: string) {
     return this._http.get<User[]>(`${this.config.apiEndpoint}/Account/ListFacilitators/` + userIdDonator);
+  }
+
+  downloadData(){
+    return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`)
+  }
+  whoAccessed(){
+    let user = JSON.parse(localStorage.shareBookUser)
+    return this._http.get<any>(`${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`)
   }
 }

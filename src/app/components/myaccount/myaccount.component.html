@@ -1,0 +1,55 @@
+<div class="container text-center">
+  <h1 class="display-4">Minha Conta</h1>
+  <div class="flex-container justify-content-center">
+
+
+    <div class="card">
+      <a routerLink="/account" title="Editar perfil">
+        <img class="card-img-top panel-item" src="../../../assets/img/editar-dados.png" alt="Card image" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Editar Dados</h5>
+      </div>
+    </div>
+
+    <div class="card">
+      <a routerLink="/change-password" title="Mudar senha">
+        <img class="card-img-top panel-item" src="../../../assets/img/padlock.svg" alt="Card image" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Mudar Senha</h5>
+      </div>
+    </div>
+
+    <div class="card"  (click)="whoAccessed()">
+      <a routerLink="/myaccount" title="Quem Acessou Meus Dados?">
+        <img class="card-img-top panel-item" src="../../../assets/img/quem-acessou.png" alt="Card image" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Quem Acessou Meus Dados?</h5>
+      </div>
+    </div>
+
+    <!--Modal Quem acessou Meus dados-->
+
+<!--Fim Modal-->
+    <div class="card">
+      <a routerLink="/myaccount" title="Download dos Dados Pessoais" (click)="download()">
+        <img class="card-img-top panel-item" src="../../../assets/img/download-dados.png" alt="Card image" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Download dos Dados Pessoais</h5>
+      </div>
+    </div>
+    <div class="card">
+      <a routerLink="/myaccount" title="Excluir_Conta" >
+        <img class="card-img-top panel-item" src="../../../assets/img/excluir-em-breve.png" alt="Card image" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Excluir Conta
+
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

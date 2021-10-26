@@ -80,6 +80,8 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
+import { MyaccountComponent } from './components/myaccount/myaccount.component';
+import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,8 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
     TermsOfUseComponent,
     DonorModalComponent,
     FreightIncentiveDialogComponent,
+    MyaccountComponent,
+    DialogWHoAccessedComponent,
   ],
   imports: [
     BrowserModule,

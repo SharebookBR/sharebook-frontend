@@ -1,0 +1,33 @@
+
+::ng-deep.cdk-overlay-pane{
+  width: 80%;
+  padding-top: 100px;
+
+}
+::ng-deep.mat-dialog-container,::ng-deep.mat-dialog-content{
+  display:flex;
+  justify-content: center;
+  width:100%;
+  padding:20px;
+}
+::ng-deep.mat-table{
+  width:100%;
+}
+::ng-deep .example-container{
+  width:100%;
+
+}
+
+::ng-deep.mat-dialog-actions{
+  min-height: 30px;
+}
+::ng-deep.mat-dialog-title{
+  margin:0;
+}
+.button-close{
+  border:none;
+  outline: none;
+  background-color: #00B0E5;
+  color:#fff;
+  box-shadow: 2px 2px 2px #ccc;
+}
