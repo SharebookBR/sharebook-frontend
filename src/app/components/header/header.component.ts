@@ -32,20 +32,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._scUser.getLoggedUser()
-    .pipe(
-      takeUntil(this._destroySubscribes$)
-    )
-    .subscribe(shareBookUser => {
-      this.shareBookUser = shareBookUser;
-      this.userLogged = !!this.shareBookUser;
-    });
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(shareBookUser => {
+        this.shareBookUser = shareBookUser;
+        this.userLogged = !!this.shareBookUser;
+      });
   }
 
   // metodo que desativa o menu ao clicar em um link
   showHideMenu() {
-    if (this.menu.nativeElement.classList.contains('show')) {
-      this.menu.nativeElement.classList.toggle('show');
-    }
+    this.menu.nativeElement.classList.toggle('show');
   }
 
   ngOnDestroy() {
