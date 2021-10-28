@@ -90,7 +90,6 @@ export class UserService {
     return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`)
   }
   whoAccessed(){
-    let user = JSON.parse(localStorage.shareBookUser)
     return this._http.get<any>(`${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`)
   }
 }

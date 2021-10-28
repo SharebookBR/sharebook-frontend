@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Quem Acessou Meus Dados? </h1>
 <div mat-dialog-content>
-  <div class="example-container mat-elevation-z8">
-  <div class="example-table-container">
+  <div class="container mat-elevation-z8">
+  <div class="table-container">
 
-    <table mat-table [dataSource]="quem" class="example-table"
+    <table mat-table [dataSource]="who" class="table"
            matSort matSortActive="created" matSortDisableClear matSortDirection="desc" aria-label="tableWhoaccessed">
       <!-- Number Column -->
       <ng-container matColumnDef="Data">
@@ -33,7 +33,7 @@
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of GitHub search results"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select pages of response"></mat-paginator>
 </div>
 </div>
 <div mat-dialog-actions>

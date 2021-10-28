@@ -1,11 +1,10 @@
 import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from './../../core/services/user/user.service';
 import { Subject } from 'rxjs';
-import { Component, OnInit, Inject } from '@angular/core';
-import 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-myaccount',
   templateUrl: './myaccount.component.html',
@@ -62,7 +61,7 @@ whoAccessedList:any;
 
   }
   saveAsProject(){
-    //Caso necessario, alterar abaixo o nome do arquivo e extensão
+
     this.writeContents(this.convertedData, 'Meus dados'+'.xls', 'sheet/xls');
   }
   writeContents(content, fileName, contentType) {
