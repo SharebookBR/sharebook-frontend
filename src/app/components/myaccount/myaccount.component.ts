@@ -12,10 +12,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyaccountComponent implements OnInit {
   isAdmin: boolean;
-personalData:any;
-fileContent:any;
-convertedData:any;
-whoAccessedList:any;
+  personalData:any;
+  fileContent:any;
+  convertedData:any;
+  whoAccessedList:any;
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(private _scUser: UserService,public dialog: MatDialog) { }
