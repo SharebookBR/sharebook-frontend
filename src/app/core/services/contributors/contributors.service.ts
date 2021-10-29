@@ -60,6 +60,42 @@ export class ContributorsService {
         ],
       },
       {
+        image: 'assets/img/top_contributors/luciano.jpg',
+        name: 'Luciano Rodrigues',
+        position: 'Frontend Developer',
+        links: [
+          {
+            url:
+              'https://www.linkedin.com/in/lucianorodriguess/',
+            content: 'Linkedin',
+          }
+        ],
+      },
+      {
+        image: 'assets/img/top_contributors/manu.jpg',
+        name: 'Manoella Romay',
+        position: 'UX/UI Designer',
+        links: [
+          {
+            url:
+              'https://www.linkedin.com/in/mariamanoella-romay',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
+        image: 'assets/img/top_contributors/diego.jpeg',
+        name: 'Diego Maciel',
+        position: 'UX/UI Designer',
+        links: [
+          {
+            url:
+              'https://www.linkedin.com/in/diegomacieldesigner/',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
         image: 'assets/img/top_contributors/walter.jpg',
         name: 'Walter Vinicius',
         position: 'Fullstack Developer',

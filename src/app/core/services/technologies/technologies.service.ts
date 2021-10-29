@@ -16,7 +16,7 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/angular.jpg',
         title: 'Frontend',
-        text: 'Angular 11+, Typescript 4, Bootstrap 4, HTML 5',
+        text: 'Angular 11+, Typescript 4, Material Design, HTML 5',
         links: [{ url: RepositoriesUrls.FRONTEND, content: 'Github' }, { url: TrelloUrls.FRONTEND, content: 'Trello' }]
       },
       {
