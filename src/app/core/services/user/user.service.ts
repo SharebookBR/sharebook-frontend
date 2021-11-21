@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import 'rxjs/Rx';
 import { User } from '../../models/user';
 import { UserInfo } from '../../models/userInfo';
 import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
@@ -28,7 +27,7 @@ export class UserService {
 
   register(user: User) {
     return this._http.post<any>(`${this.config.apiEndpoint}/Account/Register`, user).pipe(
-      map(response => {
+      map((response) => {
         // login successful if there's a jwt token in the response
         if (response.authenticated) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -86,10 +85,12 @@ export class UserService {
     return this._http.get<User[]>(`${this.config.apiEndpoint}/Account/ListFacilitators/` + userIdDonator);
   }
 
-  downloadData(){
-    return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`)
+  downloadData() {
+    return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`);
   }
-  whoAccessed(){
-    return this._http.get<any>(`${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`)
+  whoAccessed() {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`
+    );
   }
 }

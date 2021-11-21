@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   address = new Address();
   isGettingAddress: boolean;
-  isMinor: boolean = false;
+  isMinor = false;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -33,62 +33,60 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private _AddressService: AddressService,
     private _toastr: ToastrService
   ) {
-
-    this.formGroup = _formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
-      age: ['', [Validators.required, Validators.max(100), Validators.min(8)]],
-      parentEmail: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-      email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
-      confirmPassword: ['', [Validators.required]],
-      phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
-      postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
-      street: ['', [Validators.required]],
-      number: ['', [Validators.required]],
-      complement: [''],
-      neighborhood: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      allowSendingEmail: [true, null],
-      acceptTermOfUse: [false, null],
-    }, {
-      validators: PasswordValidation.MatchPassword
-    });
-
+    this.formGroup = _formBuilder.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+        age: ['', [Validators.required, Validators.max(100), Validators.min(8)]],
+        parentEmail: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+        email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+        password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
+        confirmPassword: ['', [Validators.required]],
+        phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
+        postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
+        street: ['', [Validators.required]],
+        number: ['', [Validators.required]],
+        complement: [''],
+        neighborhood: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        state: ['', [Validators.required]],
+        country: ['', [Validators.required]],
+        allowSendingEmail: [true, null],
+        acceptTermOfUse: [false, null],
+      },
+      {
+        validators: PasswordValidation.MatchPassword,
+      }
+    );
   }
 
   ngOnInit() {
-    this.formGroup.controls['age'].valueChanges.subscribe(age => {
-      if(age < 12)
-      {
+    this.formGroup.controls['age'].valueChanges.subscribe((age) => {
+      if (age < 12) {
         this.isMinor = true;
         this.formGroup.controls['parentEmail'].enable();
-      }
-      else{
+      } else {
         this.isMinor = false;
         this.formGroup.controls['parentEmail'].disable();
       }
     });
-   }
+  }
 
   registerUser() {
     if (this.formGroup.valid) {
-      this._scUser.register(this.formGroup.value)
-        .pipe(
-          takeUntil(this._destroySubscribes$)
-        )
+      this._scUser
+        .register(this.formGroup.value)
+        .pipe(takeUntil(this._destroySubscribes$))
         .subscribe(
-          data => {
+          (data) => {
             if (data.success || data.authenticated) {
-              var msg = data.successMessage ? data.successMessage : 'Registro realizado com sucesso';
+              const msg = data.successMessage ? data.successMessage : 'Registro realizado com sucesso';
               this._toastr.success(msg);
               this._router.navigate(['/']);
             } else {
               this._toastr.error(data.messages[0]);
             }
           },
-          error => {
+          (error) => {
             this._toastr.error(error);
           }
         );
@@ -98,10 +96,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   getAddressByPostalCode(postalCode: string) {
     this.isGettingAddress = true;
 
-    this._AddressService.getAddressByPostalCode(postalCode)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
+    this._AddressService
+      .getAddressByPostalCode(postalCode)
+      .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((address: Address) => {
         this.address = address;
         this.address.country = 'Brasil';
