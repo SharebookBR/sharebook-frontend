@@ -11,5 +11,10 @@
   "prettier.printWidth": 120,
   "editor.formatOnSave": true,
   "prettier.jsxSingleQuote": true,
-  "prettier.jsxBracketSameLine": true
+  "prettier.jsxBracketSameLine": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+  },
 }
