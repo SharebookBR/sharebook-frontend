@@ -24,6 +24,32 @@
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="name">Idade</label>
+        <div class="input-group">
+          <input formControlName="age" id="age" name="age" type="number" step="1" class="form-control" />
+          <div class="input-group-addon append"><i class="fa fa-address-book"></i></div>
+        </div>
+        <div *ngIf="formGroup.controls['age'].touched && !formGroup.controls['age'].valid">
+          <small class="form-text text-danger">
+            Não parece ser uma idade válida. Tente entre 8 e 100.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2" *ngIf="isMinor">
+        <label class="col-form-label" for="name">Email dos pais ou responsável</label>
+        <div class="input-group">
+          <input formControlName="parentEmail" id="parentEmail" name="parentEmail" type="text" class="form-control" />
+          <div class="input-group-addon append"><i class="fa fa-envelope-square"></i></div>
+        </div>
+        <div *ngIf="formGroup.controls['parentEmail'].touched && !formGroup.controls['parentEmail'].valid">
+          <small class="form-text text-danger">
+            O e-mail deve ser um e-mail válido.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
           <input formControlName="email" id="email" type="text" class="form-control lowerCase" />

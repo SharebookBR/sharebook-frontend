@@ -30,7 +30,7 @@ export class UserService {
     return this._http.post<any>(`${this.config.apiEndpoint}/Account/Register`, user).pipe(
       map(response => {
         // login successful if there's a jwt token in the response
-        if (response.success || response.authenticated) {
+        if (response.authenticated) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('shareBookUser', JSON.stringify(response));
           this.setLoggedUser(response);

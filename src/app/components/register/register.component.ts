@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   address = new Address();
   isGettingAddress: boolean;
+  isMinor: boolean = false;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -35,6 +36,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      age: ['', [Validators.required, Validators.max(100), Validators.min(8)]],
+      parentEmail: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
       confirmPassword: ['', [Validators.required]],
@@ -55,7 +58,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.formGroup.controls['age'].valueChanges.subscribe(age => {
+      if(age < 12)
+      {
+        this.isMinor = true;
+        this.formGroup.controls['parentEmail'].enable();
+      }
+      else{
+        this.isMinor = false;
+        this.formGroup.controls['parentEmail'].disable();
+      }
+    });
+   }
 
   registerUser() {
     if (this.formGroup.valid) {
@@ -66,7 +81,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         .subscribe(
           data => {
             if (data.success || data.authenticated) {
-              this._toastr.success('Registro realizado com sucesso');
+              var msg = data.successMessage ? data.successMessage : 'Registro realizado com sucesso';
+              this._toastr.success(msg);
               this._router.navigate(['/']);
             } else {
               this._toastr.error(data.messages[0]);
