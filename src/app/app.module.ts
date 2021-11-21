@@ -38,6 +38,7 @@ import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ParentAprovalComponent } from './components/parent-aproval/parent-aproval.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
@@ -59,12 +60,7 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import {
-  RecaptchaModule,
-  RECAPTCHA_SETTINGS,
-  RecaptchaSettings,
-  RecaptchaFormsModule
-} from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
@@ -100,6 +96,7 @@ import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dia
     AccountComponent,
     ChangePasswordComponent,
     ResetPasswordComponent,
+    ParentAprovalComponent,
     ForgotPasswordComponent,
     DonateComponent,
     ContactUsComponent,
@@ -144,7 +141,7 @@ import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dia
 
     MatDialogModule,
     MatButtonModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
   ],
   providers: [
     AuthGuardUser,
@@ -176,10 +173,10 @@ import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dia
     FacilitatorNotesComponent,
     MainUsersComponent,
     WinnerUsersComponent,
-    DonorModalComponent
+    DonorModalComponent,
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
 }

@@ -58,6 +58,12 @@ export class UserService {
     );
   }
 
+  parentAproval(hashCode: string) {
+    return this._http.put<any>(`${this.config.apiEndpoint}/Account/ParentAproval/`, {
+      ParentHashCodeAproval: hashCode,
+    });
+  }
+
   delete(id: number) {
     // return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
   }
