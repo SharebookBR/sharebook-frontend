@@ -14,8 +14,7 @@ import { UserService } from '../../core/services/user/user.service';
 export class ParentAprovalComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();
   public hashCode = '';
-  public aproved: Boolean = false;
-  public testeTeste: Boolean = true;
+  public aproved = false;
 
   constructor(private _activatedRoute: ActivatedRoute, private _scUser: UserService, private _toastr: ToastrService) {}
 
