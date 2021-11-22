@@ -1,0 +1,27 @@
+<div class="container">
+  <h1 class="text-center display-4">Consentimento dos pais ou responsável</h1>
+
+  <p>
+    Olá. Conforme notificado no email, precisamos do seu consentimento para liberar o acesso em nosso app. Sharebook é
+    um app livre e gratuito para doação de livros. Temos todo o cuidado com a segurança e privacidade dos nossos
+    usuários.
+  </p>
+
+  <div class="form-row" *ngIf="!aproved">
+    <div class="col">
+      <div class="form-group col-md-6 offset-md-3">
+        <div class="text-center">
+          <input
+            type="submit"
+            class="btn btn-primary"
+            value="Liberar acesso"
+            style="padding-left: 50px; padding-right: 50px"
+            (click)="parentAproval()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-success" role="alert" *ngIf="aproved">Acesso liberado com sucesso.</div>
+</div>

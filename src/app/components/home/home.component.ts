@@ -17,10 +17,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public hasEbook: Boolean = true;
   public randomEbooks: Book[] = [];
 
-
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scBook: BookService) { }
+  constructor(private _scBook: BookService) {}
 
   ngOnInit() {
     this._scBook
@@ -38,7 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.randomEbooks = ebooks;
         this.hasEbook = ebooks.length > 0 ? true : false;
       });
-
   }
 
   ngOnDestroy() {
