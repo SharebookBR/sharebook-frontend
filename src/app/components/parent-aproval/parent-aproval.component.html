@@ -7,7 +7,7 @@
     usuários.
   </p>
 
-  <div class="form-row" *ngIf="!aproved">
+  <div class="form-row" *ngIf="state == 'ready'">
     <div class="col">
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
@@ -23,5 +23,9 @@
     </div>
   </div>
 
-  <div class="alert alert-success" role="alert" *ngIf="aproved">Acesso liberado com sucesso.</div>
+  <div class="alert alert-success" role="alert" *ngIf="state == 'approved'">Acesso liberado com sucesso.</div>
+
+  <div *ngIf="state == 'loading'"><mat-spinner></mat-spinner></div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="state == 'error'">{{ errorMsg }}</div>
 </div>
