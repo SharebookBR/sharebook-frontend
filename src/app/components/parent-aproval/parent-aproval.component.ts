@@ -14,7 +14,8 @@ import { UserService } from '../../core/services/user/user.service';
 export class ParentAprovalComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();
   public hashCode = '';
-  public aproved = false;
+  public state = 'ready';
+  public errorMsg = '';
 
   constructor(private _activatedRoute: ActivatedRoute, private _scUser: UserService, private _toastr: ToastrService) {}
 
@@ -25,16 +26,20 @@ export class ParentAprovalComponent implements OnInit, OnDestroy {
   }
 
   parentAproval() {
+    this.state = 'loading';
+
     this._scUser
       .parentAproval(this.hashCode)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
         (data) => {
           this._toastr.success('Acesso liberado com sucesso. Obrigado.');
-          this.aproved = true;
+          this.state = 'approved';
         },
         (error) => {
           this._toastr.error(error);
+          this.state = 'error';
+          this.errorMsg = error;
         }
       );
   }
