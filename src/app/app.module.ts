@@ -38,6 +38,7 @@ import { PanelComponent } from './components/panel/panel.component';
 import { AccountComponent } from './components/account/account.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ParentAprovalComponent } from './components/parent-aproval/parent-aproval.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
@@ -59,12 +60,7 @@ import { ContactUsService } from './core/services/contact-us/contact-us.service'
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import {
-  RecaptchaModule,
-  RECAPTCHA_SETTINGS,
-  RecaptchaSettings,
-  RecaptchaFormsModule
-} from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
@@ -80,6 +76,8 @@ import { DonatePageComponent } from './components/book/donate-page/donate-page.c
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
+import { MyaccountComponent } from './components/myaccount/myaccount.component';
+import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +96,7 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
     AccountComponent,
     ChangePasswordComponent,
     ResetPasswordComponent,
+    ParentAprovalComponent,
     ForgotPasswordComponent,
     DonateComponent,
     ContactUsComponent,
@@ -116,6 +115,8 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
     TermsOfUseComponent,
     DonorModalComponent,
     FreightIncentiveDialogComponent,
+    MyaccountComponent,
+    DialogWHoAccessedComponent,
   ],
   imports: [
     BrowserModule,
@@ -140,7 +141,7 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
 
     MatDialogModule,
     MatButtonModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
   ],
   providers: [
     AuthGuardUser,
@@ -172,10 +173,10 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
     FacilitatorNotesComponent,
     MainUsersComponent,
     WinnerUsersComponent,
-    DonorModalComponent
+    DonorModalComponent,
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) { } // <-- We inject the service here to keep it alive whole time
+  constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time
 }

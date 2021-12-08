@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Quem Acessou Meus Dados? </h1>
+<div mat-dialog-content>
+  <div class="container mat-elevation-z8">
+  <div class="table-container">
+
+    <table mat-table [dataSource]="who" class="table"
+           matSort matSortActive="created" matSortDisableClear matSortDirection="desc" aria-label="tableWhoaccessed">
+      <!-- Number Column -->
+      <ng-container matColumnDef="Data">
+        <th id="data"mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let row">{{row.date | date:  'dd/MM/yyyy'}}  </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="Hora">
+        <th id="hora"mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let row">{{row.time}}</td>
+      </ng-container>
+
+      <!-- State Column -->
+      <ng-container matColumnDef="Usuário">
+        <th id="user"mat-header-cell *matHeaderCellDef>Usuário</th>
+        <td mat-cell *matCellDef="let row">{{row.name}}</td>
+      </ng-container>
+      <!-- State Column -->
+      <ng-container matColumnDef="Perfil">
+        <th id="perfil"mat-header-cell *matHeaderCellDef>Perfil</th>
+        <td mat-cell *matCellDef="let row">{{row.profile}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select pages of response"></mat-paginator>
+</div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close color="primary" class="button-close">Close</button>
+</div>

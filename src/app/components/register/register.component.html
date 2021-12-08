@@ -24,6 +24,28 @@
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="name">Idade</label>
+        <div class="input-group">
+          <input formControlName="age" id="age" name="age" type="number" step="1" class="form-control" />
+          <div class="input-group-addon append"><i class="fa fa-address-book" aria-hidden="true"></i></div>
+        </div>
+        <div *ngIf="formGroup.controls['age'].touched && !formGroup.controls['age'].valid">
+          <small class="form-text text-danger"> Não parece ser uma idade válida. Tente entre 8 e 100. </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2" *ngIf="isMinor">
+        <label class="col-form-label" for="name">Email dos pais ou responsável</label>
+        <div class="input-group">
+          <input formControlName="parentEmail" id="parentEmail" name="parentEmail" type="text" class="form-control" />
+          <div class="input-group-addon append"><i class="fa fa-envelope-square" aria-hidden="true"></i></div>
+        </div>
+        <div *ngIf="formGroup.controls['parentEmail'].touched && !formGroup.controls['parentEmail'].valid">
+          <small class="form-text text-danger"> O e-mail deve ser um e-mail válido. </small>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
         <div class="input-group">
           <input formControlName="email" id="email" type="text" class="form-control lowerCase" />
@@ -86,8 +108,14 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-          <input formControlName="phone" id="phone" type="text" class="form-control" [dropSpecialCharacters]="false"
-            mask="(00) 00000-0000" />
+          <input
+            formControlName="phone"
+            id="phone"
+            type="text"
+            class="form-control"
+            [dropSpecialCharacters]="false"
+            mask="(00) 00000-0000"
+          />
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
@@ -106,8 +134,15 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="postalCode">CEP</label>
         <div class="input-group">
-          <input formControlName="postalCode" id="postalCode" type="text" [dropSpecialCharacters]="false"
-            mask="00000-000" class="form-control" (blur)="getAddressByPostalCode($event.target.value)" />
+          <input
+            formControlName="postalCode"
+            id="postalCode"
+            type="text"
+            [dropSpecialCharacters]="false"
+            mask="00000-000"
+            class="form-control"
+            (blur)="getAddressByPostalCode($event.target.value)"
+          />
 
           <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>
@@ -243,25 +278,32 @@
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="acceptTermOfUse" id="defaultCheck2" required
-            defaultCheck2>
+          <input
+            class="form-check-input"
+            type="checkbox"
+            formControlName="acceptTermOfUse"
+            id="defaultCheck2"
+            required
+            defaultCheck2
+          />
           <label class="form-check-label" for="defaultCheck2">
             Aceito os <a routerLink="/termos-de-uso">termos de uso</a>
           </label>
         </div>
       </div>
 
-
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input type="submit" class="btn btn-primary" value="Registrar" style="padding-left: 50px; padding-right: 50px"
-            [disabled]="!formGroup.valid" />
+          <input
+            type="submit"
+            class="btn btn-primary"
+            value="Registrar"
+            style="padding-left: 50px; padding-right: 50px"
+            [disabled]="!formGroup.valid"
+          />
           <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
         </div>
       </div>
-
     </div>
-
   </div>
-
 </form>

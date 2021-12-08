@@ -1,3 +1,4 @@
+import { MyaccountComponent } from './../components/myaccount/myaccount.component';
 
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -16,6 +17,7 @@ import { ContributeProjectComponent } from '../components/contribute-project/con
 import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 import { ResetPasswordComponent } from '../components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from '../components/forgot-password/forgot-password.component';
+import { ParentAprovalComponent } from '../components/parent-aproval/parent-aproval.component';
 import { ContactUsComponent } from '../components/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
@@ -27,116 +29,126 @@ import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.com
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'book/form',
     component: BookFormComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'livros/doar',
     component: BookFormComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'book/form/:id',
     component: BookFormComponent,
-    canActivate: [AuthGuardAdmin]
+    canActivate: [AuthGuardAdmin],
   },
   {
     path: 'book/list',
     component: BookListComponent,
-    canActivate: [AuthGuardAdmin]
+    canActivate: [AuthGuardAdmin],
   },
   {
     path: 'book/requesteds',
     component: RequestedsComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'book/donations',
     component: DonationsComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'book/search',
-    loadChildren: () => import('../components/book/search-results/search-results.module').then(m => m.SearchResultsModule)
+    loadChildren: () =>
+      import('../components/book/search-results/search-results.module').then((m) => m.SearchResultsModule),
   },
   {
     path: 'book/donate/:id',
     component: DonatePageComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'livros/:slug',
-    component: BookDetailComponent
+    component: BookDetailComponent,
   },
   {
     path: 'quem-somos',
-    component: AboutComponent
+    component: AboutComponent,
   },
   {
     path: 'apoie-projeto',
-    component: ContributeProjectComponent
+    component: ContributeProjectComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'panel',
     component: PanelComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
+  },
+  {
+    path: 'myaccount',
+    component: MyaccountComponent,
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'account',
     component: AccountComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'change-password',
     component: ChangePasswordComponent,
-    canActivate: [AuthGuardUser]
+    canActivate: [AuthGuardUser],
   },
   {
     path: 'reset-password',
-    component: ResetPasswordComponent
+    component: ResetPasswordComponent,
   },
   {
     path: 'ForgotPassword/:hashCodePassword',
-    component: ForgotPasswordComponent
+    component: ForgotPasswordComponent,
+  },
+  {
+    path: 'consentimento-dos-pais/:hashCode',
+    component: ParentAprovalComponent,
   },
   {
     path: 'contact-us',
-    component: ContactUsComponent
+    component: ContactUsComponent,
   },
   {
     path: 'politica-privacidade',
-    component: PrivacyPolicyComponent
+    component: PrivacyPolicyComponent,
   },
   {
     path: 'termos-de-uso',
-    component: TermsOfUseComponent
+    component: TermsOfUseComponent,
   },
   // otherwise redirect to home
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'enabled',
-    relativeLinkResolution: 'legacy'
-})
+      scrollPositionRestoration: 'enabled',
+      relativeLinkResolution: 'legacy',
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
