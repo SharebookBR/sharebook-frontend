@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication/authen
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   // variavel apra selecionar o menu via DOM
@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   userLogged = false;
   shareBookUser = new User();
+  logoUrl = 'assets/img/logo.png';
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -31,11 +32,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._scUser.getLoggedUser()
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe(shareBookUser => {
+    this.setComemorativeLogo();
+
+    this._scUser
+      .getLoggedUser()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((shareBookUser) => {
         this.shareBookUser = shareBookUser;
         this.userLogged = !!this.shareBookUser;
       });
@@ -49,5 +51,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  setComemorativeLogo() {
+    const currMonth = new Date().getMonth() + 1;
+
+    if (currMonth === 12) {
+      this.logoUrl = 'assets/img/logo-natal.png';
+    }
   }
 }

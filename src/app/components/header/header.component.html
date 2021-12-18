@@ -3,10 +3,18 @@
 <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" routerLink="/">
-      <img src="assets/img/logo.png" alt="logotipo" id="logotipo" class="d-inline-block align-top" />
+      <img src="{{ logoUrl }}" alt="logotipo" id="logotipo" class="d-inline-block align-top" />
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" (click)="showHideMenu()"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarText"
+      (click)="showHideMenu()"
+      aria-controls="navbarText"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText" #menu>
@@ -18,34 +26,41 @@
         </li>
         <li class="nav-item">
           <!-- adicinando evento de click nos links que chama o metodo que esconde o menu -->
-          <a class="nav-link hvr-underline-from-center" routerLink="/" (click)="showHideMenu()">Início
+          <a class="nav-link hvr-underline-from-center" routerLink="/" (click)="showHideMenu()"
+            >Início
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" routerLink="/livros/doar" (click)="showHideMenu()">Doe um
-            Livro</a>
+          <a class="nav-link hvr-underline-from-center" routerLink="/livros/doar" (click)="showHideMenu()"
+            >Doe um Livro</a
+          >
         </li>
-        <li class="nav-item ">
-          <a class="nav-link hvr-underline-from-center" routerLink="/apoie-projeto" (click)="showHideMenu()">Apoie o
-            projeto</a>
+        <li class="nav-item">
+          <a class="nav-link hvr-underline-from-center" routerLink="/apoie-projeto" (click)="showHideMenu()"
+            >Apoie o projeto</a
+          >
         </li>
-        <li class="nav-item ">
+        <li class="nav-item">
           <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos" (click)="showHideMenu()">Quem somos</a>
         </li>
-        <li class="nav-item ">
-          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel"
-            (click)="showHideMenu()">Meu Painel</a>
+        <li class="nav-item">
+          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel" (click)="showHideMenu()"
+            >Meu Painel</a
+          >
         </li>
-        <li class="nav-item ">
-          <a class="nav-link hvr-underline-from-center" routerLink="/contact-us" (click)="showHideMenu()">Fale
-            Conosco</a>
+        <li class="nav-item">
+          <a class="nav-link hvr-underline-from-center" routerLink="/contact-us" (click)="showHideMenu()"
+            >Fale Conosco</a
+          >
         </li>
-        <li class="nav-item ">
-          <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login"
-            (click)="showHideMenu()">Entrar</a>
-          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login"
-            (click)="showHideMenu()">Sair</a>
+        <li class="nav-item">
+          <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login" (click)="showHideMenu()"
+            >Entrar</a
+          >
+          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login" (click)="showHideMenu()"
+            >Sair</a
+          >
         </li>
       </ul>
 
@@ -55,4 +70,4 @@
 </div>
 
 <!-- para afastar o miolo do menu. -->
-<div style="width: 100%; height: 118px;"></div>
+<div style="width: 100%; height: 118px"></div>
