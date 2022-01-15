@@ -78,6 +78,7 @@ import { DonorModalComponent } from './components/book/donor-modal/donor-modal.c
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
+import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dia
     FreightIncentiveDialogComponent,
     MyaccountComponent,
     DialogWHoAccessedComponent,
+    DialogAnonymizeComponent,
   ],
   imports: [
     BrowserModule,
