@@ -1,9 +1,8 @@
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 import { UserService } from './../../core/services/user/user.service';
 import { AnonymizeUserVM } from '../../core/models/AnonymizeUserVM';
