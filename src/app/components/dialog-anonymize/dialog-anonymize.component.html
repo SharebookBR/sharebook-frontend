@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Excluir minha conta</h1>
+<div mat-dialog-content>
+  <div>
+    <p>
+      Ficamos muito tristes em saber que está nos deixando. Nossa intenção é que o Sharebook seja uma plataforma que
+      ajude as pessoas, que cause um impacto positivo.
+    </p>
+
+    <p>
+      Pedimos desculpas caso tenhamos causado uma impressão negativa. Por favor nos informe o seu motivo de excluir sua
+      conta, para que a gente tenha a chance de melhorar.
+    </p>
+
+    <p>Caso mude de ideia, sempre será bem vindo(a) de volta ao nosso app.</p>
+
+    <form [formGroup]="formGroup">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error> Obrigatório informar senha. </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Motivo</mat-label>
+        <textarea matInput formControlName="reason"></textarea>
+
+        <mat-error *ngIf="formGroup.controls['reason'].hasError('required')"> Obrigatório informar motivo. </mat-error>
+        <mat-error *ngIf="formGroup.controls['reason'].hasError('minlength')">
+          O motivo deve conter no mínimo 30 caracteres.
+        </mat-error>
+      </mat-form-field>
+    </form>
+
+    <p></p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="anonymize()" [disabled]="!formGroup.valid">
+    Excluir minha conta
+  </button>
+  <button mat-raised-button mat-dialog-close color="secondary">Cancelar</button>
+</div>

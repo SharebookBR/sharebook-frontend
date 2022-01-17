@@ -1,9 +1,11 @@
-import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from './../../core/services/user/user.service';
 import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
+import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize.component';
 
 @Component({
   selector: 'app-myaccount',
@@ -77,5 +79,9 @@ export class MyaccountComponent implements OnInit, OnDestroy {
       this.whoAccessedList = data;
       this.dialog.open(DialogWHoAccessedComponent, { data: this.whoAccessedList, width: '100%' });
     });
+  }
+
+  anonymize() {
+    this.dialog.open(DialogAnonymizeComponent, { width: '600px', height: '400px' });
   }
 }

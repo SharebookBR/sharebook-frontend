@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { UserInfo } from '../../models/userInfo';
 import { ChangePasswordUserVM } from '../../models/ChangePasswordUserVM';
+import { AnonymizeUserVM } from '../../models/AnonymizeUserVM';
 import { ChangeUserPasswordByHashCodeVM } from '../../models/ChangeUserPasswordByHashCodeVM';
 import { ForgotMyPasswordVM } from '../../models/forgotMyPasswordVM';
 import { Profile } from '../../models/profile';
@@ -94,9 +95,14 @@ export class UserService {
   downloadData() {
     return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`);
   }
+
   whoAccessed() {
     return this._http.get<any>(
       `${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`
     );
+  }
+
+  anonymize(dto: AnonymizeUserVM) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/Account/Anonymize`, dto);
   }
 }
