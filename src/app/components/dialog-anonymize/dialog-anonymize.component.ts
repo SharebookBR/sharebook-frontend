@@ -14,6 +14,7 @@ import { AnonymizeUserVM } from '../../core/models/AnonymizeUserVM';
 })
 export class DialogAnonymizeComponent implements OnInit {
   who: any = [{}];
+  public state = 'ready';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -42,6 +43,8 @@ export class DialogAnonymizeComponent implements OnInit {
     dto.password = this.formGroup.value.password;
     dto.reason = this.formGroup.value.reason;
 
+    this.state = 'loading';
+
     this._scUser.anonymize(dto).subscribe(
       (data) => {
         this.dialog.closeAll();
@@ -51,6 +54,7 @@ export class DialogAnonymizeComponent implements OnInit {
         this._toastr.success('Sua conta foi removida com sucesso. =(');
       },
       (error) => {
+        this.state = 'ready';
         this._toastr.error(error[0]);
       }
     );
