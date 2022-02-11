@@ -1,8 +1,6 @@
 <div class="container text-center">
   <h1 class="display-4">Minha Conta</h1>
   <div class="flex-container justify-content-center">
-
-
     <div class="card">
       <a routerLink="/account" title="Editar perfil">
         <img class="card-img-top panel-item" src="../../../assets/img/editar-dados.png" alt="Editar Dados" />
@@ -21,7 +19,7 @@
       </div>
     </div>
 
-    <div class="card"  (click)="whoAccessed()">
+    <div class="card" (click)="whoAccessed()">
       <a routerLink="/myaccount" title="Quem Acessou Meus Dados?">
         <img class="card-img-top panel-item" src="../../../assets/img/quem-acessou.png" alt="Quem Aessou Meus Dados?" />
       </a>
@@ -32,23 +30,25 @@
 
     <!--Modal Quem acessou Meus dados-->
 
-<!--Fim Modal-->
+    <!--Fim Modal-->
     <div class="card">
       <a routerLink="/myaccount" title="Download dos Dados Pessoais" (click)="download()">
-        <img class="card-img-top panel-item" src="../../../assets/img/download-dados.png" alt="Download dos Dados Pessoais" />
+        <img
+          class="card-img-top panel-item"
+          src="../../../assets/img/download-dados.png"
+          alt="Download dos Dados Pessoais"
+        />
       </a>
       <div class="card-body">
         <h5 class="card-title">Download dos Dados Pessoais</h5>
       </div>
     </div>
     <div class="card">
-      <a routerLink="/myaccount" title="Excluir_Conta" >
-        <img class="card-img-top panel-item" src="../../../assets/img/excluir-em-breve.png" alt="Excluir Conta" />
+      <a routerLink="/myaccount" title="Excluir_Conta" (click)="anonymize()">
+        <img class="card-img-top panel-item" src="../../../assets/img/excluir.png" alt="Excluir Conta" />
       </a>
       <div class="card-body">
-        <h5 class="card-title">Excluir Conta
-
-        </h5>
+        <h5 class="card-title">Excluir Conta</h5>
       </div>
     </div>
   </div>
