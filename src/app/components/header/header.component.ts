@@ -54,10 +54,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   setComemorativeLogo() {
-    const currMonth = new Date().getMonth() + 1;
+    const currDate = new Date();
+    const currYear = currDate.getFullYear();
 
-    if (currMonth === 12) {
+    let start = new Date(currYear + '/12/01');
+    let end = new Date(currYear + '/12/31');
+
+    if (currDate >= start && currDate <= end) {
       this.logoUrl = 'assets/img/logo-natal.png';
+      return;
+    }
+
+    start = new Date(currYear + '/02/15');
+    end = new Date(currYear + '/03/15');
+
+    if (currDate >= start && currDate <= end) {
+      this.logoUrl = 'assets/img/logo-carnaval.png';
+      return;
     }
   }
 }
