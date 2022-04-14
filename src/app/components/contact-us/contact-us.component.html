@@ -53,7 +53,6 @@
           <div class="form-group col-md-6 offset-md-3 mb-2">
             <label class="col-form-label" for="phone">DDD + Telefone</label>
             <div class="input-group">
-
               <input
                 formControlName="phone"
                 type="text"
@@ -108,13 +107,15 @@
           </div>
           <div class="form-group col-md-6 offset-md-3 mb-2">
             <div class="input-group">
-              <input
+              <button
                 type="submit"
-                class="btn btn-primary"
-                value="Enviar"
+                mat-flat-button
+                color="primary"
                 style="padding-left: 50px; padding-right: 50px"
                 [disabled]="!formGroup.valid"
-              />
+              >
+                Enviar
+              </button>
             </div>
           </div>
 
