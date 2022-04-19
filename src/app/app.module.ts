@@ -68,6 +68,7 @@ import { FacilitatorNotesComponent } from './components/book/facilitator-notes/f
 import { MainUsersComponent } from './components/book/main-users/main-users.component';
 import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
@@ -142,6 +143,7 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
         MatDialogModule,
         MatButtonModule,
         MatButtonToggleModule,
+        MatIconModule
     ],
     providers: [
         AuthGuardUser,

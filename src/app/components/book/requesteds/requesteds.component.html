@@ -35,14 +35,15 @@
       <ng-container matColumnDef="doador">
         <th mat-header-cell *matHeaderCellDef class="header">Doador</th>
         <td mat-cell *matCellDef="let element">
-          <span
+          <button
             (click)="onCustomActionColum(element)"
-            class="btn btn-light btn-sm ml-1 mb-1"
+            mat-flat-button
+            class="ml-1 mb-1"
             data-toggle="tooltip"
             title="Ver doador"
           >
-            <i class="fa fa-user"></i>
-          </span>
+            <mat-icon>person</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -59,7 +60,7 @@
     </div>
 
     <p class="mt-2">
-      <a routerLink="/panel" class="btn btn-link">Voltar</a>
+      <button mat-button color="primary" routerLink="/panel">Voltar</button>
     </p>
   </div>
 </div>

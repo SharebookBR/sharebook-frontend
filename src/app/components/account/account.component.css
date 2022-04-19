@@ -18,12 +18,6 @@ form i.fa-white {
   padding-left: 45px !important;
 }
 
-/* Style buttons */
-.btn-cep {
-  background-color: #2098d1;
-  cursor: pointer;
-}
-
 /* Darker background on mouse-over */
 .btn-cep:hover {
   background-color: #00284f;

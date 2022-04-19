@@ -39,13 +39,21 @@
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="input-group">
-          <input type="submit" id="btnLogin" class="btn btn-primary btn-block" value="Login"
-            style="padding-left: 50px; padding-right: 50px" [disabled]="!formGroup.valid" />
+          <button
+            type="submit"
+            id="btnLogin"
+            style="padding-left: 50px; padding-right: 50px; width: inherit;"
+            [disabled]="!formGroup.valid"
+            mat-raised-button
+            color="primary"
+          >
+            Login
+          </button>
         </div>
         <div class="text-center">
           <p>
-            <a [routerLink]="['/register']" class="btn btn-link">Criar Conta</a> ou
-            <a [routerLink]="['/reset-password']" class="btn btn-link">Esqueci minha senha</a>
+            <a [routerLink]="['/register']" mat-button color="primary">Criar Conta</a> ou
+            <a [routerLink]="['/reset-password']" mat-button color="primary">Esqueci minha senha</a>
           </p>
         </div>
       </div>

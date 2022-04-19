@@ -45,7 +45,6 @@
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="phone">DDD + Telefone</label>
         <div class="input-group">
-
           <input
             formControlName="phone"
             [dropSpecialCharacters]="false"
@@ -97,8 +96,8 @@
               class="form-control"
               (blur)="getAddressByPostalCode($event.target.value)"
             />
-            <button class="btn btn-cep" (click)="onGetAddressByPostalCode(); (false)">
-              <i class="fa-white fa fa-repeat"></i>
+            <button mat-flat-button color="primary" style="color: white;" (click)="onGetAddressByPostalCode(); (false)">
+              <mat-icon>cached</mat-icon>
             </button>
 
             <div class="input-group-addon append" [hidden]="isGettingAddress">
@@ -139,8 +138,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].street.touched && !formGroup['controls'].Address['controls'].street.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].street.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].street.touched &&
+              !formGroup['controls'].Address['controls'].street.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].street.hasError('required')"
+            >
               Endereço obrigatório.
             </small>
           </div>
@@ -155,8 +162,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].number.touched && !formGroup['controls'].Address['controls'].number.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].number.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].number.touched &&
+              !formGroup['controls'].Address['controls'].number.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].number.hasError('required')"
+            >
               Número obrigatório.
             </small>
           </div>
@@ -181,8 +196,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].neighborhood.touched && !formGroup['controls'].Address['controls'].neighborhood.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].neighborhood.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].neighborhood.touched &&
+              !formGroup['controls'].Address['controls'].neighborhood.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].neighborhood.hasError('required')"
+            >
               Bairro obrigatório.
             </small>
           </div>
@@ -197,8 +220,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].city.touched && !formGroup['controls'].Address['controls'].city.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].city.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].city.touched &&
+              !formGroup['controls'].Address['controls'].city.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].city.hasError('required')"
+            >
               Cidade obrigatório.
             </small>
           </div>
@@ -213,8 +244,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].state.touched && !formGroup['controls'].Address['controls'].state.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].state.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].state.touched &&
+              !formGroup['controls'].Address['controls'].state.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].state.hasError('required')"
+            >
               Estado obrigatório.
             </small>
           </div>
@@ -229,8 +268,16 @@
             </div>
           </div>
 
-          <div *ngIf="formGroup['controls'].Address['controls'].country.touched && !formGroup['controls'].Address['controls'].country.valid">
-            <small class="form-text text-danger" *ngIf="formGroup['controls'].Address['controls'].country.hasError('required')">
+          <div
+            *ngIf="
+              formGroup['controls'].Address['controls'].country.touched &&
+              !formGroup['controls'].Address['controls'].country.valid
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="formGroup['controls'].Address['controls'].country.hasError('required')"
+            >
               País obrigatório.
             </small>
           </div>
@@ -239,23 +286,23 @@
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="allowSendingEmail" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">
-            Aceito receber e-mails e newletter do Sharebook
-          </label>
+          <input class="form-check-input" type="checkbox" formControlName="allowSendingEmail" id="defaultCheck1" />
+          <label class="form-check-label" for="defaultCheck1"> Aceito receber e-mails e newletter do Sharebook </label>
         </div>
       </div>
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input
+          <button
             type="submit"
-            class="btn btn-primary"
-            value="Atualizar"
+            mat-flat-button
+            color="primary"
             style="padding-left: 50px; padding-right: 50px"
             [disabled]="!formGroup.valid"
-          />
-          <a [routerLink]="['/panel']" class="btn btn-link">Cancelar</a>
+          >
+            Atualizar
+          </button>
+          <a [routerLink]="['/panel']" mat-flat-button>Cancelar</a>
         </div>
       </div>
     </div>

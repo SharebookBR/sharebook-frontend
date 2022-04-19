@@ -60,14 +60,15 @@
           </button>
         </div>
         <div class="col-lg-6">
-          <input
-            type="button"
-            class="btn btn-warning btn-block"
-            value="Atualizar endereço"
+          <button
+            mat-flat-button
+            style="background-color: #ffc107; width: -webkit-fill-available"
             *ngIf="state == 'request-success'"
             mat-dialog-close
             (click)="updateAddress(); activeModal.dismiss('Success')"
-          />
+          >
+            Atualizar endereço
+          </button>
         </div>
         <div class="col-lg-6">
           <button mat-flat-button mat-dialog-close *ngIf="state != 'request-success'">Cancelar</button>
