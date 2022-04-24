@@ -49,50 +49,59 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef class="header">Ação</th>
         <td mat-cell *matCellDef="let element">
-          <span
+          <button
             (click)="onCustom('donate', element)"
-            class="btn btn-warning btn-sm ml-1 mb-1"
+            mat-flat-button
+            class="ml-1 mb-1"
+            style="background-color: #ffc107"
             data-toggle="tooltip"
             title="Ver interessados"
           >
-            <i class="fa fa-list"></i>
-          </span>
+            <mat-icon>format_list_bulleted</mat-icon>
+          </button>
 
-          <span
+          <button
             (click)="onCustom('renewChooseDate', element)"
-            class="btn btn-info btn-sm ml-1 mb-1"
+            mat-flat-button
+            class="ml-1 mb-1"
+            style="background-color: #17a2b8; color: white"
             data-toggle="tooltip"
             title="Renovar Data de Escolha"
           >
-            <i class="fa fa-calendar"></i>
-          </span>
+            <mat-icon>calendar_month</mat-icon>
+          </button>
 
-          <span
+          <button
             (click)="onCustom('trackNumber', element)"
-            class="btn btn-secondary btn-sm ml-1 mb-1"
+            mat-flat-button
+            style="background-color: gray; color: white"
+            class="ml-1 mb-1"
             data-toggle="tooltip"
             title="Informar Código Rastreio"
           >
-            <i class="fa fa-truck"></i>
-          </span>
+            <mat-icon>local_shipping</mat-icon>
+          </button>
 
-          <span
+          <button
             (click)="onCustom('CancelDonation', element)"
-            class="btn btn-danger btn-sm ml-1 mb-1"
+            mat-flat-button
+            class="ml-1 mb-1"
+            color="warn"
             data-toggle="tooltip"
             title="Cancelar Doação"
           >
-            <i class="fa fa-trash"></i>
-          </span>
+            <mat-icon>delete_outline</mat-icon>
+          </button>
 
-          <span
+          <button
             (click)="onCustom('ShowWinnerInfo', element)"
-            class="btn btn-light btn-sm ml-1 mb-1"
+            mat-flat-button
+            class="ml-1 mb-1"
             data-toggle="tooltip"
             title="Ver ganhador"
           >
-            <i class="fa fa-user"></i>
-          </span>
+            <mat-icon>person</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -108,7 +117,7 @@
       <mat-spinner></mat-spinner>
     </div>
     <p class="mt-2">
-      <a routerLink="/panel" class="btn btn-link">Voltar</a>
+      <button mat-button color="primary" routerLink="/panel">Voltar</button>
     </p>
   </div>
 </div>

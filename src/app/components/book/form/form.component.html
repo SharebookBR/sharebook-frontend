@@ -1,18 +1,19 @@
 <form [formGroup]="formGroup" id="formGroup" class="container form-horizontal" (ngSubmit)="onAddBook()">
   <input formControlName="userId" id="userId" type="hidden" />
-
   <div *ngIf="isSaved" class="text-center">
     <h1 class="display-4">{{ pageTitle }}</h1>
     <div *ngIf="userProfile === 'User'">
-      <a href="/livros/doar" class="btn btn-outline-primary" style="margin: 0 3px 3px 0">
+      <button href="/livros/doar" mat-button color="primary" style="margin: 0 3px 3px 0">
         Doar mais um
-        <i class="fa fa-heart"></i>
-      </a>
+        <mat-icon>favorite</mat-icon>
+      </button>
     </div>
     <div *ngIf="userProfile === 'Administrator'">
-      <a routerLink="/book/list" class="btn btn-outline-primary" style="margin: 0 3px 3px 0"> Voltar ao Painel </a>
+      <button routerLink="/book/list" mat-button color="primary" style="margin: 0 3px 3px 0">Voltar ao Painel</button>
     </div>
-    <a routerLink="/" class="btn btn-outline-success" style="margin: 0 3px 3px 0"> Veja os ultimos livros doados </a>
+    <button routerLink="/" mat-flat-button color="primary" style="margin: 0 3px 3px 0">
+      Veja os ultimos livros doados
+    </button>
   </div>
 
   <div *ngIf="!isSaved">
@@ -182,16 +183,18 @@
 
         <div class="form-group col-md-8">
           <div class="text-center" [hidden]="isLoading">
-            <input
+            <button
               type="submit"
-              class="btn btn-primary"
+              mat-flat-button
+              color="primary"
               id="buttonSave"
-              [value]="buttonSaveLabel"
               style="padding-left: 50px; padding-right: 50px"
               [disabled]="!formGroup.valid"
               [ngStyle]="{ cursor: !formGroup.valid ? 'not-allowed' : 'auto' }"
-            />
-            <a [routerLink]="['/book/list']" class="btn btn-link">Cancelar</a>
+            >
+              {{ buttonSaveLabel }}
+            </button>
+            <button mat-button color="primary" [routerLink]="['/book/list']">Cancelar</button>
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> {{ isLoadingMessage }}

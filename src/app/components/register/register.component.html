@@ -294,14 +294,16 @@
 
       <div class="form-group col-md-6 offset-md-3">
         <div class="text-center">
-          <input
+          <button
             type="submit"
-            class="btn btn-primary"
-            value="Registrar"
+            mat-flat-button
+            color="primary"
             style="padding-left: 50px; padding-right: 50px"
             [disabled]="!formGroup.valid"
-          />
-          <a [routerLink]="['/login']" class="btn btn-link">Cancelar</a>
+          >
+            Registrar
+          </button>
+          <button [routerLink]="['/login']" mat-button color="primary">Cancelar</button>
         </div>
       </div>
     </div>
