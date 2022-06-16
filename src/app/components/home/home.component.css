@@ -262,6 +262,24 @@
   margin: 1rem;
 }
 
+.meetup {
+  width: 355px;
+  height: 220px;
+  padding: 5px;
+  float: left;
+  margin: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.meetup img {
+  width: 345px;
+}
+
+.meetup button {
+  margin-top: 70px;
+}
+
 /*carousel*/
 
 .container-carousel {
