@@ -6,7 +6,7 @@ import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
 
 import { MeetupService } from '../../core/services/meetup/meetup.service';
-import { Meetup, MeetupList } from '../../core/models/Meetup';
+import { Meetup } from '../../core/models/Meetup';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public meetups: Meetup[] = [];
   public meetupsAll: Meetup[] = [];
-  public hasMeetup: Boolean = true;
-  public showButtonAllMeetups: Boolean = true;
+  public hasMeetup: boolean = true;
+  public showButtonAllMeetups: boolean = true;
 
   private _destroySubscribes$ = new Subject<void>();
 

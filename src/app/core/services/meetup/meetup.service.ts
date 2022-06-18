@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
-import { Meetup, MeetupList } from '../../models/Meetup';
+import { MeetupList } from '../../models/Meetup';
 
 @Injectable({
   providedIn: 'root',

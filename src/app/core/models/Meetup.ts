@@ -1,7 +1,7 @@
 export class Meetup {
   id: string;
   creationDate: Date;
-  symplaEventId: Number;
+  symplaEventId: number;
   title: string;
   description: string;
   startDate: string;
