@@ -5,6 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
 
+import { MeetupService } from '../../core/services/meetup/meetup.service';
+import { Meetup } from '../../core/models/Meetup';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,16 +15,23 @@ import { Book } from '../../core/models/book';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public availableBooks: Book[] = [];
-  public random15NewBooks: Book[] = [];
   public hasBook: Boolean = true;
-  public hasEbook: Boolean = true;
-  public randomEbooks: Book[] = [];
+
+  public meetups: Meetup[] = [];
+  public meetupsAll: Meetup[] = [];
+  public hasMeetup: boolean = true;
+  public showButtonAllMeetups: boolean = true;
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scBook: BookService) {}
+  constructor(private _scBook: BookService, private _scMeetup: MeetupService) {}
 
   ngOnInit() {
+    this.getBooks();
+    this.getMeetups();
+  }
+
+  getBooks() {
     this._scBook
       .getAvailableBooks()
       .pipe(takeUntil(this._destroySubscribes$))
@@ -29,14 +39,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.availableBooks = books;
         this.hasBook = books.length > 0 ? true : false;
       });
+  }
 
-    this._scBook
-      .getRandomEbooks()
+  getMeetups() {
+    this._scMeetup
+      .getAll()
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((ebooks) => {
-        this.randomEbooks = ebooks;
-        this.hasEbook = ebooks.length > 0 ? true : false;
+      .subscribe((meetups) => {
+        this.meetupsAll = meetups.items;
+        this.hasMeetup = meetups.items.length > 0 ? true : false;
+
+        this.meetupsAll.sort((a, b) => (a.startDate > b.startDate ? -1 : 0));
+        this.meetups = this.meetupsAll.slice(0, 5);
       });
+  }
+
+  showAllMetups() {
+    this.meetups = this.meetupsAll;
+    this.showButtonAllMeetups = false;
   }
 
   ngOnDestroy() {
