@@ -51,8 +51,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.meetupsAll.sort((a, b) => (a.startDate > b.startDate ? -1 : 0));
         this.meetups = this.meetupsAll.slice(0, 5);
-
-        console.log(this.meetups);
       });
   }
 
