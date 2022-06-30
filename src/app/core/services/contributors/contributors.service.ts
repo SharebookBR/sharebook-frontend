@@ -21,9 +21,7 @@ export class ContributorsService {
         image: 'assets/img/top_contributors/vagner.jpg',
         name: 'Vagner Nunes',
         position: 'Product Advisor',
-        links: [
-          { url: 'https://www.linkedin.com/in/vnunes/', content: 'Linkedin' },
-        ],
+        links: [{ url: 'https://www.linkedin.com/in/vnunes/', content: 'Linkedin' }],
       },
       {
         image: 'assets/img/top_contributors/antero.jpg',
@@ -47,13 +45,34 @@ export class ContributorsService {
         ],
       },
       {
+        image: 'assets/img/top_contributors/henrique-holtz.jpg',
+        name: 'Henrique Holtz',
+        position: 'Fullstack Developer',
+        links: [
+          {
+            url: 'https://www.linkedin.com/in/henrique-holtz/',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
+        image: 'assets/img/top_contributors/diego-fernandes.jpg',
+        name: 'Diego Fernandes',
+        position: 'Backend Developer',
+        links: [
+          {
+            url: 'https://www.linkedin.com/in/diego-f/',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
         image: 'assets/img/top_contributors/daniel.jpg',
         name: 'Daniel Aloísio',
         position: 'Backend Developer/ Architect',
         links: [
           {
-            url:
-              'https://www.linkedin.com/in/daniel-alo%C3%ADsio-oliveira-da-silva-06242291/',
+            url: 'https://www.linkedin.com/in/daniel-alo%C3%ADsio-oliveira-da-silva-06242291/',
             content: 'Linkedin',
           },
           { url: 'https://github.com/danielaloisio', content: 'Github' },
@@ -65,10 +84,9 @@ export class ContributorsService {
         position: 'Frontend Developer',
         links: [
           {
-            url:
-              'https://www.linkedin.com/in/lucianorodriguess/',
+            url: 'https://www.linkedin.com/in/lucianorodriguess/',
             content: 'Linkedin',
-          }
+          },
         ],
       },
       {
@@ -77,8 +95,7 @@ export class ContributorsService {
         position: 'UX/UI Designer',
         links: [
           {
-            url:
-              'https://www.linkedin.com/in/mariamanoella-romay',
+            url: 'https://www.linkedin.com/in/mariamanoella-romay',
             content: 'Linkedin',
           },
         ],
@@ -89,8 +106,29 @@ export class ContributorsService {
         position: 'UX/UI Designer',
         links: [
           {
-            url:
-              'https://www.linkedin.com/in/diegomacieldesigner/',
+            url: 'https://www.linkedin.com/in/diegomacieldesigner/',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
+        image: 'assets/img/top_contributors/vinicius-lacerda-ruschel.jpg',
+        name: 'Vinicius Lacerda Ruschel',
+        position: 'UX/UI Designer',
+        links: [
+          {
+            url: 'https://www.linkedin.com/in/vinicius-lacerda-ruschel-42b299149/',
+            content: 'Linkedin',
+          },
+        ],
+      },
+      {
+        image: 'assets/img/top_contributors/victor-akimoto.jpg',
+        name: 'Victor Akimoto',
+        position: 'UX/UI Designer',
+        links: [
+          {
+            url: 'https://www.linkedin.com/in/victorakimoto',
             content: 'Linkedin',
           },
         ],
@@ -146,9 +184,7 @@ export class ContributorsService {
         image: 'assets/img/top_contributors/ratton.jpg',
         name: 'Marcelo Ratton',
         position: 'Technical Advisor',
-        links: [
-          { url: 'https://www.linkedin.com/in/rattones/', content: 'Linkedin' },
-        ],
+        links: [{ url: 'https://www.linkedin.com/in/rattones/', content: 'Linkedin' }],
       },
       {
         image: 'assets/img/top_contributors/montanha.jpg',
@@ -165,9 +201,7 @@ export class ContributorsService {
         image: 'assets/img/top_contributors/manoel-jr.jpg',
         name: 'Manoel Júnior',
         position: 'Facilitador',
-        links: [
-          { url: 'https://www.linkedin.com/in/msjunior/', content: 'Linkedin' },
-        ],
+        links: [{ url: 'https://www.linkedin.com/in/msjunior/', content: 'Linkedin' }],
       },
       {
         image: 'assets/img/top_contributors/rodrigo-silva.jpg',
@@ -210,8 +244,7 @@ export class ContributorsService {
         position: 'Backend Developer',
         links: [
           {
-            url:
-              'https://www.linkedin.com/in/fl%C3%A1vio-barreiro-landes-5a0231157/',
+            url: 'https://www.linkedin.com/in/fl%C3%A1vio-barreiro-landes-5a0231157/',
             content: 'Linkedin',
           },
           { url: 'https://github.com/FlavioLandes', content: 'Github' },
