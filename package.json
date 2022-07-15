@@ -51,7 +51,7 @@
     "ng-recaptcha": "^9.0.0",
     "ngx-image2dataurl": "^13.0.0",
     "ngx-mask": "^13.1.1",
-    "ngx-toastr": "^14.2.1",
+    "ngx-toastr": "^14.3.0",
     "rxjs": "~6.6.7",
     "rxjs-compat": "^6.2.1",
     "tslib": "^2.0.0",
