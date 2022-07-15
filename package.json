@@ -50,7 +50,7 @@
     "moment-timezone": "^0.5.34",
     "ng-recaptcha": "^9.0.0",
     "ngx-image2dataurl": "^13.0.0",
-    "ngx-mask": "^13.1.1",
+    "ngx-mask": "^13.1.15",
     "ngx-toastr": "^14.2.1",
     "rxjs": "~6.6.7",
     "rxjs-compat": "^6.2.1",
