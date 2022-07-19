@@ -23,7 +23,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
-  constructor(private _bookService: BookService, public dialog: MatDialog) { }
+  constructor(private _bookService: BookService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.buscarDados();
@@ -31,10 +31,12 @@ export class RequestedsComponent implements OnInit, OnDestroy {
 
   private buscarDados() {
     this.isLoadingSubject.next(true);
-    this._bookService.getRequestedBooks(1, 9999)
+    this._bookService
+      .getRequestedBooks(1, 9999)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false)))
+        finalize(() => this.isLoadingSubject.next(false))
+      )
       .subscribe((resp: MyRequest) => {
         this.requestedBooks.data = resp.items;
       });
@@ -69,29 +71,26 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   onCustomActionColum(param: MyRequestItem) {
     this._messageToModalBody = '';
 
-    if (param.statusCode === BookRequestStatus.AWAITING_ACTION) {
+    if (param.status === BookRequestStatus.AWAITING_ACTION) {
       this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
     }
 
-    if (param.statusCode === BookRequestStatus.REFUSED) {
+    if (param.status === BookRequestStatus.REFUSED) {
       this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
     }
 
-    const modalRef = this.dialog.open(DonorModalComponent,
-      {
-        minWidth: 450,
-        data: {
-          bookId: param.bookId,
-          bookTitle: param.title,
-          messageBody: this._messageToModalBody
-        }
-      });
+    const modalRef = this.dialog.open(DonorModalComponent, {
+      minWidth: 450,
+    });
 
+    modalRef.componentInstance.bookId = param.bookId;
+    modalRef.componentInstance.bookTitle = param.title;
+    modalRef.componentInstance.messageBody = this._messageToModalBody;
   }
 
   public doFilter = (value: string) => {
     this.requestedBooks.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
   ngOnDestroy() {
     this._destroySubscribes$.next();
