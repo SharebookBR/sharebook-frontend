@@ -9,7 +9,7 @@ import { UserInfo } from 'src/app/core/models/userInfo';
 @Component({
   selector: 'app-main-users',
   templateUrl: './main-users.component.html',
-  styleUrls: ['./main-users.component.css']
+  styleUrls: ['./main-users.component.css'],
 })
 export class MainUsersComponent implements OnInit, OnDestroy {
   @Input() bookId;
@@ -20,23 +20,22 @@ export class MainUsersComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public dialogRef: MatDialogRef<MainUsersComponent>, private _scBook: BookService) { }
+  constructor(public dialogRef: MatDialogRef<MainUsersComponent>, private _scBook: BookService) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this._scBook.getMainUsers(this.bookId)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
+    this._scBook
+      .getMainUsers(this.bookId)
+      .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
-        resp => {
+        (resp) => {
           this.isLoading = false;
           const emptyUserInfo = new UserInfo();
           this.mainUsers[0] = !!resp.donor ? resp.donor : emptyUserInfo;
           this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : emptyUserInfo;
           this.mainUsers[2] = !!resp.winner ? resp.winner : emptyUserInfo;
         },
-        error => {
+        (_error) => {
           this.isLoading = false;
         }
       );
