@@ -35,7 +35,7 @@ export class MainUsersComponent implements OnInit, OnDestroy {
           this.mainUsers[1] = !!resp.facilitator ? resp.facilitator : emptyUserInfo;
           this.mainUsers[2] = !!resp.winner ? resp.winner : emptyUserInfo;
         },
-        (error) => {
+        (_error) => {
           this.isLoading = false;
         }
       );

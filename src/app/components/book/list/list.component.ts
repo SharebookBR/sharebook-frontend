@@ -129,9 +129,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         const modalRef = this.dialog.open(FacilitatorNotesComponent, { minWidth: 450 });
 
         modalRef.afterClosed().subscribe((result) => {
-          if (result) {
-            this.reloadData();
-          }
+          if (result) this.reloadData();
         });
 
         modalRef.componentInstance.bookId = param.id;
@@ -151,9 +149,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         const modalRef = this.dialog.open(TrackingComponent, { minWidth: 550 });
 
         modalRef.afterClosed().subscribe((result) => {
-          if (result) {
-            this.reloadData();
-          }
+          if (result) this.reloadData();
         });
 
         modalRef.componentInstance.bookId = param.id;
