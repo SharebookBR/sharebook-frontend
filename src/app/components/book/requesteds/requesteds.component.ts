@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 
+import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { MyRequestItem } from './../../../core/models/MyRequestItem';
 import { BookService } from '../../../core/services/book/book.service';
 import { BookRequestStatus, getStatusDescription } from '../../../core/models/BookRequestStatus';
