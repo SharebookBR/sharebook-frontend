@@ -24,12 +24,7 @@ import { BookVM } from './../../../core/models/bookVM';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['creationDate',
-    'chooseDate',
-    'title',
-    'users',
-    'status',
-    'action'];
+  displayedColumns: string[] = ['creationDate', 'chooseDate', 'title', 'users', 'status', 'action'];
 
   myBookArray = new MatTableDataSource<BookVMItem>();
   statusSearchValues = [];
@@ -46,7 +41,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngAfterViewInit(): void {
     this.myBookArray.sort = this.sort;
@@ -59,7 +54,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       .getAll()
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false)))
+        finalize(() => this.isLoadingSubject.next(false))
+      )
       .subscribe((resp: BookVM) => {
         this.myBookArray.data = resp.items;
       });
@@ -86,27 +82,21 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (iconClicked) {
       case 'cancelDonation': {
         // chamada do modal de confirmação antes de efetuar a ação do btnCancelDonation
-        if (
-          param.status === BookDonationStatus.RECEIVED ||
-          param.status === BookDonationStatus.CANCELED
-        ) {
-          alert(
-            `Não é possível cancelar essa doação com status = ${param.status}`
-          );
+        if (param.status === BookDonationStatus.RECEIVED || param.status === BookDonationStatus.CANCELED) {
+          alert(`Não é possível cancelar essa doação com status = ${param.status}`);
           return;
         }
 
-        const modalRef = this.dialog.open(ConfirmationDialogComponent,
-          {
-            data: {
-              title: 'Atenção!',
-              message: 'Confirma o cancelamento da doação?',
-              btnOkText: 'Confirmar',
-              btnCancelText: 'Cancelar'
-            }
-          });
+        const modalRef = this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: 'Atenção!',
+            message: 'Confirma o cancelamento da doação?',
+            btnOkText: 'Confirmar',
+            btnCancelText: 'Cancelar',
+          },
+        });
 
-        modalRef.afterClosed().subscribe(result => {
+        modalRef.afterClosed().subscribe((result) => {
           if (result) {
             this._scBook
               .cancelDonation(param.id)
@@ -138,35 +128,28 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'facilitatorNotes': {
         const modalRef = this.dialog.open(FacilitatorNotesComponent, { minWidth: 450 });
 
-        modalRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.reloadData();
-          }
+        modalRef.afterClosed().subscribe((result) => {
+          if (result) this.reloadData();
         });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
-        modalRef.componentInstance.facilitatorNotes = (param.facilitatorNotes === null) ? '' : param.facilitatorNotes;
+        modalRef.componentInstance.facilitatorNotes = param.facilitatorNotes === null ? '' : param.facilitatorNotes;
         break;
       }
       case 'trackNumber': {
-        if (
-          param.status !== BookDonationStatus.WAITING_SEND &&
-          param.status !== BookDonationStatus.SENT
-        ) {
+        if (param.status !== BookDonationStatus.WAITING_SEND && param.status !== BookDonationStatus.SENT) {
           alert(
             `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ou` +
-            `${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
+              `${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
           );
           return;
         }
 
         const modalRef = this.dialog.open(TrackingComponent, { minWidth: 550 });
 
-        modalRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.reloadData();
-          }
+        modalRef.afterClosed().subscribe((result) => {
+          if (result) this.reloadData();
         });
 
         modalRef.componentInstance.bookId = param.id;
@@ -207,7 +190,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public doFilter = (value: string) => {
     this.myBookArray.filter = value.trim().toLocaleLowerCase();
-  }
+  };
 
   ngOnDestroy() {
     this._destroySubscribes$.next();

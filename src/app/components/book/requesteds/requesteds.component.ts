@@ -1,4 +1,3 @@
-import { ConfirmationDialogComponent } from './../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
