@@ -1,3 +1,4 @@
+import { ConfirmationDialogComponent } from './../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +24,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
-  constructor(private _bookService: BookService, public dialog: MatDialog) { }
+  constructor(private _bookService: BookService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.buscarDados();
@@ -31,10 +32,12 @@ export class RequestedsComponent implements OnInit, OnDestroy {
 
   private buscarDados() {
     this.isLoadingSubject.next(true);
-    this._bookService.getRequestedBooks(1, 9999)
+    this._bookService
+      .getRequestedBooks(1, 9999)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false)))
+        finalize(() => this.isLoadingSubject.next(false))
+      )
       .subscribe((resp: MyRequest) => {
         this.requestedBooks.data = resp.items;
       });
@@ -66,31 +69,62 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCustomActionColum(param: MyRequestItem) {
+  onCustomActionColum(iconClicked: string, param: MyRequestItem) {
     this._messageToModalBody = '';
 
-    if (param.statusCode === BookRequestStatus.AWAITING_ACTION) {
-      this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
-    }
+    if (iconClicked === 'verDoador') {
+      if (param.statusCode === BookRequestStatus.AWAITING_ACTION) {
+        this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
+      }
 
-    if (param.statusCode === BookRequestStatus.REFUSED) {
-      this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
-    }
+      if (param.statusCode === BookRequestStatus.REFUSED) {
+        this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
+      }
 
-    const modalRef = this.dialog.open(DonorModalComponent,
-      {
+      const modalRef = this.dialog.open(DonorModalComponent, {
         minWidth: 450,
         data: {
           bookId: param.bookId,
           bookTitle: param.title,
-          messageBody: this._messageToModalBody
-        }
+          messageBody: this._messageToModalBody,
+        },
       });
+    } else {
+      this.isLoadingSubject.next(true);
+      this._bookService
+        .cancelRequest(param.requestId)
+        .pipe(
+          takeUntil(this._destroySubscribes$),
+          finalize(() => {
+            this.isLoadingSubject.next(false), this.buscarDados();
+          })
+        )
+        .subscribe((resp) => {
+          if (resp.success) {
+            this._messageToModalBody = resp.successMessage;
+          } else {
+            this._messageToModalBody = 'Erro ao cancelar';
+          }
 
+          this.dialog.open(ConfirmationDialogComponent, {
+            minWidth: 450,
+            data: {
+              title: 'Cancelar pedido.',
+              message: this._messageToModalBody,
+              btnOkText: 'Ok entendi',
+              btnCancelText: '',
+            },
+          });
+        });
+    }
   }
 
   public doFilter = (value: string) => {
     this.requestedBooks.filter = value.trim().toLocaleLowerCase();
+  };
+
+  public showIconCancel(param: MyRequestItem) {
+    return param.status === BookRequestStatus.AWAITING_ACTION;
   }
 
   ngOnDestroy() {
