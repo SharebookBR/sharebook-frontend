@@ -96,7 +96,8 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this._destroySubscribes$),
           finalize(() => {
-            this.isLoadingSubject.next(false), this.buscarDados();
+            this.isLoadingSubject.next(false);
+            this.buscarDados();
           })
         )
         .subscribe((resp) => {

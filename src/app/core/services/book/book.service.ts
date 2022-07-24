@@ -186,7 +186,7 @@ export class BookService {
     );
   }
 
-  public cancelRequest(requestId: String) {
+  public cancelRequest(requestId: string) {
     return this._http.post<IRequestResult<boolean>>(
       `${this.config.apiEndpoint}/book/CancelRequest/${requestId}`,
         {}
