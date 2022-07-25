@@ -10,7 +10,7 @@ import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
 @Component({
   selector: 'app-donor-modal',
   templateUrl: './donor-modal.component.html',
-  styleUrls: ['./donor-modal.component.css']
+  styleUrls: ['./donor-modal.component.css'],
 })
 export class DonorModalComponent implements OnInit {
   @Input() bookId;
@@ -20,8 +20,7 @@ export class DonorModalComponent implements OnInit {
 
   userInfo$: Observable<UserInfoBook>;
 
-  constructor(public dialogRef: MatDialogRef<DonorModalComponent>,
-    private readonly _bookService: BookService) { }
+  constructor(public dialogRef: MatDialogRef<DonorModalComponent>, private readonly _bookService: BookService) {}
 
   ngOnInit() {
     this.loading = true;
@@ -33,9 +32,8 @@ export class DonorModalComponent implements OnInit {
   }
 
   private getDonor() {
-
     this.userInfo$ = this._bookService.getMainUsers(this.bookId).pipe(
-      map(userInfo => {
+      map((userInfo) => {
         this.loading = false;
         return userInfo;
       })
