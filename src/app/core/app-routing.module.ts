@@ -62,11 +62,6 @@ const routes: Routes = [
     canActivate: [AuthGuardUser],
   },
   {
-    path: 'book/search',
-    loadChildren: () =>
-      import('../components/book/search-results/search-results.module').then((m) => m.SearchResultsModule),
-  },
-  {
     path: 'book/donate/:id',
     component: DonatePageComponent,
     canActivate: [AuthGuardUser],
@@ -74,6 +69,10 @@ const routes: Routes = [
   {
     path: 'livros/:slug',
     component: BookDetailComponent,
+  },
+  {
+    path: 'search',
+    loadChildren: () => import('../components/search-results/search-results.module').then((m) => m.SearchResultsModule),
   },
   {
     path: 'quem-somos',
