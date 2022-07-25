@@ -128,6 +128,10 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     return param.status === BookRequestStatus.AWAITING_ACTION;
   }
 
+  public showIconDonor(param: MyRequestItem) {
+    return param.status === BookRequestStatus.DONATED;
+  }
+
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();

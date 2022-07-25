@@ -33,7 +33,7 @@
       </ng-container>
 
       <ng-container matColumnDef="doador">
-        <th mat-header-cell *matHeaderCellDef class="header">Doador</th>
+        <th mat-header-cell *matHeaderCellDef class="header">Ações</th>
         <td mat-cell *matCellDef="let element">
           <button
             (click)="onCustomActionColum('verDoador', element)"
@@ -41,6 +41,7 @@
             class="ml-1 mb-1"
             data-toggle="tooltip"
             title="Ver doador"
+            *ngIf="showIconDonor(element)"
           >
             <mat-icon>person</mat-icon>
           </button>
@@ -54,8 +55,8 @@
             data-toggle="tooltip"
             title="Cancelar Pedido"
           >
-          <mat-icon>delete_outline</mat-icon>
-        </button>
+            <mat-icon>delete_outline</mat-icon>
+          </button>
         </td>
       </ng-container>
 
