@@ -9,7 +9,7 @@ import { Meetup } from 'src/app/core/models/Meetup';
 export class CardMeetupComponent implements OnInit {
   @Input() meetup: Meetup;
 
-  constructor() {}
-
-  ngOnInit() {}
+  ngOnInit() {
+    // This is intentional
+  }
 }

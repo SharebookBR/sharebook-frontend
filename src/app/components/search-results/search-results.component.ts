@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,8 +15,8 @@ import { Meetup } from 'src/app/core/models/Meetup';
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   public criteria: string;
-  public showInfo: Boolean = false;
-  isLoading: Boolean = true;
+  public showInfo: boolean = false;
+  isLoading: boolean = true;
   public meetups: Meetup[] = [];
 
   private _destroySubscribes$ = new Subject<void>();
