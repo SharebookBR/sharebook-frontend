@@ -25,6 +25,7 @@ import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
+import { SearchResultsComponent } from '../components/search-results/search-results.component';
 
 const routes: Routes = [
   {
@@ -62,11 +63,6 @@ const routes: Routes = [
     canActivate: [AuthGuardUser],
   },
   {
-    path: 'book/search',
-    loadChildren: () =>
-      import('../components/book/search-results/search-results.module').then((m) => m.SearchResultsModule),
-  },
-  {
     path: 'book/donate/:id',
     component: DonatePageComponent,
     canActivate: [AuthGuardUser],
@@ -74,6 +70,10 @@ const routes: Routes = [
   {
     path: 'livros/:slug',
     component: BookDetailComponent,
+  },
+  {
+    path: 'search/:criteria',
+    component: SearchResultsComponent,
   },
   {
     path: 'quem-somos',

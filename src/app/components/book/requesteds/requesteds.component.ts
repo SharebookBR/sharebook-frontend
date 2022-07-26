@@ -70,54 +70,51 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   onCustomActionColum(iconClicked: string, param: MyRequestItem) {
+    if (iconClicked === 'verDoador') {
+      this.showDonor(param);
+    } else {
+      this.cancelRequest(param);
+    }
+  }
+
+  private showDonor(param: MyRequestItem) {
     this._messageToModalBody = '';
 
-    if (iconClicked === 'verDoador') {
-      if (param.statusCode === BookRequestStatus.AWAITING_ACTION) {
-        this._messageToModalBody = 'Por favor aguarde a decisão do doador.';
-      }
+    const modalRef = this.dialog.open(DonorModalComponent, { minWidth: 450 });
 
-      if (param.statusCode === BookRequestStatus.REFUSED) {
-        this._messageToModalBody = 'Você não é o ganhador desse livro. =/';
-      }
+    modalRef.componentInstance.bookId = param.bookId;
+    modalRef.componentInstance.bookTitle = param.title;
+    modalRef.componentInstance.messageBody = this._messageToModalBody;
+  }
 
-      const modalRef = this.dialog.open(DonorModalComponent, {
-        minWidth: 450,
-        data: {
-          bookId: param.bookId,
-          bookTitle: param.title,
-          messageBody: this._messageToModalBody,
-        },
-      });
-    } else {
-      this.isLoadingSubject.next(true);
-      this._bookService
-        .cancelRequest(param.requestId)
-        .pipe(
-          takeUntil(this._destroySubscribes$),
-          finalize(() => {
-            this.isLoadingSubject.next(false);
-            this.buscarDados();
-          })
-        )
-        .subscribe((resp) => {
-          if (resp.success) {
-            this._messageToModalBody = resp.successMessage;
-          } else {
-            this._messageToModalBody = 'Erro ao cancelar';
-          }
+  private cancelRequest(param: MyRequestItem) {
+    this.isLoadingSubject.next(true);
+    this._bookService
+      .cancelRequest(param.requestId)
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        finalize(() => {
+          this.isLoadingSubject.next(false);
+          this.buscarDados();
+        })
+      )
+      .subscribe((resp) => {
+        if (resp.success) {
+          this._messageToModalBody = resp.successMessage;
+        } else {
+          this._messageToModalBody = 'Erro ao cancelar';
+        }
 
-          this.dialog.open(ConfirmationDialogComponent, {
-            minWidth: 450,
-            data: {
-              title: 'Cancelar pedido.',
-              message: this._messageToModalBody,
-              btnOkText: 'Ok entendi',
-              btnCancelText: '',
-            },
-          });
+        this.dialog.open(ConfirmationDialogComponent, {
+          minWidth: 450,
+          data: {
+            title: 'Cancelar pedido.',
+            message: this._messageToModalBody,
+            btnOkText: 'Ok entendi',
+            btnCancelText: '',
+          },
         });
-    }
+      });
   }
 
   public doFilter = (value: string) => {
@@ -126,6 +123,10 @@ export class RequestedsComponent implements OnInit, OnDestroy {
 
   public showIconCancel(param: MyRequestItem) {
     return param.status === BookRequestStatus.AWAITING_ACTION;
+  }
+
+  public showIconDonor(param: MyRequestItem) {
+    return param.status === BookRequestStatus.DONATED;
   }
 
   ngOnDestroy() {
