@@ -23,11 +23,10 @@
 
   <!-- MEETUPS EM DESTAQUE -->
   <h1 class="text-center display-4">Meetups em destaque</h1>
-  <div class="meetup" *ngFor="let meetup of meetups">
-    <a href="{{ meetup.youtubeUrl ? meetup.youtubeUrl : meetup.symplaEventUrl }}" target="_blank" rel="noopener">
-      <img src="{{ meetup.cover }}" alt="{{ meetup.title }}" />
-      {{ meetup.title }}
-    </a>
+
+  <div *ngFor="let meetup of meetups">
+    <app-card-meetup [meetup]="meetup"></app-card-meetup>
+    <p>aaa</p>
   </div>
 
   <div class="meetup" *ngIf="showButtonAllMeetups">

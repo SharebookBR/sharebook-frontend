@@ -12,8 +12,9 @@
     </div>
   </section>
   <section class="row">
-    <div></div>
-    <app-card-meetup *ngFor="let meetup of meetups" [meetup]="meetup"></app-card-meetup>
+    <div *ngFor="let meetup of meetups">
+      <app-card-meetup [meetup]="meetup"></app-card-meetup>
+    </div>
   </section>
 
   <p></p>
