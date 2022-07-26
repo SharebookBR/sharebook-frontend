@@ -8,8 +8,6 @@ import { Book } from '../../core/models/book';
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 
-import { CardMeetupModule } from '../card-meetup/card-meetup.module';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

@@ -25,6 +25,7 @@ import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
+import { SearchResultsComponent } from '../components/search-results/search-results.component';
 
 const routes: Routes = [
   {
@@ -71,8 +72,8 @@ const routes: Routes = [
     component: BookDetailComponent,
   },
   {
-    path: 'search',
-    loadChildren: () => import('../components/search-results/search-results.module').then((m) => m.SearchResultsModule),
+    path: 'search/:criteria',
+    component: SearchResultsComponent,
   },
   {
     path: 'quem-somos',

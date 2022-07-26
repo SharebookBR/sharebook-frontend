@@ -24,10 +24,7 @@
   <!-- MEETUPS EM DESTAQUE -->
   <h1 class="text-center display-4">Meetups em destaque</h1>
 
-  <div *ngFor="let meetup of meetups">
-    <app-card-meetup [meetup]="meetup"></app-card-meetup>
-    <p>aaa</p>
-  </div>
+  <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
 
   <div class="meetup" *ngIf="showButtonAllMeetups">
     <button mat-flat-button color="primary" (click)="showAllMetups()">Mostrar todos os Meetups</button>

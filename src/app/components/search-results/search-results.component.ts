@@ -42,7 +42,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   private getParamByUri(): void {
     this._route.params.pipe(takeUntil(this._destroySubscribes$)).subscribe(
       (param) => {
-        this.criteria = param['param'];
+        this.criteria = param['criteria'];
       },
       (error: HttpErrorResponse) => {
         this._toastr.error(error.message ? error.message : error.toString());
