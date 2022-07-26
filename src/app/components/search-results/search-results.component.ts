@@ -11,7 +11,6 @@ import { Meetup } from 'src/app/core/models/Meetup';
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
-  styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   public criteria: string;
@@ -34,8 +33,6 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       .subscribe((meetups) => {
         this.meetups = meetups;
         this.isLoading = false;
-
-        console.log(this.meetups);
       });
   }
 
