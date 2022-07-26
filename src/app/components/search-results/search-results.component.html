@@ -1,5 +1,5 @@
 <div [hidden]="!isLoading">
-  <i class="fa fa-spinner fa-spin" style="position: absolute; left: 50%"></i>
+  <em class="fa fa-spinner fa-spin" style="position: absolute; left: 50%"></em>
 </div>
 
 <div class="container" [hidden]="isLoading">
@@ -18,7 +18,7 @@
   <p></p>
   <p>
     <a href="javascript:void(0)" (click)="toogleInfo()"
-      ><i class="fa fa-info-circle"></i> Por que não tem livros no resultado de pesquisa?</a
+      ><em class="fa fa-info-circle"></em> Por que não tem livros no resultado de pesquisa?</a
     >
   </p>
   <div *ngIf="showInfo">
