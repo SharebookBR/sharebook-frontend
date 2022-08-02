@@ -44,6 +44,9 @@ import { RequestedsComponent } from './components/book/requesteds/requesteds.com
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
+
+import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -121,6 +124,8 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
     MyaccountComponent,
     DialogWHoAccessedComponent,
     DialogAnonymizeComponent,
+    CardMeetupComponent,
+    SearchResultsComponent,
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,7 @@ import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
 import { FullSearch } from '../../models/FullSearch';
+import { IRequestResult } from '../../interfaces/IRequestResult';
 
 @Injectable({
   providedIn: 'root',
@@ -182,6 +183,13 @@ export class BookService {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/Approve/${bookId}`,
       {}
+    );
+  }
+
+  public cancelRequest(requestId: string) {
+    return this._http.post<IRequestResult<boolean>>(
+      `${this.config.apiEndpoint}/book/CancelRequest/${requestId}`,
+        {}
     );
   }
 }

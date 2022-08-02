@@ -1,5 +1,5 @@
 import { ToastrModule } from 'ngx-toastr';
-import { AppConfigModule } from './../../../app-config.module';
+import { AppConfigModule } from '../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -15,12 +15,7 @@ describe('SearchResultsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SearchResultsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        AppConfigModule,
-        ToastrModule.forRoot(),
-      ],
+      imports: [RouterTestingModule, HttpClientTestingModule, AppConfigModule, ToastrModule.forRoot()],
     }).compileComponents();
   }));
 

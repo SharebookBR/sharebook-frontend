@@ -31,3 +31,9 @@ th.mat-header-cell {
   padding-bottom: 4px;
   padding-top: 4px;
 }
+
+.mat-flat-button {
+  min-width: 34px;
+  padding: 0px;
+  height: 34px;
+}
