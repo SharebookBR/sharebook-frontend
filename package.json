@@ -45,7 +45,7 @@
     "@angular/platform-browser-dynamic": "~13.2.5",
     "@angular/router": "~13.2.5",
     "base64-img": "^1.0.4",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.6.2",
     "core-js": "^2.5.4",
     "moment-timezone": "^0.5.34",
     "ng-recaptcha": "^9.0.0",
