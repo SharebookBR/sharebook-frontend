@@ -62,8 +62,8 @@
   z-index: 3;
 }
 
-/* 
-  nav-buttons 
+/*
+  nav-buttons
                    */
 
 .button_container {
@@ -264,6 +264,10 @@
 
 .meetup button {
   margin-top: 70px;
+}
+
+.meetup {
+  margin-top: 5rem;
 }
 
 /*carousel*/
