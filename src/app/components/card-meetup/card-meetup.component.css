@@ -11,3 +11,16 @@
 .meetup img {
   width: 345px;
 }
+
+@media (max-width: 375px){
+  .meetup img{
+    width: 325px;
+    float: left;
+  }
+}
+
+@media (max-width: 360px){
+  .meetup img{
+    width: 315px;
+  }
+}
