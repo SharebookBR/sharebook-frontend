@@ -351,11 +351,17 @@
   .full-background {
     display: none !important;
   }
+  .center{
+    margin-left: 22%;
+  }
 }
 
 @media (max-width: 524px) {
   .full-background {
     display: none;
+  }
+  .center{
+    margin-left: 22%;
   }
 }
 

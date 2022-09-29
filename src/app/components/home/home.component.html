@@ -26,7 +26,7 @@
 
   <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
 
-  <div class="meetup" *ngIf="showButtonAllMeetups">
+  <div class="meetup center" *ngIf="showButtonAllMeetups">
     <button mat-flat-button color="primary" (click)="showAllMetups()">Mostrar todos os Meetups</button>
   </div>
 
