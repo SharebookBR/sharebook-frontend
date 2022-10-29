@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -52,6 +52,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         country: ['', [Validators.required]],
         allowSendingEmail: [true, null],
         acceptTermOfUse: [false, null],
+        recaptchaReactive: new FormControl(null, Validators.required),
       },
       {
         validators: PasswordValidation.MatchPassword,
