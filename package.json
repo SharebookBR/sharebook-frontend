@@ -39,7 +39,7 @@
     "@angular/compiler": "~13.2.5",
     "@angular/core": "~13.2.5",
     "@angular/forms": "~13.2.5",
-    "@angular/localize": "^13.2.5",
+    "@angular/localize": "^13.3.11",
     "@angular/material": "^13.3.9",
     "@angular/platform-browser": "~13.2.5",
     "@angular/platform-browser-dynamic": "~13.2.5",
@@ -47,7 +47,7 @@
     "base64-img": "^1.0.4",
     "bootstrap": "^4.5.0",
     "core-js": "^2.5.4",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.38",
     "ng-recaptcha": "^9.0.0",
     "ngx-image2dataurl": "^13.0.0",
     "ngx-mask": "^13.1.1",
@@ -55,10 +55,10 @@
     "rxjs": "~6.6.7",
     "rxjs-compat": "^6.2.1",
     "tslib": "^2.4.0",
-    "zone.js": "~0.11.6"
+    "zone.js": "~0.11.8"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.2.5",
+    "@angular-devkit/build-angular": "~13.3.9",
     "@angular/cli": "~13.2.5",
     "@angular/compiler-cli": "~13.2.5",
     "@angular/language-service": "~13.2.5",
