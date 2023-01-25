@@ -9,11 +9,6 @@ import { Meetup } from 'src/app/core/models/Meetup';
 export class CardMeetupComponent {
   @Input() meetup: Meetup;
 
-  OpenMeetup() {
-    let url = this.GetMeetupUrl();
-    window.open(url);
-  }
-
   GetMeetupUrl(): string {
     if (!this.meetup.youtubeUrl) return this.meetup.symplaEventUrl;
 
