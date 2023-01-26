@@ -49,9 +49,8 @@ Senha: 132456
 
 ## Observações:
 
-Verifique a versão do Node - Recomendamos Versão 12.20.x ou superior
-Versões recentes tem apresentado instabilidades com pacotes presente no projeto.  
-Use o Angular 13+
+Verifique a versão do Node - Recomendamos Versão 14.
+Outras versões tem apresentado instabilidades com pacotes presente no projeto.
 
 # Rodar o app pela primeira vez
 
