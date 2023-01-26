@@ -8,4 +8,15 @@ import { Meetup } from 'src/app/core/models/Meetup';
 })
 export class CardMeetupComponent {
   @Input() meetup: Meetup;
+
+  GetMeetupUrl(): string {
+    if (!this.meetup.youtubeUrl) return this.meetup.symplaEventUrl;
+
+    let meetupDate = new Date(this.meetup.startDate);
+    let currDate = new Date();
+
+    if (currDate <= meetupDate) return this.meetup.symplaEventUrl;
+
+    return this.meetup.youtubeUrl;
+  }
 }
