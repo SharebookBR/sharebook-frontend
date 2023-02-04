@@ -15,8 +15,8 @@ export class MeetupService {
     private config: AppConfig
   ) {}
 
-  public getAll(): Observable<MeetupList> {
-    return this._http.get<MeetupList>(`${this.config.apiEndpoint}/Meetup`);
+  public get(page: Number, pageSize: Number): Observable<MeetupList> {
+    return this._http.get<MeetupList>(`${this.config.apiEndpoint}/Meetup?page=${page}&pagesize=${pageSize}`);
   }
 
   public search(criteria: string): Observable<Meetup[]> {
