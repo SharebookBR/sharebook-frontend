@@ -26,8 +26,10 @@
 
   <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
 
-  <div class="meetup" *ngIf="showButtonAllMeetups">
-    <button mat-flat-button color="primary" (click)="showAllMetups()">Mostrar todos os Meetups</button>
+  <div class="meetup" *ngIf="showButtonMoreMeetups">
+    <button mat-flat-button color="primary" (click)="showMoreMetups()" style="margin-left: 82px">
+      Carregar mais Meetups...
+    </button>
   </div>
 
   <div style="clear: both; height: 20px"></div>

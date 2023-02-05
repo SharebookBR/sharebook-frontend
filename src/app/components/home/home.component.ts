@@ -18,9 +18,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public hasBook: Boolean = true;
 
   public meetups: Meetup[] = [];
-  public meetupsAll: Meetup[] = [];
-  public hasMeetup: boolean = true;
-  public showButtonAllMeetups: boolean = true;
+  public meetupsCurrentPage: number = 1;
+  public meetupsPerPage: number = 10;
+  public showButtonMoreMeetups: boolean = true;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -43,20 +43,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getMeetups() {
     this._scMeetup
-      .getAll()
+      .get(this.meetupsCurrentPage, this.meetupsPerPage)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((meetups) => {
-        this.meetupsAll = meetups.items;
-        this.hasMeetup = meetups.items.length > 0 ? true : false;
+        this.meetups.push(...meetups.items);
 
-        this.meetupsAll.sort((a, b) => (a.startDate > b.startDate ? -1 : 0));
-        this.meetups = this.meetupsAll.slice(0, 5);
+        const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
+        this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
       });
   }
 
-  showAllMetups() {
-    this.meetups = this.meetupsAll;
-    this.showButtonAllMeetups = false;
+  showMoreMetups() {
+    this.meetupsCurrentPage++;
+    this.getMeetups();
   }
 
   ngOnDestroy() {
