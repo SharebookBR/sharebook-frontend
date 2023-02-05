@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.meetups.push(...meetups.items);
 
         const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
-        if (this.meetupsCurrentPage >= maxPage) this.showButtonMoreMeetups = false;
+        this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
       });
   }
 
