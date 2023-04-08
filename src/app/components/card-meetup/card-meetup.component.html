@@ -1,6 +1,11 @@
 <div class="meetup">
   <a href="{{ GetMeetupUrl() }}" target="_blank" rel="noopener">
-    <img src="{{ meetup.cover }}" alt="{{ meetup.title }}" />
-    {{ meetup.title }}
+    <figure>
+      <img src="https://www.sharebook.com.br/Images/Meetup/o-verdadeiro-papel-do-lider.png" alt="{{ meetup.title }}" />
+      <figcaption>{{ meetup.title }}</figcaption>
+    </figure>
   </a>
 </div>
+
+<!-- https://www.sharebook.com.br/Images/Meetup/o-verdadeiro-papel-do-lider.png -->
+<!-- {{ meetup.cover }} -->
