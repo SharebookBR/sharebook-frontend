@@ -21,8 +21,15 @@
     </figure>
   </div>
 
-  <!-- MEETUPS EM DESTAQUE -->
-  <h1 class="text-center display-4 meetup">Meetups em destaque</h1>
+  <!-- PRÓXIMOS MEETUPS -->
+  <h1 class="text-center display-4 meetup">Não perca os próximos Meetups!</h1>
+
+  <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetupsUpcoming"></app-card-meetup>
+
+  <div style="clear: both; height: 20px"></div>
+
+  <!-- MEETUPS JÁ REALIZADOS -->
+  <h1 class="text-center display-4 meetup">Meetups já realizados</h1>
 
   <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
 
