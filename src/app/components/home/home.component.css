@@ -262,6 +262,12 @@
   margin: 1rem;
 }
 
+.meetup-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
 .meetup button {
   margin-top: 70px;
 }

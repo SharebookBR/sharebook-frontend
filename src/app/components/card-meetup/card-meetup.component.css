@@ -1,28 +1,15 @@
-.meetup {
-  width: 355px;
-  height: 220px;
-  padding: 5px;
-  float: left;
-  margin: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
 .meetup img {
   width: 345px;
 }
 
-@media (max-width: 375px){
-  .meetup img{
-    width: 325px;
-    float: left;
-  }
+figure {
+  text-align: center;
 }
 
-@media (max-width: 360px){
-  .meetup img{
-    width: 315px;
-  }
+figcaption {
+  padding: 3px;
+  text-align: center;
+  width: 345px;
 }
 
 .calendar {

@@ -97,7 +97,3 @@ http://localhost:4200
 ## API no ambiente de dev
 
 http://dev.sharebook.com.br/swagger/
-
-## HTML Responsivo original - Bootstrap 4
-
-http://www.devfrontend.com.br/models/sharebook-original/index.html
