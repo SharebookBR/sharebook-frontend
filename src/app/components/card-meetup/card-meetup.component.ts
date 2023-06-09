@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Meetup } from 'src/app/core/models/Meetup';
 
 import { registerLocaleData } from '@angular/common';
