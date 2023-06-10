@@ -1,8 +1,9 @@
 <div class="meetup">
   <a href="{{ GetMeetupUrl() }}" target="_blank" rel="noopener">
-    <figure>
-      <img src="{{ meetup.cover }}" alt="{{ meetup.title }}" />
-      <figcaption>{{ meetup.title }}</figcaption>
-    </figure>
+    <img src="{{ meetup.cover }}" alt="{{ meetup.title }}" />
+    <span class="calendar" *ngIf="isUpcoming"
+      ><i class="fa fa-calendar"></i> {{ meetup.startDate | date : 'E d LLL HH:mm' : '' : 'pt-BR' }}<br
+    /></span>
+    {{ meetup.title }}
   </a>
 </div>
