@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Meetup } from 'src/app/core/models/Meetup';
 
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+registerLocaleData(localePT);
+
 @Component({
   selector: 'app-card-meetup',
   templateUrl: './card-meetup.component.html',
@@ -8,15 +12,16 @@ import { Meetup } from 'src/app/core/models/Meetup';
 })
 export class CardMeetupComponent {
   @Input() meetup: Meetup;
+  isUpcoming: boolean = false;
 
-  GetMeetupUrl(): string {
-    if (!this.meetup.youtubeUrl) return this.meetup.symplaEventUrl;
-
+  ngOnInit() {
     let meetupDate = new Date(this.meetup.startDate);
     let currDate = new Date();
+    this.isUpcoming = currDate <= meetupDate;
+  }
 
-    if (currDate <= meetupDate) return this.meetup.symplaEventUrl;
-
-    return this.meetup.youtubeUrl;
+  GetMeetupUrl(): string {
+    if (!this.meetup.youtubeUrl || this.isUpcoming) return this.meetup.symplaEventUrl;
+    else return this.meetup.youtubeUrl;
   }
 }

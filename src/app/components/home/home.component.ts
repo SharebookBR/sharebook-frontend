@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public hasBook: Boolean = true;
 
   public meetups: Meetup[] = [];
+  public meetupsUpcoming: Meetup[] = [];
   public meetupsCurrentPage: number = 1;
   public meetupsPerPage: number = 10;
   public showButtonMoreMeetups: boolean = true;
@@ -42,6 +43,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getMeetups() {
+    // próximos meetups
+    this._scMeetup
+      .get(1, 50, true)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((meetups) => {
+        this.meetupsUpcoming.push(...meetups.items);
+      });
+
+    // meetups já realizados
     this._scMeetup
       .get(this.meetupsCurrentPage, this.meetupsPerPage)
       .pipe(takeUntil(this._destroySubscribes$))

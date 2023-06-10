@@ -21,15 +21,23 @@
     </figure>
   </div>
 
-  <!-- MEETUPS EM DESTAQUE -->
-  <h1 class="text-center display-4 meetup">Meetups em destaque</h1>
+  <!-- PRÓXIMOS MEETUPS -->
+  <h1 class="text-center display-4 meetup">Não perca os próximos Meetups!</h1>
 
-  <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
+  <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetupsUpcoming"></app-card-meetup>
 
-  <div class="meetup" *ngIf="showButtonMoreMeetups">
-    <button mat-flat-button color="primary" (click)="showMoreMetups()" style="margin-left: 82px">
-      Carregar mais Meetups...
-    </button>
+  <div style="clear: both; height: 20px"></div>
+
+  <!-- MEETUPS JÁ REALIZADOS -->
+  <h1 class="text-center display-4 meetup">Meetups já realizados</h1>
+
+  <div class="meetup-card">
+    <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
+    <div class="meetup" *ngIf="showButtonMoreMeetups">
+      <button mat-flat-button color="primary" (click)="showMoreMetups()" style="margin-left: 82px">
+        Carregar mais Meetups...
+      </button>
+    </div>
   </div>
 
   <div style="clear: both; height: 20px"></div>
