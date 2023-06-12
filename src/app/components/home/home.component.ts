@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getBooks();
     this.getMeetups();
+    this.getMeetupsUpcoming();
   }
 
   getBooks() {
@@ -43,14 +44,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getMeetups() {
-    // próximos meetups
-    this._scMeetup
-      .get(1, 50, true)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((meetups) => {
-        this.meetupsUpcoming.push(...meetups.items);
-      });
-
     // meetups já realizados
     this._scMeetup
       .get(this.meetupsCurrentPage, this.meetupsPerPage)
@@ -60,6 +53,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
         this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
+      });
+  }
+
+  getMeetupsUpcoming() {
+    // próximos meetups
+    this._scMeetup
+      .get(1, 50, true)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((meetups) => {
+        this.meetupsUpcoming.push(...meetups.items);
+
+        this.meetupsUpcoming.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
       });
   }
 
