@@ -20,6 +20,10 @@
 }
 
 @media (max-width: 360px){
+  .meetup {
+    width: 335px;
+  }
+
   .meetup img{
     width: 315px;
   }
