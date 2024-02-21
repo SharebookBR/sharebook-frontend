@@ -12,7 +12,6 @@ export class FooterComponent implements OnInit {
   repositoriesLinks: Link[] = [
     { url: RepositoriesUrls.BACKEND, content: 'Backend' },
     { url: RepositoriesUrls.FRONTEND, content: 'Frontend' },
-    { url: RepositoriesUrls.QA, content: 'QA' },
     { url: RepositoriesUrls.MOBILE, content: 'Mobile' }
   ];
   currentYear: number = new Date().getFullYear();
