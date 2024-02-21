@@ -5,14 +5,19 @@ p {
 .flex-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.flex-container .card {
+.flex-container .card .card-projeto {
   margin: 6px;
 }
 
-.card {
+.card-ferramenta {
   width: 200px;
+}
+
+.card-projeto {
+  width: 255px;
 }
 
 .card-text {

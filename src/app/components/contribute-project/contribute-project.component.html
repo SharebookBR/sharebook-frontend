@@ -6,7 +6,7 @@
   </p>
 
   <div class="flex-container">
-    <div class="card" *ngFor="let technology of technologies">
+    <div class="card card-projeto" *ngFor="let technology of technologies">
       <img class="card-img-top" [src]="technology.image" alt="Card image cap" />
       <div class="card-body">
         <h5 class="card-title">{{ technology.title }}</h5>
@@ -15,8 +15,8 @@
         </p>
 
         <a *ngFor="let link of technology.links" [href]="link.url" class="card-link" target="_blank">{{
-          link.content
-        }}</a>
+            link.content
+          }}</a>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
       bem explicado, fácil de entender.
     </p>
 
-    <div class="card" *ngFor="let tool of tools">
+    <div class="card card-ferramenta" *ngFor="let tool of tools">
       <img class="card-img-top" [src]="tool.image" alt="Card image cap" />
       <div class="card-body">
         <h5 class="card-title">{{ tool.title }}</h5>
