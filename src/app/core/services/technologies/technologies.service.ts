@@ -26,12 +26,6 @@ export class TechnologiesService {
         links: [{ url: RepositoriesUrls.MOBILE, content: 'Github' }, { url: TrelloUrls.MOBILE, content: 'Trello' }]
       },
       {
-        image: 'assets/img/contribute-project/qa.jpg',
-        title: 'QA',
-        text: 'C#, xUnit, Selenium<br/><br/>',
-        links: [{ url: RepositoriesUrls.QA, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
-      },
-      {
         image: 'assets/img/contribute-project/ui-ux.jpg',
         title: 'UI/UX Design',
         text: 'Personas, User Stories, MockFlow, Figma',
