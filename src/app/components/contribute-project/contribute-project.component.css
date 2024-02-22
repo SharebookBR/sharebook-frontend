@@ -23,3 +23,7 @@ p {
 .card-text {
   text-align: left;
 }
+
+.card {
+  margin-bottom: 16px;
+}
