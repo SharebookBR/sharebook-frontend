@@ -96,4 +96,4 @@ http://localhost:4200
 
 ## API no ambiente de dev
 
-http://dev.sharebook.com.br/swagger/
+https://dev.sharebook.com.br/swagger/
