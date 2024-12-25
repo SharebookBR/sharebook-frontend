@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
