@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class DonateComponent implements OnInit, OnDestroy {
   settings: any;
   isLoading: Boolean = true;
   myNote: String;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   donateBookUser: DonateBookUser;
 
   private _destroySubscribes$ = new Subject<void>();
@@ -32,7 +32,7 @@ export class DonateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<DonateComponent>,
     private _scBook: BookService,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]

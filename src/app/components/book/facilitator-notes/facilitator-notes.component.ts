@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { BookService } from 'src/app/core/services/book/book.service';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-facilitator-notes',
@@ -16,7 +16,7 @@ export class FacilitatorNotesComponent implements OnInit, OnDestroy {
   @Input() bookTitle;
   @Input() facilitatorNotes;
 
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   isLoading: Boolean;
 
   state = 'loading'; // loading, form, error
@@ -24,7 +24,7 @@ export class FacilitatorNotesComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public dialogRef: MatDialogRef<FacilitatorNotesComponent>, private _scBook: BookService, private _formBuilder: FormBuilder) {
+  constructor(public dialogRef: MatDialogRef<FacilitatorNotesComponent>, private _scBook: BookService, private _formBuilder: UntypedFormBuilder) {
 
     this.formGroup = _formBuilder.group({
       bookId: '',

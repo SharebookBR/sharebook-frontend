@@ -8,7 +8,7 @@ import { RepositoriesUrls } from '../../core/models/RepositoriesUrls';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
   repositoriesLinks: Link[] = [
     { url: RepositoriesUrls.BACKEND, content: 'Backend' },
     { url: RepositoriesUrls.FRONTEND, content: 'Frontend' },
@@ -19,5 +19,4 @@ export class FooterComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
 }

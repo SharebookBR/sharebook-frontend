@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   public isLoading$ = this.isLoadingSubject.asObservable();
   @ViewChild(MatSort) sort: MatSort;
   returnUrl: string;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   bookSlug: string;
   book: Book = new Book();
   chooseDateFormated: string;
@@ -48,7 +48,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _scBook: BookService,
     public dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]

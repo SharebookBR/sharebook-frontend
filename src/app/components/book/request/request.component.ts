@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class RequestComponent implements OnInit, OnDestroy {
   showNote: Boolean = false;
   selectedDonatedUser: any;
   myNote: String;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   donateBookUser: DonateBookUser;
   addressLine01: String;
   addressLine02: String;
@@ -41,7 +41,7 @@ export class RequestComponent implements OnInit, OnDestroy {
     private _scUser: UserService,
     private _router: Router,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]

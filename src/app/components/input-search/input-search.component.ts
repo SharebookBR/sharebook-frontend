@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,12 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./input-search.component.css'],
 })
 export class InputSearchComponent implements OnInit {
-  public searchForm: FormGroup;
+  public searchForm: UntypedFormGroup;
   public searchAlert = false;
 
   @ViewChild('alert') alert: ElementRef;
 
-  constructor(private fb: FormBuilder, private _router: Router) {}
+  constructor(private fb: UntypedFormBuilder, private _router: Router) {}
 
   ngOnInit() {
     this.searchForm = this.fb.group({

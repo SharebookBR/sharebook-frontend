@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Meetup } from 'src/app/core/models/Meetup';
 
 import { registerLocaleData } from '@angular/common';
@@ -10,7 +10,7 @@ registerLocaleData(localePT);
   templateUrl: './card-meetup.component.html',
   styleUrls: ['./card-meetup.component.css'],
 })
-export class CardMeetupComponent {
+export class CardMeetupComponent implements OnInit {
   @Input() meetup: Meetup;
   isUpcoming: boolean = false;
 

@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './terms-of-use.component.html',
   styleUrls: ['./terms-of-use.component.css']
 })
-export class TermsOfUseComponent implements OnInit {
+export class TermsOfUseComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

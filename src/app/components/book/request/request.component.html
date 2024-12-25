@@ -3,25 +3,25 @@
 </div>
 <h4 class="modal-title">{{ modalTitle }}</h4>
 
-<div class="text-center" *ngIf="state == 'loading'"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+<div class="text-center" *ngIf="state === 'loading'"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 
-<div class="text-center" *ngIf="state == 'request-error'">
+<div class="text-center" *ngIf="state === 'request-error'">
   <p>:/ ocorreu um erro.</p>
   <div class="alert alert-danger" role="alert">
     {{ lastError }}
   </div>
 </div>
 
-<div class="text-center" *ngIf="state == 'request-success'">
+<div class="text-center" *ngIf="state === 'request-success'">
   <div class="alert alert-success" role="alert">Seu pedido foi efetuado com sucesso.</div>
   <p><strong>O endereço de entrega abaixo está correto?</strong></p>
   <p>{{ addressLine01 }}<br />{{ addressLine02 }}<br />{{ addressLine03 }}</p>
 </div>
 
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state == 'form'">
+<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state === 'form'">
   <mat-dialog-content>
     <div class="modal-body">
-      <div class="text-center" [hidden]="state == 'form'"></div>
+      <div class="text-center" [hidden]="state === 'form'"></div>
 
       <p>
         1 - Fale um pouco sobre você.<br />
@@ -50,12 +50,12 @@
   </mat-dialog-actions>
 </form>
 
-<div *ngIf="state != 'form'">
+<div *ngIf="state !== 'form'">
   <div class="modal-footer">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <button *ngIf="state == 'request-success'" mat-flat-button color="primary" mat-dialog-close>
+          <button *ngIf="state === 'request-success'" mat-flat-button color="primary" mat-dialog-close>
             Tudo certo, obrigado.
           </button>
         </div>
@@ -63,7 +63,7 @@
           <button
             mat-flat-button
             style="background-color: #ffc107; width: -webkit-fill-available"
-            *ngIf="state == 'request-success'"
+            *ngIf="state === 'request-success'"
             mat-dialog-close
             (click)="updateAddress(); activeModal.dismiss('Success')"
           >
@@ -71,7 +71,7 @@
           </button>
         </div>
         <div class="col-lg-6">
-          <button mat-flat-button mat-dialog-close *ngIf="state != 'request-success'">Cancelar</button>
+          <button mat-flat-button mat-dialog-close *ngIf="state !== 'request-success'">Cancelar</button>
         </div>
       </div>
     </div>

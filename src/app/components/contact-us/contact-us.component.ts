@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
   styleUrls: ['./contact-us.component.css']
 })
 export class ContactUsComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   isSent: Boolean;
   isLoading: Boolean = false;
   pageTitle: string;
@@ -22,7 +22,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _scContactUs: ContactUsService,
     private _toastr: ToastrService,
     private _seo: SeoService
@@ -49,7 +49,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
       phone: ['', [Validators.pattern(AppConst.phonePattern)]],
       message: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(512)]],
-      recaptchaReactive: new FormControl(null, Validators.required)
+      recaptchaReactive: new UntypedFormControl(null, Validators.required)
     });
   }
 

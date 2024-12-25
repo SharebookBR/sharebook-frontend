@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './cookieconsent.component.html',
   styleUrls: ['./cookieconsent.component.scss'],
 })
-export class CookieConsentComponent implements OnInit {
+export class CookieConsentComponent {
   public consent: any = {
     text:
       'Esse site salva cookies para uma melhor experiência de usuário. Saiba mais lendo nossa',
@@ -19,7 +19,6 @@ export class CookieConsentComponent implements OnInit {
       : localStorage.getItem('cookieconsent_status');
   constructor() {}
 
-  ngOnInit() {}
 
   public consentUser(decision) {
     switch (decision) {

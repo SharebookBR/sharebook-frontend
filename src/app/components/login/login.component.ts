@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import * as AppConst from '../../core/utils/app.const';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   returnUrl: string;
 
   private _destroySubscribes$ = new Subject<void>();
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _scAuthentication: AuthenticationService,
     private _route: ActivatedRoute,
     private _router: Router,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({

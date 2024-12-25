@@ -40,11 +40,11 @@
     color="primary"
     (click)="anonymize()"
     [disabled]="!formGroup.valid"
-    *ngIf="state == 'ready'"
+    *ngIf="state === 'ready'"
   >
     Excluir minha conta
   </button>
-  <button mat-raised-button mat-dialog-close color="secondary" *ngIf="state == 'ready'">Cancelar</button>
+  <button mat-raised-button mat-dialog-close color="secondary" *ngIf="state === 'ready'">Cancelar</button>
 
-  <div *ngIf="state == 'loading'"><mat-spinner></mat-spinner></div>
+  <div *ngIf="state === 'loading'"><mat-spinner></mat-spinner></div>
 </div>

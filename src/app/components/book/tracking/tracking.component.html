@@ -6,7 +6,7 @@
   <mat-dialog-content>
     <h4>{{ bookTitle }}</h4>
     <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
-    <div class="text-center" *ngIf="state == 'request-error'">
+    <div class="text-center" *ngIf="state === 'request-error'">
       <p>:/ ocorreu um erro.</p>
       <div class="alert alert-danger" role="alert">
         {{ lastError }}

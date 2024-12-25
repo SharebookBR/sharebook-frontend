@@ -195,7 +195,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
 
-      // tslint:disable-next-line:no-shadowed-variable
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       reader.onload = (event) => {
         const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
