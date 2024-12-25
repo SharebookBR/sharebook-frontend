@@ -2,7 +2,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppConfigModule } from '../../../app-config.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { WinnerUsersComponent } from './winner-users.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
