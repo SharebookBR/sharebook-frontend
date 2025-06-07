@@ -38,6 +38,10 @@
               {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
             </p>
             <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
+            <p>
+              <button mat-stroked-button color="primary">Gerar Etiquetas</button>
+              <button mat-stroked-button color="primary" (click)="generateDeclaracao(winnerUser)">Gerar Declaração de Conteúdo</button>
+            </p>
           </div>
         </div>
       </div>
