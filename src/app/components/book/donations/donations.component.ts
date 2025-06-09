@@ -244,6 +244,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
+        modalRef.componentInstance.bookSlug = param.slug;
         break;
       }
 

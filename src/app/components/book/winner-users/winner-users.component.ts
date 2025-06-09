@@ -6,7 +6,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
 import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
-import { BookToAdminProfile } from 'src/app/core/models/BookToAdminProfile';
+import { Book } from 'src/app/core/models/book';
 
 @Component({
   selector: 'app-winner-users',
@@ -16,11 +16,12 @@ import { BookToAdminProfile } from 'src/app/core/models/BookToAdminProfile';
 export class WinnerUsersComponent implements OnInit, OnDestroy {
   @Input() bookId;
   @Input() bookTitle;
+  @Input() bookSlug;
 
   isLoading: Boolean;
   winnerUsers: UserInfo[] = [];
   donorInfo: UserInfo;
-  bookInfo: BookToAdminProfile;
+  bookInfo: Book;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -34,7 +35,7 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     
     // Get book details
-    this._scBook.getById(this.bookId)
+    this._scBook.getBySlug(this.bookSlug)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
         (book) => {
