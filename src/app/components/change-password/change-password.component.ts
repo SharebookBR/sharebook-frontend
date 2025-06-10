@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,8 +13,8 @@ import { PasswordValidation } from '../../core/utils/passwordValidation';
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.css']
 })
-export class ChangePasswordComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+export class ChangePasswordComponent implements OnDestroy {
+  formGroup: UntypedFormGroup;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     private _scUser: UserService,
     private _toastr: ToastrService,
     private _router: Router,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.formGroup = _formBuilder.group(
       {
@@ -35,8 +35,6 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  ngOnInit() {}
 
   changePassword() {
     if (this.formGroup.valid) {

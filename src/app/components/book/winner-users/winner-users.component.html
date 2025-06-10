@@ -13,7 +13,7 @@
         data-target="#myCarousel"
         *ngFor="let winnerUser of winnerUsers; let i = index"
         [attr.data-slide-to]="i"
-        [ngClass]="i == 0 ? 'active' : ''"
+        [ngClass]="i === 0 ? 'active' : ''"
       ></li>
     </ol>
     <!--/.Indicators-->
@@ -21,7 +21,7 @@
     <div class="carousel-inner" role="listbox">
       <div
         *ngFor="let winnerUser of winnerUsers; let k = index"
-        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'"
+        [ngClass]="k === 0 ? 'carousel-item active' : 'carousel-item'"
       >
         <div class="card text-center">
           <div class="card-body">

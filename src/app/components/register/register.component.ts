@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { Address } from '../../core/models/address';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   address = new Address();
   isGettingAddress: boolean;
   isMinor = false;
@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private _scUser: UserService,
     private _router: Router,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _AddressService: AddressService,
     private _toastr: ToastrService
   ) {
@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         country: ['', [Validators.required]],
         allowSendingEmail: [true, null],
         acceptTermOfUse: [false, null],
-        recaptchaReactive: new FormControl(null, Validators.required),
+        recaptchaReactive: new UntypedFormControl(null, Validators.required),
       },
       {
         validators: PasswordValidation.MatchPassword,

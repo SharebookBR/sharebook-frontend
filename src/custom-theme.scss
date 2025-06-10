@@ -1,7 +1,7 @@
 // Custom Theming for Angular Material
 @use '@angular/material' as mat;
 // For more information: https://material.angular.io/guide/theming
-@import '@angular/material/theming';
+
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -19,7 +19,15 @@ $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $angular-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$angular-theme: mat.define-light-theme($angular-primary, $angular-accent, $angular-warn);
+$angular-theme: mat.define-light-theme((
+  color: (
+    primary: $angular-primary,
+    accent: $angular-accent,
+    warn: $angular-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -30,7 +38,6 @@ html,
 body {
   height: 100%;
 }
-//body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';

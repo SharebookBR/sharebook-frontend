@@ -10,11 +10,11 @@
     <div class="carousel-inner" role="listbox">
       <div
         *ngFor="let mainUser of mainUsers; let k = index"
-        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'"
+        [ngClass]="k === 0 ? 'carousel-item active' : 'carousel-item'"
       >
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
+            <h5 class="card-title">{{ k === 0 ? 'Doador' : k === 1 ? 'Facilitador' : 'Vencedor' }}</h5>
             <p class="card-text">Nome: {{ mainUser.name }}</p>
             <p class="card-text">E-mail: {{ mainUser.email }}</p>
             <p class="card-text">LinkedIn: {{ mainUser.linkedin }}</p>

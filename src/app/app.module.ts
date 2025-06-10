@@ -17,7 +17,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
@@ -65,7 +65,7 @@ import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
 import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
@@ -136,7 +136,8 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
     AppConfigModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskDirective,
+    NgxMaskPipe,
     InputSearchModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
@@ -173,6 +174,11 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
     AuthGuardAdmin,
     // provider used to create fake backend
     // fakeBackendProvider
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: {hasBackdrop: true}
+    },
+    provideNgxMask(),
   ],
   bootstrap: [AppComponent],
 })

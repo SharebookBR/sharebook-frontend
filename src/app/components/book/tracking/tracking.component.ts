@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ export class TrackingComponent implements OnInit, OnDestroy {
   @Input() bookTitle;
   @Input() trackingNumber;
 
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   isLoading: Boolean;
 
   state = 'loading'; // loading, form, error
@@ -24,7 +24,7 @@ export class TrackingComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public dialogRef: MatDialogRef<TrackingComponent>, private _scBook: BookService, private _formBuilder: FormBuilder) {
+  constructor(public dialogRef: MatDialogRef<TrackingComponent>, private _scBook: BookService, private _formBuilder: UntypedFormBuilder) {
     this.formGroup = _formBuilder.group({
       trackingNumber: ['', [Validators.required]]
     });

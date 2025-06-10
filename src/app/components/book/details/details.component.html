@@ -1,13 +1,13 @@
 <div class="container form-horizontal">
   <h1 class="text-center display-4">{{ pageTitle }}</h1>
 
-  <div *ngIf="state == 'not-found'" class="text-center">
+  <div *ngIf="state === 'not-found'" class="text-center">
     <button mat-stroked-button color="primary" style="margin: 0 3px 3px 0" routerLink="/">Voltar para página inicial</button>
   </div>
 
-  <div class="text-center" *ngIf="state == 'loading'"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
+  <div class="text-center" *ngIf="state === 'loading'"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
 
-  <div class="container" *ngIf="state == 'ready'">
+  <div class="container" *ngIf="state === 'ready'">
     <div class="form-row">
       <div class="form-group col-lg-4">
         <img

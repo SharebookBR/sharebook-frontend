@@ -2,7 +2,7 @@ import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
 import { Profile } from './../../../core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,7 +26,7 @@ import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
   styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
   facilitators: User[] = [];
@@ -63,7 +63,7 @@ export class FormComponent implements OnInit, OnDestroy {
     private _scBook: BookService,
     private _scCategory: CategoryService,
     private _scUser: UserService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     private _seo: SeoService,
