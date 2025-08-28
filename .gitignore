@@ -42,3 +42,6 @@ Thumbs.db
 
 # developer scripts
 sandbox
+
+# Claude Code settings
+.claude/
