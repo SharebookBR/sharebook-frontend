@@ -79,6 +79,7 @@ import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
 import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
+import { DataAnonymizationInfoComponent } from './components/data-anonymization-info/data-anonymization-info.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
@@ -119,6 +120,7 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
     PrivacyPolicyComponent,
     CookieConsentComponent,
     TermsOfUseComponent,
+    DataAnonymizationInfoComponent,
     DonorModalComponent,
     FreightIncentiveDialogComponent,
     MyaccountComponent,

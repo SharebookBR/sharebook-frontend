@@ -47,6 +47,15 @@ Senha: 132456
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
+## Tecnologias utilizadas
+
+- **Angular**: 13.3.12
+- **Angular CLI**: 13.2.5
+- **TypeScript**: 4.5.5
+- **Angular Material**: 13.3.9
+- **Bootstrap**: 4.5.0
+- **Node.js**: Recomendado 14.x (versões superiores podem apresentar warnings)
+
 ## Observações:
 
 Verifique a versão do Node - Recomendamos Versão 14.
@@ -54,13 +63,85 @@ Outras versões tem apresentado instabilidades com pacotes presente no projeto.
 
 # Rodar o app pela primeira vez
 
-```bash
-npm install
+## Pré-requisitos
+- Node.js 14.x ou superior (versão 20+ pode apresentar warnings mas funciona)
+- npm ou yarn
 
+## Instalação
+
+```bash
+# Instalar dependências (necessário usar --legacy-peer-deps devido a conflitos de versão)
+npm install --legacy-peer-deps
+
+# Iniciar o servidor de desenvolvimento
 npm start
 
-# crie seu primeiro componente. Exemplo.
-ng generate component book/list nomeDoComponente
+# Ou usar comando Angular CLI via npx (sem instalação global)
+npx ng serve
+```
+
+## Comandos úteis
+
+```bash
+# Criar novo componente
+npx ng generate component nome-do-componente
+
+# Build para desenvolvimento
+npm run build-dev
+
+# Build para produção
+npm run build-prod
+
+# Executar testes
+npm test
+
+# Executar linting
+npm run lint
+```
+
+## Angular CLI Global vs Local
+
+**❌ NÃO é necessário instalar o Angular CLI globalmente:**
+```bash
+# Evite este comando:
+npm install -g @angular/cli@13.2.5
+```
+
+**✅ Use npx ou npm scripts:**
+```bash
+# Via npm scripts (recomendado)
+npm start
+npm run build-dev
+npm test
+
+# Via npx (se precisar de comandos ng específicos)
+npx ng serve
+npx ng generate component exemplo
+npx ng build --prod
+```
+
+## Troubleshooting - Problemas Comuns
+
+### ❌ Erro: "npm ERR! ERESOLVE unable to resolve dependency tree"
+**Solução:**
+```bash
+npm install --legacy-peer-deps
+```
+
+### ❌ Erro: "ng: command not found"
+**Solução:** Use `npx ng` ao invés de `ng`, ou execute via npm scripts:
+```bash
+npx ng serve    # ao invés de ng serve
+npm start       # ou use o script do package.json
+```
+
+### ❌ Warnings sobre versão do Node
+Se você estiver usando Node.js 16+ e receber warnings, isso é normal. O projeto funciona mas recomendamos Node 14.x para evitar avisos.
+
+### ❌ Problemas com dependências após git pull
+```bash
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
 ```
 
 # Rodar o app pela primeira vez com Docker

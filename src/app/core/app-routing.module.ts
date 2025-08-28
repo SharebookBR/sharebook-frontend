@@ -25,6 +25,7 @@ import { AboutComponent } from '../components/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
+import { DataAnonymizationInfoComponent } from '../components/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
 
 const routes: Routes = [
@@ -134,6 +135,10 @@ const routes: Routes = [
   {
     path: 'termos-de-uso',
     component: TermsOfUseComponent,
+  },
+  {
+    path: 'anonimizacao-info',
+    component: DataAnonymizationInfoComponent,
   },
   // otherwise redirect to home
   {
