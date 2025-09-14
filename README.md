@@ -109,12 +109,14 @@ http://localhost:4200
 
 https://api-dev.sharebook.com.br/swagger/
 
-# Colinha docker
+---
+
+# Colinha docker VPS
 
 ```bash
 # Build da imagem
 docker build -t sharebook-front -f devops/Dockerfile .
 
 # Run com environment Development
-docker run -d -p 4200:80 -e ASPNETCORE_ENVIRONMENT=Development --name sharebook-frontk-container sharebook-front
+docker run -d -p 4200:80 --name sharebook-frontk-container sharebook-front
 ```
