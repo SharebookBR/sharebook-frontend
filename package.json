@@ -29,7 +29,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "precommit": "npm run lint",
-    "docker-dev": "ng build && docker image build -t sharebook ."
+    "docker-dev": "ng build && docker image build -t sharebook .",
+    "deploy": "netlify deploy --prod"
   },
   "private": true,
   "dependencies": {
