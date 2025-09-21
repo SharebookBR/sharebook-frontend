@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
