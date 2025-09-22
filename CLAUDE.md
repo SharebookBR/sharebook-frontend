@@ -20,3 +20,42 @@ Sharebook é nosso app livre e gratuito para doação de livros. Nosso backend �
 - Leve em consideração que o claude está rodando no powershell
 - Quando o usuário falar pra olhar a colinha, analise o arquivo "colinha.txt" na raíz.
 - Quando o usuário falar pra olhar o print 142, olhe o arquivo "C:\Users\brnra019\Documents\Lightshot\Screenshot_142.png"
+
+### 🚨 IMPORTANTE: Filosofia de Debugging e Transparência
+
+**O Sharebook é um projeto open source, livre e gratuito. NÃO temos segredos comerciais para proteger.**
+
+**SEMPRE exiba erros detalhados do backend para ajudar no debugging:**
+- Mostre todas as `messages[]` do backend nos toasts de erro
+- Use `console.error()` para logging detalhado
+- Capture e exiba erros HTTP completos quando possível
+- Exemplo de resposta de erro do backend:
+```json
+{
+    "value": null,
+    "messages": ["Entidade não encontrada. Por favor, verifique."],
+    "successMessage": null,
+    "success": false
+}
+```
+
+**Lógica padrão para tratamento de erros:**
+```typescript
+.subscribe(
+  (resp) => {
+    if (resp['success']) {
+      this._toastr.success(resp['successMessage'] || 'Operação realizada com sucesso!');
+    } else {
+      const errorMessages = resp['messages']?.join(' ') || 'Erro inesperado.';
+      this._toastr.error(errorMessages);
+    }
+  },
+  (error) => {
+    console.error('Erro detalhado:', error);
+    const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro inesperado.';
+    this._toastr.error(errorMessage);
+  }
+);
+```
+
+Esta transparência ajuda a comunidade a entender e contribuir com o projeto!
