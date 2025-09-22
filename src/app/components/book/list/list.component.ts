@@ -164,6 +164,41 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         modalRef.componentInstance.bookTitle = param.title;
         break;
       }
+      case 'promoteBook': {
+        const modalRef = this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: 'Divulgar Livro',
+            message: `Confirma a divulgação do livro "${param.title}" para possíveis interessados?`,
+            btnOkText: 'Divulgar',
+            btnCancelText: 'Cancelar',
+          },
+        });
+
+        modalRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this._scBook
+              .promoteBook(param.id, param.title, param.categoryId)
+              .pipe(takeUntil(this._destroySubscribes$))
+              .subscribe(
+                (resp) => {
+                  if (resp['success']) {
+                    this._toastr.success(resp['successMessage'] || 'Livro divulgado com sucesso para possíveis interessados!');
+                  } else {
+                    const errorMessages = resp['messages']?.join(' ') || 'Erro ao divulgar o livro. Tente novamente.';
+                    this._toastr.error(errorMessages);
+                  }
+                },
+                (error) => {
+                  console.error('Erro na divulgação:', error);
+                  const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro inesperado ao divulgar o livro.';
+                  this._toastr.error(errorMessage);
+                }
+              );
+          }
+        });
+
+        break;
+      }
     }
   }
 

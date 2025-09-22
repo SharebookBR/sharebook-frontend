@@ -192,4 +192,16 @@ export class BookService {
         {}
     );
   }
+
+  public promoteBook(bookId: string, bookTitle: string, categoryId: string) {
+    const promoteRequest = {
+      bookId: bookId,
+      bookTitle: bookTitle,
+      categoryId: categoryId
+    };
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/promote`,
+      promoteRequest
+    );
+  }
 }
