@@ -7,6 +7,12 @@ export class ToolsService {
   public getTools(): CardItem[] {
     const tools: CardItem[] = [
       {
+        image: 'assets/img/contribute-project/hostinger.jpg',
+        title: 'Hostinger',
+        text: 'Hospedagem web de alta performance para desenvolvedores. Use o link abaixo pra ganhar 20% de desconto e ajude nosso projeto.',
+        links: [{ url: 'https://hostinger.com.br?REFERRALCODE=A2KRAFFACYTL', content: 'Website' }]
+      },
+      {
         image: 'assets/img/contribute-project/slack.jpg',
         title: 'Slack',
         text: 'Comunicação, colaboração e integração. Uma das ferramentas favoritas dos devs.',
@@ -25,21 +31,9 @@ export class ToolsService {
       },
       {
         image: 'assets/img/contribute-project/github.jpg',
-        title: 'Git Hub',
+        title: 'GitHub',
         text: 'Aqui nós temos o cuidado de ter um histórico educativo, onde cada commit conta uma estória.',
         links: [{ url: 'https://github.com/SharebookBR', content: 'Website' }]
-      },
-      {
-        image: 'assets/img/contribute-project/appveyor.jpg',
-        title: 'AppVeyor',
-        text: 'Solução fácil e amigável para integração e deploy contínuo. Integrado com Slack.',
-        links: [{ url: 'https://www.appveyor.com/', content: 'Website' }]
-      },
-      {
-        image: 'assets/img/contribute-project/smarteraspnet.jpg',
-        title: 'Smarter ASP.NET',
-        text: 'Hospedagem boa e barata pro seu App. Usando o link abaixo vc ajuda nosso projeto.',
-        links: [{ url: 'http://www.SmarterASP.NET/index?r=raffacabofrio', content: 'Website' }]
       }
     ];
 

@@ -38,19 +38,25 @@
 
     <h1 class="text-center display-4">Precisamos da sua ajuda!</h1>
     <p>
-      Não importa sua idade, experiência ou ramo de atividade. Temos certeza que você pode ajudar de alguma forma. Fale
-      com o Raffaello pelo Linkedin para mais detalhes.
+      Não importa sua idade, experiência ou ramo de atividade. Temos certeza que você pode ajudar de alguma forma.
     </p>
+    <div class="text-center mb-4">
+      <a href="https://www.linkedin.com/in/raffacabofrio/" class="btn btn-primary btn-lg" target="_blank">
+        <i class="fa fa-linkedin"></i> Fale com o Raffaello no LinkedIn
+      </a>
+    </div>
 
-    <div class="card" *ngFor="let career of careers">
-      <img class="card-img-top" [src]="career.image" alt="Card image cap" />
-      <div class="card-body">
-        <h5 class="card-title">{{ career.title }}</h5>
-        <p class="card-text">
-          <span [innerHTML]="career.text"></span>
-        </p>
+    <div class="flex-container">
+      <div class="card card-carreira" *ngFor="let career of careers">
+        <img class="card-img-top" [src]="career.image" alt="Card image cap" />
+        <div class="card-body">
+          <h5 class="card-title">{{ career.title }}</h5>
+          <p class="card-text">
+            <span [innerHTML]="career.text"></span>
+          </p>
 
-        <a *ngFor="let link of career.links" [href]="link.url" class="card-link" target="_blank">{{ link.content }}</a>
+          <a *ngFor="let link of career.links" [href]="link.url" class="card-link" target="_blank">{{ link.content }}</a>
+        </div>
       </div>
     </div>
   </div>

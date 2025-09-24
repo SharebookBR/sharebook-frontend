@@ -31,7 +31,7 @@ export class ContributeProjectComponent implements OnInit {
       description:
         'Precisamos da sua ajuda. Tem muitas formas de ajudar. Todos são bem vindos, seja para contribuir ou aprender. ' +
         'Você pode ajudar contribuindo em nosso código-fonte open source. ' +
-        'Temos .Net core no backend, Angular no front e Ionic no mobile. ' +
+        'Temos .NET 8 no backend, Angular no front e Ionic no mobile. ' +
         'Você vai se sentir confortável porque temos um cuidado especial em ter um código limpo e fácil de entender. ' +
         'Acreditamos que cada commit conta uma estória, e que isso incentiva o aprendizado.',
       slug: 'apoie-projeto'
