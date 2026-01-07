@@ -1,0 +1,57 @@
+.dev-banner-wrapper {
+  height: 40px;
+  position: relative;
+  z-index: 10000;
+}
+
+.dev-banner {
+  background-color: #ff6b35;
+  color: #ffffff;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 40px;
+  display: flex;
+  align-items: center;
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 100%;
+    font-weight: 600;
+    font-size: 14px;
+
+    .warning-icon {
+      font-size: 18px;
+    }
+
+    .banner-text {
+      letter-spacing: 0.5px;
+    }
+
+    .settings-link {
+      color: #ffffff;
+      text-decoration: underline;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Empurra elementos fixed-top para baixo quando o banner está visível
+:host ::ng-deep .fixed-top {
+  top: 40px !important;
+}

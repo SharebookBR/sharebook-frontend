@@ -27,6 +27,7 @@ import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-pol
 import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
 import { DataAnonymizationInfoComponent } from '../components/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -127,6 +128,10 @@ const routes: Routes = [
   {
     path: 'contact-us',
     component: ContactUsComponent,
+  },
+  {
+    path: 'configuracoes',
+    component: SettingsComponent,
   },
   {
     path: 'politica-privacidade',

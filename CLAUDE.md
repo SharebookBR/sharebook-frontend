@@ -2,7 +2,7 @@
 
 ## 📋 Informações do Projeto 'Sharebook Frontend'
 
-Sharebook é nosso app livre e gratuito para doação de livros. Nosso backend é feito em .NET 8, com arquitetura limpa e testes unitários. O frontend é em Angular.
+Sharebook é nosso app livre e gratuito para doação de livros. Nosso backend é feito em .NET 10, com arquitetura limpa e testes unitários. O frontend é em Angular.
 
 ### Sobre o Desenvolvedor Raffa
 
@@ -20,6 +20,7 @@ Sharebook é nosso app livre e gratuito para doação de livros. Nosso backend �
 - Leve em consideração que o claude está rodando no powershell
 - Quando o usuário falar pra olhar a colinha, analise o arquivo "colinha.txt" na raíz.
 - Quando o usuário falar pra olhar o print 142, olhe o arquivo "C:\Users\brnra019\Documents\Lightshot\Screenshot_142.png"
+- Ao final de cada sessão, atualize o CLAUDE.md com seu aprendizado. Evite ser muito específico com coisas que vc facilemente lê no código. Tente entender o espírito e escrever boas práticas genéricas. Exceção é quando vc tiver uma dificuldade técnica vale a penas colocar uma colinha de comandos usados aqui.
 
 ### 🚨 IMPORTANTE: Filosofia de Debugging e Transparência
 

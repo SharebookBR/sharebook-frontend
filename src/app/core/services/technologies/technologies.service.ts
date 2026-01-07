@@ -10,7 +10,7 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/dotnet.jpg',
         title: 'Backend',
-        text: '.NET 8, C#, SQL Server, AWS SQS',
+        text: '.NET 10, C#, SQL Server, AWS SQS',
         links: [{ url: RepositoriesUrls.BACKEND, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
       },
       {
