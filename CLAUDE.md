@@ -63,23 +63,10 @@ Esta transparência ajuda a comunidade a entender e contribuir com o projeto!
 
 ## 📚 Aprendizados e Boas Práticas
 
-### Environment Switcher Pattern
-Quando precisar alternar entre múltiplos ambientes (dev/prod/local) em runtime:
-- Use **localStorage** para persistir a escolha do usuário entre reloads
-- Crie um **service dedicado** que centralize a lógica de ambientes
-- Use **factory providers** no Angular para injeção dinâmica de configuração
-- Adicione **indicador visual claro** quando não estiver em produção (banner, cor diferente, etc)
-- Mantenha **página de configurações** acessível mas não invasiva (footer é bom lugar)
-
 ### Validação Visual com Chrome DevTools MCP
 - O Chrome DevTools MCP permite validar UI sem abrir o browser manualmente
 - Útil para verificar se implementações visuais estão corretas (banners, modais, etc)
 - Pode tirar screenshots e fazer assertions programaticamente
-
-### Go-Horse Pragmático
-- **Emojis Unicode** funcionam em todos os browsers sem dependências
-- Quando Font Awesome não carrega ou adiciona peso desnecessário, use: ⚙️ ✓ ⚠️ ℹ️ ←
-- Priorize simplicidade sobre "fazer do jeito certo" quando o resultado é o mesmo
 
 ### Busca e Replace em Massa
 - Sempre use **Grep** para encontrar todas ocorrências antes de atualizar
