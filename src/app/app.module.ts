@@ -85,6 +85,7 @@ import { FreightIncentiveDialogComponent } from './components/book/freight-incen
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
+import { CategoryBooksComponent } from './components/category/category-books/category-books.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-a
     DialogAnonymizeComponent,
     CardMeetupComponent,
     SearchResultsComponent,
+    CategoryBooksComponent,
   ],
   imports: [
     BrowserModule,

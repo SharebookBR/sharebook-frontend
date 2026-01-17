@@ -45,3 +45,36 @@ th.mat-header-cell {
   padding: 0px;
   height: 34px;
 }
+
+/* Book type badges */
+.book-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.book-type-badge .badge-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.badge-ebook {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge-physical {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.mat-column-type {
+  padding-left: 10px;
+  width: 100px;
+}

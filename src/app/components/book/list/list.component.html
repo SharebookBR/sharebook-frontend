@@ -40,11 +40,21 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Tipo</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="book-type-badge" [ngClass]="element.type === 'Eletronic' ? 'badge-ebook' : 'badge-physical'">
+            <mat-icon class="badge-icon">{{ element.type === 'Eletronic' ? 'cloud_download' : 'menu_book' }}</mat-icon>
+            {{ element.type === 'Eletronic' ? 'E-book' : 'Físico' }}
+          </span>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="chooseDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Escolha</th>
         <td mat-cell *matCellDef="let element">
           <font [color]="getTextColor(element.status)">
-            {{ element.chooseDate | date: 'dd/MM/yyyy' }}
+            {{ element.type === 'Eletronic' ? '-' : (element.chooseDate | date: 'dd/MM/yyyy') }}
           </font>
         </td>
       </ng-container>
@@ -108,17 +118,6 @@
           </button>
 
           <button
-            (click)="onCustom('donate', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            style="background-color: #ffc107"
-            data-toggle="tooltip"
-            title="Ver lista de interessados"
-          >
-            <mat-icon>format_list_bulleted</mat-icon>
-          </button>
-
-          <button
             (click)="onCustom('facilitatorNotes', element)"
             mat-flat-button
             class="ml-1 mb-1"
@@ -129,7 +128,9 @@
             <mat-icon>sticky_note_2</mat-icon>
           </button>
 
+          <!-- Código de Rastreio (apenas para livro físico) -->
           <button
+            *ngIf="element.type !== 'Eletronic'"
             (click)="onCustom('trackNumber', element)"
             mat-flat-button
             style="background-color: gray; color: white"
@@ -138,16 +139,6 @@
             title="Informar Código Rastreio"
           >
             <mat-icon>local_shipping</mat-icon>
-          </button>
-
-          <button
-            (click)="onCustom('showUsersInfo', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            data-toggle="tooltip"
-            title="Informações de Usuários"
-          >
-            <mat-icon>group</mat-icon>
           </button>
         </td>
       </ng-container>

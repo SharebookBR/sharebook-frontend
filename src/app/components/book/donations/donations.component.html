@@ -24,12 +24,12 @@
 
       <ng-container matColumnDef="chooseDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Data Escolha</th>
-        <td mat-cell *matCellDef="let element">{{ element.chooseDate | date: 'dd/MM/yyyy' }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.type === 'Eletronic' ? '-' : (element.chooseDate | date: 'dd/MM/yyyy') }}</td>
       </ng-container>
 
       <ng-container matColumnDef="trackingNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Código Ratreio</th>
-        <td mat-cell *matCellDef="let element">{{ element.trackingNumber }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Código Rastreio</th>
+        <td mat-cell *matCellDef="let element">{{ element.type === 'Eletronic' ? '-' : element.trackingNumber }}</td>
       </ng-container>
 
       <ng-container matColumnDef="status">
@@ -60,7 +60,9 @@
             <mat-icon>format_list_bulleted</mat-icon>
           </button>
 
+          <!-- Renovar Data de Escolha (apenas para livro físico) -->
           <button
+            *ngIf="element.type !== 'Eletronic'"
             (click)="onCustom('renewChooseDate', element)"
             mat-flat-button
             class="ml-1 mb-1"
@@ -71,7 +73,9 @@
             <mat-icon>calendar_month</mat-icon>
           </button>
 
+          <!-- Código de Rastreio (apenas para livro físico) -->
           <button
+            *ngIf="element.type !== 'Eletronic'"
             (click)="onCustom('trackNumber', element)"
             mat-flat-button
             style="background-color: gray; color: white"
@@ -93,7 +97,9 @@
             <mat-icon>delete_outline</mat-icon>
           </button>
 
+          <!-- Ver ganhador (apenas para livro físico) -->
           <button
+            *ngIf="element.type !== 'Eletronic'"
             (click)="onCustom('ShowWinnerInfo', element)"
             mat-flat-button
             class="ml-1 mb-1"

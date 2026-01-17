@@ -1,6 +1,8 @@
 import { Category } from './category';
 import { BookDonationStatus } from './BookDonationStatus';
 
+export type BookType = 'Printed' | 'Eletronic';
+
 export class Book {
   title: string;
   author: string;
@@ -21,4 +23,7 @@ export class Book {
   status: BookDonationStatus;
   city: string;
   state: string;
+  type: BookType;
+  pdfBytes?: string;
+  eBookPdfPath?: string;
 }

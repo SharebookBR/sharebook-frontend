@@ -23,40 +23,72 @@
         />
       </div>
       <div class="form-group col-lg-8">
+        <!-- Tag de tipo de livro -->
+        <p>
+          <span class="badge" [ngClass]="isEbook() ? 'badge-info' : 'badge-secondary'">
+            {{ getBookTypeLabel() }}
+          </span>
+        </p>
         <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
         <p><strong>Autor:</strong><br />{{ bookInfo.author }}</p>
         <p><strong>Categoria:</strong><br />{{ bookInfo.category }}</p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
           <strong>Sinópse:</strong><br />{{ bookInfo.synopsis }}
         </p>
-        <p *ngIf="available">
+        <!-- Data de escolha do ganhador (apenas para livro físico) -->
+        <p *ngIf="available && !isEbook()">
           <strong>Quando será anunciado o ganhador desse livro?</strong><br />{{ chooseDateInfo }}
         </p>
-        <p>
-          <strong>Local de Origem</strong><br />{{ bookInfo.city }} -
-          {{ bookInfo.state }}
-        </p>
-        <p *ngIf="available && userProfile"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
-        <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight">
+        <!-- Informações de frete (apenas para livro físico) -->
+        <p *ngIf="available && userProfile && !isEbook()"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
+        <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight && !isEbook()">
           <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight" />
           <label class="custom-control-label" for="checkFreight"
             >Estou ciente que o frete não é grátis. Caso seja escolhido, me comprometo a reembolsar o doador.</label
           >
+        </div>
+
+        <!-- Informação de download para e-books -->
+        <div *ngIf="isEbook() && available" class="alert alert-info mt-3">
+          <strong>E-book disponível para download!</strong><br />
+          Complete a verificação abaixo para baixar o PDF gratuitamente.
+        </div>
+
+        <!-- reCAPTCHA para download de e-book -->
+        <div *ngIf="isEbook() && available" class="recaptcha-container mt-3">
+          <re-captcha
+            #recaptchaRef
+            (resolved)="onRecaptchaResolved($event)"
+            (expired)="onRecaptchaExpired()"
+          ></re-captcha>
         </div>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group col-lg-12">
         <div class="modal-footer">
-          <span class="badge badge-success" *ngIf="requested">Você já solicitou. Aguarde e boa sorte!</span>
+          <span class="badge badge-success" *ngIf="requested && !isEbook()">Você já solicitou. Aguarde e boa sorte!</span>
 
           <span class="badge badge-danger" *ngIf="!requested && !available">Não disponível.</span>
 
+          <!-- Botão de download para e-books (não precisa de login, mas precisa de reCAPTCHA) -->
+          <button
+            mat-flat-button
+            color="accent"
+            class="mr-2"
+            *ngIf="isEbook() && available"
+            (click)="onDownloadEbook()"
+            [disabled]="!recaptchaToken"
+          >
+            <mat-icon>download</mat-icon> Baixar E-book (PDF)
+          </button>
+
+          <!-- Botão de interesse (apenas para livros físicos) -->
           <button
             mat-flat-button
             color="primary"
             class="mr-2"
-            *ngIf="available && userProfile && !requested"
+            *ngIf="available && userProfile && !requested && !isEbook()"
             (click)="onRequestBook()"
             [disabled]="!isFreeFreight && !isCheckedFreight"
           >
@@ -67,13 +99,13 @@
             mat-flat-button
             color="primary"
             class="mr-2"
-            *ngIf="available && !userProfile"
+            *ngIf="available && !userProfile && !isEbook()"
             (click)="onLoginBook()"
           >
             Faça login para solicitar o livro
           </button>
 
-          <button mat-stroked-button color="primary" [routerLink]="['/home']" id="cancelButton">Cancelar</button>
+          <button mat-stroked-button color="primary" [routerLink]="['/home']" id="cancelButton">Voltar</button>
         </div>
       </div>
     </div>
