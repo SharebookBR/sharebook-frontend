@@ -106,6 +106,7 @@
               *ngFor="let option of bookTypeOptions"
               [value]="option.value"
               (click)="onChangeBookType(option.value)"
+              (keydown.enter)="onChangeBookType(option.value)"
               >{{ option.text }}
             </mat-button-toggle>
           </mat-button-toggle-group>
