@@ -27,6 +27,7 @@ import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-pol
 import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
 import { DataAnonymizationInfoComponent } from '../components/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
+import { CategoryBooksComponent } from '../components/category/category-books/category-books.component';
 
 const routes: Routes = [
   {
@@ -75,6 +76,10 @@ const routes: Routes = [
   {
     path: 'search/:criteria',
     component: SearchResultsComponent,
+  },
+  {
+    path: 'categorias/:slug',
+    component: CategoryBooksComponent,
   },
   {
     path: 'quem-somos',

@@ -24,7 +24,7 @@ import { BookVM } from './../../../core/models/bookVM';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['creationDate', 'chooseDate', 'title', 'users', 'status', 'action'];
+  displayedColumns: string[] = ['type', 'creationDate', 'chooseDate', 'title', 'users', 'status', 'action'];
 
   myBookArray = new MatTableDataSource<BookVMItem>();
   statusSearchValues = [];

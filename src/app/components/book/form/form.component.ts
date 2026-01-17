@@ -19,6 +19,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
+import { BookType } from 'src/app/core/models/book';
 
 @Component({
   selector: 'app-form',
@@ -39,10 +40,19 @@ export class FormComponent implements OnInit, OnDestroy {
   isLoadingMessage: string;
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
+  isPdfLoaded: Boolean = false;
   canApprove: Boolean = false;
   status = '';
 
   src: string;
+  pdfFileName: string = '';
+  uploadProgress: number = 0;
+
+  bookTypeOptions = [
+    { value: 'Printed', text: 'Livro Físico' },
+    { value: 'Eletronic', text: 'E-book (PDF)' }
+  ];
+  selectedBookType: BookType = 'Printed';
 
   shareBookUser = new User();
 
@@ -127,15 +137,48 @@ export class FormComponent implements OnInit, OnDestroy {
       categoryId: ['', [Validators.required]],
       userIdFacilitator: [''],
       userId: ['', [Validators.required]],
-      freightOption: ['', [Validators.required]],
+      freightOption: [null],
       imageBytes: [''],
-      imageName: [''], // , this.userProfile === 'User' && [Validators.required]],
+      imageName: [''],
       approve: [''],
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
-      agreeToTerms: ['', Validators.requiredTrue],
+      agreeToTerms: [false],
+      type: ['Printed'],
+      pdfBytes: [null],
+      agreeToAntiPiracy: [false],
     });
+
+    this.updateValidators();
+  }
+
+  updateValidators() {
+    const freightControl = this.formGroup.get('freightOption');
+    const pdfControl = this.formGroup.get('pdfBytes');
+    const antiPiracyControl = this.formGroup.get('agreeToAntiPiracy');
+    const agreeToTermsControl = this.formGroup.get('agreeToTerms');
+
+    if (this.selectedBookType === 'Printed') {
+      freightControl.setValidators([Validators.required]);
+      agreeToTermsControl.setValidators([Validators.requiredTrue]);
+      pdfControl.clearValidators();
+      antiPiracyControl.clearValidators();
+    } else {
+      freightControl.clearValidators();
+      agreeToTermsControl.clearValidators();
+      if (!this.isPdfLoaded) {
+        pdfControl.setValidators([Validators.required]);
+      } else {
+        pdfControl.clearValidators();
+      }
+      antiPiracyControl.setValidators([Validators.requiredTrue]);
+    }
+
+    freightControl.updateValueAndValidity();
+    pdfControl.updateValueAndValidity();
+    antiPiracyControl.updateValueAndValidity();
+    agreeToTermsControl.updateValueAndValidity();
   }
 
   findProfile() {
@@ -190,10 +233,26 @@ export class FormComponent implements OnInit, OnDestroy {
             synopsis: !!book.synopsis ? book.synopsis : '',
             agreeToTerms: true,
             approve: false,
+            type: book.type || 'Printed',
+            pdfBytes: null,
+            agreeToAntiPiracy: true,
           };
 
+          const isEbook = book.type === 'Eletronic' || !!book.eBookPdfPath;
+          this.selectedBookType = isEbook ? 'Eletronic' : 'Printed';
+
+          if (book.eBookPdfPath) {
+            this.isPdfLoaded = true;
+            this.pdfFileName = book.eBookPdfPath;
+          }
+
+          this.updateValidators();
+
           this.formGroup.controls['freightOption'].setValue(book.freightOption);
-          this.freightStartSubject.next(this.freightOptions.find(frete => frete.value === book.freightOption).text);
+          const freightOption = this.freightOptions.find(frete => frete.value === book.freightOption);
+          if (freightOption) {
+            this.freightStartSubject.next(freightOption.text);
+          }
           this.formGroup
             .get('userIdFacilitator')
             .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
@@ -219,26 +278,62 @@ export class FormComponent implements OnInit, OnDestroy {
       return false;
     }
 
+    if (this.selectedBookType === 'Eletronic' && !this.isPdfLoaded) {
+      this._toastr.error('Selecionar arquivo PDF do e-book.');
+      return false;
+    }
+
     this.isLoading = true;
+    this.uploadProgress = 0;
     this.isLoadingMessage = 'Aguarde...';
+
     if (!this.formGroup.value.bookId) {
       if (!this.formGroup.value.imageName) {
         this.formGroup.value.imageName = 'iPhone-image.jpg'; // Para iphone o mesmo não envia o nome da imagem
       }
 
-      this._scBook
-        .create(this.formGroup.value)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe((resp) => {
-          if (resp.success) {
-            this.isSaved = true;
-            this._toastr.success('Livro cadastrado com sucesso!');
-            this.pageTitle = 'Obrigado por ajudar.';
-          } else {
-            this._toastr.error(resp.messages[0]);
-          }
-          this.isLoading = false;
-        });
+      const bookData = this.prepareBookPayload();
+
+      if (this.selectedBookType === 'Eletronic') {
+        this._scBook
+          .createWithProgress(bookData, (progress) => {
+            this.uploadProgress = progress;
+            this.isLoadingMessage = progress < 100 ? `Enviando PDF... ${progress}%` : 'Processando...';
+          })
+          .pipe(takeUntil(this._destroySubscribes$))
+          .subscribe({
+            next: (resp) => {
+              if (resp.success) {
+                this.isSaved = true;
+                this._toastr.success('E-book cadastrado com sucesso!');
+                this.pageTitle = 'Obrigado por ajudar.';
+              } else {
+                this._toastr.error(resp.messages[0]);
+              }
+              this.isLoading = false;
+              this.uploadProgress = 0;
+            },
+            error: (err) => {
+              this._toastr.error('Erro ao enviar o e-book. Tente novamente.');
+              this.isLoading = false;
+              this.uploadProgress = 0;
+            }
+          });
+      } else {
+        this._scBook
+          .create(bookData)
+          .pipe(takeUntil(this._destroySubscribes$))
+          .subscribe((resp) => {
+            if (resp.success) {
+              this.isSaved = true;
+              this._toastr.success('Livro cadastrado com sucesso!');
+              this.pageTitle = 'Obrigado por ajudar.';
+            } else {
+              this._toastr.error(resp.messages[0]);
+            }
+            this.isLoading = false;
+          });
+      }
     } else {
       const book = this.formGroup.value;
       book.id = this.formGroup.value.bookId;
@@ -260,6 +355,75 @@ export class FormComponent implements OnInit, OnDestroy {
 
     if (freightOption === 'WithoutFreight') {
       this.dialog.open(FreightIncentiveDialogComponent, { maxWidth: 350 });
+    }
+  }
+
+  prepareBookPayload(): any {
+    const formValue = { ...this.formGroup.value };
+
+    delete formValue.bookId;
+    delete formValue.approve;
+    delete formValue.imageUrl;
+    delete formValue.imageSlug;
+    delete formValue.agreeToTerms;
+    delete formValue.agreeToAntiPiracy;
+
+    if (!formValue.userIdFacilitator) {
+      delete formValue.userIdFacilitator;
+    }
+
+    if (this.selectedBookType === 'Printed') {
+      delete formValue.pdfBytes;
+    } else {
+      delete formValue.freightOption;
+    }
+
+    return formValue;
+  }
+
+  onChangeBookType(bookType: BookType) {
+    this.selectedBookType = bookType;
+    this.formGroup.controls['type'].setValue(bookType);
+    this.updateValidators();
+
+    if (bookType === 'Printed') {
+      this.formGroup.controls['pdfBytes'].setValue(null);
+      this.isPdfLoaded = false;
+      this.pdfFileName = '';
+    } else {
+      this.formGroup.controls['freightOption'].setValue(null);
+    }
+  }
+
+  onPdfSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.name.toLowerCase().endsWith('.pdf')) {
+        this._toastr.error('Apenas arquivos PDF são permitidos.');
+        return;
+      }
+
+      if (file.size > 50 * 1024 * 1024) {
+        this._toastr.error('O arquivo PDF deve ter no máximo 50MB.');
+        return;
+      }
+
+      this.isLoading = true;
+      this.isLoadingMessage = 'Processando PDF...';
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        this.formGroup.controls['pdfBytes'].setValue(base64);
+        this.isPdfLoaded = true;
+        this.pdfFileName = file.name;
+        this.isLoading = false;
+      };
+      reader.onerror = () => {
+        this._toastr.error('Erro ao processar o arquivo PDF.');
+        this.isLoading = false;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
