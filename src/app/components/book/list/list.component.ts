@@ -164,6 +164,52 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         modalRef.componentInstance.bookTitle = param.title;
         break;
       }
+      case 'renewChooseDate': {
+        if (param.status !== BookDonationStatus.WAITING_DECISION) {
+          alert(
+            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+            `status atual = ${param.status}`
+          );
+          return;
+        }
+
+        const chooseDate = Math.floor(new Date(param.chooseDate).getTime() / (3600 * 24 * 1000));
+        const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
+
+        if (!chooseDate || chooseDate - todayDate > 0) {
+          alert('Aguarde a data de escolha!');
+        } else {
+          const modalRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+              title: 'Atenção!',
+              message: 'Confirma a renovação da data de doação?',
+              btnOkText: 'Confirmar',
+              btnCancelText: 'Cancelar',
+            },
+          });
+
+          modalRef.afterClosed().subscribe((result) => {
+            if (result) {
+              this._scBook
+                .renewChooseDate(param.id)
+                .pipe(takeUntil(this._destroySubscribes$))
+                .subscribe(
+                  () => {
+                    this._toastr.success('Doação renovada com sucesso.');
+                    this.reloadData();
+                  },
+                  (error) => {
+                    console.error('Erro ao renovar data de escolha:', error);
+                    const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro inesperado.';
+                    this._toastr.error(errorMessage);
+                  }
+                );
+            }
+          });
+        }
+
+        break;
+      }
       case 'promoteBook': {
         const modalRef = this.dialog.open(ConfirmationDialogComponent, {
           data: {

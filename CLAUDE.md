@@ -72,3 +72,21 @@ Esta transparência ajuda a comunidade a entender e contribuir com o projeto!
 - Sempre use **Grep** para encontrar todas ocorrências antes de atualizar
 - Não esqueça: SEO meta tags, documentação, services injetados
 - Exemplo: ao atualizar versão de framework, busque em index.html, CLAUDE.md, services, etc
+
+### O que persistir no CLAUDE.md
+- **Não registrar coisas que se lêem facilmente no código** — nomes de endpoints, estrutura de ViewModel, etc.
+- **Registrar boas práticas gerais** aprendidas na prática, que valem para qualquer feature futura
+- **Registrar armadilhas não óbvias** — comportamentos inesperados de libs, CSS, Angular, que custariam tempo redescobrir
+
+### Armadilhas com Form Controls e inputs customizados
+- `setValue()` em form controls ligados a `<input type="file">` com `ControlValueAccessor` customizado pode não persistir até o submit — quando isso acontecer, corrigir o valor na camada de submit, não no form control
+
+### Armadilhas com CSS genérico em containers
+- Seletores como `.container div` afetam todos os descendentes — ao adicionar novos elementos dentro de containers existentes, verificar se há regras CSS genéricas que possam impactar o layout do novo elemento
+
+### Compatibilidade de libs com versão do Angular
+- Antes de instalar qualquer lib, verificar compatibilidade com a versão do Angular do projeto (13)
+- Libs modernas tendem a exigir Angular 14+ e usar standalone components sem NgModule
+
+### Backlog Técnico
+- **Upgrade Angular 13 → 18** — projeto tem vulnerabilidades de segurança (XSS, XSRF) que só se resolvem com upgrade. Fazer de forma incremental: 13→14→15→16→17→18
