@@ -28,7 +28,6 @@
     "test": "ng test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "precommit": "npm run lint",
     "docker-dev": "ng build && docker image build -t sharebook ."
   },
   "private": true,
