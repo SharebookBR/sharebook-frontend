@@ -18,3 +18,21 @@
 image-cropper {
   max-height: 60vh;
 }
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.actions-rotate {
+  display: flex;
+  gap: 4px;
+}
+
+.actions-confirm {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

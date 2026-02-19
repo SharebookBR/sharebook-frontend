@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 
 export interface CropImageDialogData {
   imageUrl?: string;
@@ -15,6 +15,8 @@ export interface CropImageDialogData {
 export class CropImageDialogComponent {
   croppedBase64 = '';
   loadFailed = false;
+  rotation = 0;
+  transform: ImageTransform = {};
 
   constructor(
     public dialogRef: MatDialogRef<CropImageDialogComponent>,
@@ -27,6 +29,16 @@ export class CropImageDialogComponent {
 
   onLoadImageFailed() {
     this.loadFailed = true;
+  }
+
+  rotateLeft() {
+    this.rotation = (this.rotation - 90 + 360) % 360;
+    this.transform = { ...this.transform, rotate: this.rotation };
+  }
+
+  rotateRight() {
+    this.rotation = (this.rotation + 90) % 360;
+    this.transform = { ...this.transform, rotate: this.rotation };
   }
 
   confirm() {
