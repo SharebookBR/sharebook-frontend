@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -82,6 +83,7 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
 import { DataAnonymizationInfoComponent } from './components/data-anonymization-info/data-anonymization-info.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
+import { CropImageDialogComponent } from './components/book/crop-image-dialog/crop-image-dialog.component';
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
@@ -125,6 +127,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     DataAnonymizationInfoComponent,
     DonorModalComponent,
     FreightIncentiveDialogComponent,
+    CropImageDialogComponent,
     MyaccountComponent,
     DialogWHoAccessedComponent,
     DialogAnonymizeComponent,
@@ -147,6 +150,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ImageToDataUrlModule,
+    ImageCropperModule,
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,

@@ -1,0 +1,20 @@
+.load-failed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  color: #666;
+  text-align: center;
+}
+
+.load-failed mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+image-cropper {
+  max-height: 60vh;
+}

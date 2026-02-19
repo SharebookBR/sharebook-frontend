@@ -23,7 +23,7 @@
         <img
           [src]="
             formGroup.value.imageBytes.length
-              ? 'data:image/png;base64,' + formGroup.value.imageBytes
+              ? 'data:image/jpeg;base64,' + formGroup.value.imageBytes
               : formGroup.value.imageUrl
               ? formGroup.value.imageUrl
               : 'assets/img/img-placeholder.png'
@@ -31,6 +31,11 @@
           class="figure-img img-fluid rounded"
           alt="Book image"
         />
+        <div class="image-actions" *ngIf="formGroup.value.imageBytes || formGroup.value.imageUrl">
+          <button type="button" mat-stroked-button (click)="openCropDialog()">
+            <mat-icon>crop</mat-icon> Recortar
+          </button>
+        </div>
       </div>
       <div class="col">
         <div class="form-group col-md-8">
@@ -109,7 +114,7 @@
               [imageToDataUrl]="options"
             />
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
-              Selecionar imagem da capa do livro
+              {{ (formGroup.value.imageUrl || formGroup.value.imageBytes) ? 'Trocar imagem' : 'Selecionar imagem da capa do livro' }}
             </label>
             <label class="custom-file-label" for="imageName" *ngIf="formGroup.controls['imageName'].valid">
               {{ formGroup.value.imageName ? formGroup.value.imageName : formGroup.value.imageSlug }}

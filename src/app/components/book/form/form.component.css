@@ -47,3 +47,24 @@ input.ng-invalid.ng-touched {
 mat-button-toggle-group {
   flex-grow: 1;
 }
+
+.image-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  width: auto !important;
+  height: auto !important;
+  border: none !important;
+}
+
+.image-actions button {
+  width: 100%;
+  font-size: 12px;
+}
+
+.image-actions mat-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+}

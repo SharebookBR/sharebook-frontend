@@ -1,6 +1,7 @@
 import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
 import { Profile } from './../../../core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
+import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -242,6 +243,9 @@ export class FormComponent implements OnInit, OnDestroy {
     } else {
       const book = this.formGroup.value;
       book.id = this.formGroup.value.bookId;
+      if (book.imageBytes && !book.imageName) {
+        book.imageName = 'capa-atualizada.jpg';
+      }
       this._scBook
         .update(book)
         .pipe(takeUntil(this._destroySubscribes$))
@@ -253,6 +257,26 @@ export class FormComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  openCropDialog() {
+    const hasBytes = !!this.formGroup.value.imageBytes;
+    const dialogRef = this.dialog.open(CropImageDialogComponent, {
+      data: {
+        imageUrl: !hasBytes ? this.formGroup.value.imageUrl : undefined,
+        imageBase64: hasBytes ? 'data:image/jpeg;base64,' + this.formGroup.value.imageBytes : undefined,
+      },
+      width: '700px',
+    });
+
+    dialogRef.afterClosed().subscribe((croppedBase64: string) => {
+      if (croppedBase64) {
+        const base64Data = croppedBase64.split(',')[1];
+        this.formGroup.controls['imageBytes'].setValue(base64Data);
+        this.formGroup.controls['imageName'].setValue('capa-crop.jpg');
+        this.isImageLoaded = true;
+      }
+    });
   }
 
   onChangeFieldFreightOption(freightOption: string) {
