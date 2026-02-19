@@ -1,0 +1,42 @@
+<mat-nav-list>
+  <div *ngIf="userLogged" class="mais-sheet__greeting">
+    <mat-icon>person</mat-icon>
+    <span>Olá, {{ userName }}</span>
+  </div>
+  <mat-divider *ngIf="userLogged"></mat-divider>
+
+  <a mat-list-item (click)="navigate('/panel')" *ngIf="userLogged">
+    <mat-icon mat-list-icon>dashboard</mat-icon>
+    <span mat-line>Meu Painel</span>
+  </a>
+  <a mat-list-item (click)="navigate('/myaccount')" *ngIf="userLogged">
+    <mat-icon mat-list-icon>manage_accounts</mat-icon>
+    <span mat-line>Minha Conta</span>
+  </a>
+
+  <mat-divider></mat-divider>
+
+  <a mat-list-item (click)="navigate('/apoie-projeto')">
+    <mat-icon mat-list-icon>favorite_border</mat-icon>
+    <span mat-line>Apoie o projeto</span>
+  </a>
+  <a mat-list-item (click)="navigate('/quem-somos')">
+    <mat-icon mat-list-icon>info_outline</mat-icon>
+    <span mat-line>Quem somos</span>
+  </a>
+  <a mat-list-item (click)="navigate('/contact-us')">
+    <mat-icon mat-list-icon>mail_outline</mat-icon>
+    <span mat-line>Fale conosco</span>
+  </a>
+
+  <mat-divider></mat-divider>
+
+  <a mat-list-item (click)="navigate('/login')" *ngIf="!userLogged">
+    <mat-icon mat-list-icon>login</mat-icon>
+    <span mat-line>Entrar</span>
+  </a>
+  <a mat-list-item (click)="logout()" *ngIf="userLogged">
+    <mat-icon mat-list-icon>logout</mat-icon>
+    <span mat-line>Sair</span>
+  </a>
+</mat-nav-list>

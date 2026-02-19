@@ -1,0 +1,22 @@
+<nav class="bottom-nav d-flex d-md-none">
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="bottom-nav__item">
+    <mat-icon>menu_book</mat-icon>
+    <span>Vitrine</span>
+  </a>
+  <a routerLink="/book/requesteds" routerLinkActive="active" class="bottom-nav__item">
+    <mat-icon>inbox</mat-icon>
+    <span>Pedidos</span>
+  </a>
+  <a routerLink="/livros/doar" class="bottom-nav__item bottom-nav__item--cta">
+    <mat-icon>favorite</mat-icon>
+    <span>Doe</span>
+  </a>
+  <a routerLink="/book/donations" routerLinkActive="active" class="bottom-nav__item">
+    <mat-icon>volunteer_activism</mat-icon>
+    <span>Doações</span>
+  </a>
+  <button (click)="openMais()" class="bottom-nav__item">
+    <mat-icon>more_horiz</mat-icon>
+    <span>Mais</span>
+  </button>
+</nav>

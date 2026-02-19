@@ -74,6 +74,9 @@ import { MainUsersComponent } from './components/book/main-users/main-users.comp
 import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
@@ -89,6 +92,8 @@ import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dia
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
 import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
+import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +140,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     SearchResultsComponent,
     DevModeBannerComponent,
     SettingsComponent,
+    BottomNavComponent,
+    MaisSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -160,6 +167,9 @@ import { SettingsComponent } from './components/settings/settings.component';
     MatButtonModule,
     MatButtonToggleModule,
     MatIconModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatDividerModule,
   ],
   providers: [
     AuthGuardUser,
