@@ -249,13 +249,27 @@ export class FormComponent implements OnInit, OnDestroy {
       this._scBook
         .update(book)
         .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe((resp) => {
-          if (!this.formGroup.value.approve) {
-            this.happyEnd();
-          } else {
-            this.approve();
+        .subscribe(
+          (resp) => {
+            if (resp['success']) {
+              if (!this.formGroup.value.approve) {
+                this.happyEnd();
+              } else {
+                this.approve();
+              }
+            } else {
+              const errorMessages = resp['messages']?.join(' ') || 'Erro inesperado.';
+              this._toastr.error(errorMessages);
+              this.isLoading = false;
+            }
+          },
+          (error) => {
+            console.error('Erro detalhado:', error);
+            const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro inesperado.';
+            this._toastr.error(errorMessage);
+            this.isLoading = false;
           }
-        });
+        );
     }
   }
 
