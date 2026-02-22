@@ -6,3 +6,11 @@
   color: #555;
   font-size: 14px;
 }
+
+.mais-sheet__logout {
+  color: #f44336;
+}
+
+.mais-sheet__logout mat-icon {
+  color: #f44336;
+}

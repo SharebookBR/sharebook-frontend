@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ import { MaisSheetComponent } from '../mais-sheet/mais-sheet.component';
 export class BottomNavComponent implements OnInit, OnDestroy {
   userLogged = false;
   private _destroy$ = new Subject<void>();
+  private _sheetRef: MatBottomSheetRef<MaisSheetComponent> | null = null;
 
   constructor(private _scUser: UserService, private _bottomSheet: MatBottomSheet) {
     if (this._scUser.getLoggedUserFromLocalStorage()) {
@@ -31,7 +32,15 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   openMais() {
-    this._bottomSheet.open(MaisSheetComponent);
+    if (this._sheetRef) {
+      this._sheetRef.dismiss();
+      return;
+    }
+
+    this._sheetRef = this._bottomSheet.open(MaisSheetComponent);
+    this._sheetRef.afterDismissed().subscribe(() => {
+      this._sheetRef = null;
+    });
   }
 
   ngOnDestroy() {

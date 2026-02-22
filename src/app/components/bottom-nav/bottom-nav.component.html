@@ -15,8 +15,12 @@
     <mat-icon>volunteer_activism</mat-icon>
     <span>Doações</span>
   </a>
-  <button (click)="openMais()" class="bottom-nav__item">
+  <button *ngIf="userLogged" (click)="openMais()" class="bottom-nav__item">
     <mat-icon>more_horiz</mat-icon>
     <span>Mais</span>
   </button>
+  <a *ngIf="!userLogged" routerLink="/login" class="bottom-nav__item">
+    <mat-icon>login</mat-icon>
+    <span>Entrar</span>
+  </a>
 </nav>
