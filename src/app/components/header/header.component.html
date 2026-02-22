@@ -1,20 +1,17 @@
 <!-- ============================================================ -->
-<!-- Mobile top bar (< 768px) — logo + busca                    -->
+<!-- Mobile top bar (< 768px) — só o logo                       -->
 <!-- ============================================================ -->
 <div class="mobile-top-bar d-flex d-md-none">
   <a routerLink="/">
     <img src="{{ logoUrl }}" alt="logotipo" class="mobile-top-bar__logo" />
   </a>
-  <div class="mobile-top-bar__search">
-    <app-input-search></app-input-search>
-  </div>
 </div>
 <div class="mobile-top-bar-spacer d-block d-md-none"></div>
 
 <!-- ============================================================ -->
 <!-- Desktop nav (>= 768px)                                       -->
 <!-- ============================================================ -->
-<nav class="navbar navbar-expand navbar-light bg-light fixed-top d-none d-md-flex">
+<nav class="navbar navbar-expand navbar-light bg-light fixed-top d-none d-md-flex" [style.top]="isDevMode ? '40px' : '0'">
   <a class="navbar-brand" routerLink="/">
     <img src="{{ logoUrl }}" alt="logotipo" id="logotipo" class="d-inline-block align-top" />
   </a>

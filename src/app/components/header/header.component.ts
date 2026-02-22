@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { User } from '../../core/models/user';
 import { UserService } from '../../core/services/user/user.service';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
+import { EnvironmentSwitcherService } from '../../core/services/environment-switcher/environment-switcher.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   shareBookUser = new User();
   logoUrl = 'assets/img/logo.png';
   showUserMenu = false;
+  isDevMode = false;
 
   get firstName(): string {
     if (!this.shareBookUser?.name) return '';
@@ -28,7 +30,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private _scUser: UserService,
     private _scAuthentication: AuthenticationService,
-    private _router: Router
+    private _router: Router,
+    private _envSwitcher: EnvironmentSwitcherService
   ) {
     this._scAuthentication.checkTokenValidity();
 
@@ -40,6 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.setComemorativeLogo();
+    this.isDevMode = this._envSwitcher.isDevMode();
 
     this._scUser
       .getLoggedUser()

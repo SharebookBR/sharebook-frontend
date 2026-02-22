@@ -32,6 +32,14 @@ export class MaisSheetComponent {
     this._bottomSheetRef.dismiss();
   }
 
+  search(term: string) {
+    term = term.trim();
+    if (term.length >= 3) {
+      this._router.navigate(['/search', term]);
+      this._bottomSheetRef.dismiss();
+    }
+  }
+
   logout() {
     this._scAuthentication.logout();
     this._bottomSheetRef.dismiss();

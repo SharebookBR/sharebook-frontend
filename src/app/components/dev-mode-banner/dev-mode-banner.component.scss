@@ -51,7 +51,3 @@
   }
 }
 
-// Empurra elementos fixed-top para baixo quando o banner está visível
-:host ::ng-deep .fixed-top {
-  top: 40px !important;
-}

@@ -1,4 +1,10 @@
 <mat-nav-list>
+  <div class="mais-sheet__search">
+    <mat-icon>search</mat-icon>
+    <input type="text" placeholder="Buscar livros..." #searchInput (keyup.enter)="search(searchInput.value)" />
+  </div>
+  <mat-divider></mat-divider>
+
   <div *ngIf="userLogged" class="mais-sheet__greeting">
     <mat-icon>person</mat-icon>
     <span>Olá, {{ userName }}</span>

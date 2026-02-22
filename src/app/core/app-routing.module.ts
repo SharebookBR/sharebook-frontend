@@ -130,7 +130,7 @@ const routes: Routes = [
     component: ContactUsComponent,
   },
   {
-    path: 'configuracoes',
+    path: 'dev-tools',
     component: SettingsComponent,
   },
   {
