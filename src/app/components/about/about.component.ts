@@ -13,6 +13,16 @@ import { SeoService } from '../../core/services/seo/seo.service';
 export class AboutComponent implements OnInit {
   contributors: Contributor[] = [];
 
+  historicoFotos = [
+    { src: 'assets/img/about/fundacao.jpeg', legenda: '6 de abril de 2018 — o dia em que tudo começou.' },
+    { src: 'assets/img/about/lancamento.jpeg', legenda: '11 de agosto de 2018 — lançamento do app.' },
+  ];
+  fotoAtual = 0;
+
+  avancarFoto(dir: number) {
+    this.fotoAtual = (this.fotoAtual + dir + this.historicoFotos.length) % this.historicoFotos.length;
+  }
+
   constructor(private contributorsService: ContributorsService, private _seo: SeoService) {}
 
   ngOnInit() {

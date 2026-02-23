@@ -20,9 +20,9 @@ export class TechnologiesService {
         links: [{ url: RepositoriesUrls.FRONTEND, content: 'Github' }, { url: TrelloUrls.FRONTEND, content: 'Trello' }]
       },
       {
-        image: 'assets/img/contribute-project/ionic.jpg',
+        image: 'assets/img/contribute-project/flutter.svg',
         title: 'Mobile',
-        text: 'Cordova, Ionic 3, Angular<br/>',
+        text: 'Flutter, Dart',
         links: [{ url: RepositoriesUrls.MOBILE, content: 'Github' }, { url: TrelloUrls.MOBILE, content: 'Trello' }]
       },
       {

@@ -31,3 +31,8 @@ p {
 .card {
   margin-bottom: 16px;
 }
+
+.card-img-top {
+  height: 190px;
+  object-fit: contain;
+}

@@ -1,13 +1,11 @@
 <div class="container">
   <h1 class="text-center display-4">Quem Somos</h1>
   <p>
-    Sharebook é um projeto colaborativo de código aberto que é apoiado por muitos contribuidores. Você pode ser um
-    deles. Vem pro time! Conheça alguns dos maiores contribuidores do projeto.
+    Sharebook é um projeto colaborativo de código aberto mantido por voluntários. Conheça quem faz isso acontecer.
   </p>
 
   <p>
-    Seu nome não está nessa lista? Não se preocupe. Essa é uma lista viva que se renova toda hora. É só voltar a
-    contribuir que colocamos seu nome de volta. Blz?
+    Seu nome não está aqui? É só contribuir — a lista se renova com cada commit.
   </p>
 
   <div class="flex-container">
@@ -25,28 +23,27 @@
 
   <h1>História</h1>
 
-  <p>
-    Antes de começar, deixa eu me apresentar. Meu nome é Raffaello Damgaard e sou o Product Owner desse projeto. Sou
-    desenvolvedor há 17 anos e sempre tive um sonho de um dia colaborar num projeto gratuito e de código aberto. Algo
-    que possa ajudar as pessoas. Finalmente essa oportunidade chegou! Pra conhecer mais sobre mim, visite meu perfil no
-    Linkedin.
-  </p>
-
-  <p>
-    O que é o Sharebook? Vou falar um pouco sobre o projeto. Tudo começou com meu amigo Vagner Nunes que ajudou um cara
-    humilde que nunca tinha ganhado um livro na vida. Pode até parecer pouco, mas tem muita gente que esse simples gesto
-    faz uma grande diferença. Pessoas humildes que não tem condições e tem até vergonha de pedir.
-  </p>
-
-  <p>
-    De certa forma quero me inspirar no UBER. O uber não tem carro próprio. Ele junta as pontas. É isso que vamos fazer.
-    O livro não vai passar pela nossa mão. O doador vai cadastrar o livro em nosso sistema. Nós vamos avaliar e aprovar.
-    Aí o livro vai para nossa VITRINE (website e apps).
-  </p>
-
-  <p>
-    Então depois que o livro está na vitrine ele fica lá até aparecer um interessado. O doador é notificado e envia.
-  </p>
+  <div class="fundacao-wrapper">
+    <figure class="fundacao-foto">
+      <div class="carousel">
+        <button class="carousel-btn prev" (click)="avancarFoto(-1)">&#8249;</button>
+        <img [src]="historicoFotos[fotoAtual].src" class="img-fluid rounded" alt="Histórico Sharebook" />
+        <button class="carousel-btn next" (click)="avancarFoto(1)">&#8250;</button>
+      </div>
+      <figcaption>{{ historicoFotos[fotoAtual].legenda }}</figcaption>
+    </figure>
+    <p>
+      Meu nome é Raffaello Damgaard, Product Owner do Sharebook. Sou Tech Lead com mais de 20 anos de experiência em desenvolvimento — e sempre tive um sonho de colaborar num projeto gratuito e de código aberto que ajudasse pessoas de verdade. O Sharebook é esse projeto.
+    </p>
+    <p>
+      Tudo começou com meu amigo Vagner Nunes que ajudou um cara
+      humilde que nunca tinha ganhado um livro na vida. Pode até parecer pouco, mas tem muita gente que esse simples gesto
+      faz uma grande diferença. Pessoas humildes que não tem condições e tem até vergonha de pedir.
+    </p>
+    <p>
+      O Sharebook não toca nos livros — só conecta quem tem com quem precisa. O doador cadastra, a gente aprova, o livro vai pra vitrine. Quando aparece um interessado, o doador é notificado e envia direto.
+    </p>
+  </div>
 
   <p>&nbsp;</p>
 
@@ -72,10 +69,8 @@
 
     <li>
       <p>
-        <strong>Divertido</strong><br />
-        Tem que ser divertido como um game. Ganhando pontos. Subindo de nível. Ganhando selos de conquistas. E quem
-        sabe, no futuro, algum parceiro possa patrocinar os prêmios? (prêmios pro time de desenvolvimento também,
-        claro.)
+        <strong>Comunidade</strong><br />
+        Todo mundo que está aqui escolheu estar. Sem obrigação, sem hierarquia rígida — só pessoas que querem construir algo útil juntas. Somos devs, designers, iniciantes e experientes. A comunidade é o que sustenta o projeto.
       </p>
     </li>
   </ol>
