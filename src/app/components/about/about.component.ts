@@ -14,8 +14,8 @@ export class AboutComponent implements OnInit {
   contributors: Contributor[] = [];
 
   historicoFotos = [
-    { src: 'assets/img/about/fundacao.jpeg', legenda: '6 de abril de 2018 — o dia em que tudo começou.' },
-    { src: 'assets/img/about/lancamento.jpeg', legenda: '11 de agosto de 2018 — lançamento do app.' },
+    { src: 'assets/img/about/fundacao.jpeg', legenda: '6 de abril de 2018 — Vagner Nunes e Raffaello Damgaard.' },
+    { src: 'assets/img/about/lancamento.jpeg', legenda: '11 de agosto de 2018 — Daniel Aloísio, Walter Vinicius, William Pavei Antero e Raffaello Damgaard.' },
   ];
   fotoAtual = 0;
 
