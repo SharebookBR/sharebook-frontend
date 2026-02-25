@@ -9,3 +9,7 @@
     display: none;
   }
 }
+
+.recaptcha-container {
+  margin-bottom: 1rem;
+}

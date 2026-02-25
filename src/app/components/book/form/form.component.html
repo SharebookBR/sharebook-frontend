@@ -97,7 +97,23 @@
           </div>
         </div>
 
+        <!-- Tipo de Livro (Físico ou E-book) -->
+        <div class="form-group col-md-8" *ngIf="!itsEditMode">
+          <label for="bookType">Tipo de Livro</label>
+          <mat-button-toggle-group style="width: 100%" [value]="selectedBookType">
+            <mat-button-toggle
+              style="width: 50%"
+              *ngFor="let option of bookTypeOptions"
+              [value]="option.value"
+              (click)="onChangeBookType(option.value)"
+              (keydown.enter)="onChangeBookType(option.value)"
+              >{{ option.text }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
         <div class="form-group col-md-8">
+          <label class="col-form-label">Capa do Livro</label>
           <div class="custom-file">
             <input
               type="file"
@@ -109,7 +125,7 @@
               [imageToDataUrl]="options"
             />
             <label class="custom-file-label" for="imageName" *ngIf="!formGroup.controls['imageName'].valid">
-              Selecionar imagem da capa do livro
+              Selecionar imagem da capa do livro (jpg, jpeg, png)
             </label>
             <label class="custom-file-label" for="imageName" *ngIf="formGroup.controls['imageName'].valid">
               {{ formGroup.value.imageName ? formGroup.value.imageName : formGroup.value.imageSlug }}
@@ -127,7 +143,36 @@
           </div>
         </div>
 
-        <div class="form-group col-md-8">
+        <!-- Upload de PDF (apenas para E-book) -->
+        <div class="form-group col-md-8" *ngIf="selectedBookType === 'Eletronic'">
+          <label class="col-form-label">Arquivo PDF do E-book</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="pdfFile"
+              accept=".pdf"
+              (change)="onPdfSelected($event)"
+            />
+            <label class="custom-file-label" for="pdfFile" *ngIf="!isPdfLoaded">
+              Selecionar arquivo PDF do e-book
+            </label>
+            <label class="custom-file-label" for="pdfFile" *ngIf="isPdfLoaded">
+              {{ pdfFileName }}
+            </label>
+          </div>
+          <div *ngIf="formGroup.controls['pdfBytes'].touched && !formGroup.controls['pdfBytes'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['pdfBytes'].hasError('required')">
+              O arquivo PDF é obrigatório para e-books.
+            </small>
+          </div>
+          <small class="form-text text-muted">
+            Tamanho máximo: 50MB. Apenas arquivos PDF são permitidos.
+          </small>
+        </div>
+
+        <!-- Opções de Frete (apenas para livro físico) -->
+        <div class="form-group col-md-8" *ngIf="selectedBookType === 'Printed'">
           <label for="freightOption">Vc pagaria o frete? ❤️</label>
           <mat-button-toggle-group style="width: 100%" [value]="freightStart$ | async">
             <mat-button-toggle
@@ -164,13 +209,35 @@
           </div>
         </div>
 
-        <div class="form-group col-md-8" *ngIf="!itsEditMode">
+        <!-- Checkbox termos de doação (apenas para Livro Físico) -->
+        <div class="form-group col-md-8" *ngIf="!itsEditMode && selectedBookType === 'Printed'">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" formControlName="agreeToTerms" id="agreeToTerms" />
             <label class="form-check-label" for="agreeToTerms">
               Declaro que estou ciente da importância desta doação e que irei tratar a mesma com carinho, evitando
               atrasos no processo. Sei que tem uma pessoa do outro lado que deseja e precisa desse livro.
             </label>
+          </div>
+          <div *ngIf="formGroup.controls['agreeToTerms'].touched && !formGroup.controls['agreeToTerms'].valid">
+            <small class="form-text text-danger">
+              Você deve concordar com os termos para doar um livro físico.
+            </small>
+          </div>
+        </div>
+
+        <!-- Checkbox anti-pirataria (apenas para E-book) -->
+        <div class="form-group col-md-8" *ngIf="!itsEditMode && selectedBookType === 'Eletronic'">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="agreeToAntiPiracy" id="agreeToAntiPiracy" />
+            <label class="form-check-label" for="agreeToAntiPiracy">
+              <strong>Estou ciente que o ShareBook é contra a pirataria</strong> e tenho certeza que a distribuição
+              desse e-book não infringe nenhum direito autoral.
+            </label>
+          </div>
+          <div *ngIf="formGroup.controls['agreeToAntiPiracy'].touched && !formGroup.controls['agreeToAntiPiracy'].valid">
+            <small class="form-text text-danger">
+              Você deve concordar com os termos anti-pirataria para cadastrar um e-book.
+            </small>
           </div>
         </div>
 
@@ -198,6 +265,19 @@
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> {{ isLoadingMessage }}
+            <!-- Barra de progresso para upload de e-book -->
+            <div *ngIf="uploadProgress > 0" class="progress mt-2" style="height: 20px;">
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                [style.width.%]="uploadProgress"
+                [attr.aria-valuenow]="uploadProgress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ uploadProgress }}%
+              </div>
+            </div>
           </div>
         </div>
       </div>

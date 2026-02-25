@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { Category } from '../../../core/models/category';
@@ -15,6 +16,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 import { UserInfo } from 'src/app/core/models/userInfo';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-details',
@@ -40,6 +42,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   daysToChoose: number;
   chooseDateInfo: string;
   isCheckedFreight: boolean;
+  recaptchaToken: string | null = null;
+
+  @ViewChild('recaptchaRef') recaptchaRef: RecaptchaComponent;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -140,7 +145,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   }
                 }
 
-                if (this.userProfile) {
+                if (this.userProfile && book.id) {
                   this._scBook
                     .getRequested(book.id)
                     .pipe(takeUntil(this._destroySubscribes$))
@@ -206,5 +211,32 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  isEbook(): boolean {
+    return this.bookInfo.type === 'Eletronic';
+  }
+
+  getBookTypeLabel(): string {
+    return this.isEbook() ? 'E-book' : 'Livro Físico';
+  }
+
+  onDownloadEbook() {
+    if (this.bookInfo.slug && this.recaptchaToken) {
+      const downloadUrl = `${environment.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
+      window.open(downloadUrl, '_blank');
+      this.recaptchaToken = null;
+      if (this.recaptchaRef) {
+        this.recaptchaRef.reset();
+      }
+    }
+  }
+
+  onRecaptchaResolved(token: string) {
+    this.recaptchaToken = token;
+  }
+
+  onRecaptchaExpired() {
+    this.recaptchaToken = null;
   }
 }
