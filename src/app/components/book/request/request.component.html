@@ -1,5 +1,5 @@
 <div class="close">
-  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
+  <i class="fa fa-times" aria-hidden="true" [mat-dialog-close]="state === 'request-success'"></i>
 </div>
 <h4 class="modal-title">{{ modalTitle }}</h4>
 
@@ -55,7 +55,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <button *ngIf="state == 'request-success'" mat-flat-button color="primary" mat-dialog-close>
+          <button *ngIf="state == 'request-success'" mat-flat-button color="primary" [mat-dialog-close]="true">
             Tudo certo, obrigado.
           </button>
         </div>
