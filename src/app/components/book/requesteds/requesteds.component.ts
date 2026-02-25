@@ -98,33 +98,31 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   private cancelRequest(param: MyRequestItem) {
-    this.isLoadingSubject.next(true);
-    this._bookService
-      .cancelRequest(param.requestId)
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        finalize(() => {
-          this.isLoadingSubject.next(false);
-          this.buscarDados();
-        })
-      )
-      .subscribe((resp) => {
-        if (resp.success) {
-          this._messageToModalBody = resp.successMessage;
-        } else {
-          this._messageToModalBody = 'Erro ao cancelar';
-        }
+    const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: 450,
+      data: {
+        title: 'Cancelar pedido',
+        message: `Tem certeza que quer cancelar o pedido do livro "${param.title}"?`,
+        btnOkText: 'Sim, cancelar',
+        btnCancelText: 'Não, manter pedido',
+      },
+    });
 
-        this.dialog.open(ConfirmationDialogComponent, {
-          minWidth: 450,
-          data: {
-            title: 'Cancelar pedido.',
-            message: this._messageToModalBody,
-            btnOkText: 'Ok entendi',
-            btnCancelText: '',
-          },
-        });
-      });
+    confirmRef.afterClosed().subscribe(confirmed => {
+      if (!confirmed) return;
+
+      this.isLoadingSubject.next(true);
+      this._bookService
+        .cancelRequest(param.requestId)
+        .pipe(
+          takeUntil(this._destroySubscribes$),
+          finalize(() => {
+            this.isLoadingSubject.next(false);
+            this.buscarDados();
+          })
+        )
+        .subscribe();
+    });
   }
 
   public doFilter = (value: string) => {
