@@ -1,72 +1,71 @@
-<!--navbar-fixed-->
-
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <a class="navbar-brand" routerLink="/">
-      <img src="{{ logoUrl }}" alt="logotipo" id="logotipo" class="d-inline-block align-top" />
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText" #menu>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <div class="mt-1">
-            <app-input-search></app-input-search>
-          </div>
-        </li>
-        <li class="nav-item">
-          <!-- adicinando evento de click nos links que chama o metodo que esconde o menu -->
-          <a class="nav-link hvr-underline-from-center" routerLink="/" (click)="showHideMenu()"
-            >Início
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" routerLink="/livros/doar" (click)="showHideMenu()"
-            >Doe um Livro</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" routerLink="/apoie-projeto" (click)="showHideMenu()"
-            >Apoie o projeto</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" routerLink="/quem-somos" (click)="showHideMenu()">Quem somos</a>
-        </li>
-        <li class="nav-item">
-          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/panel" (click)="showHideMenu()"
-            >Meu Painel</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link hvr-underline-from-center" routerLink="/contact-us" (click)="showHideMenu()"
-            >Fale Conosco</a
-          >
-        </li>
-        <li class="nav-item">
-          <a *ngIf="!userLogged" class="nav-link hvr-underline-from-center" routerLink="/login" (click)="showHideMenu()"
-            >Entrar</a
-          >
-          <a *ngIf="userLogged" class="nav-link hvr-underline-from-center" routerLink="/login" (click)="showHideMenu()"
-            >Sair</a
-          >
-        </li>
-      </ul>
-
-      <div *ngIf="userLogged" id="welcomeUser">Olá, {{ shareBookUser.name }}</div>
-    </div>
-  </nav>
+<!-- ============================================================ -->
+<!-- Mobile top bar (< 768px) — só o logo                       -->
+<!-- ============================================================ -->
+<div class="mobile-top-bar d-flex d-md-none">
+  <a routerLink="/">
+    <img src="{{ logoUrl }}" alt="logotipo" class="mobile-top-bar__logo" />
+  </a>
 </div>
+<div class="mobile-top-bar-spacer d-block d-md-none"></div>
 
-<!-- para afastar o miolo do menu. -->
-<div style="width: 100%; height: 118px"></div>
+<!-- ============================================================ -->
+<!-- Desktop nav (>= 768px)                                       -->
+<!-- ============================================================ -->
+<nav class="navbar navbar-expand navbar-light bg-light fixed-top d-none d-md-flex" [style.top]="isDevMode ? '40px' : '0'">
+  <a class="navbar-brand" routerLink="/">
+    <img src="{{ logoUrl }}" alt="logotipo" id="logotipo" class="d-inline-block align-top" />
+  </a>
+
+  <div class="navbar-search">
+    <app-input-search></app-input-search>
+  </div>
+
+  <ul class="navbar-nav ml-3">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/" routerLinkActive="nav-link--active" [routerLinkActiveOptions]="{exact:true}">Vitrine</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/book/requesteds" routerLinkActive="nav-link--active">Pedidos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/book/donations" routerLinkActive="nav-link--active">Doações</a>
+    </li>
+  </ul>
+
+  <a routerLink="/livros/doar" class="btn btn-cta ml-3">
+    <mat-icon>favorite</mat-icon> Doe um Livro
+  </a>
+
+  <div class="ml-3 user-area">
+    <a *ngIf="!userLogged" class="nav-link" routerLink="/login">Entrar</a>
+
+    <div *ngIf="userLogged" class="user-menu-wrapper">
+      <button class="btn btn-link nav-link user-menu-trigger" (click)="toggleUserMenu($event)">
+        {{ firstName }} <mat-icon>expand_more</mat-icon>
+      </button>
+      <div class="user-dropdown" *ngIf="showUserMenu">
+        <a class="user-dropdown__item" routerLink="/panel" (click)="closeUserMenu()">
+          <mat-icon>dashboard</mat-icon> Meu Painel
+        </a>
+        <a class="user-dropdown__item" routerLink="/myaccount" (click)="closeUserMenu()">
+          <mat-icon>manage_accounts</mat-icon> Minha Conta
+        </a>
+        <div class="user-dropdown__divider"></div>
+        <a class="user-dropdown__item" routerLink="/apoie-projeto" (click)="closeUserMenu()">
+          <mat-icon>favorite_border</mat-icon> Apoie o projeto
+        </a>
+        <a class="user-dropdown__item" routerLink="/quem-somos" (click)="closeUserMenu()">
+          <mat-icon>info_outline</mat-icon> Quem somos
+        </a>
+        <a class="user-dropdown__item" routerLink="/contact-us" (click)="closeUserMenu()">
+          <mat-icon>mail_outline</mat-icon> Fale conosco
+        </a>
+        <div class="user-dropdown__divider"></div>
+        <button class="user-dropdown__item user-dropdown__item--danger" (click)="logout()">
+          <mat-icon>logout</mat-icon> Sair
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="desktop-nav-spacer d-none d-md-block"></div>

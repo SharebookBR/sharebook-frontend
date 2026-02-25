@@ -10,7 +10,7 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/dotnet.jpg',
         title: 'Backend',
-        text: '.Net 6, C#, SQL Server, AWS SQS',
+        text: '.NET 10, C#, SQL Server, AWS SQS',
         links: [{ url: RepositoriesUrls.BACKEND, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
       },
       {
@@ -20,9 +20,9 @@ export class TechnologiesService {
         links: [{ url: RepositoriesUrls.FRONTEND, content: 'Github' }, { url: TrelloUrls.FRONTEND, content: 'Trello' }]
       },
       {
-        image: 'assets/img/contribute-project/ionic.jpg',
+        image: 'assets/img/contribute-project/flutter.svg',
         title: 'Mobile',
-        text: 'Cordova, Ionic 3, Angular<br/>',
+        text: 'Flutter, Dart',
         links: [{ url: RepositoriesUrls.MOBILE, content: 'Github' }, { url: TrelloUrls.MOBILE, content: 'Trello' }]
       },
       {

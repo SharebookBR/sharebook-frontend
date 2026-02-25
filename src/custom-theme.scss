@@ -30,6 +30,12 @@ html,
 body {
   height: 100%;
 }
+
+@media (max-width: 767.98px) {
+  body {
+    padding-bottom: 60px;
+  }
+}
 //body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */

@@ -45,3 +45,9 @@ sandbox
 
 # Claude Code settings
 .claude/
+
+# Local Netlify folder
+.netlify
+
+# IA files
+colinha.txt

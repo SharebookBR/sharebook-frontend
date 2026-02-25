@@ -53,6 +53,7 @@ export class ContributorsService {
             url: 'https://www.linkedin.com/in/henrique-holtz/',
             content: 'Linkedin',
           },
+          { url: 'http://github.com/henriqueholtz', content: 'Github' },
         ],
       },
       {

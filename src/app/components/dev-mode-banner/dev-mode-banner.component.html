@@ -1,0 +1,15 @@
+<div class="dev-banner-wrapper" *ngIf="showBanner">
+  <div class="dev-banner">
+    <div class="container-fluid">
+      <div class="banner-content">
+        <span class="warning-icon">⚠️</span>
+        <span class="banner-text">
+          AMBIENTE DE {{ environmentName.toUpperCase() }} - Dados de teste
+        </span>
+        <a routerLink="/dev-tools" class="settings-link">
+          Alterar ambiente
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

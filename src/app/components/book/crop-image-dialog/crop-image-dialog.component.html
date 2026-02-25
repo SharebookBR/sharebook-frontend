@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Recortar imagem da capa</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loadFailed" class="load-failed">
+    <mat-icon>broken_image</mat-icon>
+    <p>Não foi possível carregar a imagem para recorte.</p>
+    <p>Use <strong>Trocar imagem</strong> para fazer upload de uma nova imagem.</p>
+  </div>
+
+  <image-cropper
+    *ngIf="!loadFailed"
+    [imageURL]="data.imageUrl"
+    [imageBase64]="data.imageBase64"
+    [maintainAspectRatio]="false"
+    [transform]="transform"
+    format="jpeg"
+    (imageCropped)="onImageCropped($event)"
+    (loadImageFailed)="onLoadImageFailed()"
+  ></image-cropper>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="actions-rotate">
+    <button mat-icon-button type="button" (click)="rotateLeft()" [disabled]="loadFailed" matTooltip="Girar para a esquerda">
+      <mat-icon>rotate_left</mat-icon>
+    </button>
+    <button mat-icon-button type="button" (click)="rotateRight()" [disabled]="loadFailed" matTooltip="Girar para a direita">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+  </div>
+  <div class="actions-confirm">
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="!croppedBase64 || loadFailed"
+      (click)="confirm()"
+    >
+      <mat-icon>check</mat-icon> Confirmar recorte
+    </button>
+  </div>
+</mat-dialog-actions>

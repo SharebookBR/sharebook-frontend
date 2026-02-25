@@ -1,13 +1,24 @@
 <div class="container">
   <h1 class="text-center display-4">Quem Somos</h1>
+
   <p>
-    Sharebook é um projeto colaborativo de código aberto que é apoiado por muitos contribuidores. Você pode ser um
-    deles. Vem pro time! Conheça alguns dos maiores contribuidores do projeto.
+    O livro que você não lembra mais de ter pode ser o livro que alguém está esperando há anos.
+  </p>
+  <p>
+    Um Visual Basic 5 que ia pro lixo abriu a porta de uma mudança de carreira. Um livro de auto-ajuda chegou na hora certa pra alguém que precisava de um gesto humano. Um homem que nunca tinha ganho um livro na vida explodiu em emoção ao receber o primeiro.
+  </p>
+  <p>
+    <strong>O Sharebook não move livros. Conecta momentos.</strong>
+  </p>
+
+  <hr />
+
+  <p>
+    Sharebook é um projeto colaborativo de código aberto mantido por voluntários. Conheça quem faz isso acontecer.
   </p>
 
   <p>
-    Seu nome não está nessa lista? Não se preocupe. Essa é uma lista viva que se renova toda hora. É só voltar a
-    contribuir que colocamos seu nome de volta. Blz?
+    Seu nome não está aqui? É só contribuir — a lista se renova com cada commit.
   </p>
 
   <div class="flex-container">
@@ -25,28 +36,31 @@
 
   <h1>História</h1>
 
-  <p>
-    Antes de começar, deixa eu me apresentar. Meu nome é Raffaello Damgaard e sou o Product Owner desse projeto. Sou
-    desenvolvedor há 17 anos e sempre tive um sonho de um dia colaborar num projeto gratuito e de código aberto. Algo
-    que possa ajudar as pessoas. Finalmente essa oportunidade chegou! Pra conhecer mais sobre mim, visite meu perfil no
-    Linkedin.
-  </p>
-
-  <p>
-    O que é o Sharebook? Vou falar um pouco sobre o projeto. Tudo começou com meu amigo Vagner Nunes que ajudou um cara
-    humilde que nunca tinha ganhado um livro na vida. Pode até parecer pouco, mas tem muita gente que esse simples gesto
-    faz uma grande diferença. Pessoas humildes que não tem condições e tem até vergonha de pedir.
-  </p>
-
-  <p>
-    De certa forma quero me inspirar no UBER. O uber não tem carro próprio. Ele junta as pontas. É isso que vamos fazer.
-    O livro não vai passar pela nossa mão. O doador vai cadastrar o livro em nosso sistema. Nós vamos avaliar e aprovar.
-    Aí o livro vai para nossa VITRINE (website e apps).
-  </p>
-
-  <p>
-    Então depois que o livro está na vitrine ele fica lá até aparecer um interessado. O doador é notificado e envia.
-  </p>
+  <div class="fundacao-wrapper">
+    <figure class="fundacao-foto">
+      <div class="carousel">
+        <button class="carousel-btn prev" (click)="avancarFoto(-1)">&#8249;</button>
+        <img [src]="historicoFotos[fotoAtual].src" class="img-fluid rounded" alt="Histórico Sharebook" />
+        <button class="carousel-btn next" (click)="avancarFoto(1)">&#8250;</button>
+      </div>
+      <figcaption>{{ historicoFotos[fotoAtual].legenda }}</figcaption>
+    </figure>
+    <p>
+      Meu nome é Raffaello Damgaard, Product Owner do Sharebook. Sou Tech Lead com mais de 20 anos de experiência em desenvolvimento — e sempre tive um sonho de colaborar num projeto gratuito e de código aberto que ajudasse pessoas de verdade. O Sharebook é esse projeto.
+    </p>
+    <p>
+      A história começa antes do app. Meu amigo Vagner Nunes doou um livro para um homem que nunca tinha ganho um na vida.
+      Achou até que era zueira quando o cara pediu — como assim nunca ganhou um livro? Mas enviou. Ao receber, o ganhador
+      explodiu em emoção e agradecimento. Vagner se viu de frente com uma realidade radicalmente diferente da sua: o quanto
+      um livro pode fazer diferença pra quem nunca teve acesso a um. Foi esse momento que o levou a me procurar.
+    </p>
+    <p>
+      Em 6 de abril de 2018, o Sharebook nasceu.
+    </p>
+    <p>
+      O Sharebook não toca nos livros — só conecta quem tem com quem precisa. O doador cadastra, a gente aprova, o livro vai pra vitrine. Quando aparece um interessado, o doador escolhe e envia direto.
+    </p>
+  </div>
 
   <p>&nbsp;</p>
 
@@ -55,27 +69,24 @@
     <li>
       <p>
         <strong>Código livre</strong><br />
-        Não se confundir com um projeto comercial. A essência é ser um serviço grátis para ajudar quem precisa. Um
-        projeto colaborativo de código aberto. Podemos e vamos ser bons e agressivos no marketing, mas sem jamais
-        esquecer essa base.
+        O Sharebook não é um produto comercial — é um serviço gratuito, de código aberto, mantido por voluntários.
+        Qualquer pessoa pode usar, contribuir e melhorar. Isso não é só uma escolha técnica. É um compromisso com quem
+        depende do projeto.
       </p>
     </li>
 
     <li>
       <p>
         <strong>Simples</strong><br />
-        Manter as coisas simples e incentivar o aprendizado. Nossa estrutura precisa ser simples ao ponto que mesmo um
-        iniciante rapidamente entenda e se sinta confortável em colaborar no código fonte. Design simples e código
-        limpo.
+        Para quem doa: cadastra e escolhe. Para quem recebe: pede e aguarda. Para quem contribui com código: estrutura
+        limpa, fácil de entender. Simplicidade não é uma limitação — é um princípio.
       </p>
     </li>
 
     <li>
       <p>
-        <strong>Divertido</strong><br />
-        Tem que ser divertido como um game. Ganhando pontos. Subindo de nível. Ganhando selos de conquistas. E quem
-        sabe, no futuro, algum parceiro possa patrocinar os prêmios? (prêmios pro time de desenvolvimento também,
-        claro.)
+        <strong>Comunidade</strong><br />
+        Todo mundo que está aqui escolheu estar. Sem obrigação, sem hierarquia rígida — só pessoas que querem construir algo útil juntas. Somos devs, designers, iniciantes e experientes. A comunidade é o que sustenta o projeto.
       </p>
     </li>
   </ol>

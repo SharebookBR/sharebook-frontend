@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { User } from '../../core/models/user';
 import { UserService } from '../../core/services/user/user.service';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
+import { EnvironmentSwitcherService } from '../../core/services/environment-switcher/environment-switcher.service';
 
 @Component({
   selector: 'app-header',
@@ -12,19 +14,27 @@ import { AuthenticationService } from '../../core/services/authentication/authen
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  // variavel apra selecionar o menu via DOM
-  @ViewChild('menu', { static: true }) menu: ElementRef;
-
   userLogged = false;
   shareBookUser = new User();
   logoUrl = 'assets/img/logo.png';
+  showUserMenu = false;
+  isDevMode = false;
+
+  get firstName(): string {
+    if (!this.shareBookUser?.name) return '';
+    return this.shareBookUser.name.split(' ')[0];
+  }
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scUser: UserService, private _scAuthentication: AuthenticationService) {
+  constructor(
+    private _scUser: UserService,
+    private _scAuthentication: AuthenticationService,
+    private _router: Router,
+    private _envSwitcher: EnvironmentSwitcherService
+  ) {
     this._scAuthentication.checkTokenValidity();
 
-    // if has shareBookUser, set value to variables
     if (this._scUser.getLoggedUserFromLocalStorage()) {
       this.shareBookUser = this._scUser.getLoggedUserFromLocalStorage();
       this.userLogged = true;
@@ -33,6 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.setComemorativeLogo();
+    this.isDevMode = this._envSwitcher.isDevMode();
 
     this._scUser
       .getLoggedUser()
@@ -43,9 +54,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  // metodo que desativa o menu ao clicar em um link
-  showHideMenu() {
-    this.menu.nativeElement.classList.toggle('show');
+  toggleUserMenu(event: Event) {
+    event.stopPropagation();
+    this.showUserMenu = !this.showUserMenu;
+  }
+
+  @HostListener('document:click')
+  closeUserMenu() {
+    this.showUserMenu = false;
+  }
+
+  logout() {
+    this._scAuthentication.logout();
+    this._router.navigate(['/']);
   }
 
   ngOnDestroy() {

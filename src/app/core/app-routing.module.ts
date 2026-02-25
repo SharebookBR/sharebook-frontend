@@ -28,6 +28,7 @@ import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.com
 import { DataAnonymizationInfoComponent } from '../components/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
 import { CategoryBooksComponent } from '../components/category/category-books/category-books.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -132,6 +133,10 @@ const routes: Routes = [
   {
     path: 'contact-us',
     component: ContactUsComponent,
+  },
+  {
+    path: 'dev-tools',
+    component: SettingsComponent,
   },
   {
     path: 'politica-privacidade',

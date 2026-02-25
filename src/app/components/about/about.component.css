@@ -1,5 +1,56 @@
 p {
-  text-align: justify;
+  text-align: left;
+}
+
+.fundacao-wrapper {
+  overflow: hidden;
+}
+
+.fundacao-foto {
+  float: right;
+  max-width: 420px;
+  margin: 0 0 16px 32px;
+}
+
+.fundacao-foto figcaption {
+  font-size: 0.85em;
+  color: #6c757d;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.carousel {
+  position: relative;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 4px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-btn.prev { left: 8px; }
+.carousel-btn.next { right: 8px; }
+
+@media (max-width: 600px) {
+  .fundacao-foto {
+    float: none;
+    max-width: 100%;
+    margin: 0 0 16px 0;
+  }
 }
 
 .flex-container {

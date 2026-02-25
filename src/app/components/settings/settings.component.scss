@@ -1,0 +1,150 @@
+$sharebook-blue: #29abe2;
+$sharebook-blue-dark: #1e90c0;
+$sharebook-blue-light: rgba(41, 171, 226, 0.1);
+$sharebook-blue-border: rgba(41, 171, 226, 0.3);
+
+.dev-tools-container {
+  min-height: calc(100vh - 200px);
+  background-color: #f8f9fa;
+  padding-top: 40px;
+}
+
+.dev-tools-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $sharebook-blue;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+}
+
+.dev-tools-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid $sharebook-blue-border;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(41, 171, 226, 0.08);
+
+  h5 {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.25rem;
+  }
+
+  .endpoint-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.env-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.env-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+
+  &:hover {
+    border-color: $sharebook-blue;
+    background: $sharebook-blue-light;
+  }
+
+  &--active {
+    border-color: $sharebook-blue;
+    background: $sharebook-blue-light;
+  }
+
+  input[type="radio"] {
+    accent-color: $sharebook-blue;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+  }
+
+  &__endpoint {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+}
+
+.warning-box {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #795548;
+  margin-bottom: 1rem;
+}
+
+.btn-apply {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: $sharebook-blue;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $sharebook-blue-dark;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.back-link {
+  color: $sharebook-blue;
+  text-decoration: none;
+  font-size: 0.9rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -4,10 +4,13 @@ services:
   sharebook:
     container_name: sharebook-frontend-dev
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: devops/Dockerfile
+    environment:
+      - NODE_ENV=development
+      - NG_ENVIRONMENT=development
     volumes:
-      - '.:/app'
+      - '../:/app'
       - '/app/node_modules'
     ports:
       - '4200:4200'

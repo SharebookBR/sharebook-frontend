@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 // modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -73,6 +74,9 @@ import { MainUsersComponent } from './components/book/main-users/main-users.comp
 import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
@@ -82,10 +86,15 @@ import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.comp
 import { DataAnonymizationInfoComponent } from './components/data-anonymization-info/data-anonymization-info.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
+import { CropImageDialogComponent } from './components/book/crop-image-dialog/crop-image-dialog.component';
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
 import { CategoryBooksComponent } from './components/category/category-books/category-books.component';
+import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
+import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
 
 @NgModule({
   declarations: [
@@ -124,12 +133,17 @@ import { CategoryBooksComponent } from './components/category/category-books/cat
     DataAnonymizationInfoComponent,
     DonorModalComponent,
     FreightIncentiveDialogComponent,
+    CropImageDialogComponent,
     MyaccountComponent,
     DialogWHoAccessedComponent,
     DialogAnonymizeComponent,
     CardMeetupComponent,
     SearchResultsComponent,
     CategoryBooksComponent,
+    DevModeBannerComponent,
+    SettingsComponent,
+    BottomNavComponent,
+    MaisSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,6 +159,7 @@ import { CategoryBooksComponent } from './components/category/category-books/cat
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ImageToDataUrlModule,
+    ImageCropperModule,
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,
@@ -154,6 +169,9 @@ import { CategoryBooksComponent } from './components/category/category-books/cat
     MatButtonModule,
     MatButtonToggleModule,
     MatIconModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatDividerModule,
   ],
   providers: [
     AuthGuardUser,

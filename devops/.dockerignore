@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+.angular
+.claude
+.netlify
+
+Dockerfile*
+README*
+dist

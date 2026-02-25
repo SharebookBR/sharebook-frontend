@@ -16,6 +16,10 @@ p {
   width: 200px;
 }
 
+.card-carreira {
+  width: 200px;
+}
+
 .card-projeto {
   width: 255px;
 }
@@ -26,4 +30,9 @@ p {
 
 .card {
   margin-bottom: 16px;
+}
+
+.card-img-top {
+  height: 190px;
+  object-fit: contain;
 }
