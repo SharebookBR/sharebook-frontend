@@ -50,17 +50,8 @@
 
         <!-- Informação de download para e-books -->
         <div *ngIf="isEbook() && available" class="alert alert-info mt-3">
-          <strong>E-book disponível para download!</strong><br />
-          Complete a verificação abaixo para baixar o PDF gratuitamente.
-        </div>
-
-        <!-- reCAPTCHA para download de e-book -->
-        <div *ngIf="isEbook() && available" class="recaptcha-container mt-3">
-          <re-captcha
-            #recaptchaRef
-            (resolved)="onRecaptchaResolved($event)"
-            (expired)="onRecaptchaExpired()"
-          ></re-captcha>
+          <strong>E-book disponível gratuitamente!</strong><br />
+          Clique no botão abaixo para receber este livro.
         </div>
       </div>
     </div>
@@ -71,16 +62,15 @@
 
           <span class="badge badge-danger" *ngIf="!requested && !available">Não disponível.</span>
 
-          <!-- Botão de download para e-books (não precisa de login, mas precisa de reCAPTCHA) -->
+          <!-- Botão de receber e-book (acesso imediato, sem login) -->
           <button
             mat-flat-button
             color="accent"
             class="mr-2"
             *ngIf="isEbook() && available"
             (click)="onDownloadEbook()"
-            [disabled]="!recaptchaToken"
           >
-            <mat-icon>download</mat-icon> Baixar E-book (PDF)
+            <mat-icon>download</mat-icon> Receber E-book
           </button>
 
           <!-- Botão de interesse (apenas para livros físicos) -->

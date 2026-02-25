@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RecaptchaComponent } from 'ng-recaptcha';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { Category } from '../../../core/models/category';
@@ -42,9 +41,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   daysToChoose: number;
   chooseDateInfo: string;
   isCheckedFreight: boolean;
-  recaptchaToken: string | null = null;
-
-  @ViewChild('recaptchaRef') recaptchaRef: RecaptchaComponent;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -222,21 +218,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   onDownloadEbook() {
-    if (this.bookInfo.slug && this.recaptchaToken) {
+    if (this.bookInfo.slug) {
       const downloadUrl = `${environment.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
       window.open(downloadUrl, '_blank');
-      this.recaptchaToken = null;
-      if (this.recaptchaRef) {
-        this.recaptchaRef.reset();
-      }
     }
-  }
-
-  onRecaptchaResolved(token: string) {
-    this.recaptchaToken = token;
-  }
-
-  onRecaptchaExpired() {
-    this.recaptchaToken = null;
   }
 }
