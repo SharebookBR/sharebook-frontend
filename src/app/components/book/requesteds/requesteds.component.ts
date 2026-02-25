@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { MyRequestItem } from './../../../core/models/MyRequestItem';
@@ -11,22 +12,31 @@ import { BookRequestStatus, getStatusDescription } from '../../../core/models/Bo
 import { MyRequest } from 'src/app/core/models/MyRequest';
 import { DonorModalComponent } from '../donor-modal/donor-modal.component';
 
+const COLUMNS_DESKTOP = ['title', 'author', 'status', 'doador'];
+const COLUMNS_MOBILE = ['livro', 'doador'];
+
 @Component({
   selector: 'app-requesteds',
   templateUrl: './requesteds.component.html',
   styleUrls: ['./requesteds.component.css'],
 })
 export class RequestedsComponent implements OnInit, OnDestroy {
-  public displayedColumns: string[] = ['title', 'author', 'status', 'doador'];
+  public displayedColumns: string[] = COLUMNS_DESKTOP;
   public requestedBooks = new MatTableDataSource<MyRequestItem>();
   private _messageToModalBody: string;
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
-  constructor(private _bookService: BookService, public dialog: MatDialog) {}
+  constructor(private _bookService: BookService, public dialog: MatDialog, private _breakpointObserver: BreakpointObserver) {}
 
   ngOnInit() {
+    this._breakpointObserver
+      .observe('(max-width: 767px)')
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(result => {
+        this.displayedColumns = result.matches ? COLUMNS_MOBILE : COLUMNS_DESKTOP;
+      });
     this.buscarDados();
   }
 
