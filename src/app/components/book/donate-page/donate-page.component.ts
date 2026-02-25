@@ -6,6 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 
 import { BookService } from 'src/app/core/services/book/book.service';
+import { ConfettiService } from 'src/app/core/services/confetti/confetti.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,7 +49,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _scBook: BookService,
     public dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _confetti: ConfettiService
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -167,6 +169,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this._confetti.stop();
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
   }
