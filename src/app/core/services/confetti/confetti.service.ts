@@ -9,12 +9,20 @@ export class ConfettiService {
     this.stop();
     this._interval = setInterval(() => {
       confetti({
-        particleCount: 60,
-        spread: 80,
-        origin: { y: 0 },
-        startVelocity: 35,
+        particleCount: 80,
+        spread: 100,
+        angle: 60,
+        origin: { x: 0, y: 0.65 },
+        startVelocity: 55,
       });
-    }, 400);
+      confetti({
+        particleCount: 80,
+        spread: 100,
+        angle: 120,
+        origin: { x: 1, y: 0.65 },
+        startVelocity: 55,
+      });
+    }, 600);
   }
 
   stop(): void {

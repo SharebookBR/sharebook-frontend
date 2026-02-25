@@ -105,7 +105,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
       modalRef.afterClosed().subscribe(result => {
         if (result) {
-          this.back();
+          setTimeout(() => this.back(), 5000);
         }
       });
     }
