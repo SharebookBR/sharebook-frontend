@@ -1,3 +1,4 @@
+/// <reference types="canvas-confetti" />
 import { Injectable } from '@angular/core';
 import confetti from 'canvas-confetti';
 

@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DonateComponent } from '../donate/donate.component';
+import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { Book } from 'src/app/core/models/book';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { Requesters } from 'src/app/core/models/requesters';
@@ -202,6 +203,13 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
       case BookRequestStatus.DONATED: return 'row-winner';
       default: return '';
     }
+  }
+
+  showWinnerInfo(): void {
+    const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
+    modalRef.componentInstance.bookId = this.book.id;
+    modalRef.componentInstance.bookTitle = this.book.title;
+    modalRef.componentInstance.bookSlug = this.book.slug;
   }
 
   getWhatsAppLink(phone: string): string | null {

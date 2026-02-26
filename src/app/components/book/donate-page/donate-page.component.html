@@ -69,13 +69,31 @@
       <table mat-table [dataSource]="donateUsers" class="mat-elevation-z1">
         <ng-container matColumnDef="requesterNickName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Apelido</th>
-          <td mat-cell *matCellDef="let element">{{ element.requesterNickName }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.requesterNickName }}
+            <ng-container *ngIf="element.status === BookRequestStatus.DONATED">
+              <br/><span class="badge-ganhador">Ganhador</span>
+            </ng-container>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="mobileNickAction">
           <th mat-header-cell *matHeaderCellDef class="header">Apelido</th>
           <td mat-cell *matCellDef="let element">
             {{ element.requesterNickName }}
+            <ng-container *ngIf="element.status === BookRequestStatus.DONATED">
+              <br/><span class="badge-ganhador">Ganhador</span>
+              <br/>
+              <button
+                mat-flat-button
+                class="mb-1"
+                (click)="showWinnerInfo()"
+                data-toggle="tooltip"
+                title="Ver ganhador"
+              >
+                <mat-icon>person</mat-icon>
+              </button>
+            </ng-container>
             <ng-container *ngIf="book.status === BookDonationStatus.WAITING_DECISION && element.status === BookRequestStatus.AWAITING_ACTION">
               <br/>
               <button
@@ -125,6 +143,16 @@
               title="Escolher ganhador"
             >
               <mat-icon>emoji_events</mat-icon>
+            </button>
+            <button
+              *ngIf="element.status === BookRequestStatus.DONATED"
+              mat-flat-button
+              class="ml-1 mb-1"
+              (click)="showWinnerInfo()"
+              data-toggle="tooltip"
+              title="Ver ganhador"
+            >
+              <mat-icon>person</mat-icon>
             </button>
           </td>
         </ng-container>

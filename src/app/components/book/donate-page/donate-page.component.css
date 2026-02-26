@@ -141,5 +141,20 @@ button {
 }
 
 .row-winner td {
-  background-color: #fffde7;
+  background-color: #e8f5e9;
+}
+
+.row-winner td:first-child {
+  border-left: 4px solid #43a047;
+}
+
+.badge-ganhador {
+  display: inline-block;
+  background-color: #43a047;
+  color: white;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin-top: 4px;
 }
