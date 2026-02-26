@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from 'src/app/core/services/book/book.service';
 import { ConfettiService } from 'src/app/core/services/confetti/confetti.service';
@@ -14,6 +15,8 @@ import { DonateComponent } from '../donate/donate.component';
 import { Book } from 'src/app/core/models/book';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { Requesters } from 'src/app/core/models/requesters';
+import { UserInfo } from 'src/app/core/models/userInfo';
+import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
 
 @Component({
   selector: 'app-donate-page',
@@ -21,13 +24,12 @@ import { Requesters } from 'src/app/core/models/requesters';
   styleUrls: ['./donate-page.component.css']
 })
 export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = [
-    'requesterNickName',
-    'location',
-    'totalBooksWon',
-    'totalBooksDonated',
-    'requestText',
-    'action'];
+  public readonly BookDonationStatus = BookDonationStatus;
+  public readonly BookRequestStatus = BookRequestStatus;
+
+  private readonly _desktopColumns: string[] = ['requesterNickName', 'location', 'totalBooksWon', 'totalBooksDonated', 'requestText', 'action'];
+  private readonly _mobileColumns: string[] = ['mobileNickAction', 'requestText'];
+  displayedColumns: string[] = this._desktopColumns;
 
   donateUsers = new MatTableDataSource<Requesters>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,6 +44,11 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   showWarning = false;
   showWarningWinnerChoosed = false;
 
+  winnerSelected = false;
+  selectedWinnerNickname = '';
+  selectedWinner: UserInfo | null = null;
+  confettiActive = false;
+
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
@@ -50,7 +57,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _scBook: BookService,
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
-    private _confetti: ConfettiService
+    private _confetti: ConfettiService,
+    private _breakpointObserver: BreakpointObserver
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -59,13 +67,17 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this._activatedRoute.params
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
+      .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(param => (this.bookSlug = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
     this.loadBook();
+
+    this._breakpointObserver.observe(['(max-width: 768px)'])
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(result => {
+        this.displayedColumns = result.matches ? this._mobileColumns : this._desktopColumns;
+      });
   }
 
   ngAfterViewInit(): void {
@@ -105,7 +117,10 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
       modalRef.afterClosed().subscribe(result => {
         if (result) {
-          setTimeout(() => this.back(), 5000);
+          this.selectedWinnerNickname = param.requesterNickName || '';
+          this.winnerSelected = true;
+          this.confettiActive = true;
+          this.loadWinnerInfo();
         }
       });
     }
@@ -162,6 +177,39 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(resp => {
         this.donateUsers.data = resp;
       });
+  }
+
+  loadWinnerInfo() {
+    this._scBook.getMainUsers(this.book.id)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(resp => {
+        this.selectedWinner = resp.winner;
+      });
+  }
+
+  toggleConfetti() {
+    if (this.confettiActive) {
+      this._confetti.stop();
+    } else {
+      this._confetti.start();
+    }
+    this.confettiActive = !this.confettiActive;
+  }
+
+  getRowClass(row: Requesters): string {
+    switch (row.status) {
+      case BookRequestStatus.CANCELED: return 'row-canceled';
+      case BookRequestStatus.DONATED: return 'row-winner';
+      default: return '';
+    }
+  }
+
+  getWhatsAppLink(phone: string): string | null {
+    if (!phone) return null;
+    const digits = phone.replace(/\D/g, '');
+    const number = digits.startsWith('55') ? digits : `55${digits}`;
+    const message = encodeURIComponent(`Olá! Sou o doador do livro "${this.book.title}" no Sharebook. Você foi o ganhador! Vamos combinar a entrega? 📚`);
+    return `https://wa.me/${number}?text=${message}`;
   }
 
   public doFilter = (value: string) => {
