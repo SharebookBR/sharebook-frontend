@@ -4,6 +4,12 @@ table {
   overflow-y: hidden;
   min-width: 500px;
 }
+
+@media (max-width: 768px) {
+  table {
+    min-width: unset;
+  }
+}
 th.mat-header-cell {
   text-align: left;
   max-width: 300px;
