@@ -1,76 +1,149 @@
 <div class="container">
-  <h1 class="text-center display-4">Lista de interessados no livro '{{ book.title }}'</h1>
 
-  <div class="alert alert-warning" role="alert" [hidden]="!showWarning">
-    {{ warningMessage }}
-  </div>
+  <!-- Tela de celebração pós-escolha -->
+  <div class="winner-celebration" *ngIf="winnerSelected">
+    <div class="winner-card mat-elevation-z4">
+      <div class="celebration-title">🎉 Você escolheu o ganhador!</div>
+      <p class="celebration-subtitle">
+        Entre em contato com <strong>{{ selectedWinnerNickname }}</strong> e dê a boa notícia!
+      </p>
 
-  <div class="alert alert-success" role="alert" [hidden]="!showWarningWinnerChoosed">
-    Você já escolheu o ganhador. =)
-  </div>
+      <ng-container *ngIf="selectedWinner; else loadingWinner">
+        <div class="contact-section">
+          <p class="contact-name">{{ selectedWinner.name }}</p>
 
-  <div class="container mt-5" matSort>
-    <div fxLayout fxLayoutAlign="center center">
-      <mat-form-field>
-        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
-      </mat-form-field>
-    </div>
-
-    <table mat-table [dataSource]="donateUsers" class="mat-elevation-z1">
-      <ng-container matColumnDef="requesterNickName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Apelido</th>
-        <td mat-cell *matCellDef="let element">{{ element.requesterNickName }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Destino</th>
-        <td mat-cell *matCellDef="let element">{{ element.location }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="totalBooksWon">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Livros Ganhos</th>
-        <td mat-cell *matCellDef="let element">{{ element.totalBooksWon }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="totalBooksDonated">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Livros Doados</th>
-        <td mat-cell *matCellDef="let element">{{ element.totalBooksDonated }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="requestText">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Motivo</th>
-        <td mat-cell *matCellDef="let element">{{ element.requestText }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef class="header">Ação</th>
-        <td mat-cell *matCellDef="let element">
-          <button
-            style="background-color: #ffc107"
+          <a
+            *ngIf="getWhatsAppLink(selectedWinner.phone)"
+            [href]="getWhatsAppLink(selectedWinner.phone)"
+            target="_blank"
             mat-flat-button
-            (click)="onCustom('donate', element)"
-            class="ml-1 mb-1"
-            data-toggle="tooltip"
-            title="Escolher ganhador"
+            class="whatsapp-btn"
           >
-            <mat-icon>emoji_events</mat-icon>
-          </button>
-        </td>
+            <i class="fa fa-whatsapp"></i>&nbsp; Falar no WhatsApp
+          </a>
+
+          <p *ngIf="selectedWinner.email" class="contact-email">
+            <mat-icon class="contact-icon">email</mat-icon> {{ selectedWinner.email }}
+          </p>
+        </div>
       </ng-container>
+      <ng-template #loadingWinner>
+        <div class="spinner-container"><mat-spinner diameter="36"></mat-spinner></div>
+      </ng-template>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+      <p class="email-note">Você também receberá um e-mail com esses dados.</p>
 
-    <div class="empty-data" *ngIf="donateUsers.data.length === 0 && (isLoading$ | async) === false">
-      Nenhum registro encontrado.
-    </div>
+      <div class="next-steps">
+        Após combinar a entrega e enviar o livro, informe o código de rastreio em <strong>Minhas Doações</strong>.
+      </div>
 
-    <div class="spinner-container" *ngIf="isLoading$ | async">
-      <mat-spinner></mat-spinner>
+      <div class="action-row">
+        <button mat-stroked-button (click)="toggleConfetti()" class="confetti-toggle">
+          <mat-icon>{{ confettiActive ? 'pause' : 'play_arrow' }}</mat-icon>
+          {{ confettiActive ? 'Pausar confetes' : 'Retomar confetes' }}
+        </button>
+        <button mat-flat-button color="primary" (click)="back()">Ver Minhas Doações</button>
+      </div>
     </div>
   </div>
-  <button mat-flat-button color="primary" (click)="back()" title="Voltar">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
+
+  <!-- Lista de interessados -->
+  <ng-container *ngIf="!winnerSelected">
+    <h1 class="text-center display-4">Lista de interessados no livro '{{ book.title }}'</h1>
+
+    <div class="alert alert-warning" role="alert" [hidden]="!showWarning">
+      {{ warningMessage }}
+    </div>
+
+    <div class="alert alert-success" role="alert" [hidden]="!showWarningWinnerChoosed">
+      Você já escolheu o ganhador. =)
+    </div>
+
+    <div class="container mt-5" matSort>
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-form-field>
+          <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+        </mat-form-field>
+      </div>
+
+      <table mat-table [dataSource]="donateUsers" class="mat-elevation-z1">
+        <ng-container matColumnDef="requesterNickName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Apelido</th>
+          <td mat-cell *matCellDef="let element">{{ element.requesterNickName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mobileNickAction">
+          <th mat-header-cell *matHeaderCellDef class="header">Apelido</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.requesterNickName }}
+            <ng-container *ngIf="book.status === BookDonationStatus.WAITING_DECISION && element.status === BookRequestStatus.AWAITING_ACTION">
+              <br/>
+              <button
+                style="background-color: #ffc107"
+                mat-flat-button
+                (click)="onCustom('donate', element)"
+                class="ml-1 mb-1"
+                data-toggle="tooltip"
+                title="Escolher ganhador"
+              >
+                <mat-icon>emoji_events</mat-icon>
+              </button>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Destino</th>
+          <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalBooksWon">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Livros Ganhos</th>
+          <td mat-cell *matCellDef="let element">{{ element.totalBooksWon }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalBooksDonated">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Livros Doados</th>
+          <td mat-cell *matCellDef="let element">{{ element.totalBooksDonated }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="requestText">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Motivo</th>
+          <td mat-cell *matCellDef="let element">{{ element.requestText }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="header">Ação</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              *ngIf="book.status === BookDonationStatus.WAITING_DECISION && element.status === BookRequestStatus.AWAITING_ACTION"
+              style="background-color: #ffc107"
+              mat-flat-button
+              (click)="onCustom('donate', element)"
+              class="ml-1 mb-1"
+              data-toggle="tooltip"
+              title="Escolher ganhador"
+            >
+              <mat-icon>emoji_events</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="getRowClass(row)"></tr>
+      </table>
+
+      <div class="empty-data" *ngIf="donateUsers.data.length === 0 && (isLoading$ | async) === false">
+        Nenhum registro encontrado.
+      </div>
+
+      <div class="spinner-container" *ngIf="isLoading$ | async">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+    <button mat-flat-button color="primary" (click)="back()" title="Voltar">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </ng-container>
+
 </div>

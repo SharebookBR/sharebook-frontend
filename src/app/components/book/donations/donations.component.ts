@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -15,13 +16,17 @@ import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { MatTableDataSource } from '@angular/material/table';
 
+const COLUMNS_DESKTOP = ['title', 'totalInterested', 'daysInShowcase', 'chooseDate', 'trackingNumber', 'status', 'action'];
+const COLUMNS_MOBILE = ['livro', 'action'];
+
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css'],
 })
 export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['title', 'totalInterested', 'daysInShowcase', 'chooseDate', 'trackingNumber', 'status', 'action'];
+  public readonly BookDonationStatus = BookDonationStatus;
+  displayedColumns: string[] = COLUMNS_DESKTOP;
   donatedBooks = new MatTableDataSource<MyDonation>();
 
   tableSettings: any;
@@ -39,10 +44,17 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
     private _toastr: ToastrService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit() {
+    this._breakpointObserver
+      .observe('(max-width: 767px)')
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(result => {
+        this.displayedColumns = result.matches ? COLUMNS_MOBILE : COLUMNS_DESKTOP;
+      });
     this.getDonations();
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();

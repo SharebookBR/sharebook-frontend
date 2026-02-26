@@ -1,8 +1,5 @@
 table {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  min-width: 500px;
 }
 th.mat-header-cell {
   text-align: left;
@@ -22,18 +19,25 @@ th.mat-header-cell {
 }
 
 .custom-badge {
+  display: inline-block;
   width: fit-content;
   text-align: center;
   border-radius: 7px;
-  left: 0px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-bottom: 4px;
-  padding-top: 4px;
+  margin-top: 4px;
+  padding: 2px 8px;
+  white-space: nowrap;
 }
 
 .mat-flat-button {
   min-width: 34px;
   padding: 0px;
   height: 34px;
+}
+
+.action-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-top: 8px;
+  padding-bottom: 4px;
 }

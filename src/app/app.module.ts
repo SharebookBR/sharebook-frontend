@@ -12,6 +12,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+// Angular CDK
+import { LayoutModule } from '@angular/cdk/layout';
+
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -160,6 +163,7 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     ToastrModule.forRoot(),
     ImageToDataUrlModule,
     ImageCropperModule,
+    LayoutModule,
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,

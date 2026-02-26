@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
 import { ToastrService } from 'ngx-toastr';
+import { ConfettiService } from '../../../core/services/confetti/confetti.service';
 
 @Component({
   selector: 'app-donate',
@@ -32,7 +33,8 @@ export class DonateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<DonateComponent>,
     private _scBook: BookService,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _confetti: ConfettiService
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -63,6 +65,7 @@ export class DonateComponent implements OnInit, OnDestroy {
           if (!resp.success) {
             this._toastr.error(resp.messages[0]);
           } else {
+            this._confetti.start();
             this.dialogRef.close(true);
             this._toastr.success(resp.successMessage);
           }
