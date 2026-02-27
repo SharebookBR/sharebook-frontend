@@ -16,8 +16,10 @@ export class InputSearchComponent implements OnInit {
   constructor(private fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {
+    const pathParts = window.location.pathname.split('/search/');
+    const currentSearch = pathParts.length > 1 ? decodeURIComponent(pathParts[1]) : '';
     this.searchForm = this.fb.group({
-      paramSearch: ['', [Validators.minLength(3)]],
+      paramSearch: [currentSearch, [Validators.minLength(3)]],
     });
   }
 

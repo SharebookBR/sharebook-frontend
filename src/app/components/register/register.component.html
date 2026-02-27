@@ -1,5 +1,5 @@
 <form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="registerUser()">
-  <h1 class="text-center display-4">Registro</h1>
+  <h1 class="text-center display-4">Criar conta</h1>
   <div class="form-row">
     <div class="col">
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -307,7 +307,7 @@
             style="padding-left: 50px; padding-right: 50px"
             [disabled]="!formGroup.valid"
           >
-            Registrar
+            Criar conta
           </button>
           <button [routerLink]="['/login']" mat-button color="primary">Cancelar</button>
         </div>

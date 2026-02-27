@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         city: ['', [Validators.required]],
         state: ['', [Validators.required]],
         country: ['', [Validators.required]],
-        allowSendingEmail: [true, null],
+        allowSendingEmail: [false, null],
         acceptTermOfUse: [false, null],
         recaptchaReactive: new FormControl(null, Validators.required),
       },
