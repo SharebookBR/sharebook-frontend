@@ -15,7 +15,7 @@
           <a
             *ngIf="getWhatsAppLink(selectedWinner.phone)"
             [href]="getWhatsAppLink(selectedWinner.phone)"
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             mat-flat-button
             class="whatsapp-btn"
           >

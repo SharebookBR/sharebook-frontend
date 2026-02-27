@@ -27,7 +27,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ contributor.name }}</h5>
         <p class="card-text">{{ contributor.position }}</p>
-        <a *ngFor="let link of contributor.links" [href]="link.url" class="card-link" target="_blank">{{
+        <a *ngFor="let link of contributor.links" [href]="link.url" class="card-link" target="_blank" rel="noopener noreferrer">{{
           link.content
           }}</a>
       </div>
