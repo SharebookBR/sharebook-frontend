@@ -14,7 +14,7 @@
           <span [innerHTML]="technology.text"></span>
         </p>
 
-        <a *ngFor="let link of technology.links" [href]="link.url" class="card-link" target="_blank">{{
+        <a *ngFor="let link of technology.links" [href]="link.url" class="card-link" target="_blank" rel="noopener noreferrer">{{
             link.content
           }}</a>
       </div>
@@ -35,7 +35,7 @@
         <h5 class="card-title">{{ tool.title }}</h5>
         <p class="card-text">{{ tool.text }}</p>
 
-        <a *ngFor="let link of tool.links" [href]="link.url" class="card-link" target="_blank">{{ link.content }}</a>
+        <a *ngFor="let link of tool.links" [href]="link.url" class="card-link" target="_blank" rel="noopener noreferrer">{{ link.content }}</a>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@
     Não importa sua idade, experiência ou ramo de atividade. Temos certeza que você pode ajudar de alguma forma.
   </p>
   <div class="text-center mb-4">
-    <a href="https://www.linkedin.com/in/raffacabofrio/" class="text-primary" target="_blank" style="font-size: 1.2em;">
+    <a href="https://www.linkedin.com/in/raffacabofrio/" class="text-primary" target="_blank" rel="noopener noreferrer" style="font-size: 1.2em;">
       <i class="fa fa-linkedin"></i> Fale com o Raffaello no LinkedIn
     </a>
   </div>
@@ -59,7 +59,7 @@
             <span [innerHTML]="career.text"></span>
           </p>
 
-          <a *ngFor="let link of career.links" [href]="link.url" class="card-link" target="_blank">{{ link.content }}</a>
+          <a *ngFor="let link of career.links" [href]="link.url" class="card-link" target="_blank" rel="noopener noreferrer">{{ link.content }}</a>
         </div>
       </div>
     </div>
