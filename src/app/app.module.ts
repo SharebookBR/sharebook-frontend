@@ -94,6 +94,7 @@ import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
 import { CategoryBooksComponent } from './components/category/category-books/category-books.component';
+import { CategoriesListComponent } from './components/category/categories-list/categories-list.component';
 import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
@@ -143,6 +144,7 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     CardMeetupComponent,
     SearchResultsComponent,
     CategoryBooksComponent,
+    CategoriesListComponent,
     DevModeBannerComponent,
     SettingsComponent,
     BottomNavComponent,

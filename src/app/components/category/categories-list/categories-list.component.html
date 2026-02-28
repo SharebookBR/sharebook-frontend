@@ -1,0 +1,37 @@
+<div class="container categories-list-page">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="categories-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Categorias</li>
+    </ol>
+  </nav>
+
+  <h1 class="categories-list-title">Navegue por categorias</h1>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando categorias...</p>
+  </div>
+
+  <!-- Grid de categorias -->
+  <div *ngIf="!isLoading" class="categories-grid">
+    <a *ngFor="let category of categories"
+       [routerLink]="getCategoryBookCount(category.id) > 0 ? ['/categorias', category.slug] : null"
+       class="category-card"
+       [class.has-books]="getCategoryBookCount(category.id) > 0"
+       [class.no-books]="getCategoryBookCount(category.id) === 0">
+      <div class="category-icon">
+        <i class="fa fa-bookmark"></i>
+      </div>
+      <div class="category-info">
+        <span class="category-name">{{ category.name }}</span>
+        <span class="category-count">{{ getCategoryBookCount(category.id) }} livro(s)</span>
+      </div>
+      <div class="category-arrow" *ngIf="getCategoryBookCount(category.id) > 0">
+        <i class="fa fa-chevron-right"></i>
+      </div>
+    </a>
+  </div>
+</div>

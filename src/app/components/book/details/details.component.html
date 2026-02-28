@@ -53,6 +53,11 @@
           <strong>E-book disponível gratuitamente!</strong><br />
           Clique no botão abaixo para receber este livro.
         </div>
+
+        <!-- Aviso de e-book indisponível -->
+        <div *ngIf="isEbook() && !available" class="alert alert-warning mt-3">
+          <strong>Este e-book não está mais disponível.</strong>
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -60,7 +65,7 @@
         <div class="modal-footer">
           <span class="badge badge-success" *ngIf="requested && !isEbook()">Você já solicitou. Aguarde e boa sorte!</span>
 
-          <span class="badge badge-danger" *ngIf="!requested && !available">Não disponível.</span>
+          <span class="badge badge-danger" *ngIf="!isEbook() && !requested && !available">Não disponível.</span>
 
           <!-- Botão de receber e-book (acesso imediato, sem login) -->
           <button
@@ -93,6 +98,17 @@
             (click)="onLoginBook()"
           >
             Faça login para solicitar o livro
+          </button>
+
+          <!-- Botão de report de direitos autorais (apenas para e-books, visível para todos) -->
+          <button
+            mat-stroked-button
+            color="warn"
+            class="mr-2"
+            *ngIf="isEbook()"
+            (click)="onReportCopyright()"
+          >
+            <mat-icon>flag</mat-icon> Reportar direitos autorais
           </button>
 
           <button mat-stroked-button color="primary" [routerLink]="['/home']" id="cancelButton">Voltar</button>

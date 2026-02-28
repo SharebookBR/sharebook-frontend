@@ -233,4 +233,11 @@ export class BookService {
       promoteRequest
     );
   }
+
+  public reportCopyright(slug: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/ReportCopyright/${slug}`,
+      {}
+    );
+  }
 }

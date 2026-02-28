@@ -4,9 +4,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
-import { CategoryService } from '../../core/services/category/category.service';
-import { Category } from '../../core/models/category';
-
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 
@@ -18,9 +15,7 @@ import { Meetup } from '../../core/models/Meetup';
 export class HomeComponent implements OnInit, OnDestroy {
   public availableBooks: Book[] = [];
   public hasBook: Boolean = true;
-
-  public categories: Category[] = [];
-  public categoryBookCount: Map<string, number> = new Map();
+  public ebooks: Book[] = [];
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -32,13 +27,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _scBook: BookService,
-    private _scMeetup: MeetupService,
-    private _scCategory: CategoryService
+    private _scMeetup: MeetupService
   ) {}
 
   ngOnInit() {
     this.getBooks();
-    this.getCategories();
+    this.getEbooks();
     this.getMeetups();
     this.getMeetupsUpcoming();
   }
@@ -50,35 +44,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((books) => {
         this.availableBooks = books;
         this.hasBook = books.length > 0 ? true : false;
-        this.countBooksByCategory();
       });
   }
 
-  getCategories() {
-    this._scCategory
-      .getAllWithSlug()
+  getEbooks() {
+    this._scBook
+      .getRandomEbooks()
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((categories) => {
-        this.categories = categories;
-        this.countBooksByCategory();
+      .subscribe((ebooks) => {
+        this.ebooks = ebooks;
       });
-  }
-
-  countBooksByCategory() {
-    if (this.availableBooks.length === 0 || this.categories.length === 0) {
-      return;
-    }
-    this.categoryBookCount.clear();
-    this.availableBooks.forEach((book) => {
-      if (book.categoryId) {
-        const count = this.categoryBookCount.get(book.categoryId) || 0;
-        this.categoryBookCount.set(book.categoryId, count + 1);
-      }
-    });
-  }
-
-  getCategoryBookCount(categoryId: number): number {
-    return this.categoryBookCount.get(String(categoryId)) || 0;
   }
 
   getMeetups() {

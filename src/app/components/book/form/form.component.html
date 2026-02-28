@@ -38,6 +38,21 @@
         </div>
       </div>
       <div class="col">
+        <!-- Tipo de Livro (Físico ou E-book) -->
+        <div class="form-group col-md-8" *ngIf="!itsEditMode">
+          <label for="bookType">Tipo de Livro</label>
+          <mat-button-toggle-group style="width: 100%" [value]="selectedBookType">
+            <mat-button-toggle
+              style="width: 50%"
+              *ngFor="let option of bookTypeOptions"
+              [value]="option.value"
+              (click)="onChangeBookType(option.value)"
+              (keydown.enter)="onChangeBookType(option.value)"
+              >{{ option.text }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
         <div class="form-group col-md-8">
           <label class="col-form-label" for="title">Título do livro</label>
           <input formControlName="title" id="title" name="title" type="text" class="form-control" maxlength="200" />
@@ -100,21 +115,6 @@
               Informe o facilitador do livro.
             </small>
           </div>
-        </div>
-
-        <!-- Tipo de Livro (Físico ou E-book) -->
-        <div class="form-group col-md-8" *ngIf="!itsEditMode">
-          <label for="bookType">Tipo de Livro</label>
-          <mat-button-toggle-group style="width: 100%" [value]="selectedBookType">
-            <mat-button-toggle
-              style="width: 50%"
-              *ngFor="let option of bookTypeOptions"
-              [value]="option.value"
-              (click)="onChangeBookType(option.value)"
-              (keydown.enter)="onChangeBookType(option.value)"
-              >{{ option.text }}
-            </mat-button-toggle>
-          </mat-button-toggle-group>
         </div>
 
         <div class="form-group col-md-8">

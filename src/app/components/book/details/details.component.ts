@@ -16,6 +16,8 @@ import { UserInfo } from 'src/app/core/models/userInfo';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { environment } from 'src/environments/environment';
+import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-details',
@@ -51,7 +53,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _router: Router,
     public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    private _toastr: ToastrService
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -202,6 +205,37 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.bookInfo.imageBytes = img[1];
       };
     }
+  }
+
+  onReportCopyright() {
+    const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: 450,
+      data: {
+        title: 'Reportar direitos autorais',
+        message: 'Confirma o report de violação de direitos autorais neste e-book? Nossa equipe será notificada para revisão.',
+        btnOkText: 'Confirmar report',
+        btnCancelText: 'Cancelar'
+      }
+    });
+
+    confirmRef.afterClosed()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+
+        this._scBook.reportCopyright(this.bookInfo.slug)
+          .pipe(takeUntil(this._destroySubscribes$))
+          .subscribe(
+            () => {
+              this._toastr.success('Report enviado. Obrigado pela colaboração.');
+            },
+            (error) => {
+              console.error('Erro ao reportar direitos autorais:', error);
+              const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro ao enviar report.';
+              this._toastr.error(errorMessage);
+            }
+          );
+      });
   }
 
   ngOnDestroy() {
