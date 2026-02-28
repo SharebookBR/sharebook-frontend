@@ -51,7 +51,7 @@
 
         <ul class="list-unstyled">
           <li *ngFor="let link of repositoriesLinks">
-            <a [href]="link.url" target="_blank">{{ link.content }}</a>
+            <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.content }}</a>
           </li>
         </ul>
       </div>
