@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="col">
-        <!-- Tipo de Livro (Físico ou E-book) -->
+        <!-- Tipo de Livro (Físico ou Livro digital) -->
         <div class="form-group col-md-8" *ngIf="!itsEditMode">
           <label for="bookType">Tipo de Livro</label>
           <mat-button-toggle-group style="width: 100%" [value]="selectedBookType">
@@ -148,9 +148,9 @@
           </div>
         </div>
 
-        <!-- Upload de PDF (apenas para E-book) -->
+        <!-- Upload de PDF (apenas para Livro digital) -->
         <div class="form-group col-md-8" *ngIf="selectedBookType === 'Eletronic'">
-          <label class="col-form-label">Arquivo PDF do E-book</label>
+          <label class="col-form-label">Arquivo PDF do livro digital</label>
           <div class="custom-file">
             <input
               type="file"
@@ -160,7 +160,7 @@
               (change)="onPdfSelected($event)"
             />
             <label class="custom-file-label" for="pdfFile" *ngIf="!isPdfLoaded">
-              Selecionar arquivo PDF do e-book
+              Selecionar arquivo PDF do livro digital
             </label>
             <label class="custom-file-label" for="pdfFile" *ngIf="isPdfLoaded">
               {{ pdfFileName }}
@@ -168,7 +168,7 @@
           </div>
           <div *ngIf="formGroup.controls['pdfBytes'].touched && !formGroup.controls['pdfBytes'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['pdfBytes'].hasError('required')">
-              O arquivo PDF é obrigatório para e-books.
+              O arquivo PDF é obrigatório para livros digitais.
             </small>
           </div>
           <small class="form-text text-muted">
@@ -230,7 +230,7 @@
           </div>
         </div>
 
-        <!-- Checkbox anti-pirataria (apenas para E-book) -->
+        <!-- Checkbox anti-pirataria (apenas para Livro digital) -->
         <div class="form-group col-md-8" *ngIf="!itsEditMode && selectedBookType === 'Eletronic'">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" formControlName="agreeToAntiPiracy" id="agreeToAntiPiracy" />
@@ -241,7 +241,7 @@
           </div>
           <div *ngIf="formGroup.controls['agreeToAntiPiracy'].touched && !formGroup.controls['agreeToAntiPiracy'].valid">
             <small class="form-text text-danger">
-              Você deve concordar com os termos anti-pirataria para cadastrar um e-book.
+              Você deve concordar com os termos anti-pirataria para cadastrar um livro digital.
             </small>
           </div>
         </div>
@@ -270,7 +270,7 @@
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> {{ isLoadingMessage }}
-            <!-- Barra de progresso para upload de e-book -->
+            <!-- Barra de progresso para upload de livro digital -->
             <div *ngIf="uploadProgress > 0" class="progress mt-2" style="height: 20px;">
               <div
                 class="progress-bar progress-bar-striped progress-bar-animated"

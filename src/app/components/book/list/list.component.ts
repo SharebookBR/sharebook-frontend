@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -24,7 +24,9 @@ import { BookVM } from './../../../core/models/bookVM';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['type', 'creationDate', 'chooseDate', 'title', 'users', 'status', 'action'];
+  displayedColumns: string[] = [];
+  private readonly desktopColumns: string[] = ['classification', 'dates', 'title', 'users', 'action'];
+  private readonly mobileColumns: string[] = ['classification', 'title', 'action'];
 
   myBookArray = new MatTableDataSource<BookVMItem>();
   statusSearchValues = [];
@@ -62,6 +64,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.updateDisplayedColumns();
     this.getAllBooks();
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
@@ -262,6 +265,35 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         return 'red';
       default:
         return '#444444';
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateDisplayedColumns();
+  }
+
+  private updateDisplayedColumns() {
+    const isMobile = window.innerWidth <= 768;
+    this.displayedColumns = isMobile ? this.mobileColumns : this.desktopColumns;
+  }
+
+  public getStatusBadgeClass(status: string): string {
+    switch (status) {
+      case BookDonationStatus.AVAILABLE:
+      case BookDonationStatus.RECEIVED:
+        return 'status-badge status-success';
+      case BookDonationStatus.CANCELED:
+        return 'status-badge status-danger';
+      case BookDonationStatus.WAITING_DECISION:
+        return 'status-badge status-warning';
+      case BookDonationStatus.WAITING_SEND:
+      case BookDonationStatus.SENT:
+        return 'status-badge status-info';
+      case BookDonationStatus.WAITING_APPROVAL:
+        return 'status-badge status-neutral';
+      default:
+        return 'status-badge status-neutral';
     }
   }
 

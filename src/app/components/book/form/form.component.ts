@@ -51,7 +51,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   bookTypeOptions = [
     { value: 'Printed', text: 'Livro Físico' },
-    { value: 'Eletronic', text: 'E-book (PDF)' }
+    { value: 'Eletronic', text: 'Livro digital (PDF)' }
   ];
   selectedBookType: BookType = 'Printed';
 
@@ -280,7 +280,7 @@ export class FormComponent implements OnInit, OnDestroy {
     }
 
     if (this.selectedBookType === 'Eletronic' && !this.isPdfLoaded) {
-      this._toastr.error('Selecionar arquivo PDF do e-book.');
+      this._toastr.error('Selecione o arquivo PDF do livro digital.');
       return false;
     }
 
@@ -306,7 +306,7 @@ export class FormComponent implements OnInit, OnDestroy {
             next: (resp) => {
               if (resp.success) {
                 this.isSaved = true;
-                this._toastr.success('E-book cadastrado com sucesso!');
+                this._toastr.success('Livro digital cadastrado com sucesso!');
                 this.pageTitle = 'Obrigado por ajudar.';
               } else {
                 this._toastr.error(resp.messages[0]);
@@ -315,7 +315,7 @@ export class FormComponent implements OnInit, OnDestroy {
               this.uploadProgress = 0;
             },
             error: (err) => {
-              this._toastr.error('Erro ao enviar o e-book. Tente novamente.');
+              this._toastr.error('Erro ao enviar o livro digital. Tente novamente.');
               this.isLoading = false;
               this.uploadProgress = 0;
             }

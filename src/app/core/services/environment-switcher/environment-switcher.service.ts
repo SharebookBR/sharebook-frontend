@@ -17,7 +17,7 @@ export class EnvironmentSwitcherService {
   private readonly environments: Record<EnvironmentType, EnvironmentConfig> = {
     local: {
       name: 'local',
-      apiEndpoint: 'http://localhost:50709/api',
+      apiEndpoint: 'http://localhost:8000/api',
       displayName: 'Local'
     },
     dev: {

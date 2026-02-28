@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,9 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.module';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
-import { environment } from 'src/environments/environment';
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -54,7 +54,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
     private _seo: SeoService,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -212,8 +213,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       minWidth: 450,
       data: {
         title: 'Reportar direitos autorais',
-        message: 'Confirma o report de violação de direitos autorais neste e-book? Nossa equipe será notificada para revisão.',
-        btnOkText: 'Confirmar report',
+        message: 'Confirma a denúncia de violação de direitos autorais neste livro digital? Nossa equipe será notificada para revisão.',
+        btnOkText: 'Confirmar denúncia',
         btnCancelText: 'Cancelar'
       }
     });
@@ -227,11 +228,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this._destroySubscribes$))
           .subscribe(
             () => {
-              this._toastr.success('Report enviado. Obrigado pela colaboração.');
+              this._toastr.success('Denúncia enviada. Obrigado pela colaboração.');
             },
             (error) => {
               console.error('Erro ao reportar direitos autorais:', error);
-              const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro ao enviar report.';
+              const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro ao enviar denúncia.';
               this._toastr.error(errorMessage);
             }
           );
@@ -248,12 +249,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getBookTypeLabel(): string {
-    return this.isEbook() ? 'E-book' : 'Livro Físico';
+    return this.isEbook() ? 'Livro digital' : 'Livro físico';
   }
 
   onDownloadEbook() {
     if (this.bookInfo.slug) {
-      const downloadUrl = `${environment.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
+      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
       window.open(downloadUrl, '_blank');
     }
   }

@@ -51,6 +51,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
+import { CardBookModule } from './components/card-book/card-book.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -178,6 +179,7 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     MatBottomSheetModule,
     MatListModule,
     MatDividerModule,
+    CardBookModule,
   ],
   providers: [
     AuthGuardUser,

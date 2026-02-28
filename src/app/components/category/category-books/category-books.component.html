@@ -29,10 +29,10 @@
     <p class="books-count">{{ books.length }} livro(s) disponivel(is)</p>
     <div class="books-type-count" *ngIf="books.length > 0">
       <span class="type-badge physical">
-        <i class="fa fa-book"></i> {{ physicalBooksCount }} fisico(s)
+        <i class="fa fa-book"></i> Livros físicos: {{ physicalBooksCount }}
       </span>
       <span class="type-badge ebook">
-        <i class="fa fa-cloud-download"></i> {{ ebooksCount }} e-book(s)
+        <i class="fa fa-cloud-download"></i> Livros digitais: {{ ebooksCount }}
       </span>
     </div>
   </div>
@@ -46,7 +46,7 @@
         </a>
         <span class="book-type-badge" [ngClass]="book.type === 'Eletronic' ? 'badge-ebook' : 'badge-physical'">
           <i class="fa" [ngClass]="book.type === 'Eletronic' ? 'fa-cloud-download' : 'fa-book'"></i>
-          {{ book.type === 'Eletronic' ? 'E-book' : 'Fisico' }}
+          {{ book.type === 'Eletronic' ? 'Livro digital' : 'Fisico' }}
         </span>
       </div>
       <figcaption class="figure-caption text-center">

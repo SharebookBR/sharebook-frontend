@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getAvailableBooks()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
-        this.availableBooks = books;
-        this.hasBook = books.length > 0 ? true : false;
+        this.availableBooks = books.filter((book) => book.type !== 'Eletronic');
+        this.hasBook = this.availableBooks.length > 0;
       });
   }
 

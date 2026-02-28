@@ -16,7 +16,7 @@ export class InputSearchComponent implements OnInit {
   constructor(private fb: FormBuilder, private _router: Router) {}
 
   ngOnInit() {
-    const pathParts = window.location.pathname.split('/search/');
+    const pathParts = window.location.pathname.split('/buscar/');
     const currentSearch = pathParts.length > 1 ? decodeURIComponent(pathParts[1]) : '';
     this.searchForm = this.fb.group({
       paramSearch: [currentSearch, [Validators.minLength(3)]],
@@ -25,8 +25,9 @@ export class InputSearchComponent implements OnInit {
 
   public search(): void {
     // verifica se há alguma coisa na busca - senão houver exibe um alerta e não direciona pesquisa
-    if (this.searchForm.value.paramSearch) {
-      window.location.href = `/search/${this.searchForm.value.paramSearch}`;
+    const term = this.searchForm.value.paramSearch?.trim();
+    if (term) {
+      this._router.navigate(['/buscar', term]);
       this.searchAlert = false;
     } else {
       this.searchAlert = true;

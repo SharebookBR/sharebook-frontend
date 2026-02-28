@@ -76,7 +76,7 @@ const routes: Routes = [
     component: BookDetailComponent,
   },
   {
-    path: 'search/:criteria',
+    path: 'buscar/:criteria',
     component: SearchResultsComponent,
   },
   {

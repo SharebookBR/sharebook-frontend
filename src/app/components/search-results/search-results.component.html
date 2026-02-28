@@ -8,35 +8,10 @@
   </h1>
   <section class="row">
     <div class="col-xs-12 col-md-12">
-      <p *ngIf="meetups.length === 0">Nenhum resultado para sua pesquisa :/</p>
+      <p *ngIf="books.length === 0">Nenhum livro encontrado para sua pesquisa :/</p>
     </div>
   </section>
   <section class="row">
-    <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
+    <app-card-book [content]="book" *ngFor="let book of books"></app-card-book>
   </section>
-
-  <p></p>
-  <p>
-    <a href="javascript:void(0)" (click)="toogleInfo()"
-      ><em class="fa fa-info-circle"></em> Por que não tem livros no resultado de pesquisa?</a
-    >
-  </p>
-  <div *ngIf="showInfo">
-    <h2>Por que não tem livros no resultado de pesquisa?</h2>
-    <p>
-      O Sharebook trabalha com doação rápida. Os livros entram e são entregues em apenas 5 dias. Fazemos dessa forma
-      porque aprendemos com o tempo, aprendemos com tentativa e erros, que é a melhor forma pra garantir que os livros
-      sejam realmente entregues. Essa é nossa maior missão. Portanto os livros disponíveis são apenas aqueles listados
-      na página inicial mesmo.
-    </p>
-    <p>Para saber mais confira esse vídeo da Patrícia explicando com mais detalhes. =)</p>
-    <iframe
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/528I09q_VIM"
-      title="YouTube video player"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  </div>
 </div>

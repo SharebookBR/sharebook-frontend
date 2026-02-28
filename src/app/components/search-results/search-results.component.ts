@@ -5,8 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
-import { MeetupService } from '../../core/services/meetup/meetup.service';
-import { Meetup } from 'src/app/core/models/Meetup';
+import { BookService } from '../../core/services/book/book.service';
+import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
 
 @Component({
   selector: 'app-search-results',
@@ -14,24 +14,24 @@ import { Meetup } from 'src/app/core/models/Meetup';
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   public criteria: string;
-  public showInfo: boolean = false;
-  isLoading: boolean = true;
-  public meetups: Meetup[] = [];
+  public isLoading = true;
+  public books: FullSearchItem[] = [];
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _route: ActivatedRoute, private _toastr: ToastrService, private _scMeetup: MeetupService) {}
+  constructor(private _route: ActivatedRoute, private _toastr: ToastrService, private _scBook: BookService) {}
 
   ngOnInit() {
     this.getParamByUri();
-    this.getMeetups();
   }
-  getMeetups() {
-    this._scMeetup
-      .search(this.criteria)
+
+  searchBooks() {
+    this.isLoading = true;
+    this._scBook
+      .getFullSearch(this.criteria, 1, 100)
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((meetups) => {
-        this.meetups = meetups;
+      .subscribe((result) => {
+        this.books = result?.items || [];
         this.isLoading = false;
       });
   }
@@ -40,9 +40,11 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this._route.params.pipe(takeUntil(this._destroySubscribes$)).subscribe(
       (param) => {
         this.criteria = param['criteria'];
+        this.searchBooks();
       },
       (error: HttpErrorResponse) => {
         this._toastr.error(error.message ? error.message : error.toString());
+        this.isLoading = false;
       }
     );
   }
@@ -50,9 +52,5 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
-  }
-
-  public toogleInfo() {
-    this.showInfo = !this.showInfo;
   }
 }

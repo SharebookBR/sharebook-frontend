@@ -48,15 +48,15 @@
           >
         </div>
 
-        <!-- Informação de download para e-books -->
+        <!-- Informação de download para livros digitais -->
         <div *ngIf="isEbook() && available" class="alert alert-info mt-3">
-          <strong>E-book disponível gratuitamente!</strong><br />
+          <strong>Livro digital disponível gratuitamente!</strong><br />
           Clique no botão abaixo para receber este livro.
         </div>
 
-        <!-- Aviso de e-book indisponível -->
+        <!-- Aviso de livro digital indisponível -->
         <div *ngIf="isEbook() && !available" class="alert alert-warning mt-3">
-          <strong>Este e-book não está mais disponível.</strong>
+          <strong>Este livro digital não está mais disponível.</strong>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
 
           <span class="badge badge-danger" *ngIf="!isEbook() && !requested && !available">Não disponível.</span>
 
-          <!-- Botão de receber e-book (acesso imediato, sem login) -->
+          <!-- Botão de receber livro digital (acesso imediato, sem login) -->
           <button
             mat-flat-button
             color="accent"
@@ -75,7 +75,7 @@
             *ngIf="isEbook() && available"
             (click)="onDownloadEbook()"
           >
-            <mat-icon>download</mat-icon> Receber E-book
+            <mat-icon>download</mat-icon> Receber livro digital
           </button>
 
           <!-- Botão de interesse (apenas para livros físicos) -->
@@ -100,7 +100,7 @@
             Faça login para solicitar o livro
           </button>
 
-          <!-- Botão de report de direitos autorais (apenas para e-books, visível para todos) -->
+          <!-- Botão de denúncia de direitos autorais (apenas para livros digitais, visível para todos) -->
           <button
             mat-stroked-button
             color="warn"
@@ -108,7 +108,7 @@
             *ngIf="isEbook()"
             (click)="onReportCopyright()"
           >
-            <mat-icon>flag</mat-icon> Reportar direitos autorais
+            <mat-icon>flag</mat-icon> Denunciar direitos autorais
           </button>
 
           <button mat-stroked-button color="primary" [routerLink]="['/home']" id="cancelButton">Voltar</button>
