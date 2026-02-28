@@ -117,6 +117,34 @@
           </div>
         </div>
 
+        <!-- Upload de PDF (apenas para Livro digital) -->
+        <div class="form-group col-md-8" *ngIf="selectedBookType === 'Eletronic'">
+          <label class="col-form-label">Arquivo PDF do livro digital</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="pdfFile"
+              accept=".pdf"
+              (change)="onPdfSelected($event)"
+            />
+            <label class="custom-file-label" for="pdfFile" *ngIf="!isPdfLoaded">
+              Selecionar arquivo PDF do livro digital
+            </label>
+            <label class="custom-file-label" for="pdfFile" *ngIf="isPdfLoaded">
+              {{ pdfFileName }}
+            </label>
+          </div>
+          <div *ngIf="formGroup.controls['pdfBytes'].touched && !formGroup.controls['pdfBytes'].valid">
+            <small class="form-text text-danger" *ngIf="formGroup.controls['pdfBytes'].hasError('required')">
+              O arquivo PDF é obrigatório para livros digitais.
+            </small>
+          </div>
+          <small class="form-text text-muted">
+            Tamanho máximo: 50MB. Apenas arquivos PDF são permitidos.
+          </small>
+        </div>
+
         <div class="form-group col-md-8">
           <label class="col-form-label">Capa do Livro</label>
           <div class="custom-file">
@@ -146,34 +174,6 @@
               Selecione a capa do livro.
             </small>
           </div>
-        </div>
-
-        <!-- Upload de PDF (apenas para Livro digital) -->
-        <div class="form-group col-md-8" *ngIf="selectedBookType === 'Eletronic'">
-          <label class="col-form-label">Arquivo PDF do livro digital</label>
-          <div class="custom-file">
-            <input
-              type="file"
-              class="custom-file-input"
-              id="pdfFile"
-              accept=".pdf"
-              (change)="onPdfSelected($event)"
-            />
-            <label class="custom-file-label" for="pdfFile" *ngIf="!isPdfLoaded">
-              Selecionar arquivo PDF do livro digital
-            </label>
-            <label class="custom-file-label" for="pdfFile" *ngIf="isPdfLoaded">
-              {{ pdfFileName }}
-            </label>
-          </div>
-          <div *ngIf="formGroup.controls['pdfBytes'].touched && !formGroup.controls['pdfBytes'].valid">
-            <small class="form-text text-danger" *ngIf="formGroup.controls['pdfBytes'].hasError('required')">
-              O arquivo PDF é obrigatório para livros digitais.
-            </small>
-          </div>
-          <small class="form-text text-muted">
-            Tamanho máximo: 50MB. Apenas arquivos PDF são permitidos.
-          </small>
         </div>
 
         <!-- Opções de Frete (apenas para livro físico) -->
@@ -267,6 +267,9 @@
               {{ buttonSaveLabel }}
             </button>
             <button mat-button color="primary" [routerLink]="['/book/list']">Cancelar</button>
+            <div *ngIf="!formGroup.valid">
+              <small class="form-text text-muted text-center mt-2">* Preencha todos os campos obrigatórios para continuar.</small>
+            </div>
           </div>
           <div class="text-center" [hidden]="!isLoading">
             <i class="fa fa-spinner fa-spin"></i> {{ isLoadingMessage }}

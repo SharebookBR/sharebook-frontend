@@ -315,7 +315,8 @@ export class FormComponent implements OnInit, OnDestroy {
               this.uploadProgress = 0;
             },
             error: (err) => {
-              this._toastr.error('Erro ao enviar o livro digital. Tente novamente.');
+              const msg = err?.error?.messages?.join(' ') || err?.message || 'Erro ao enviar o livro digital. Tente novamente.';
+              this._toastr.error(msg);
               this.isLoading = false;
               this.uploadProgress = 0;
             }
