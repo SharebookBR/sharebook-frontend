@@ -3,23 +3,48 @@
 <img src="assets/img/banner3.jpeg" class="img-fluid w-100" alt="Escolha o livro. Leve para casa. Não custa nada." fetchpriority="high" />
 
 <div class="container">
-  <h1 class="text-center display-4" *ngIf="!hasBook">
+  <h1 class="text-center display-4" *ngIf="!hasBook && ebooks.length === 0">
     Nenhum livro encontrado &#9785; <br />Ajude o Sharebook e
     <strong><a [routerLink]="['/livros/doar']">doe um livro agora</a></strong>
   </h1>
   <h1 class="text-center display-4" *ngIf="hasBook">Livros em destaque</h1>
   <div class="row justify-content-center book-covers" *ngIf="hasBook">
     <figure class="figure" *ngFor="let book of availableBooks">
-      <div>
+      <div class="book-cover-container">
         <a href="/livros/{{ book.slug }}" title="Detalhes do Livro">
           <img src="{{ book.imageUrl }}" class="figure-img img-fluid rounded" alt="{{ book.title }}" />
         </a>
+        <span class="book-type-badge badge-physical">
+          <i class="fa fa-book"></i>
+          Físico
+        </span>
       </div>
       <figcaption class="figure-caption text-center">
         {{ book.title }}
       </figcaption>
     </figure>
   </div>
+
+  <!-- LIVROS DIGITAIS -->
+  <ng-container *ngIf="ebooks.length > 0">
+    <h1 class="text-center display-4">Livros Digitais</h1>
+    <div class="row justify-content-center book-covers">
+      <figure class="figure" *ngFor="let ebook of ebooks">
+        <div class="book-cover-container">
+          <a href="/livros/{{ ebook.slug }}" title="Detalhes do Livro">
+            <img src="{{ ebook.imageUrl }}" class="figure-img img-fluid rounded" alt="{{ ebook.title }}" />
+          </a>
+          <span class="book-type-badge badge-ebook">
+            <i class="fa fa-cloud-download"></i>
+            Livro digital
+          </span>
+        </div>
+        <figcaption class="figure-caption text-center">
+          {{ ebook.title }}
+        </figcaption>
+      </figure>
+    </div>
+  </ng-container>
 
   <!-- PRÓXIMOS MEETUPS -->
   <ng-container *ngIf="meetupsUpcoming.length > 0">

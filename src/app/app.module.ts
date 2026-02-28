@@ -51,6 +51,7 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
+import { CardBookModule } from './components/card-book/card-book.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -93,6 +94,8 @@ import { CropImageDialogComponent } from './components/book/crop-image-dialog/cr
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
+import { CategoryBooksComponent } from './components/category/category-books/category-books.component';
+import { CategoriesListComponent } from './components/category/categories-list/categories-list.component';
 import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
@@ -141,6 +144,8 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     DialogAnonymizeComponent,
     CardMeetupComponent,
     SearchResultsComponent,
+    CategoryBooksComponent,
+    CategoriesListComponent,
     DevModeBannerComponent,
     SettingsComponent,
     BottomNavComponent,
@@ -174,6 +179,7 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     MatBottomSheetModule,
     MatListModule,
     MatDividerModule,
+    CardBookModule,
   ],
   providers: [
     AuthGuardUser,

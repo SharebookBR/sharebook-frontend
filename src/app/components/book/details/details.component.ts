@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,8 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.module';
 import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
+import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-details',
@@ -50,7 +53,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _router: Router,
     public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    private _toastr: ToastrService,
+    @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -140,7 +145,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   }
                 }
 
-                if (this.userProfile) {
+                if (this.userProfile && book.id) {
                   this._scBook
                     .getRequested(book.id)
                     .pipe(takeUntil(this._destroySubscribes$))
@@ -203,8 +208,54 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onReportCopyright() {
+    const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: 450,
+      data: {
+        title: 'Reportar direitos autorais',
+        message: 'Confirma a denúncia de violação de direitos autorais neste livro digital? Nossa equipe será notificada para revisão.',
+        btnOkText: 'Confirmar denúncia',
+        btnCancelText: 'Cancelar'
+      }
+    });
+
+    confirmRef.afterClosed()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(confirmed => {
+        if (!confirmed) return;
+
+        this._scBook.reportCopyright(this.bookInfo.slug)
+          .pipe(takeUntil(this._destroySubscribes$))
+          .subscribe(
+            () => {
+              this._toastr.success('Denúncia enviada. Obrigado pela colaboração.');
+            },
+            (error) => {
+              console.error('Erro ao reportar direitos autorais:', error);
+              const errorMessage = error?.error?.messages?.join(' ') || error?.message || 'Erro ao enviar denúncia.';
+              this._toastr.error(errorMessage);
+            }
+          );
+      });
+  }
+
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  isEbook(): boolean {
+    return this.bookInfo.type === 'Eletronic';
+  }
+
+  getBookTypeLabel(): string {
+    return this.isEbook() ? 'Livro digital' : 'Livro físico';
+  }
+
+  onDownloadEbook() {
+    if (this.bookInfo.slug) {
+      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
+      window.open(downloadUrl, '_blank');
+    }
   }
 }

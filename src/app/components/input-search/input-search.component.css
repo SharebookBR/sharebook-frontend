@@ -1,1 +1,12 @@
+:host {
+  display: block;
+  width: 100%;
+}
 
+.input-group {
+  flex-wrap: nowrap;
+}
+
+.form-control {
+  min-width: 0;
+}

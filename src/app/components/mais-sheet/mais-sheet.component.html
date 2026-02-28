@@ -3,6 +3,11 @@
     <mat-icon>search</mat-icon>
     <input type="text" placeholder="Buscar livros..." #searchInput (keyup.enter)="search(searchInput.value)" />
   </div>
+
+  <a mat-list-item (click)="navigate('/categorias')">
+    <mat-icon mat-list-icon>folder_open</mat-icon>
+    <span mat-line>Categorias</span>
+  </a>
   <mat-divider></mat-divider>
 
   <div *ngIf="userLogged" class="mais-sheet__greeting">

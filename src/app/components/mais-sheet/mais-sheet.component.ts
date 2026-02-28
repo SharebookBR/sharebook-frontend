@@ -35,7 +35,7 @@ export class MaisSheetComponent {
   search(term: string) {
     term = term.trim();
     if (term.length >= 3) {
-      this._router.navigate(['/search', term]);
+      this._router.navigate(['/buscar', term]);
       this._bottomSheetRef.dismiss();
     }
   }

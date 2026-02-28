@@ -9,7 +9,7 @@ export class BookToAdminProfile {
   daysLate: number;
   donor: string;
   eBookDownloadLink?: string;
-  eBookPdfFile?: string;
+  eBookPdfPath?: string;
   facilitator?: string;
   facilitatorNotes?: string;
   freightOption: string;

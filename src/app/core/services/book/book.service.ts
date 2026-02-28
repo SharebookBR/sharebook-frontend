@@ -1,16 +1,16 @@
 import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';
 import { DonateBookUser } from '../../models/donateBookUser';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
@@ -51,6 +51,29 @@ export class BookService {
 
   public create(book: Book) {
     return this._http.post<any>(`${this.config.apiEndpoint}/book`, book);
+  }
+
+  public createWithProgress(book: Book, progressCallback: (progress: number) => void): Observable<any> {
+    const req = new HttpRequest('POST', `${this.config.apiEndpoint}/book`, book, {
+      reportProgress: true
+    });
+
+    return this._http.request(req).pipe(
+      map(event => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            const progress = event.total ? Math.round(100 * event.loaded / event.total) : 0;
+            progressCallback(progress);
+            return null;
+          case HttpEventType.Response:
+            progressCallback(100);
+            return event.body;
+          default:
+            return null;
+        }
+      }),
+      filter(result => result !== null)
+    );
   }
 
   public getById(bookId: string): Observable<BookToAdminProfile> {
@@ -193,6 +216,12 @@ export class BookService {
     );
   }
 
+  public getBooksByCategoryId(categoryId: number, page: number = 1, items: number = 100): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/Category/${categoryId}/${page}/${items}`
+    );
+  }
+
   public promoteBook(bookId: string, bookTitle: string, categoryId: string) {
     const promoteRequest = {
       bookId: bookId,
@@ -202,6 +231,13 @@ export class BookService {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/promote`,
       promoteRequest
+    );
+  }
+
+  public reportCopyright(slug: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/ReportCopyright/${slug}`,
+      {}
     );
   }
 }

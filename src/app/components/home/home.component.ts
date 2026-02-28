@@ -4,7 +4,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
-
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 
@@ -16,6 +15,7 @@ import { Meetup } from '../../core/models/Meetup';
 export class HomeComponent implements OnInit, OnDestroy {
   public availableBooks: Book[] = [];
   public hasBook: Boolean = true;
+  public ebooks: Book[] = [];
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -25,10 +25,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scBook: BookService, private _scMeetup: MeetupService) {}
+  constructor(
+    private _scBook: BookService,
+    private _scMeetup: MeetupService
+  ) {}
 
   ngOnInit() {
     this.getBooks();
+    this.getEbooks();
     this.getMeetups();
     this.getMeetupsUpcoming();
   }
@@ -38,8 +42,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getAvailableBooks()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
-        this.availableBooks = books;
-        this.hasBook = books.length > 0 ? true : false;
+        this.availableBooks = books.filter((book) => book.type !== 'Eletronic');
+        this.hasBook = this.availableBooks.length > 0;
+      });
+  }
+
+  getEbooks() {
+    this._scBook
+      .getRandomEbooks()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((ebooks) => {
+        this.ebooks = ebooks;
       });
   }
 

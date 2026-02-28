@@ -1,0 +1,65 @@
+<div class="container category-page">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="category-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ category?.name || 'Categoria' }}
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando livros...</p>
+  </div>
+
+  <!-- Not Found -->
+  <div *ngIf="notFound && !isLoading" class="not-found-container">
+    <i class="fa fa-exclamation-circle fa-4x"></i>
+    <h2>Categoria nao encontrada</h2>
+    <p>A categoria que voce procura nao existe.</p>
+    <a routerLink="/" class="btn btn-primary">Voltar para a pagina inicial</a>
+  </div>
+
+  <!-- Category Header -->
+  <div *ngIf="category && !isLoading && !notFound" class="category-header">
+    <h1>{{ category.name }}</h1>
+    <p class="books-count">{{ books.length }} livro(s) disponivel(is)</p>
+    <div class="books-type-count" *ngIf="books.length > 0">
+      <span class="type-badge physical">
+        <i class="fa fa-book"></i> Livros físicos: {{ physicalBooksCount }}
+      </span>
+      <span class="type-badge ebook">
+        <i class="fa fa-cloud-download"></i> Livros digitais: {{ ebooksCount }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Books Grid -->
+  <div *ngIf="!isLoading && !notFound && books.length > 0" class="row justify-content-center book-covers">
+    <figure class="figure" *ngFor="let book of books">
+      <div class="book-cover-container">
+        <a href="/livros/{{ book.slug }}" title="Detalhes do Livro">
+          <img src="{{ book.imageUrl }}" class="figure-img img-fluid rounded" alt="{{ book.title }}" />
+        </a>
+        <span class="book-type-badge" [ngClass]="book.type === 'Eletronic' ? 'badge-ebook' : 'badge-physical'">
+          <i class="fa" [ngClass]="book.type === 'Eletronic' ? 'fa-cloud-download' : 'fa-book'"></i>
+          {{ book.type === 'Eletronic' ? 'Livro digital' : 'Fisico' }}
+        </span>
+      </div>
+      <figcaption class="figure-caption text-center">
+        {{ book.title }}
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !notFound && books.length === 0" class="empty-state">
+    <i class="fa fa-book fa-4x"></i>
+    <h2>Nenhum livro disponivel</h2>
+    <p>No momento nao temos livros disponiveis nesta categoria.</p>
+    <a routerLink="/" class="btn btn-primary">Ver todos os livros</a>
+  </div>
+</div>

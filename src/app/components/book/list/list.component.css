@@ -36,6 +36,10 @@ th.mat-header-cell {
   padding-left: 10px;
 }
 
+.mat-column-dates {
+  padding-left: 10px;
+}
+
 .mat-column-title {
   padding-left: 10px;
 }
@@ -44,4 +48,71 @@ th.mat-header-cell {
   min-width: 34px;
   padding: 0px;
   height: 34px;
+}
+
+/* Book type badges */
+.book-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.book-type-badge .badge-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.badge-ebook {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge-physical {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.mat-column-classification {
+  padding-left: 10px;
+  width: 160px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.status-success {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-danger {
+  background-color: #fdecea;
+  color: #a71d2a;
+}
+
+.status-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-info {
+  background-color: #e7f3ff;
+  color: #0c5460;
+}
+
+.status-neutral {
+  background-color: #f1f3f5;
+  color: #495057;
 }
