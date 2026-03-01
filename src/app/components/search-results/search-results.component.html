@@ -11,7 +11,7 @@
       <p *ngIf="books.length === 0">Nenhum livro encontrado para sua pesquisa :/</p>
     </div>
   </section>
-  <section class="row">
-    <app-card-book [content]="book" *ngFor="let book of books"></app-card-book>
+  <section class="row justify-content-center book-covers">
+    <app-book-card [book]="book" *ngFor="let book of books"></app-book-card>
   </section>
 </div>

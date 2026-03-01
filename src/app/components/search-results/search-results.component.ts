@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { BookService } from '../../core/services/book/book.service';
 import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
+import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-search-results',
@@ -31,7 +32,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       .getFullSearch(this.criteria, 1, 100)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((result) => {
-        this.books = result?.items || [];
+        this.books = (result?.items || []).filter(b => b.status === BookDonationStatus.AVAILABLE);
         this.isLoading = false;
       });
   }

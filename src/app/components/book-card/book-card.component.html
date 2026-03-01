@@ -1,0 +1,14 @@
+<figure class="figure">
+  <div class="book-cover-container">
+    <a href="/livros/{{ book.slug }}" title="Detalhes do Livro">
+      <img [src]="book.imageUrl" class="figure-img img-fluid rounded" [alt]="book.title" />
+    </a>
+    <span class="book-type-badge" [ngClass]="isEbook ? 'badge-ebook' : 'badge-physical'">
+      <i class="fa" [ngClass]="isEbook ? 'fa-cloud-download' : 'fa-book'"></i>
+      {{ isEbook ? 'Livro digital' : 'Físico' }}
+    </span>
+  </div>
+  <figcaption class="figure-caption text-center">
+    {{ book.title }}
+  </figcaption>
+</figure>
