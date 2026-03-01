@@ -30,9 +30,6 @@
     <li class="nav-item">
       <a class="nav-link" routerLink="/book/donations" routerLinkActive="nav-link--active">Doações</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/categorias" routerLinkActive="nav-link--active">Categorias</a>
-    </li>
   </ul>
 
   <a routerLink="/livros/doar" class="btn btn-cta ml-3">
@@ -54,6 +51,9 @@
           <mat-icon>manage_accounts</mat-icon> Minha Conta
         </a>
         <div class="user-dropdown__divider"></div>
+        <a class="user-dropdown__item" routerLink="/categorias" (click)="closeUserMenu()">
+          <mat-icon>folder_open</mat-icon> Categorias
+        </a>
         <a class="user-dropdown__item" routerLink="/apoie-projeto" (click)="closeUserMenu()">
           <mat-icon>favorite_border</mat-icon> Apoie o projeto
         </a>
