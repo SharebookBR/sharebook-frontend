@@ -1,9 +1,8 @@
-import { MyDonation } from '../../../core/models/MyDonation';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+﻿import { MyDonation } from '../../../core/models/MyDonation';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
-import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
@@ -14,26 +13,24 @@ import { ConfirmationDialogComponent } from '../../../core/directives/confirmati
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
-import { MatTableDataSource } from '@angular/material/table';
 
-const COLUMNS_DESKTOP = ['title', 'totalInterested', 'daysInShowcase', 'chooseDate', 'trackingNumber', 'status', 'action'];
-const COLUMNS_MOBILE = ['livro', 'action'];
+type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css'],
 })
-export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DonationsComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;
-  displayedColumns: string[] = COLUMNS_DESKTOP;
-  donatedBooks = new MatTableDataSource<MyDonation>();
+  donatedBooks: MyDonation[] = [];
+  allDonatedBooks: MyDonation[] = [];
+  selectedFilter: DonationsFilter = 'needsAction';
+  searchTerm = '';
 
   tableSettings: any;
 
   statusBtnWinner: boolean;
-
-  @ViewChild(MatSort) sort: MatSort;
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -52,9 +49,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
     this._breakpointObserver
       .observe('(max-width: 767px)')
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(result => {
-        this.displayedColumns = result.matches ? COLUMNS_MOBILE : COLUMNS_DESKTOP;
-      });
+      .subscribe();
     this.getDonations();
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
@@ -64,10 +59,6 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         title: BookDonationStatus[key],
       });
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.donatedBooks.sort = this.sort;
   }
 
   public getTranslatedStatusDescription(status: string): string {
@@ -116,7 +107,8 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this._destroySubscribes$),
         finalize(() => this.isLoadingSubject.next(false)))
       .subscribe((resp: MyDonation[]) => {
-        this.donatedBooks.data = resp;
+        this.allDonatedBooks = this.sortByPriority(resp || []);
+        this.applyFilters();
       });
   }
 
@@ -134,7 +126,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'renewChooseDate': {
         if (param.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
-            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
+            `Não é possível adiar decisão. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
             `status atual = ${param.status}`
           );
           return;
@@ -153,7 +145,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
             {
               data: {
                 title: 'Atenção!',
-                message: 'Confirma a renovação da data de doação?',
+                message: 'Confirma adiar a data de escolha?',
                 btnOkText: 'Confirmar',
                 btnCancelText: 'Cancelar'
               }
@@ -166,7 +158,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
                 .pipe(takeUntil(this._destroySubscribes$))
                 .subscribe(
                   () => {
-                    this._toastr.success('Doação renovada com sucesso.');
+                    this._toastr.success('Data de escolha adiada com sucesso.');
                     this.getDonations();
                   },
                   (error) => {
@@ -264,7 +256,180 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public doFilter = (value: string) => {
-    this.donatedBooks.filter = value.trim().toLocaleLowerCase();
+    this.searchTerm = (value || '').trim().toLocaleLowerCase();
+    this.applyFilters();
+  }
+
+  public setFilter(filter: DonationsFilter): void {
+    this.selectedFilter = filter;
+    this.applyFilters();
+  }
+
+  public get waitingDecisionCount(): number {
+    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_DECISION).length;
+  }
+
+  public get waitingSendCount(): number {
+    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_SEND).length;
+  }
+
+  public get finishedCount(): number {
+    return this.allDonatedBooks.filter(x =>
+      x.status === BookDonationStatus.RECEIVED || x.status === BookDonationStatus.CANCELED
+    ).length;
+  }
+
+  public get ebookDownloadsTotal(): number {
+    return this.allDonatedBooks
+      .filter(x => this.isEbook(x))
+      .reduce((acc, curr) => acc + (curr.downloadCount || 0), 0);
+  }
+
+  public getMobilePrimaryMetric(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return `Total de downloads: ${book.downloadCount || 0}`;
+    }
+
+    if (book.status === BookDonationStatus.WAITING_DECISION) {
+      return `Escolha até ${this.formatDate(book.chooseDate)}`;
+    }
+
+    return `${book.totalInterested || 0} interessado(s)`;
+  }
+
+  public getDesktopInterestedValue(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return `${book.downloadCount || 0} download(s)`;
+    }
+
+    return `${book.totalInterested || 0}`;
+  }
+
+  public getDesktopShowcaseValue(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return '-';
+    }
+
+    return `${book.daysInShowcase || 0}`;
+  }
+
+  public getPrimaryActionLabel(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return '';
+    }
+
+    return 'Ver interessados';
+  }
+
+  public executePrimaryAction(book: MyDonation): void {
+    if (this.isEbook(book)) {
+      return;
+    }
+
+    this.onCustom('donate', book);
+  }
+
+  public canRenew(book: MyDonation): boolean {
+    return !this.isEbook(book) && book.status === BookDonationStatus.WAITING_DECISION;
+  }
+
+  public canTrack(book: MyDonation): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public canShowWinner(book: MyDonation): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND ||
+        book.status === BookDonationStatus.SENT ||
+        book.status === BookDonationStatus.RECEIVED);
+  }
+
+  public canCancel(book: MyDonation): boolean {
+    return book.status !== BookDonationStatus.RECEIVED && book.status !== BookDonationStatus.CANCELED;
+  }
+
+  private isEbook(book: MyDonation): boolean {
+    return (book.type || '').toLowerCase() === 'eletronic';
+  }
+
+  private applyFilters(): void {
+    const filtered = this.allDonatedBooks.filter(book => {
+      if (!this.matchFilter(book)) {
+        return false;
+      }
+
+      if (!this.searchTerm) {
+        return true;
+      }
+
+      const searchBag = [
+        book.title,
+        book.author,
+        this.getTranslatedStatusDescription(book.status),
+        this.isEbook(book) ? 'digital' : 'fisico'
+      ].join(' ').toLowerCase();
+
+      return searchBag.includes(this.searchTerm);
+    });
+
+    this.donatedBooks = filtered;
+  }
+
+  private matchFilter(book: MyDonation): boolean {
+    switch (this.selectedFilter) {
+      case 'needsAction':
+        return book.status === BookDonationStatus.WAITING_DECISION || book.status === BookDonationStatus.WAITING_SEND;
+      case 'physical':
+        return !this.isEbook(book);
+      case 'digital':
+        return this.isEbook(book);
+      case 'finished':
+        return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
+      case 'all':
+      default:
+        return true;
+    }
+  }
+
+  private sortByPriority(books: MyDonation[]): MyDonation[] {
+    const statusPriority: { [key: string]: number } = {
+      [BookDonationStatus.WAITING_DECISION]: 1,
+      [BookDonationStatus.WAITING_SEND]: 2,
+      [BookDonationStatus.SENT]: 3,
+      [BookDonationStatus.AVAILABLE]: 4,
+      [BookDonationStatus.WAITING_APPROVAL]: 5,
+      [BookDonationStatus.RECEIVED]: 6,
+      [BookDonationStatus.CANCELED]: 7,
+    };
+
+    return [...books].sort((a, b) => {
+      const priorityA = statusPriority[a.status] || 99;
+      const priorityB = statusPriority[b.status] || 99;
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+
+      const dateA = new Date(a.creationDate).getTime() || 0;
+      const dateB = new Date(b.creationDate).getTime() || 0;
+      return dateB - dateA;
+    });
+  }
+
+  private formatDate(value: Date): string {
+    if (!value) {
+      return '--/--/----';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '--/--/----';
+    }
+
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   ngOnDestroy() {
@@ -272,3 +437,4 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 }
+
