@@ -393,23 +393,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   private sortByPriority(books: MyDonation[]): MyDonation[] {
-    const statusPriority: { [key: string]: number } = {
-      [BookDonationStatus.WAITING_DECISION]: 1,
-      [BookDonationStatus.WAITING_SEND]: 2,
-      [BookDonationStatus.SENT]: 3,
-      [BookDonationStatus.AVAILABLE]: 4,
-      [BookDonationStatus.WAITING_APPROVAL]: 5,
-      [BookDonationStatus.RECEIVED]: 6,
-      [BookDonationStatus.CANCELED]: 7,
-    };
-
     return [...books].sort((a, b) => {
-      const priorityA = statusPriority[a.status] || 99;
-      const priorityB = statusPriority[b.status] || 99;
-      if (priorityA !== priorityB) {
-        return priorityA - priorityB;
-      }
-
       const dateA = new Date(a.creationDate).getTime() || 0;
       const dateB = new Date(b.creationDate).getTime() || 0;
       return dateB - dateA;
