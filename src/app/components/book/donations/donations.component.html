@@ -74,6 +74,10 @@
             <mat-icon class="action-btn__icon">calendar_month</mat-icon>
             Adiar decisão
           </button>
+          <button mat-stroked-button class="action-btn" *ngIf="canTrack(element)" (click)="onCustom('trackNumber', element)">
+            <mat-icon class="action-btn__icon">local_shipping</mat-icon>
+            Código de rastreio
+          </button>
           <button mat-stroked-button class="action-btn" *ngIf="canShowWinner(element)" (click)="onCustom('ShowWinnerInfo', element)">
             <mat-icon class="action-btn__icon">person</mat-icon>
             Ver ganhador
