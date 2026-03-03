@@ -252,14 +252,25 @@ th.mat-header-cell {
 }
 
 .action-btn--primary {
-  grid-column: 1 / -1;
   box-shadow: 0 6px 14px rgba(37, 64, 173, 0.28);
+}
+
+.action-btn--winner {
+  background: #28a745 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
 }
 
 .action-btn__icon {
   font-size: 18px;
   width: 18px;
   height: 18px;
+}
+
+.action-btn--success {
+  background: #28a745 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
 }
 
 .action-btn--danger {

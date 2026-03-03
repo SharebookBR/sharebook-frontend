@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -28,10 +27,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
   selectedFilter: DonationsFilter = 'needsAction';
   searchTerm = '';
 
-  tableSettings: any;
-
-  statusBtnWinner: boolean;
-
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
@@ -41,24 +36,11 @@ export class DonationsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
-    private _breakpointObserver: BreakpointObserver
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this._breakpointObserver
-      .observe('(max-width: 767px)')
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe();
     this.getDonations();
-    // Carrega Status do ENUM BookDonationStatus
-    const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach((key) => {
-      myBookDonationStatus.push({
-        value: BookDonationStatus[key],
-        title: BookDonationStatus[key],
-      });
-    });
   }
 
   public getTranslatedStatusDescription(status: string): string {
@@ -125,9 +107,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
       }
       case 'renewChooseDate': {
         if (param.status !== BookDonationStatus.WAITING_DECISION) {
-          alert(
-            `Não é possível adiar decisão. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-            `status atual = ${param.status}`
+          this._toastr.warning(
+            `Não é possível adiar a decisão neste status (${this.getTranslatedStatusDescription(param.status)}).`
           );
           return;
         }
@@ -138,7 +119,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
         if (!chooseDate || chooseDate - todayDate > 0) {
-          alert('Aguarde a data de escolha!');
+          this._toastr.info('Aguarde a data de escolha para adiar a decisão.');
         } else {
 
           const modalRef = this.dialog.open(ConfirmationDialogComponent,
@@ -171,18 +152,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
         break;
       }
-      case 'trackNumber': {
-        if (
-          param.status !== BookDonationStatus.WAITING_SEND &&
-          param.status !== BookDonationStatus.SENT
-        ) {
-          alert(
-            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
-            `ou ${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
-          );
-          return;
-        }
-
+      case 'markAsFinished': {
         const modalRef = this.dialog.open(TrackingComponent, { minWidth: 450 });
 
         modalRef.afterClosed().subscribe(result => {
@@ -202,8 +172,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
           param.status === BookDonationStatus.RECEIVED ||
           param.status === BookDonationStatus.CANCELED
         ) {
-          alert(
-            `Não é possível cancelar essa doação com status = ${param.status}`
+          this._toastr.warning(
+            `Não é possível cancelar uma doação com status ${this.getTranslatedStatusDescription(param.status)}.`
           );
           return;
         }
@@ -239,12 +209,15 @@ export class DonationsComponent implements OnInit, OnDestroy {
         if (param.status !== BookDonationStatus.WAITING_SEND &&
           param.status !== BookDonationStatus.SENT &&
           param.status !== BookDonationStatus.RECEIVED) {
-          alert(
-            `Você ainda não escolheu o ganhador.`
-          );
+          this._toastr.info('Você ainda não escolheu o ganhador.');
           return;
         }
-        const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
+        const modalRef = this.dialog.open(WinnerUsersComponent, {
+          width: '760px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false
+        });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
@@ -318,7 +291,24 @@ export class DonationsComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    return 'Ver interessados';
+    if (this.canChooseWinnerNow(book)) {
+      return 'Escolher ganhador';
+    }
+
+    return 'Ver pedidos';
+  }
+
+  public canChooseWinnerNow(book: MyDonation): boolean {
+    if (book.status !== BookDonationStatus.WAITING_DECISION || !book.chooseDate) {
+      return false;
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return false;
+    }
+
+    return Date.now() >= chooseDate.getTime();
   }
 
   public executePrimaryAction(book: MyDonation): void {
@@ -349,7 +339,11 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return book.status !== BookDonationStatus.RECEIVED && book.status !== BookDonationStatus.CANCELED;
   }
 
-  private isEbook(book: MyDonation): boolean {
+  public canPrimaryAction(book: MyDonation): boolean {
+    return !this.isEbook(book);
+  }
+
+  public isEbook(book: MyDonation): boolean {
     return (book.type || '').toLowerCase() === 'eletronic';
   }
 

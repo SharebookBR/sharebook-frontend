@@ -53,9 +53,9 @@
             }"
             >{{ getTranslatedStatusDescription(element.status) }}</span
           >
-          <span class="book-type-badge" [ngClass]="element.type === 'Eletronic' ? 'badge-ebook' : 'badge-physical'">
-            <i class="fa" [ngClass]="element.type === 'Eletronic' ? 'fa-cloud-download' : 'fa-book'"></i>
-            {{ element.type === 'Eletronic' ? 'Livro digital' : 'Físico' }}
+          <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
+            <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
+            {{ isEbook(element) ? 'Livro digital' : 'Físico' }}
           </span>
         </div>
 
@@ -66,20 +66,29 @@
         </div>
 
         <div class="donation-card__actions">
-          <button *ngIf="!element.type || element.type !== 'Eletronic'" mat-flat-button color="primary" class="action-btn action-btn--primary" (click)="executePrimaryAction(element)">
-            <mat-icon class="action-btn__icon">format_list_bulleted</mat-icon>
+          <button
+            *ngIf="canPrimaryAction(element)"
+            mat-flat-button
+            color="primary"
+            class="action-btn action-btn--primary"
+            [ngClass]="{ 'action-btn--winner': canChooseWinnerNow(element) }"
+            (click)="executePrimaryAction(element)"
+          >
+            <mat-icon class="action-btn__icon">
+              {{ canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline' }}
+            </mat-icon>
             {{ getPrimaryActionLabel(element) }}
           </button>
           <button mat-stroked-button class="action-btn" *ngIf="canRenew(element)" (click)="onCustom('renewChooseDate', element)">
             <mat-icon class="action-btn__icon">calendar_month</mat-icon>
             Adiar decisão
           </button>
-          <button mat-stroked-button class="action-btn" *ngIf="canTrack(element)" (click)="onCustom('trackNumber', element)">
-            <mat-icon class="action-btn__icon">local_shipping</mat-icon>
-            Código de rastreio
+          <button mat-flat-button class="action-btn action-btn--success" *ngIf="canTrack(element)" (click)="onCustom('markAsFinished', element)">
+            <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
+            Marcar finalizado
           </button>
           <button mat-stroked-button class="action-btn" *ngIf="canShowWinner(element)" (click)="onCustom('ShowWinnerInfo', element)">
-            <mat-icon class="action-btn__icon">person</mat-icon>
+            <mat-icon class="action-btn__icon">emoji_events</mat-icon>
             Ver ganhador
           </button>
           <button mat-flat-button class="action-btn action-btn--danger" *ngIf="canCancel(element)" (click)="onCustom('CancelDonation', element)">

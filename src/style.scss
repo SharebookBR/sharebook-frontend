@@ -221,3 +221,17 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
     margin-left: 30%;
   }
 }
+
+/* Overlay do Angular Material deve ficar acima de menus fixos (desktop/mobile). */
+.cdk-overlay-container,
+.cdk-global-overlay-wrapper {
+  z-index: 2000 !important;
+}
+
+.cdk-overlay-backdrop {
+  z-index: 1999 !important;
+}
+
+.cdk-overlay-pane {
+  z-index: 2001 !important;
+}
