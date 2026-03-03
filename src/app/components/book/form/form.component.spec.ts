@@ -156,7 +156,7 @@ describe('FormComponent', () => {
       message: 'OK',
     });
     spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
-    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray));
+    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray as any));
     fixture.detectChanges();
   });
 
@@ -371,6 +371,7 @@ describe('FormComponent Editing book', () => {
     author: 'teste',
     category: 'Administração',
     categoryId: '7f6cd8dd-bc79-40b6-9b41-47ffe71e2d34',
+    downloadCount: 0,
     chooseDate: null,
     city: 'Cabo Frio',
     creationDate: new Date('2021-06-17T12:55:40.7898738'),
@@ -378,7 +379,7 @@ describe('FormComponent Editing book', () => {
     daysLate: 0,
     donor: 'VAGNER',
     eBookDownloadLink: null,
-    eBookPdfFile: null,
+    eBookPdfPath: null,
     facilitator: null,
     facilitatorNotes: null,
     freightOption: 'WithoutFreight',
@@ -493,7 +494,7 @@ describe('FormComponent Editing book', () => {
     });
     spyOn(userService, 'getAllFacilitators').and.returnValue(of(userArray));
     spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
-    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray));
+    spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray as any));
     spyOn(bookService, 'getById').and.returnValue(of(bookToAdminProfile));
     fixture.detectChanges();
   });

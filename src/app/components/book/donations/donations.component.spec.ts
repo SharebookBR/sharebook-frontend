@@ -121,4 +121,60 @@ describe('DonationsComponent', () => {
     expect(component.canTrack(received)).toBeFalse();
     expect(component.canTrack(ebook)).toBeFalse();
   });
+
+  it('should show decision notice in X days for available status', () => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date('2026-03-03T10:00:00'));
+    const book = makeDonation({
+      status: BookDonationStatus.AVAILABLE,
+      type: 'Physical',
+      totalInterested: 24,
+      chooseDate: new Date('2026-03-08T12:00:00')
+    }) as any;
+
+    expect(component.getMobilePrimaryMetric(book)).toBe('24 interessados • Decisão em 5 dias');
+    jasmine.clock().uninstall();
+  });
+
+  it('should show "Decisão hoje" when choose date is today', () => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date('2026-03-03T10:00:00'));
+    const book = makeDonation({
+      status: BookDonationStatus.WAITING_DECISION,
+      type: 'Physical',
+      totalInterested: 1,
+      chooseDate: new Date('2026-03-03T23:30:00')
+    }) as any;
+
+    expect(component.getMobilePrimaryMetric(book)).toBe('1 interessado • Decisão hoje');
+    jasmine.clock().uninstall();
+  });
+
+  it('should show delayed decision notice for past choose date', () => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date('2026-03-03T10:00:00'));
+    const book = makeDonation({
+      status: BookDonationStatus.WAITING_DECISION,
+      type: 'Physical',
+      totalInterested: 2,
+      chooseDate: new Date('2026-03-01T09:00:00')
+    }) as any;
+
+    expect(component.getMobilePrimaryMetric(book)).toBe('2 interessados • Decisão atrasada há 2 dias');
+    jasmine.clock().uninstall();
+  });
+
+  it('should not show decision notice for waiting approval status', () => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date('2026-03-03T10:00:00'));
+    const book = makeDonation({
+      status: BookDonationStatus.WAITING_APPROVAL,
+      type: 'Physical',
+      totalInterested: 7,
+      chooseDate: new Date('2026-03-08T09:00:00')
+    }) as any;
+
+    expect(component.getMobilePrimaryMetric(book)).toBe('7 interessados');
+    jasmine.clock().uninstall();
+  });
 });

@@ -263,11 +263,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
       return `Total de downloads: ${book.downloadCount || 0}`;
     }
 
-    if (book.status === BookDonationStatus.WAITING_DECISION) {
-      return `Escolha até ${this.formatDate(book.chooseDate)}`;
+    const interestedCount = book.totalInterested || 0;
+    const interestedLabel = interestedCount === 1 ? 'interessado' : 'interessados';
+    const summary = `${interestedCount} ${interestedLabel}`;
+    const decisionNotice = this.getDecisionNoticeLabel(book);
+
+    if (decisionNotice) {
+      return `${summary} • ${decisionNotice}`;
     }
 
-    return `${book.totalInterested || 0} interessado(s)`;
+    return summary;
   }
 
   public getDesktopInterestedValue(book: MyDonation): string {
@@ -345,6 +350,37 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   public isEbook(book: MyDonation): boolean {
     return (book.type || '').toLowerCase() === 'eletronic';
+  }
+
+  private getDecisionNoticeLabel(book: MyDonation): string {
+    if (!this.shouldShowDecisionNotice(book) || !book.chooseDate) {
+      return '';
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return '';
+    }
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const dueDate = new Date(chooseDate.getFullYear(), chooseDate.getMonth(), chooseDate.getDate()).getTime();
+    const dayDiff = Math.round((dueDate - today) / (24 * 60 * 60 * 1000));
+
+    if (dayDiff > 0) {
+      return `Decisão em ${dayDiff} ${dayDiff === 1 ? 'dia' : 'dias'}`;
+    }
+
+    if (dayDiff === 0) {
+      return 'Decisão hoje';
+    }
+
+    const lateDays = Math.abs(dayDiff);
+    return `Decisão atrasada há ${lateDays} ${lateDays === 1 ? 'dia' : 'dias'}`;
+  }
+
+  private shouldShowDecisionNotice(book: MyDonation): boolean {
+    return book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION;
   }
 
   private applyFilters(): void {
