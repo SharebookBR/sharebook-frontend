@@ -18,6 +18,18 @@
 - Usuário: `vagner@sharebook.com`
 - Senha: `123456`
 
+
+## Login DEV (comando validado)
+```bash
+curl --location 'https://api-dev.sharebook.com.br/api/Account/Login' \
+--header 'Content-Type: application/json' \
+--header 'x-requested-with: web' \
+--data-raw '{
+	"email": "vagner@sharebook.com",
+	"password": "123456"
+}'
+```
+
 ## Dicas operacionais
 - Em ambientes com proxy corporativo, comandos de CLI para APIs externas podem falhar, mesmo quando o acesso via browser funciona.
 - Para inspeção visual e feedback rápido, o MCP browser/playwright costuma funcionar bem com o frontend em `--host 0.0.0.0`.
