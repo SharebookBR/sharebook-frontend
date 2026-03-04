@@ -2,6 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { DetailsComponent } from './details.component';
 
 import { AppConfigModule } from '../../../app-config.module';
@@ -20,6 +22,8 @@ describe('DetailsComponent', () => {
         RouterTestingModule,
         AppConfigModule,
         MatDialogModule,
+        NoopAnimationsModule,
+        ToastrModule.forRoot(),
         HttpClientTestingModule,
         FormsModule,
       ],
