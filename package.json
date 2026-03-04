@@ -79,6 +79,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "karma-coverage": "~2.2.0"
   }
 }
