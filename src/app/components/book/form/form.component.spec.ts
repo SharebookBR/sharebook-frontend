@@ -1,4 +1,5 @@
 import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
+import { Category } from './../../../core/models/category';
 import { User } from './../../../core/models/user';
 import { CategoryService } from './../../../core/services/category/category.service';
 import { BookService } from './../../../core/services/book/book.service';
@@ -61,42 +62,19 @@ const freightOptionsArray = [
   { value: 'WithoutFreight', text: 'Não' },
 ];
 
-const categoryServiceArray = [
-  {
-    name: 'Administração',
-    id: '95f5dc4a-1dff-4f70-92e1-e1c8a150886b',
-    creationDate: '2020-06-02T21:52:10.295309',
-  },
-  { name: 'Artes', id: '0f6be317-a61b-48e5-b532-d68a77276a0f', creationDate: '2020-06-02T21:52:10.295317' },
-  { name: 'Aventura', id: '0c756650-a9d9-47e1-96cf-c525db7a56b5', creationDate: '2020-06-02T21:52:10.29531' },
-  {
-    name: 'Ciências Biógicas',
-    id: 'ce090294-2eb6-413b-9c8e-3fd3d289a282',
-    creationDate: '2020-06-02T21:52:10.295314',
-  },
-  { name: 'Direito', id: 'c96359b6-66a8-4a44-a443-d5211ee01bbd', creationDate: '2020-06-02T21:52:10.295299' },
-  {
-    name: 'Engenharia',
-    id: 'b2b4090c-8f9a-46a2-babe-35eef55296b4',
-    creationDate: '2020-06-02T21:52:10.295312',
-  },
-  {
-    name: 'Geografia e História',
-    id: '398262a0-8e9c-465f-bbb2-b5443bcca2df',
-    creationDate: '2020-06-02T21:52:10.295315',
-  },
-  {
-    name: 'Informática',
-    id: '15395d99-6077-4cce-ba00-e99beffc628e',
-    creationDate: '2020-06-02T21:52:10.295321',
-  },
-  { name: 'Medicina', id: '5e51347a-088e-4dc4-9bcb-be2b2c3f0179', creationDate: '2020-06-02T21:52:10.295318' },
-  {
-    name: 'Psicologia',
-    id: '163ddbc5-02a3-4e28-b275-deb54ad3c4b4',
-    creationDate: '2020-06-02T21:52:10.295307',
-  },
+const categoryServiceArray: Category[] = [
+  { id: 1, name: 'Administração' },
+  { id: 2, name: 'Artes' },
+  { id: 3, name: 'Aventura' },
+  { id: 4, name: 'Ciências Biógicas' },
+  { id: 5, name: 'Direito' },
+  { id: 6, name: 'Engenharia' },
+  { id: 7, name: 'Geografia e História' },
+  { id: 8, name: 'Informática' },
+  { id: 9, name: 'Medicina' },
+  { id: 10, name: 'Psicologia' },
 ];
+
 
 function setFormValues(formData) {
   component.formGroup.controls['userId'].setValue(formData.userId);
@@ -378,7 +356,7 @@ describe('FormComponent Editing book', () => {
     daysLate: 0,
     donor: 'VAGNER',
     eBookDownloadLink: null,
-    eBookPdfFile: null,
+    eBookPdfPath: null,
     facilitator: null,
     facilitatorNotes: null,
     freightOption: 'WithoutFreight',
