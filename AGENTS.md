@@ -9,6 +9,17 @@
 - App (API DEV): `npm start`
 - Testes unitários: `npm test`
 
+## Playbook: primeiro pedido "rodar testes"
+- Objetivo: evitar tentativa-e-erro no ambiente sandbox.
+- Sequência padrão:
+  1. `npm install`
+  2. `npm test -- --watch=false`
+  3. Se falhar por browser/headless/lib nativa, seguir `Troubleshooting testes`.
+  4. Após teste verde, validar build com `npm run build-dev`.
+- Não sobrescrever browser manualmente no comando de teste.
+  - Use sempre o script do projeto (`npm test`) que já aponta para `ChromeHeadlessCI`.
+  - Evitar `--browsers=ChromeHeadless` (pode quebrar quando rodar como root/sandbox).
+
 ## Ambientes
 - `npm start` usa `src/environments/environment.ts` e aponta para API DEV.
 - `npm run start-local` usa `src/environments/environment.local.ts` e aponta para backend local (`http://localhost:8000/api`).
@@ -39,6 +50,10 @@ curl --location 'https://api-dev.sharebook.com.br/api/Account/Login' \
   1. `npm install -D puppeteer --legacy-peer-deps`
   2. `apt-get update && apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libnss3 libxss1 libasound2t64 libgbm1`
   3. `npm test`
+- Diagnóstico rápido por erro:
+  - `No binary for ChromeHeadless` -> instalar `puppeteer` (passo 1).
+  - `error while loading shared libraries` -> instalar libs nativas (passo 2).
+  - Falha com `--no-sandbox` ausente -> garantir uso do launcher `ChromeHeadlessCI` via `npm test`.
 
 
 ## Qualidade
