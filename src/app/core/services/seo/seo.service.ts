@@ -1,12 +1,27 @@
 import { Injectable, Inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeoService {
-  constructor(private meta: Meta, private titleService: Title, @Inject(DOCUMENT) private dom) {}
+  constructor(
+    private meta: Meta,
+    private titleService: Title,
+    @Inject(DOCUMENT) private dom,
+    private router: Router
+  ) {
+    // Escuta mudanças de rota para resetar as tags automaticamente.
+    // Isso evita que o título de um livro "vaze" para a Home ou outras páginas.
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.generateTags({});
+      });
+  }
 
   public generateTags(config) {
     // default values
@@ -45,6 +60,14 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:url', content: pageUrl });
 
     this.updateCanonicalUrl(pageUrl);
+
+    // Se não for um livro, remove o script de dados estruturados para não poluir outras páginas.
+    if (!config.slug) {
+      const oldScript = this.dom.getElementById('structured-data');
+      if (oldScript) {
+        oldScript.remove();
+      }
+    }
   }
 
   private updateCanonicalUrl(url: string) {
