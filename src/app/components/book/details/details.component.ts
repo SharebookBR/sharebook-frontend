@@ -163,6 +163,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   image: this.bookInfo.imageUrl,
                   slug: slug,
                 });
+
+                this._seo.addStructuredData({
+                  '@context': 'https://schema.org',
+                  '@type': 'Book',
+                  name: this.bookInfo.title,
+                  author: this.bookInfo.author,
+                  description: this.bookInfo.synopsis,
+                  image: this.bookInfo.imageUrl,
+                  publisher: {
+                    '@type': 'Organization',
+                    name: 'ShareBook'
+                  }
+                });
               });
           },
           (err) => {
