@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AddressService } from '../../core/services/address/address.service';
 import * as AppConst from '../../core/utils/app.const';
 import { Address } from '../../core/models/address';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
   selector: 'app-account',
@@ -26,7 +27,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _router: Router,
     private _formBuilder: FormBuilder,
-    private _AddressService: AddressService
+    private _AddressService: AddressService,
+    private _seo: SeoService
   ) {
     this.formGroup = _formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
@@ -48,6 +50,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this._seo.generateTags({ title: 'Minha Conta' });
     this._scUser.getUserData()
     .pipe(
       takeUntil(this._destroySubscribes$)

@@ -12,6 +12,7 @@ import { ConfirmationDialogComponent } from '../../../core/directives/confirmati
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -36,10 +37,12 @@ export class DonationsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _seo: SeoService
   ) { }
 
   ngOnInit() {
+    this._seo.generateTags({ title: 'Minhas Doações' });
     this.getDonations();
   }
 
