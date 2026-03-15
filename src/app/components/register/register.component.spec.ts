@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 import { RegisterComponent } from './register.component';
 
@@ -28,6 +29,8 @@ describe('RegisterComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
+        RecaptchaModule,
+        RecaptchaFormsModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
@@ -51,7 +54,7 @@ describe('RegisterComponent', () => {
 
   it('should render title in h1 tag', () => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Registro');
+    expect(compiled.querySelector('h1').textContent).toContain('Criar conta');
   });
 
   it('form invalid when empty', () => {
@@ -114,12 +117,12 @@ describe('RegisterComponent', () => {
     confirmPassword.setValue('');
     expect(confirmPassword.hasError('required')).toBeTruthy();
 
-    confirmPassword.setValue('A');
-    expect(confirmPassword.hasError('MatchPassword')).toBeTruthy();
-
     password.setValue('A'.repeat(6));
+    confirmPassword.setValue('A');
+    expect(confirmPassword.valid).toBeFalsy();
+
     confirmPassword.setValue('A'.repeat(6));
-    expect(confirmPassword.valid).toBeTruthy();
+    expect(confirmPassword.hasError('MatchPassword')).toBeFalsy();
   });
 
   it('phone field validity', () => {

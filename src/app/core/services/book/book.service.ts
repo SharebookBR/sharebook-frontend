@@ -37,9 +37,9 @@ export class BookService {
     );
   }
 
-  public getRandomEbooks() {
+  public getNewestEbooks() {
     return this._http.get<Book[]>(
-      `${this.config.apiEndpoint}/book/random15ebooks`
+      `${this.config.apiEndpoint}/book/Newest15EBooks`
     );
   }
 

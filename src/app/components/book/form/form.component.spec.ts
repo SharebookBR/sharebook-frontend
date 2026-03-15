@@ -1,4 +1,5 @@
 import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
+import { Category } from './../../../core/models/category';
 import { User } from './../../../core/models/user';
 import { CategoryService } from './../../../core/services/category/category.service';
 import { BookService } from './../../../core/services/book/book.service';
@@ -8,6 +9,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
@@ -61,42 +65,19 @@ const freightOptionsArray = [
   { value: 'WithoutFreight', text: 'Não' },
 ];
 
-const categoryServiceArray = [
-  {
-    name: 'Administração',
-    id: '95f5dc4a-1dff-4f70-92e1-e1c8a150886b',
-    creationDate: '2020-06-02T21:52:10.295309',
-  },
-  { name: 'Artes', id: '0f6be317-a61b-48e5-b532-d68a77276a0f', creationDate: '2020-06-02T21:52:10.295317' },
-  { name: 'Aventura', id: '0c756650-a9d9-47e1-96cf-c525db7a56b5', creationDate: '2020-06-02T21:52:10.29531' },
-  {
-    name: 'Ciências Biógicas',
-    id: 'ce090294-2eb6-413b-9c8e-3fd3d289a282',
-    creationDate: '2020-06-02T21:52:10.295314',
-  },
-  { name: 'Direito', id: 'c96359b6-66a8-4a44-a443-d5211ee01bbd', creationDate: '2020-06-02T21:52:10.295299' },
-  {
-    name: 'Engenharia',
-    id: 'b2b4090c-8f9a-46a2-babe-35eef55296b4',
-    creationDate: '2020-06-02T21:52:10.295312',
-  },
-  {
-    name: 'Geografia e História',
-    id: '398262a0-8e9c-465f-bbb2-b5443bcca2df',
-    creationDate: '2020-06-02T21:52:10.295315',
-  },
-  {
-    name: 'Informática',
-    id: '15395d99-6077-4cce-ba00-e99beffc628e',
-    creationDate: '2020-06-02T21:52:10.295321',
-  },
-  { name: 'Medicina', id: '5e51347a-088e-4dc4-9bcb-be2b2c3f0179', creationDate: '2020-06-02T21:52:10.295318' },
-  {
-    name: 'Psicologia',
-    id: '163ddbc5-02a3-4e28-b275-deb54ad3c4b4',
-    creationDate: '2020-06-02T21:52:10.295307',
-  },
+const categoryServiceArray: Category[] = [
+  { id: 1, name: 'Administração' },
+  { id: 2, name: 'Artes' },
+  { id: 3, name: 'Aventura' },
+  { id: 4, name: 'Ciências Biógicas' },
+  { id: 5, name: 'Direito' },
+  { id: 6, name: 'Engenharia' },
+  { id: 7, name: 'Geografia e História' },
+  { id: 8, name: 'Informática' },
+  { id: 9, name: 'Medicina' },
+  { id: 10, name: 'Psicologia' },
 ];
+
 
 function setFormValues(formData) {
   component.formGroup.controls['userId'].setValue(formData.userId);
@@ -119,6 +100,9 @@ describe('FormComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatDialogModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatIconModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
@@ -180,8 +164,8 @@ describe('FormComponent', () => {
     // expect(compiled.querySelector('input[id="freightOption"]')).toBeTruthy();
     // expect(compiled.querySelector('textarea[id="synopsis"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="agreeToTerms"]')).toBeTruthy();
-    expect(compiled.querySelector('input[type="submit"]')).toBeTruthy();
-    expect(compiled.querySelector('input[type="submit"]').value).toBe('Doar este livro');
+    expect(compiled.querySelector('#buttonSave')).toBeTruthy();
+    expect(compiled.querySelector('#buttonSave').textContent).toContain('Doar este livro');
   });
 
   it('bookId field validity', () => {
@@ -453,7 +437,10 @@ describe('FormComponent Editing book', () => {
         ToastrModule.forRoot(),
         HttpClientTestingModule,
         ImageToDataUrlModule,
-        MatDialogModule
+        MatDialogModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatIconModule
       ],
       providers: [
         UserService,
@@ -519,20 +506,20 @@ describe('FormComponent Editing book', () => {
     // expect(compiled.querySelector('input[name="freightOption"]')).toBeTruthy();
     // expect(compiled.querySelector('textarea[id="synopsis"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="agreeToTerms"]')).toBeFalsy();
-    expect(compiled.querySelector('input[type="submit"]')).toBeTruthy();
+    expect(compiled.querySelector('#buttonSave')).toBeTruthy();
   });
 
   it('should form has book values', () => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('input[id="userId"]').value).toBe(bookToAdminProfile.userId);
-    expect(compiled.querySelector('input[id="title"]').value).toBe(bookToAdminProfile.title);
-    expect(compiled.querySelector('input[id="author"]').value).toBe(bookToAdminProfile.author);
-    expect(compiled.querySelector('select[id="categoryId"]').value).toBe(bookToAdminProfile.categoryId);
-    expect(compiled.querySelector('select[id="userIdFacilitator"]').value).toBe(bookToAdminProfile.userIdFacilitator);
+    expect(component.formGroup.controls['userId'].value).toBe(bookToAdminProfile.userId);
+    expect(component.formGroup.controls['title'].value).toBe(bookToAdminProfile.title);
+    expect(component.formGroup.controls['author'].value).toBe(bookToAdminProfile.author);
+    expect(component.formGroup.controls['categoryId'].value).toBe(bookToAdminProfile.categoryId);
+    expect(component.formGroup.controls['userIdFacilitator'].value).toBe(bookToAdminProfile.userIdFacilitator);
     // expect(compiled.querySelector('input[id="imageName"]').labels[0].innerText.trim()).toBe(bookToAdminProfile.imageSlug);
     // expect(compiled.querySelectorAll('#freightOptionLabel.active')[0].innerText.trim()).toBe('Mundo');
     // expect(compiled.querySelector('textarea[id="synopsis"]').value).toBe(bookToAdminProfile.synopsis);
-    expect(compiled.querySelector('input[type="submit"]').value).toBe('Salvar');
+    expect(compiled.querySelector('#buttonSave').textContent).toContain('Salvar');
   });
 
   it('should update book', () => {
