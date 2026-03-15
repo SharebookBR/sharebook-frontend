@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getEbooks() {
     this._scBook
-      .getRandomEbooks()
+      .getNewestEbooks()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((ebooks) => {
         this.ebooks = ebooks;

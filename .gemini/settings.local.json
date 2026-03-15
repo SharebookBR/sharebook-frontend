@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx ng:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(docker-compose:*)",
+      "Read(//c/Users/brnra019/Downloads/**)",
+      "Read(//c/Users/brnra019/Documents/Lightshot/**)",
+      "Read(//c/REPOS/SHAREBOOK/sharebook-backend/**)",
+      "WebFetch(domain:www.hostinger.com)",
+      "WebSearch",
+      "Bash(claude mcp:*)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__performance_start_trace",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__get_network_request",
+      "Bash(tree:*)",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__fill",
+      "mcp__chrome-devtools__handle_dialog",
+      "Bash(curl:*)",
+      "Bash(git push:*)",
+      "Bash(npm audit:*)",
+      "Bash(taskkill:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "chrome-devtools"
+  ]
+}
