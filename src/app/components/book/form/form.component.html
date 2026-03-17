@@ -59,7 +59,7 @@
 
           <div *ngIf="formGroup.controls['title'].touched && !formGroup.controls['title'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('required')">
-              Titulo do livro obrigatório.
+              Título do livro obrigatório.
             </small>
             <small class="form-text text-danger" *ngIf="formGroup.controls['title'].hasError('minlength')">
               O titúlo deve conter no mínimo 3 caracteres.
@@ -197,7 +197,7 @@
         </div>
 
         <div class="form-group col-md-8">
-          <label class="col-form-label" for="synopsis">Sinópse</label>
+          <label class="col-form-label" for="synopsis">Sinopse</label>
           <textarea
             formControlName="synopsis"
             id="synopsis"

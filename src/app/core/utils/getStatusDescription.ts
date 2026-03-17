@@ -5,7 +5,7 @@ export function getStatusDescription(status) {
     case BookDonationStatus.WAITING_APPROVAL:
       return 'Aguardando aprovação';
     case BookDonationStatus.WAITING_DECISION:
-      return 'Aguardando decisão do doador';
+      return 'Aguardando decisão do(a) doador(a)';
     case BookDonationStatus.WAITING_SEND:
       return 'Aguardando envio';
     case BookDonationStatus.SENT:

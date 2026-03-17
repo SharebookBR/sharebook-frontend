@@ -8,7 +8,7 @@
     </div>
     <table mat-table [dataSource]="donatedBooks" class="mat-elevation-z1">
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Titulo</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Título</th>
         <td mat-cell *matCellDef="let element">{{ element.title }}</td>
       </ng-container>
 
@@ -37,12 +37,12 @@
       </ng-container>
 
       <ng-container matColumnDef="chooseDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Data Escolha</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Data de escolha</th>
         <td mat-cell *matCellDef="let element">{{ element.type === 'Eletronic' ? '-' : (element.chooseDate | date: 'dd/MM/yyyy') }}</td>
       </ng-container>
 
       <ng-container matColumnDef="trackingNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Código Rastreio</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Código de rastreio</th>
         <td mat-cell *matCellDef="let element">{{ element.type === 'Eletronic' ? '-' : element.trackingNumber }}</td>
       </ng-container>
 
@@ -75,7 +75,7 @@
             <mat-icon>format_list_bulleted</mat-icon>
           </button>
 
-          <!-- Renovar Data de Escolha (apenas para livro físico) -->
+          <!-- Renovar data de escolha (apenas para livro físico) -->
           <button
             *ngIf="element.type !== 'Eletronic' && element.status === BookDonationStatus.WAITING_DECISION"
             (click)="onCustom('renewChooseDate', element)"
@@ -83,7 +83,7 @@
             class="ml-1 mb-1"
             style="background-color: #17a2b8; color: white"
             data-toggle="tooltip"
-            title="Renovar Data de Escolha"
+            title="Renovar data de escolha"
           >
             <mat-icon>calendar_month</mat-icon>
           </button>
@@ -96,7 +96,7 @@
             style="background-color: gray; color: white"
             class="ml-1 mb-1"
             data-toggle="tooltip"
-            title="Informar Código Rastreio"
+            title="Informar Código de rastreio"
           >
             <mat-icon>local_shipping</mat-icon>
           </button>
@@ -108,7 +108,7 @@
             class="ml-1 mb-1"
             color="warn"
             data-toggle="tooltip"
-            title="Cancelar Doação"
+            title="Cancelar doação"
           >
             <mat-icon>delete_outline</mat-icon>
           </button>
@@ -120,7 +120,7 @@
             mat-flat-button
             class="ml-1 mb-1"
             data-toggle="tooltip"
-            title="Ver ganhador"
+            title="Ver ganhador(a)"
           >
             <mat-icon>person</mat-icon>
           </button>

@@ -97,12 +97,12 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
 
         // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-        // é a hora de escolher o ganhador!
+        // é a hora de escolher o(a) ganhador(a)!
 
         case BookDonationStatus.WAITING_SEND:
         case BookDonationStatus.SENT:
         case BookDonationStatus.RECEIVED:
-          alert(`Você já escolheu o ganhador. =)`);
+          alert(`Você já escolheu o(a) ganhador(a).`);
           return;
 
         case BookDonationStatus.CANCELED:
@@ -149,11 +149,11 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             case BookDonationStatus.AVAILABLE:
               this.showWarning = true;
-              this.warningMessage = `Aguarde a data de decisão para escolher o ganhador, em ${this.chooseDateFormated}.`;
+              this.warningMessage = `Aguarde a data de decisão para escolher o(a) ganhador(a), em ${this.chooseDateFormated}.`;
               break;
 
             // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-            // é a hora de escolher o ganhador!
+            // é a hora de escolher o(a) ganhador(a)!
 
             case BookDonationStatus.WAITING_SEND:
             case BookDonationStatus.SENT:
@@ -216,7 +216,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!phone) return null;
     const digits = phone.replace(/\D/g, '');
     const number = digits.startsWith('55') ? digits : `55${digits}`;
-    const message = encodeURIComponent(`Olá! Sou o doador do livro "${this.book.title}" no Sharebook. Você foi o ganhador! Vamos combinar a entrega? 📚`);
+    const message = encodeURIComponent(`Olá! Sou o doador do livro "${this.book.title}" no Sharebook. Você foi o(a) ganhador(a)! Vamos combinar a entrega? 📚`);
     return `https://wa.me/${number}?text=${message}`;
   }
 
