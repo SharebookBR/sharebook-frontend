@@ -13,12 +13,7 @@ export class SeoService {
     const defaultConfig = {
       title: 'ShareBook - Doe ou ganhe livros.',
       description:
-        'Sharebook é um projeto social. Um app livre e gratuito para ajudar as pessoas a doar ou ganhar livros.' +
-        ' Doe um único livro para você sentir a experiência. Do início ao fim. Nossos usuários tem relatado que é emocionante.' +
-        ' Apesar de ser no anonimato você se envolve com muitas histórias incríveis.' +
-        ' Você não faz ideia de como tem pessoas que realmente precisam.' +
-        ' E da força transformadora que um simples livro causa na vida de uma pessoa.' +
-        ' E que você ao escolher um ganhador, passa a fazer parte dessa história.',
+        'Sharebook é um projeto social gratuito para conectar pessoas por meio da doação de livros. Doe um livro, acompanhe a jornada e transforme histórias junto com quem recebe.',
       image: 'https://www.sharebook.com.br/assets/img/sharebook-share.png',
       slug: ''
     };

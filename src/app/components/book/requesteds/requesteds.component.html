@@ -9,7 +9,7 @@
     </div>
     <table *ngIf="(isLoading$ | async) === false" mat-table [dataSource]="requestedBooks" class="mat-elevation-z1">
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Titulo</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Título</th>
         <td mat-cell *matCellDef="let element">{{ element.title }}</td>
       </ng-container>
 
@@ -68,7 +68,7 @@
             class="ml-1 mb-1"
             color="warn"
             data-toggle="tooltip"
-            title="Cancelar Pedido"
+            title="Cancelar solicitação"
           >
             <mat-icon>delete_outline</mat-icon>
           </button>

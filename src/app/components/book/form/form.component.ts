@@ -50,7 +50,7 @@ export class FormComponent implements OnInit, OnDestroy {
   uploadProgress: number = 0;
 
   bookTypeOptions = [
-    { value: 'Printed', text: 'Livro Físico' },
+    { value: 'Printed', text: 'Livro físico' },
     { value: 'Eletronic', text: 'Livro digital (PDF)' }
   ];
   selectedBookType: BookType = 'Printed';
