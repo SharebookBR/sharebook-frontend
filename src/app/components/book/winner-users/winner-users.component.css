@@ -21,6 +21,32 @@ mat-dialog-content {
   color: #4f5f79;
 }
 
+.winner-phone {
+  margin-bottom: 8px;
+}
+
+.winner-phone .card-text {
+  margin-bottom: 6px;
+}
+
+.winner-phone__whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+.winner-phone__whatsapp em {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.winner-phone__whatsapp:disabled {
+  background: #cfd8dc;
+  color: #607d8b;
+}
+
 .winner-card__actions {
   display: flex;
   flex-wrap: wrap;
@@ -39,5 +65,10 @@ mat-dialog-content {
 
   .winner-card__actions button {
     width: 100%;
+  }
+
+  .winner-phone__whatsapp {
+    width: 100%;
+    justify-content: center;
   }
 }
