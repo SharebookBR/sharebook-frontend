@@ -14,3 +14,19 @@ form i.fa {
 .lowerCase {
     text-transform : lowercase;
 }
+
+.age-consent-hint {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-left: 3px solid #2098d1;
+  border-radius: 4px;
+  background-color: #f4f9fd;
+  color: #4f5b66;
+}
+
+.age-consent-hint .fa {
+  position: static;
+  margin-right: 6px;
+  font-size: 14px;
+  color: #2098d1;
+}
