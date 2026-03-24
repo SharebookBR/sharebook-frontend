@@ -105,4 +105,10 @@ export class UserService {
   anonymize(dto: AnonymizeUserVM) {
     return this._http.post<any>(`${this.config.apiEndpoint}/Account/Anonymize`, dto);
   }
+
+  unsubscribe(userId: string, token: string) {
+    return this._http.get<{ success: boolean }>(`${this.config.apiEndpoint}/Account/Unsubscribe`, {
+      params: { userId, token },
+    });
+  }
 }

@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { UserService } from '../../core/services/user/user.service';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
   selector: 'app-panel',
@@ -14,9 +15,10 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scUser: UserService) { }
+  constructor(private _scUser: UserService, private _seo: SeoService) { }
 
   ngOnInit() {
+    this._seo.generateTags({ title: 'Meu Painel' });
     this._scUser.getProfile()
       .pipe(
         takeUntil(this._destroySubscribes$)

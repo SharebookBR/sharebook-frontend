@@ -1,55 +1,38 @@
 <div class="close">
   <em class="fa fa-times" aria-hidden="true" mat-dialog-close></em>
 </div>
-<h4 class="modal-title">Informações de usuários para o livro:</h4>
+
 <mat-dialog-content>
-  <h4>{{ bookTitle }}</h4>
-  <div class="text-center" [hidden]="!isLoading"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
-  <!--Carousel Wrapper-->
-  <div id="myCarousel" class="carousel carousel-fade" data-ride="carousel">
-    <!--Indicators-->
-    <ol class="carousel-indicators">
-      <li
-        data-target="#myCarousel"
-        *ngFor="let winnerUser of winnerUsers; let i = index"
-        [attr.data-slide-to]="i"
-        [ngClass]="i == 0 ? 'active' : ''"
-      ></li>
-    </ol>
-    <!--/.Indicators-->
-    <!--Slides-->
-    <div class="carousel-inner" role="listbox">
-      <div
-        *ngFor="let winnerUser of winnerUsers; let k = index"
-        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'"
-      >
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">Vencedor</h5>
-            <p class="card-text">Nome: {{ winnerUser.name }}</p>
-            <p class="card-text">E-mail: {{ winnerUser.email }}</p>
-            <p class="card-text">LinkedIn: {{ winnerUser.linkedin }}</p>
-            <p class="card-text">Telefone: {{ winnerUser.phone }}</p>
-            <p class="card-text">
-              {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
-              {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
-            </p>
-            <p class="card-text">
-              {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
-            </p>
-            <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
-            <p>
-              <button mat-stroked-button color="primary" (click)="generateEtiquetas(winnerUser)">Gerar Etiquetas</button>
-              <button mat-stroked-button color="primary" (click)="generateDeclaracao(winnerUser)">Gerar Declaração de Conteúdo</button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.Slides-->
+  <div class="text-center" [hidden]="!isLoading">
+    <em class="fa fa-spinner fa-spin"></em> Aguarde...
   </div>
-  <!--/.Carousel Wrapper-->
+
+  <div *ngIf="winnerUsers.length > 0 && winnerUsers[0] as winnerUser" class="winner-card">
+    <p class="card-text card-text--book"><strong>Livro:</strong> {{ bookTitle }}</p>
+    <p class="card-text"><strong>Nome:</strong> {{ winnerUser.name }}</p>
+    <p class="card-text"><strong>E-mail:</strong> {{ winnerUser.email }}</p>
+    <p class="card-text"><strong>LinkedIn:</strong> {{ winnerUser.linkedin }}</p>
+    <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
+    <p class="card-text">
+      {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
+      {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
+    </p>
+    <p class="card-text">
+      {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
+    </p>
+    <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
+
+    <div class="winner-card__actions">
+      <button mat-stroked-button color="primary" (click)="generateEtiquetas(winnerUser)">
+        Gerar Etiquetas
+      </button>
+      <button mat-stroked-button color="primary" (click)="generateDeclaracao(winnerUser)">
+        Gerar Declaração de Conteúdo
+      </button>
+    </div>
+  </div>
+
+  <p *ngIf="!isLoading && winnerUsers.length === 0" class="empty-state">
+    Não encontramos dados do ganhador para esta doação.
+  </p>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-flat-button color="primary" mat-dialog-close>Ok entendi</button>
-</mat-dialog-actions>

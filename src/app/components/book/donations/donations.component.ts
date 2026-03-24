@@ -1,11 +1,9 @@
-import { MyDonation } from '../../../core/models/MyDonation';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+﻿import { MyDonation } from '../../../core/models/MyDonation';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
-import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { BookDonationStatus } from '../../../core/models/BookDonationStatus';
@@ -14,26 +12,21 @@ import { ConfirmationDialogComponent } from '../../../core/directives/confirmati
 import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
-import { MatTableDataSource } from '@angular/material/table';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
-const COLUMNS_DESKTOP = ['title', 'totalInterested', 'daysInShowcase', 'chooseDate', 'trackingNumber', 'status', 'action'];
-const COLUMNS_MOBILE = ['livro', 'action'];
+type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
 @Component({
   selector: 'app-donations',
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css'],
 })
-export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DonationsComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;
-  displayedColumns: string[] = COLUMNS_DESKTOP;
-  donatedBooks = new MatTableDataSource<MyDonation>();
-
-  tableSettings: any;
-
-  statusBtnWinner: boolean;
-
-  @ViewChild(MatSort) sort: MatSort;
+  donatedBooks: MyDonation[] = [];
+  allDonatedBooks: MyDonation[] = [];
+  selectedFilter: DonationsFilter = 'needsAction';
+  searchTerm = '';
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -45,29 +38,12 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private _breakpointObserver: BreakpointObserver
+    private _seo: SeoService
   ) { }
 
   ngOnInit() {
-    this._breakpointObserver
-      .observe('(max-width: 767px)')
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(result => {
-        this.displayedColumns = result.matches ? COLUMNS_MOBILE : COLUMNS_DESKTOP;
-      });
+    this._seo.generateTags({ title: 'Minhas Doações' });
     this.getDonations();
-    // Carrega Status do ENUM BookDonationStatus
-    const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach((key) => {
-      myBookDonationStatus.push({
-        value: BookDonationStatus[key],
-        title: BookDonationStatus[key],
-      });
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.donatedBooks.sort = this.sort;
   }
 
   public getTranslatedStatusDescription(status: string): string {
@@ -116,7 +92,8 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this._destroySubscribes$),
         finalize(() => this.isLoadingSubject.next(false)))
       .subscribe((resp: MyDonation[]) => {
-        this.donatedBooks.data = resp;
+        this.allDonatedBooks = this.sortByPriority(resp || []);
+        this.applyFilters();
       });
   }
 
@@ -133,9 +110,8 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case 'renewChooseDate': {
         if (param.status !== BookDonationStatus.WAITING_DECISION) {
-          alert(
-            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-            `status atual = ${param.status}`
+          this._toastr.warning(
+            `Não é possível adiar a decisão neste status (${this.getTranslatedStatusDescription(param.status)}).`
           );
           return;
         }
@@ -146,14 +122,14 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         const todayDate = Math.floor(new Date().getTime() / (3600 * 24 * 1000));
 
         if (!chooseDate || chooseDate - todayDate > 0) {
-          alert('Aguarde a data de escolha!');
+          this._toastr.info('Aguarde a data de escolha para adiar a decisão.');
         } else {
 
           const modalRef = this.dialog.open(ConfirmationDialogComponent,
             {
               data: {
                 title: 'Atenção!',
-                message: 'Confirma a renovação da data de doação?',
+                message: 'Confirma adiar a data de escolha?',
                 btnOkText: 'Confirmar',
                 btnCancelText: 'Cancelar'
               }
@@ -166,7 +142,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
                 .pipe(takeUntil(this._destroySubscribes$))
                 .subscribe(
                   () => {
-                    this._toastr.success('Doação renovada com sucesso.');
+                    this._toastr.success('Data de escolha adiada com sucesso.');
                     this.getDonations();
                   },
                   (error) => {
@@ -179,18 +155,7 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         break;
       }
-      case 'trackNumber': {
-        if (
-          param.status !== BookDonationStatus.WAITING_SEND &&
-          param.status !== BookDonationStatus.SENT
-        ) {
-          alert(
-            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ` +
-            `ou ${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
-          );
-          return;
-        }
-
+      case 'markAsFinished': {
         const modalRef = this.dialog.open(TrackingComponent, { minWidth: 450 });
 
         modalRef.afterClosed().subscribe(result => {
@@ -210,8 +175,8 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
           param.status === BookDonationStatus.RECEIVED ||
           param.status === BookDonationStatus.CANCELED
         ) {
-          alert(
-            `Não é possível cancelar essa doação com status = ${param.status}`
+          this._toastr.warning(
+            `Não é possível cancelar uma doação com status ${this.getTranslatedStatusDescription(param.status)}.`
           );
           return;
         }
@@ -247,12 +212,15 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (param.status !== BookDonationStatus.WAITING_SEND &&
           param.status !== BookDonationStatus.SENT &&
           param.status !== BookDonationStatus.RECEIVED) {
-          alert(
-            `Você ainda não escolheu o ganhador.`
-          );
+          this._toastr.info('Você ainda não escolheu o ganhador.');
           return;
         }
-        const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
+        const modalRef = this.dialog.open(WinnerUsersComponent, {
+          width: '760px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false
+        });
 
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
@@ -264,7 +232,221 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public doFilter = (value: string) => {
-    this.donatedBooks.filter = value.trim().toLocaleLowerCase();
+    this.searchTerm = (value || '').trim().toLocaleLowerCase();
+    this.applyFilters();
+  }
+
+  public setFilter(filter: DonationsFilter): void {
+    this.selectedFilter = filter;
+    this.applyFilters();
+  }
+
+  public get waitingDecisionCount(): number {
+    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_DECISION).length;
+  }
+
+  public get waitingSendCount(): number {
+    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_SEND).length;
+  }
+
+  public get finishedCount(): number {
+    return this.allDonatedBooks.filter(x =>
+      x.status === BookDonationStatus.RECEIVED || x.status === BookDonationStatus.CANCELED
+    ).length;
+  }
+
+  public get ebookDownloadsTotal(): number {
+    return this.allDonatedBooks
+      .filter(x => this.isEbook(x))
+      .reduce((acc, curr) => acc + (curr.downloadCount || 0), 0);
+  }
+
+  public getMobilePrimaryMetric(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return `Total de downloads: ${book.downloadCount || 0}`;
+    }
+
+    const interestedCount = book.totalInterested || 0;
+    const interestedLabel = interestedCount === 1 ? 'interessado' : 'interessados';
+    const summary = `${interestedCount} ${interestedLabel}`;
+    const decisionNotice = this.getDecisionNoticeLabel(book);
+
+    if (decisionNotice) {
+      return `${summary} • ${decisionNotice}`;
+    }
+
+    return summary;
+  }
+
+  public getDesktopInterestedValue(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return `${book.downloadCount || 0} download(s)`;
+    }
+
+    return `${book.totalInterested || 0}`;
+  }
+
+  public getDesktopShowcaseValue(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return '-';
+    }
+
+    return `${book.daysInShowcase || 0}`;
+  }
+
+  public getPrimaryActionLabel(book: MyDonation): string {
+    if (this.isEbook(book)) {
+      return '';
+    }
+
+    if (this.canChooseWinnerNow(book)) {
+      return 'Escolher ganhador';
+    }
+
+    return 'Ver pedidos';
+  }
+
+  public canChooseWinnerNow(book: MyDonation): boolean {
+    if (book.status !== BookDonationStatus.WAITING_DECISION || !book.chooseDate) {
+      return false;
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return false;
+    }
+
+    return Date.now() >= chooseDate.getTime();
+  }
+
+  public executePrimaryAction(book: MyDonation): void {
+    if (this.isEbook(book)) {
+      return;
+    }
+
+    this.onCustom('donate', book);
+  }
+
+  public canRenew(book: MyDonation): boolean {
+    return !this.isEbook(book) && book.status === BookDonationStatus.WAITING_DECISION;
+  }
+
+  public canTrack(book: MyDonation): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public canShowWinner(book: MyDonation): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND ||
+        book.status === BookDonationStatus.SENT ||
+        book.status === BookDonationStatus.RECEIVED);
+  }
+
+  public canCancel(book: MyDonation): boolean {
+    return book.status !== BookDonationStatus.RECEIVED && book.status !== BookDonationStatus.CANCELED;
+  }
+
+  public canPrimaryAction(book: MyDonation): boolean {
+    return !this.isEbook(book);
+  }
+
+  public isEbook(book: MyDonation): boolean {
+    return (book.type || '').toLowerCase() === 'eletronic';
+  }
+
+  private getDecisionNoticeLabel(book: MyDonation): string {
+    if (!this.shouldShowDecisionNotice(book) || !book.chooseDate) {
+      return '';
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return '';
+    }
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const dueDate = new Date(chooseDate.getFullYear(), chooseDate.getMonth(), chooseDate.getDate()).getTime();
+    const dayDiff = Math.round((dueDate - today) / (24 * 60 * 60 * 1000));
+
+    if (dayDiff > 0) {
+      return `Decisão em ${dayDiff} ${dayDiff === 1 ? 'dia' : 'dias'}`;
+    }
+
+    if (dayDiff === 0) {
+      return 'Decisão hoje';
+    }
+
+    const lateDays = Math.abs(dayDiff);
+    return `Decisão atrasada há ${lateDays} ${lateDays === 1 ? 'dia' : 'dias'}`;
+  }
+
+  private shouldShowDecisionNotice(book: MyDonation): boolean {
+    return book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION;
+  }
+
+  private applyFilters(): void {
+    const filtered = this.allDonatedBooks.filter(book => {
+      if (!this.matchFilter(book)) {
+        return false;
+      }
+
+      if (!this.searchTerm) {
+        return true;
+      }
+
+      const searchBag = [
+        book.title,
+        book.author,
+        this.getTranslatedStatusDescription(book.status),
+        this.isEbook(book) ? 'digital' : 'fisico'
+      ].join(' ').toLowerCase();
+
+      return searchBag.includes(this.searchTerm);
+    });
+
+    this.donatedBooks = filtered;
+  }
+
+  private matchFilter(book: MyDonation): boolean {
+    switch (this.selectedFilter) {
+      case 'needsAction':
+        return book.status === BookDonationStatus.WAITING_DECISION || book.status === BookDonationStatus.WAITING_SEND;
+      case 'physical':
+        return !this.isEbook(book);
+      case 'digital':
+        return this.isEbook(book);
+      case 'finished':
+        return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
+      case 'all':
+      default:
+        return true;
+    }
+  }
+
+  private sortByPriority(books: MyDonation[]): MyDonation[] {
+    return [...books].sort((a, b) => {
+      const dateA = new Date(a.creationDate).getTime() || 0;
+      const dateB = new Date(b.creationDate).getTime() || 0;
+      return dateB - dateA;
+    });
+  }
+
+  private formatDate(value: Date): string {
+    if (!value) {
+      return '--/--/----';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '--/--/----';
+    }
+
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   ngOnDestroy() {
@@ -272,3 +454,4 @@ export class DonationsComponent implements OnInit, AfterViewInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 }
+

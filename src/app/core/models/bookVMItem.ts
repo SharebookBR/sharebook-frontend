@@ -2,6 +2,7 @@ export class BookVMItem {
   id: string;
   title: string;
   author: string;
+  downloadCount: number;
   winner: string;
   donor: string;
   userIdFacilitator: string;

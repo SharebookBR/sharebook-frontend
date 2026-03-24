@@ -57,14 +57,19 @@
 
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">
-          Título / Autor / Total Interessados / Dias na Vitrine
+          Título / Autor / Métricas
         </th>
         <td mat-cell *matCellDef="let element">
           <font [color]="getTextColor(element.status)">
             {{ element.title }}, <br />
             {{ element.author }}, <br />
-            {{ element.totalInterested }} interessado(s), <br />
-            {{ element.daysInShowcase }} dia(s) na vitrine
+            <ng-container *ngIf="element.type === 'Eletronic'; else physicalMetrics">
+              {{ element.downloadCount || 0 }} download(s)
+            </ng-container>
+            <ng-template #physicalMetrics>
+              {{ element.totalInterested }} interessado(s), <br />
+              {{ element.daysInShowcase }} dia(s) na vitrine
+            </ng-template>
           </font>
         </td>
       </ng-container>
@@ -145,17 +150,6 @@
             title="Informações de usuários"
           >
             <mat-icon>group</mat-icon>
-          </button>
-
-          <button
-            (click)="onCustom('promoteBook', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            style="background-color: #28a745; color: white"
-            data-toggle="tooltip"
-            title="Divulgar para interessados"
-          >
-            <mat-icon>campaign</mat-icon>
           </button>
 
           <button

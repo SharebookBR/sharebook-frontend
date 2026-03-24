@@ -25,7 +25,7 @@
     "build-stg": "ng build --configuration=stage",
     "build-prod": "ng build --configuration=production",
     "test-debug": "ng test --browsers ChromeDebug",
-    "test": "ng test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
+    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "docker-dev": "ng build && docker image build -t sharebook ."

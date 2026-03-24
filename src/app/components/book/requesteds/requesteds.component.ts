@@ -11,6 +11,7 @@ import { BookService } from '../../../core/services/book/book.service';
 import { BookRequestStatus, getStatusDescription } from '../../../core/models/BookRequestStatus';
 import { MyRequest } from 'src/app/core/models/MyRequest';
 import { DonorModalComponent } from '../donor-modal/donor-modal.component';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 const COLUMNS_DESKTOP = ['title', 'author', 'status', 'doador'];
 const COLUMNS_MOBILE = ['livro', 'doador'];
@@ -28,9 +29,15 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
-  constructor(private _bookService: BookService, public dialog: MatDialog, private _breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private _bookService: BookService,
+    public dialog: MatDialog,
+    private _breakpointObserver: BreakpointObserver,
+    private _seo: SeoService
+  ) {}
 
   ngOnInit() {
+    this._seo.generateTags({ title: 'Meus Pedidos' });
     this._breakpointObserver
       .observe('(max-width: 767px)')
       .pipe(takeUntil(this._destroySubscribes$))

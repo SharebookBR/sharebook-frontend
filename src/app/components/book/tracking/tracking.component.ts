@@ -18,8 +18,7 @@ export class TrackingComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   isLoading: Boolean;
-
-  state = 'loading'; // loading, form, error
+  state: 'choice' | 'tracking' = 'choice';
   lastError: string;
 
   private _destroySubscribes$ = new Subject<void>();
@@ -32,19 +31,19 @@ export class TrackingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!!this.trackingNumber) {
-      const trackingNumberForUpdate = {
-        trackingNumber: this.trackingNumber
-      };
-      this.formGroup.setValue(trackingNumberForUpdate);
+      this.state = 'tracking';
+      this.formGroup.setValue({ trackingNumber: this.trackingNumber });
     }
+  }
+
+  chooseTracking() {
+    this.state = 'tracking';
   }
 
   onTracking() {
     this.isLoading = true;
     this._scBook.setTrackingNumber(this.bookId, this.formGroup.value)
-      .pipe(
-        takeUntil(this._destroySubscribes$)
-      )
+      .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
         () => {
           this.isLoading = false;
@@ -52,7 +51,22 @@ export class TrackingComponent implements OnInit, OnDestroy {
         },
         error => {
           this.lastError = error;
-          this.state = 'request-error';
+          this.isLoading = false;
+        }
+      );
+  }
+
+  onDeliverInPerson() {
+    this.isLoading = true;
+    this._scBook.markAsDelivered(this.bookId)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        () => {
+          this.isLoading = false;
+          this.dialogRef.close(true);
+        },
+        error => {
+          this.lastError = error;
           this.isLoading = false;
         }
       );

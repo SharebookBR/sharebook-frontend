@@ -1,0 +1,28 @@
+<div class="container" style="max-width: 600px; margin: 80px auto; text-align: center;">
+
+  <div *ngIf="state === 'loading'">
+    <mat-spinner style="margin: 0 auto;"></mat-spinner>
+  </div>
+
+  <div *ngIf="state === 'success'">
+    <h2>Descadastro realizado</h2>
+    <p style="margin-top: 16px; color: #757575;">
+      Você não receberá mais emails de novidades do Sharebook.<br>
+      Pode reativar a qualquer momento nas configurações da sua conta.
+    </p>
+    <a mat-flat-button color="primary" routerLink="/" style="margin-top: 32px; display: inline-block;">
+      Ir para a Vitrine
+    </a>
+  </div>
+
+  <div *ngIf="state === 'error'">
+    <h2>Link inválido</h2>
+    <p style="margin-top: 16px; color: #757575;">
+      Não foi possível processar seu descadastro. O link pode estar expirado ou incorreto.
+    </p>
+    <a mat-flat-button color="primary" routerLink="/" style="margin-top: 32px; display: inline-block;">
+      Ir para a Vitrine
+    </a>
+  </div>
+
+</div>

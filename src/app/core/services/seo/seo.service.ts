@@ -6,7 +6,11 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root'
 })
 export class SeoService {
-  constructor(private meta: Meta, private titleService: Title, @Inject(DOCUMENT) private dom) {}
+  constructor(
+    private meta: Meta,
+    private titleService: Title,
+    @Inject(DOCUMENT) private dom
+  ) {}
 
   public generateTags(config) {
     // default values

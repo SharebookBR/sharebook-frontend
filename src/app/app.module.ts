@@ -100,6 +100,7 @@ import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-ba
 import { SettingsComponent } from './components/settings/settings.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
 import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
+import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component
     SettingsComponent,
     BottomNavComponent,
     MaisSheetComponent,
+    UnsubscribeComponent,
   ],
   imports: [
     BrowserModule,

@@ -37,7 +37,10 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this._sheetRef = this._bottomSheet.open(MaisSheetComponent);
+    this._sheetRef = this._bottomSheet.open(MaisSheetComponent, {
+      restoreFocus: false,
+      autoFocus: false
+    });
     this._sheetRef.afterDismissed().subscribe(() => {
       this._sheetRef = null;
     });

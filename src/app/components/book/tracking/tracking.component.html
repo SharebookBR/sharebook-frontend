@@ -1,34 +1,54 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<h4 class="modal-title">Informe o código de rastreio para o livro:</h4>
-<form [formGroup]="formGroup" (ngSubmit)="onTracking()">
-  <mat-dialog-content>
-    <h4>{{ bookTitle }}</h4>
-    <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
-    <div class="text-center" *ngIf="state == 'request-error'">
-      <p>:/ ocorreu um erro.</p>
-      <div class="alert alert-danger" role="alert">
-        {{ lastError }}
+<h4 class="modal-title">Marcar como finalizado</h4>
+
+<mat-dialog-content>
+  <h4>{{ bookTitle }}</h4>
+
+  <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+
+  <div *ngIf="lastError" class="alert alert-danger" role="alert">{{ lastError }}</div>
+
+  <ng-container *ngIf="state === 'choice'">
+    <p style="color: #666; margin-bottom: 16px;">Como o livro foi entregue?</p>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <button mat-stroked-button (click)="onDeliverInPerson()" [disabled]="isLoading" style="text-align: left; padding: 12px 16px; height: auto;">
+        <mat-icon style="margin-right: 8px; vertical-align: middle;">handshake</mat-icon>
+        Entregue pessoalmente
+      </button>
+      <button mat-stroked-button (click)="chooseTracking()" [disabled]="isLoading" style="text-align: left; padding: 12px 16px; height: auto;">
+        <mat-icon style="margin-right: 8px; vertical-align: middle;">local_shipping</mat-icon>
+        Enviado pelos Correios - informar código de rastreio
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="state === 'tracking'">
+    <form [formGroup]="formGroup" (ngSubmit)="onTracking()">
+      <p style="color: #666; margin-bottom: 8px;">Informe o código de rastreio:</p>
+      <textarea
+        formControlName="trackingNumber"
+        name="trackingNumber"
+        type="text"
+        id="trackingNumber"
+        class="md-textarea form-control"
+        rows="3"
+        maxlength="2000"
+      ></textarea>
+      <div *ngIf="formGroup.controls['trackingNumber'].touched && !formGroup.controls['trackingNumber'].valid">
+        <small class="form-text text-danger" *ngIf="formGroup.controls['trackingNumber'].hasError('required')">
+          Informe o código de rastreio.
+        </small>
       </div>
-    </div>
-    <textarea
-      formControlName="trackingNumber"
-      name="trackingNumber"
-      type="text"
-      id="trackingNumber"
-      class="md-textarea form-control"
-      rows="3"
-      maxlength="2000"
-    ></textarea>
-    <div *ngIf="formGroup.controls['trackingNumber'].touched && !formGroup.controls['trackingNumber'].valid">
-      <small class="form-text text-danger" *ngIf="formGroup.controls['trackingNumber'].hasError('required')">
-        Informe o código de rastreio.
-      </small>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Confirmar</button>
-    <button mat-stroked-button mat-dialog-close>Cancelar</button>
-  </mat-dialog-actions>
-</form>
+      <mat-dialog-actions align="end">
+        <button mat-flat-button color="primary" [disabled]="!formGroup.valid || isLoading" type="submit">Confirmar</button>
+        <button mat-stroked-button mat-dialog-close type="button">Cancelar</button>
+      </mat-dialog-actions>
+    </form>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="state === 'choice'">
+  <button mat-stroked-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

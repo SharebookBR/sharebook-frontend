@@ -30,6 +30,7 @@ import { SearchResultsComponent } from '../components/search-results/search-resu
 import { CategoryBooksComponent } from '../components/category/category-books/category-books.component';
 import { CategoriesListComponent } from '../components/category/categories-list/categories-list.component';
 import { SettingsComponent } from '../components/settings/settings.component';
+import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.component';
 
 const routes: Routes = [
   {
@@ -154,6 +155,10 @@ const routes: Routes = [
   {
     path: 'anonimizacao-info',
     component: DataAnonymizationInfoComponent,
+  },
+  {
+    path: 'descadastrar',
+    component: UnsubscribeComponent,
   },
   // otherwise redirect to home
   {

@@ -2,6 +2,7 @@ export class BookToAdminProfile {
   author: string;
   category: string;
   categoryId: string;
+  downloadCount: number;
   chooseDate?: Date;
   city: string;
   creationDate: Date;

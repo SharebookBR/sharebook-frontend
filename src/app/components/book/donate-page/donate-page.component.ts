@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -59,7 +59,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialog: MatDialog,
     private _formBuilder: FormBuilder,
     private _confetti: ConfettiService,
-    private _breakpointObserver: BreakpointObserver
+    private _breakpointObserver: BreakpointObserver,
+    private _viewportScroller: ViewportScroller
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -122,6 +123,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.winnerSelected = true;
           this.confettiActive = true;
           this.loadWinnerInfo();
+          this.scrollToTop();
         }
       });
     }
@@ -228,5 +230,10 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this._confetti.stop();
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  private scrollToTop(): void {
+    this._viewportScroller.scrollToPosition([0, 0]);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 }

@@ -6,6 +6,7 @@ import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +28,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _scBook: BookService,
-    private _scMeetup: MeetupService
+    private _scMeetup: MeetupService,
+    private _seo: SeoService
   ) {}
 
   ngOnInit() {
+    this._seo.generateTags({});
     this.getBooks();
     this.getEbooks();
     this.getMeetups();
