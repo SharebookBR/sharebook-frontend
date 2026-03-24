@@ -69,10 +69,6 @@
           <button
             *ngIf="canPrimaryAction(element)"
             mat-flat-button
-            class="ml-1 mb-1"
-            style="background-color: #17a2b8; color: white"
-            data-toggle="tooltip"
-            title="Renovar data de escolha"
             color="primary"
             class="action-btn action-btn--primary"
             [ngClass]="{ 'action-btn--winner': canChooseWinnerNow(element) }"
@@ -83,54 +79,22 @@
             </mat-icon>
             {{ getPrimaryActionLabel(element) }}
           </button>
-
-          <!-- Código de Rastreio (apenas para livro físico) -->
-          <button
-            *ngIf="element.type !== 'Eletronic' && (element.status === BookDonationStatus.WAITING_SEND || element.status === BookDonationStatus.SENT)"
-            (click)="onCustom('trackNumber', element)"
-            mat-flat-button
-            style="background-color: gray; color: white"
-            class="ml-1 mb-1"
-            data-toggle="tooltip"
-            title="Informar Código de rastreio"
-          >
-            <mat-icon>local_shipping</mat-icon>
-          </button>
-
-          <button
-            *ngIf="element.status !== BookDonationStatus.RECEIVED && element.status !== BookDonationStatus.CANCELED"
-            (click)="onCustom('CancelDonation', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            color="warn"
-            data-toggle="tooltip"
-            title="Cancelar doação"
-          >
-            <mat-icon>delete_outline</mat-icon>
-          </button>
-
-          <!-- Ver ganhador (apenas para livro físico) -->
-          <button
-            *ngIf="element.type !== 'Eletronic' && (element.status === BookDonationStatus.WAITING_SEND || element.status === BookDonationStatus.SENT || element.status === BookDonationStatus.RECEIVED)"
-            (click)="onCustom('ShowWinnerInfo', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            data-toggle="tooltip"
-            title="Ver ganhador(a)"
-          >
-            <mat-icon>person</mat-icon>
+          
           <button mat-stroked-button class="action-btn" *ngIf="canRenew(element)" (click)="onCustom('renewChooseDate', element)">
             <mat-icon class="action-btn__icon">calendar_month</mat-icon>
             Adiar decisão
           </button>
+
           <button mat-flat-button class="action-btn action-btn--success" *ngIf="canTrack(element)" (click)="onCustom('markAsFinished', element)">
             <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
             Marcar finalizado
           </button>
+
           <button mat-stroked-button class="action-btn" *ngIf="canShowWinner(element)" (click)="onCustom('ShowWinnerInfo', element)">
-            <mat-icon class="action-btn__icon">emoji_events</mat-icon>
+            <mat-icon class="action-btn__icon">person</mat-icon>
             Ver ganhador
           </button>
+
           <button mat-flat-button class="action-btn action-btn--danger" *ngIf="canCancel(element)" (click)="onCustom('CancelDonation', element)">
             <mat-icon class="action-btn__icon">delete_outline</mat-icon>
             Cancelar
