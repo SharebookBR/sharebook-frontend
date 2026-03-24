@@ -22,6 +22,21 @@ export class MainUsersComponent implements OnInit, OnDestroy {
 
   constructor(public dialogRef: MatDialogRef<MainUsersComponent>, private _scBook: BookService) {}
 
+  contactOnWhatsapp(mainUser: UserInfo) {
+    const normalizedPhone = this.normalizeWhatsappPhone(mainUser?.phone);
+    if (!normalizedPhone) {
+      return;
+    }
+
+    const message = `Olá, ${mainUser.name}! Aqui é do Sharebook sobre o livro "${this.bookTitle}".`;
+    const whatsappUrl = `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }
+
+  hasWhatsappPhone(mainUser: UserInfo): boolean {
+    return !!this.normalizeWhatsappPhone(mainUser?.phone);
+  }
+
   ngOnInit() {
     this.isLoading = true;
     this._scBook
@@ -44,5 +59,22 @@ export class MainUsersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  private normalizeWhatsappPhone(phone: string): string {
+    if (!phone) {
+      return '';
+    }
+
+    const onlyNumbers = phone.replace(/\D/g, '');
+    if (!onlyNumbers) {
+      return '';
+    }
+
+    if (onlyNumbers.startsWith('55')) {
+      return onlyNumbers;
+    }
+
+    return `55${onlyNumbers}`;
   }
 }
