@@ -12,7 +12,17 @@
     <p class="card-text"><strong>Nome:</strong> {{ winnerUser.name }}</p>
     <p class="card-text"><strong>E-mail:</strong> {{ winnerUser.email }}</p>
     <p class="card-text"><strong>LinkedIn:</strong> {{ winnerUser.linkedin }}</p>
-    <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
+    <div class="winner-phone">
+      <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
+      <button
+        mat-flat-button
+        class="winner-phone__whatsapp"
+        [disabled]="!hasWhatsappPhone(winnerUser)"
+        (click)="contactWinnerOnWhatsapp(winnerUser)">
+        <em class="fa fa-whatsapp" aria-hidden="true"></em>
+        Chamar no WhatsApp
+      </button>
+    </div>
     <p class="card-text">
       {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
       {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
