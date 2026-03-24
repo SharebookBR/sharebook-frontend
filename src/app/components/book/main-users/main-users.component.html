@@ -19,6 +19,14 @@
             <p class="card-text">E-mail: {{ mainUser.email }}</p>
             <p class="card-text">LinkedIn: {{ mainUser.linkedin }}</p>
             <p class="card-text">Telefone: {{ mainUser.phone }}</p>
+            <button
+              mat-flat-button
+              class="card-whatsapp-btn"
+              [disabled]="!hasWhatsappPhone(mainUser)"
+              (click)="contactOnWhatsapp(mainUser)">
+              <em class="fa fa-whatsapp" aria-hidden="true"></em>
+              Chamar no WhatsApp
+            </button>
             <p class="card-text">
               {{ mainUser.address?.street }}, {{ mainUser.address?.number }}
               {{ !!mainUser.address?.complement ? mainUser.address?.complement : '' }}

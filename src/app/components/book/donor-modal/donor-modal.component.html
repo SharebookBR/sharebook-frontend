@@ -19,6 +19,14 @@
       <p class="card-text">E-mail: {{ donor.email }}</p>
       <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
       <p class="card-text">Telefone: {{ donor.phone }}</p>
+      <button
+        mat-flat-button
+        class="card-whatsapp-btn"
+        [disabled]="!hasWhatsappPhone(donor)"
+        (click)="contactOnWhatsapp(donor)">
+        <em class="fa fa-whatsapp" aria-hidden="true"></em>
+        Chamar no WhatsApp
+      </button>
     </ng-container>
   </section>
 </mat-dialog-content>
