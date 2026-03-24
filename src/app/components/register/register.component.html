@@ -29,6 +29,10 @@
           <input formControlName="age" id="age" name="age" type="number" step="1" class="form-control" />
           <div class="input-group-addon append"><i class="fa fa-address-book" aria-hidden="true"></i></div>
         </div>
+        <small class="form-text age-consent-hint">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          Se você tem menos de 12 anos, será necessário o consentimento de um responsável.
+        </small>
         <div *ngIf="formGroup.controls['age'].touched && !formGroup.controls['age'].valid">
           <small class="form-text text-danger"> Não parece ser uma idade válida. Tente entre 8 e 100. </small>
         </div>
