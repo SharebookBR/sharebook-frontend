@@ -36,7 +36,7 @@
         <td mat-cell *matCellDef="let element">
           <span class="book-type-badge" [ngClass]="element.type === 'Eletronic' ? 'badge-ebook' : 'badge-physical'">
             <mat-icon class="badge-icon">{{ element.type === 'Eletronic' ? 'menu_book' : 'book' }}</mat-icon>
-            {{ element.type === 'Eletronic' ? 'Livro digital' : 'Físico' }}
+            {{ element.type === 'Eletronic' ? 'Livro digital' : 'Livro físico' }}
           </span>
           <br />
           <span [class]="getStatusBadgeClass(element.status)">
@@ -75,11 +75,11 @@
       </ng-container>
 
       <ng-container matColumnDef="users">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Doador / Donatário / Facilitador</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Doador(a) / Ganhador(a) / Facilitador(a)</th>
         <td mat-cell *matCellDef="let element">
           <font [color]="getTextColor(element.status)">
             Doador: {{ element.donor }} <br />
-            Donatário: {{ element.winner }} <br />
+            Ganhador(a): {{ element.winner }} <br />
             Facilitador: {{ element.facilitator }}
           </font>
         </td>
@@ -104,7 +104,7 @@
             class="ml-1 mb-1"
             color="warn"
             data-toggle="tooltip"
-            title="Cancelar Doação"
+            title="Cancelar doação"
           >
             <mat-icon>delete_outline</mat-icon>
           </button>
@@ -126,7 +126,7 @@
             class="ml-1 mb-1"
             style="background-color: #17a2b8; color: white"
             data-toggle="tooltip"
-            title="Informar Comentários"
+            title="Informar comentários"
           >
             <mat-icon>sticky_note_2</mat-icon>
           </button>
@@ -137,7 +137,7 @@
             style="background-color: gray; color: white"
             class="ml-1 mb-1"
             data-toggle="tooltip"
-            title="Informar Código Rastreio"
+            title="Informar código de rastreio"
           >
             <mat-icon>local_shipping</mat-icon>
           </button>
@@ -147,7 +147,7 @@
             mat-flat-button
             class="ml-1 mb-1"
             data-toggle="tooltip"
-            title="Informações de Usuários"
+            title="Informações de usuários"
           >
             <mat-icon>group</mat-icon>
           </button>
@@ -158,7 +158,7 @@
             class="ml-1 mb-1"
             style="background-color: #17a2b8; color: white"
             data-toggle="tooltip"
-            title="Renovar Data de Escolha"
+            title="Renovar data de escolha"
           >
             <mat-icon>calendar_month</mat-icon>
           </button>

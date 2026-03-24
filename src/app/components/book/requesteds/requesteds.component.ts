@@ -108,10 +108,10 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
       minWidth: 450,
       data: {
-        title: 'Cancelar pedido',
-        message: `Tem certeza que quer cancelar o pedido do livro "${param.title}"?`,
+        title: 'Cancelar solicitação',
+        message: `Tem certeza que quer cancelar a solicitação do livro "${param.title}"?`,
         btnOkText: 'Sim, cancelar',
-        btnCancelText: 'Não, manter pedido',
+        btnCancelText: 'Não, manter solicitação',
       },
     });
 

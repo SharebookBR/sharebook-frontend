@@ -33,11 +33,11 @@
         <p><strong>Autor:</strong><br />{{ bookInfo.author }}</p>
         <p><strong>Categoria:</strong><br />{{ bookInfo.category }}</p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
-          <strong>Sinópse:</strong><br />{{ bookInfo.synopsis }}
+          <strong>Sinopse:</strong><br />{{ bookInfo.synopsis }}
         </p>
         <!-- Data de escolha do ganhador (apenas para livro físico) -->
         <p *ngIf="available && !isEbook()">
-          <strong>Quando será anunciado o ganhador desse livro?</strong><br />{{ chooseDateInfo }}
+          <strong>Quando será anunciado o(a) ganhador(a) deste livro?</strong><br />{{ chooseDateInfo }}
         </p>
         <!-- Informações de frete (apenas para livro físico) -->
         <p *ngIf="available && userProfile && !isEbook()"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
@@ -87,7 +87,7 @@
             (click)="onRequestBook()"
             [disabled]="!isFreeFreight && !isCheckedFreight"
           >
-            Tenho interesse
+            Solicitar livro
           </button>
 
           <button
@@ -97,7 +97,7 @@
             *ngIf="available && !userProfile && !isEbook()"
             (click)="onLoginBook()"
           >
-            Faça login para solicitar o livro
+            Entrar para solicitar este livro
           </button>
 
           <!-- Botão de denúncia de direitos autorais (apenas para livros digitais, visível para todos) -->

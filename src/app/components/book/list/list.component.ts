@@ -143,8 +143,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'trackNumber': {
         if (param.status !== BookDonationStatus.WAITING_SEND && param.status !== BookDonationStatus.SENT) {
           alert(
-            `Não é possível informar código de rastreio. \nstatus requerido = ${BookDonationStatus.WAITING_SEND} ou` +
-              `${BookDonationStatus.SENT}\nstatus atual = ${param.status}`
+            `Não é possível informar o código de rastreio agora.\nStatus necessário: ${BookDonationStatus.WAITING_SEND} ou ${BookDonationStatus.SENT}.\nStatus atual: ${param.status}`
           );
           return;
         }
@@ -170,8 +169,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'renewChooseDate': {
         if (param.status !== BookDonationStatus.WAITING_DECISION) {
           alert(
-            `Não é possível renovar doação. \nstatus requerido = ${BookDonationStatus.WAITING_DECISION}\n` +
-            `status atual = ${param.status}`
+            `Não é possível renovar esta doação agora.\nStatus necessário: ${BookDonationStatus.WAITING_DECISION}.\nStatus atual: ${param.status}`
           );
           return;
         }
