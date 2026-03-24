@@ -65,6 +65,38 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 
+  contactWinnerOnWhatsapp(winnerUser: UserInfo) {
+    const normalizedPhone = this.normalizeWhatsappPhone(winnerUser?.phone);
+    if (!normalizedPhone) {
+      return;
+    }
+
+    const message = `Olá, ${winnerUser.name}! Você ganhou o livro "${this.bookTitle}" no Sharebook.`;
+    const whatsappUrl = `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }
+
+  hasWhatsappPhone(winnerUser: UserInfo): boolean {
+    return !!this.normalizeWhatsappPhone(winnerUser?.phone);
+  }
+
+  private normalizeWhatsappPhone(phone: string): string {
+    if (!phone) {
+      return '';
+    }
+
+    const onlyNumbers = phone.replace(/\D/g, '');
+    if (!onlyNumbers) {
+      return '';
+    }
+
+    if (onlyNumbers.startsWith('55')) {
+      return onlyNumbers;
+    }
+
+    return `55${onlyNumbers}`;
+  }
+
   generateDeclaracao(winnerUser: UserInfo) {
     if (!winnerUser || !this.donorInfo || !this.bookInfo) {
       return;
