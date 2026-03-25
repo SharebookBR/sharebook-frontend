@@ -19,7 +19,9 @@ export interface JobMonitorItem {
   description: string;
   interval: string;
   active: boolean;
+  bestDayOfWeek?: string;
   bestTimeToExecute?: string;
+  nextExecutionAt?: string;
   lastExecutionAt?: string;
   lastExecutionDurationSeconds?: number;
   lastExecutionDetails?: string;

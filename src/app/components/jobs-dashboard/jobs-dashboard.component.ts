@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { JobMonitorDashboard } from '../../core/models/job-monitor';
+import { JobMonitorDashboard, JobMonitorItem } from '../../core/models/job-monitor';
 import { OperationsService } from '../../core/services/operations/operations.service';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
@@ -13,6 +13,15 @@ export class JobsDashboardComponent implements OnInit {
   dashboard: JobMonitorDashboard;
   isLoading = true;
   loadError = false;
+  private readonly weekDayLabels: Record<string, string> = {
+    Monday: 'segunda',
+    Tuesday: 'terca',
+    Wednesday: 'quarta',
+    Thursday: 'quinta',
+    Friday: 'sexta',
+    Saturday: 'sabado',
+    Sunday: 'domingo',
+  };
 
   constructor(private _operationsService: OperationsService, private _seo: SeoService) {}
 
@@ -23,6 +32,15 @@ export class JobsDashboardComponent implements OnInit {
 
   get hasExecutorHistory(): boolean {
     return !!this.dashboard?.executor?.lastExecutionAt;
+  }
+
+  getScheduleLabel(job: JobMonitorItem): string {
+    if (job.interval === 'Weekly' && job.bestDayOfWeek && job.bestTimeToExecute) {
+      const weekDayLabel = this.weekDayLabels[job.bestDayOfWeek] || job.bestDayOfWeek;
+      return `${weekDayLabel} ${job.bestTimeToExecute}`;
+    }
+
+    return job.bestTimeToExecute || 'Livre';
   }
 
   private loadDashboard(): void {

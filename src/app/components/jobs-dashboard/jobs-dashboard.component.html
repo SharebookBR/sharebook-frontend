@@ -99,7 +99,7 @@
                 </span>
               </td>
               <td>{{ job.interval }}</td>
-              <td>{{ job.bestTimeToExecute || 'Livre' }}</td>
+              <td>{{ getScheduleLabel(job) }}</td>
               <td>{{ job.lastExecutionAt ? (job.lastExecutionAt | date: 'dd/MM/yyyy HH:mm') : 'Nunca executado' }}</td>
               <td>{{ job.lastExecutionDurationSeconds != null ? (job.lastExecutionDurationSeconds | number: '1.0-2') + 's' : '-' }}</td>
             </tr>
