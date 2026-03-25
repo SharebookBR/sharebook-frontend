@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 import { RequestedsComponent } from './requesteds.component';
 import { BookService } from '../../../core/services/book/book.service';
@@ -16,10 +17,13 @@ describe('RequestedsComponent', () => {
   const bookServiceMock = {
     getRequestedBooks: () => of({ items: [] }),
     cancelRequest: () => of({}),
+    markAsDelivered: () => of({}),
   };
 
-  const breakpointObserverMock = {
-    observe: () => of({ matches: false }),
+  const toastrMock = {
+    success: jasmine.createSpy('success'),
+    info: jasmine.createSpy('info'),
+    error: jasmine.createSpy('error'),
   };
 
   beforeEach(waitForAsync(() => {
@@ -28,8 +32,9 @@ describe('RequestedsComponent', () => {
       imports: [MatDialogModule, NoopAnimationsModule],
       providers: [
         { provide: BookService, useValue: bookServiceMock },
-        { provide: BreakpointObserver, useValue: breakpointObserverMock },
+        { provide: ToastrService, useValue: toastrMock },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -52,5 +57,25 @@ describe('RequestedsComponent', () => {
     } as any);
 
     expect(dialog.open).toHaveBeenCalledWith(DonorModalComponent, { minWidth: 450 });
+  });
+
+  it('should return tracking number only when status is Donated', () => {
+    const donatedItem = { status: 'Donated', trackingNumber: 'BR123456789' } as any;
+    const pendingItem = { status: 'Requested', trackingNumber: 'BR000000000' } as any;
+
+    expect(component.getTrackingNumber(donatedItem)).toBe('BR123456789');
+    expect(component.getTrackingNumber(pendingItem)).toBeNull();
+  });
+
+  it('should return null when donated request has empty tracking number', () => {
+    const donatedWithoutTracking = { status: 'Donated', trackingNumber: '   ' } as any;
+
+    expect(component.getTrackingNumber(donatedWithoutTracking)).toBeNull();
+  });
+
+  it('should allow mark as received when donated and not received yet', () => {
+    expect(component.canMarkAsReceived({ status: 'Donated', bookStatus: 'Sent' } as any)).toBeTrue();
+    expect(component.canMarkAsReceived({ status: 'Donated', bookStatus: 'Received' } as any)).toBeFalse();
+    expect(component.canMarkAsReceived({ status: 'WaitingAction', bookStatus: 'Sent' } as any)).toBeFalse();
   });
 });

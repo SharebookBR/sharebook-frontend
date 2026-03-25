@@ -1,22 +1,46 @@
 <div class="container">
   <h1 class="text-center display-4">Meus Pedidos</h1>
 
-  <div class="container mt-5" matSort>
+  <div class="summary-grid">
+    <div class="summary-card summary-card--awaiting">
+      <div class="summary-title">Aguardando decisão</div>
+      <div class="summary-subtitle">Pedidos que ainda podem ser cancelados</div>
+      <div class="summary-value">{{ waitingDecisionCount }}</div>
+    </div>
+    <div class="summary-card summary-card--won">
+      <div class="summary-title">Você ganhou</div>
+      <div class="summary-subtitle">Pedidos aprovados pelo doador</div>
+      <div class="summary-value">{{ wonCount }}</div>
+    </div>
+    <div class="summary-card summary-card--finished">
+      <div class="summary-title">Encerrados</div>
+      <div class="summary-subtitle">Pedidos negados ou cancelados</div>
+      <div class="summary-value">{{ finishedCount }}</div>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'all'" (click)="setFilter('all')">Todos</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'awaiting'" (click)="setFilter('awaiting')">Aguardando decisão</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'won'" (click)="setFilter('won')">Ganhos</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'finished'" (click)="setFilter('finished')">Encerrados</button>
+  </div>
+
+  <div class="container mt-4">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
         <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
       </mat-form-field>
     </div>
-    <table *ngIf="(isLoading$ | async) === false" mat-table [dataSource]="requestedBooks" class="mat-elevation-z1">
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Título</th>
-        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
-      </ng-container>
 
-      <ng-container matColumnDef="livro">
-        <th mat-header-cell *matHeaderCellDef class="header">Livro</th>
-        <td mat-cell *matCellDef="let element">
-          <span>{{ element.title }}</span><br />
+    <div class="request-cards-grid" *ngIf="(isLoading$ | async) === false">
+      <div class="request-card" *ngFor="let element of requestedBooks.data">
+        <div class="request-card__header">
+          <a class="request-card__title" [routerLink]="['/livros', element.slug]">{{ element.title }}</a>
+          <div class="request-card__author">{{ element.author }}</div>
+        </div>
+
+        <div class="request-card__badges">
           <span
             class="custom-badge"
             [ngStyle]="{
@@ -24,61 +48,64 @@
               color: getStatusBadgeTextColor(element.status)
             }"
           >{{ getTranslatedStatusDescription(element.status) }}</span>
-        </td>
-      </ng-container>
+          <span *ngIf="isDonated(element.status)" class="winner-message">Você ganhou 🎉</span>
+        </div>
 
-      <ng-container matColumnDef="author">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Autor</th>
-        <td mat-cell *matCellDef="let element">{{ element.author }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="header">Status</th>
-        <td mat-cell *matCellDef="let element">
-          <span
-            class="custom-badge"
-            [ngStyle]="{
-              backgroundColor: getStatusBadgeBackgroundColor(element.status),
-              color: getStatusBadgeTextColor(element.status)
-            }"
-            >{{ getTranslatedStatusDescription(element.status) }}</span
-          >
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="doador">
-        <th mat-header-cell *matHeaderCellDef class="header">Ações</th>
-        <td mat-cell *matCellDef="let element">
-          <div class="action-cell">
-          <button
-            (click)="onCustomActionColum('verDoador', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            data-toggle="tooltip"
-            title="Ver doador"
-            *ngIf="showIconDonor(element)"
-          >
-            <mat-icon>person</mat-icon>
-          </button>
-
-          <button
-            *ngIf="showIconCancel(element)"
-            (click)="onCustomActionColum('cancelarPedido', element)"
-            mat-flat-button
-            class="ml-1 mb-1"
-            color="warn"
-            data-toggle="tooltip"
-            title="Cancelar solicitação"
-          >
-            <mat-icon>delete_outline</mat-icon>
-          </button>
+        <div class="request-card__meta">
+          <div class="meta-line">
+            <span class="meta-label">Logística:</span>
+            <span class="meta-value">{{ getLogisticsLabel(element) }}</span>
           </div>
-        </td>
-      </ng-container>
+          <div class="meta-line">
+            <span class="meta-label">Rastreio:</span>
+            <span class="meta-value">{{ getTrackingNumber(element) || 'Rastreio indisponível' }}</span>
+          </div>
+        </div>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+        <div class="request-card__actions">
+          <button
+            *ngIf="canTalkToDonor(element)"
+            mat-flat-button
+            color="primary"
+            class="action-btn action-btn--primary"
+            (click)="onCustomActionColum('verDoador', element)"
+          >
+            <mat-icon class="action-btn__icon">chat_bubble_outline</mat-icon>
+            Falar com doador
+          </button>
+
+          <button
+            *ngIf="getTrackingNumber(element)"
+            mat-stroked-button
+            class="action-btn"
+            (click)="copyTrackingCode(element)"
+          >
+            <mat-icon class="action-btn__icon">content_copy</mat-icon>
+            Copiar código
+          </button>
+
+          <button
+            *ngIf="canMarkAsReceived(element)"
+            mat-flat-button
+            class="action-btn action-btn--success"
+            (click)="confirmBookReceived(element)"
+          >
+            <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
+            Já recebi o livro
+          </button>
+
+          <button
+            *ngIf="canCancelRequest(element)"
+            mat-flat-button
+            class="action-btn action-btn--danger"
+            (click)="onCustomActionColum('cancelarPedido', element)"
+          >
+            <mat-icon class="action-btn__icon">delete_outline</mat-icon>
+            Cancelar pedido
+          </button>
+        </div>
+      </div>
+    </div>
 
     <div class="empty-data" *ngIf="requestedBooks.data.length === 0 && (isLoading$ | async) === false">
       Nenhum registro encontrado.
