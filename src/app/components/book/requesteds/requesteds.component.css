@@ -1,14 +1,3 @@
-table {
-  width: 100%;
-}
-th.mat-header-cell {
-  text-align: left;
-  max-width: 300px;
-}
-.header {
-  color: rgb(10, 10, 190);
-  font-size: 14px;
-}
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -23,18 +12,225 @@ th.mat-header-cell {
   width: fit-content;
   text-align: center;
   border-radius: 7px;
-  margin-top: 4px;
   padding: 2px 8px;
+  white-space: nowrap;
 }
 
-.mat-flat-button {
-  min-width: 34px;
-  padding: 0px;
-  height: 34px;
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 18px;
 }
 
-.action-cell {
+.summary-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #dde6f2;
+  border-radius: 12px;
+  padding: 14px;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(20, 44, 92, 0.06);
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 12px 12px 0 0;
+}
+
+.summary-card--awaiting::before {
+  background: #f0a800;
+}
+
+.summary-card--won::before {
+  background: #2ea84f;
+}
+
+.summary-card--finished::before {
+  background: #dc3545;
+}
+
+.summary-title {
+  font-size: 13px;
+  color: #24354d;
+  font-weight: 600;
+}
+
+.summary-subtitle {
+  font-size: 11px;
+  color: #6d7f98;
+  margin-top: 2px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #0f2d63;
+  line-height: 1.2;
+}
+
+.filter-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.filter-btn {
+  border-color: #c5d2e6 !important;
+  color: #1f3352 !important;
+  font-weight: 600;
+  background: #ffffff;
+}
+
+.filter-btn.filter-btn--active {
+  background: #0a43a8 !important;
+  border-color: #0a43a8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px rgba(10, 67, 168, 0.25);
+}
+
+.request-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.request-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid #dbe6f7;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 22px rgba(22, 47, 93, 0.12);
+}
+
+.request-card__title {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1c2b3f;
+  text-decoration: none;
+}
+
+.request-card__author {
+  margin-top: 2px;
+  color: #5c6f89;
+}
+
+.request-card__badges {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.request-card__meta {
+  margin-top: 10px;
+  font-size: 14px;
+  display: grid;
   gap: 4px;
+}
+
+.meta-line {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.meta-label {
+  font-weight: 700;
+  color: #1e2f4a;
+}
+
+.meta-value {
+  color: #273a55;
+}
+
+.request-card__actions {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.winner-message {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 40px;
+  white-space: nowrap;
+  border-radius: 8px !important;
+  font-weight: 700;
+}
+
+.action-btn__icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.action-btn--primary {
+  box-shadow: 0 6px 14px rgba(37, 64, 173, 0.28);
+}
+
+.action-btn--success {
+  background: #28a745 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
+}
+
+.action-btn--danger {
+  background: #dc3545 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px rgba(220, 53, 69, 0.25);
+}
+
+@media (max-width: 767px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summary-subtitle {
+    display: none;
+  }
+
+  .summary-value {
+    font-size: 22px;
+  }
+
+  .request-card {
+    padding: 14px;
+  }
+
+  .request-card__title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .request-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .request-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
