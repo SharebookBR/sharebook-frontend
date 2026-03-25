@@ -11,6 +11,15 @@
       </div>
     </div>
 
+    <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/jobs" title="Acompanhar jobs">
+        <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Painel de Jobs</h5>
+      </div>
+    </div>
+
     <div class="card">
       <a routerLink="/myaccount" title="Editar perfil">
         <img class="card-img-top panel-item" src="../../../assets/img/learning.svg" alt="Card image" />
