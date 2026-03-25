@@ -73,9 +73,13 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     return trackingNumber ? trackingNumber : null;
   }
 
+  public showLogistics(item: MyRequestItem): boolean {
+    return item.status !== BookRequestStatus.AWAITING_ACTION;
+  }
+
   public getLogisticsLabel(item: MyRequestItem): string {
     if (!this.isDonated(item.status)) {
-      return 'Aguardando decisão do doador';
+      return 'Não se aplica';
     }
 
     switch ((item.bookStatus || '').toLowerCase()) {
@@ -97,6 +101,8 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       case BookRequestStatus.REFUSED:
       case BookRequestStatus.CANCELED:
         return '#dc3545'; // danger
+      case BookRequestStatus.AWAITING_ACTION:
+        return '#0a43a8'; // info
       default:
         return '#fff'; // light
     }
@@ -108,6 +114,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         return '#fff';
       case BookRequestStatus.REFUSED:
       case BookRequestStatus.CANCELED:
+      case BookRequestStatus.AWAITING_ACTION:
         return '#fff';
       default:
         return '#414141';
