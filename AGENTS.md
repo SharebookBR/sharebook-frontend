@@ -58,6 +58,16 @@ curl --location 'https://api-dev.sharebook.com.br/api/Account/Login' \
 - Se a ferramenta não aparecer na sessão, documentar no report final:  
   “`browser_container` não está disponível neste ambiente, então não foi possível anexar screenshot.”
 
+## Git: quando a PR estiver com conflito na `develop`
+- Em alguns ambientes o repo local pode vir sem remote configurado (apenas branch `work` local).
+- Fluxo recomendado para destravar:
+  1. `git remote add origin https://github.com/SharebookBR/sharebook-frontend.git` (se ainda não existir)
+  2. `git fetch origin --prune`
+  3. `git rebase origin/develop`
+  4. Resolver conflitos, `git add ...` e `git rebase --continue`
+  5. `git push --force-with-lease origin <sua-branch>`
+- Dica: ao resolver conflito, priorizar regra de negócio mais recente (não só o visual), e depois rodar `npm test -- --watch=false` + `npm run build-dev`.
+
 ## Troubleshooting testes
 - Sintoma: `npm test` falha por ausência de browser headless ou libs nativas do Chromium.
 - Passos que destravam o ambiente (ordem recomendada):
