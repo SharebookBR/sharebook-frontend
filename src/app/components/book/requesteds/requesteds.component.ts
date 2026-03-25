@@ -74,7 +74,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   }
 
   public showLogistics(item: MyRequestItem): boolean {
-    return item.status !== BookRequestStatus.AWAITING_ACTION;
+    return item.status === BookRequestStatus.DONATED;
   }
 
   public getLogisticsLabel(item: MyRequestItem): string {
