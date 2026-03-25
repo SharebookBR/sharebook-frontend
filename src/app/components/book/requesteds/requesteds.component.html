@@ -52,7 +52,7 @@
         </div>
 
         <div class="request-card__meta">
-          <div class="meta-line">
+          <div class="meta-line" *ngIf="showLogistics(element)">
             <span class="meta-label">Logística:</span>
             <span class="meta-value">{{ getLogisticsLabel(element) }}</span>
           </div>
