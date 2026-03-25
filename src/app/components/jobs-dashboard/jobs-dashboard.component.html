@@ -1,0 +1,120 @@
+<div class="jobs-dashboard container">
+  <div class="jobs-dashboard__header">
+    <div>
+      <h1 class="display-4">Painel de Jobs</h1>
+      <p class="jobs-dashboard__subtitle">Visão administrativa dos jobs automáticos e da última execução registrada.</p>
+    </div>
+
+    <button mat-stroked-button color="primary" routerLink="/panel">Voltar ao painel</button>
+  </div>
+
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="!isLoading && loadError">
+    Não foi possível carregar o painel de jobs agora.
+  </div>
+
+  <ng-container *ngIf="!isLoading && dashboard">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card__label">Jobs cadastrados</div>
+        <div class="summary-card__value">{{ dashboard.summary.totalJobs }}</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-card__label">Ativos</div>
+        <div class="summary-card__value">{{ dashboard.summary.activeJobs }}</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-card__label">Inativos</div>
+        <div class="summary-card__value">{{ dashboard.summary.inactiveJobs }}</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-card__label">Com histórico</div>
+        <div class="summary-card__value">{{ dashboard.summary.jobsWithHistory }}</div>
+      </div>
+    </div>
+
+    <div class="executor-card">
+      <div class="executor-card__top">
+        <h2 class="executor-card__title">Último ciclo do JobExecutor</h2>
+        <span
+          class="executor-card__status"
+          [class.executor-card__status--success]="dashboard.executor.lastExecutionSuccess"
+          [class.executor-card__status--error]="dashboard.executor.lastExecutionSuccess === false"
+        >
+          {{
+            dashboard.executor.lastExecutionSuccess === true
+              ? 'Sucesso'
+              : dashboard.executor.lastExecutionSuccess === false
+              ? 'Erro'
+              : 'Sem histórico'
+          }}
+        </span>
+      </div>
+
+      <div class="executor-card__meta" *ngIf="hasExecutorHistory; else noExecutorHistory">
+        <span>Executado em {{ dashboard.executor.lastExecutionAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+        <span *ngIf="dashboard.executor.lastExecutionDurationSeconds != null">
+          Duração {{ dashboard.executor.lastExecutionDurationSeconds | number: '1.0-2' }}s
+        </span>
+      </div>
+
+      <ng-template #noExecutorHistory>
+        <div class="executor-card__meta">Nenhuma execução do executor foi registrada ainda.</div>
+      </ng-template>
+
+      <pre class="executor-card__details" *ngIf="dashboard.executor.details">{{ dashboard.executor.details }}</pre>
+    </div>
+
+    <div class="jobs-table-wrapper">
+      <table class="table table-hover jobs-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Job</th>
+            <th>Status</th>
+            <th>Periodicidade</th>
+            <th>Melhor horário</th>
+            <th>Última execução</th>
+            <th>Duração</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let job of dashboard.jobs">
+            <tr>
+              <td>{{ job.order }}</td>
+              <td>
+                <div class="jobs-table__title">{{ job.jobName }}</div>
+                <div class="jobs-table__description">{{ job.description }}</div>
+              </td>
+              <td>
+                <span class="job-badge" [class.job-badge--active]="job.active" [class.job-badge--inactive]="!job.active">
+                  {{ job.active ? 'Ativo' : 'Inativo' }}
+                </span>
+              </td>
+              <td>{{ job.interval }}</td>
+              <td>{{ job.bestTimeToExecute || 'Livre' }}</td>
+              <td>{{ job.lastExecutionAt ? (job.lastExecutionAt | date: 'dd/MM/yyyy HH:mm') : 'Nunca executado' }}</td>
+              <td>{{ job.lastExecutionDurationSeconds != null ? (job.lastExecutionDurationSeconds | number: '1.0-2') + 's' : '-' }}</td>
+            </tr>
+
+            <tr class="jobs-table__details-row">
+              <td colspan="7">
+                <div class="jobs-table__details">
+                  <strong>Último detalhe:</strong>
+                  <pre class="jobs-table__details-pre">{{ job.lastExecutionDetails || 'Sem detalhe registrado ainda.' }}</pre>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>
