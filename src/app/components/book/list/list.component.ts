@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,24 +16,24 @@ import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { BookVMItem } from './../../../core/models/bookVMItem';
 import { BookVM } from './../../../core/models/bookVM';
 
+type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks';
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
-export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = [];
-  private readonly desktopColumns: string[] = ['classification', 'dates', 'title', 'users', 'action'];
-  private readonly mobileColumns: string[] = ['classification', 'title', 'action'];
-
+export class ListComponent implements OnInit, OnDestroy {
   myBookArray = new MatTableDataSource<BookVMItem>();
+  allBooks: BookVMItem[] = [];
   statusSearchValues = [];
+  selectedFilter: AdminBooksFilter = 'needsAction';
+  statusFilter = '';
+  searchTerm = '';
 
   private _destroySubscribes$ = new Subject<void>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private _scBook: BookService,
@@ -44,11 +42,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     private _toastr: ToastrService,
     public dialog: MatDialog
   ) {}
-
-  ngAfterViewInit(): void {
-    this.myBookArray.sort = this.sort;
-    this.myBookArray.paginator = this.paginator;
-  }
 
   getAllBooks() {
     this.isLoadingSubject.next(true);
@@ -59,12 +52,12 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
         finalize(() => this.isLoadingSubject.next(false))
       )
       .subscribe((resp: BookVM) => {
-        this.myBookArray.data = resp.items;
+        this.allBooks = resp.items || [];
+        this.applyFilters();
       });
   }
 
   ngOnInit() {
-    this.updateDisplayedColumns();
     this.getAllBooks();
     // Carrega Status do ENUM BookDonationStatus
     const myBookDonationStatus = new Array();
@@ -231,16 +224,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    this.updateDisplayedColumns();
-  }
-
-  private updateDisplayedColumns() {
-    const isMobile = window.innerWidth <= 768;
-    this.displayedColumns = isMobile ? this.mobileColumns : this.desktopColumns;
-  }
-
   public getStatusBadgeClass(status: string): string {
     switch (status) {
       case BookDonationStatus.AVAILABLE:
@@ -265,7 +248,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public doFilter = (value: string) => {
-    this.myBookArray.filter = value.trim().toLocaleLowerCase();
+    this.searchTerm = (value || '').trim().toLocaleLowerCase();
+    this.applyFilters();
   };
 
   ngOnDestroy() {
@@ -274,12 +258,67 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchByStatus(status: string) {
-    this.doFilter(status);
+    this.statusFilter = (status || '').trim().toLocaleLowerCase();
+    this.applyFilters();
   }
 
   search(searchStr: string) {
     const mySelect = document.getElementById('selectSearchByStatus') as HTMLInputElement;
     mySelect.value = '';
+    this.statusFilter = '';
     this.doFilter(searchStr);
+  }
+
+  public setFilter(filter: AdminBooksFilter): void {
+    this.selectedFilter = filter;
+    this.applyFilters();
+  }
+
+  public isEbook(book: BookVMItem): boolean {
+    return (book.type || '').toLowerCase() === 'eletronic';
+  }
+
+  public get needsActionCount(): number {
+    return this.allBooks.filter(x =>
+      x.status === BookDonationStatus.WAITING_APPROVAL || x.status === BookDonationStatus.WAITING_DECISION
+    ).length;
+  }
+
+  public get shippingCount(): number {
+    return this.allBooks.filter(x =>
+      x.status === BookDonationStatus.WAITING_SEND || x.status === BookDonationStatus.SENT
+    ).length;
+  }
+
+  public get finishedCount(): number {
+    return this.allBooks.filter(x =>
+      x.status === BookDonationStatus.RECEIVED || x.status === BookDonationStatus.CANCELED
+    ).length;
+  }
+
+  private applyFilters(): void {
+    this.myBookArray.data = this.allBooks.filter(book => {
+      const matchesFilter = this.matchesFilter(book);
+      const matchesStatus = !this.statusFilter || (book.status || '').toLocaleLowerCase() === this.statusFilter;
+      const searchable = `${book.title || ''} ${book.author || ''} ${book.donor || ''} ${book.winner || ''} ${book.facilitator || ''}`.toLocaleLowerCase();
+      const matchesSearch = !this.searchTerm || searchable.includes(this.searchTerm);
+
+      return matchesFilter && matchesStatus && matchesSearch;
+    });
+  }
+
+  private matchesFilter(book: BookVMItem): boolean {
+    switch (this.selectedFilter) {
+      case 'needsAction':
+        return book.status === BookDonationStatus.WAITING_APPROVAL || book.status === BookDonationStatus.WAITING_DECISION;
+      case 'shipping':
+        return book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT;
+      case 'finished':
+        return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
+      case 'ebooks':
+        return this.isEbook(book);
+      default:
+        return true;
+    }
   }
 }
