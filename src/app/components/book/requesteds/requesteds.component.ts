@@ -95,6 +95,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       case BookRequestStatus.DONATED:
         return '#28a745'; // success
       case BookRequestStatus.REFUSED:
+      case BookRequestStatus.CANCELED:
         return '#dc3545'; // danger
       default:
         return '#fff'; // light
@@ -106,6 +107,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       case BookRequestStatus.DONATED:
         return '#fff';
       case BookRequestStatus.REFUSED:
+      case BookRequestStatus.CANCELED:
         return '#fff';
       default:
         return '#414141';

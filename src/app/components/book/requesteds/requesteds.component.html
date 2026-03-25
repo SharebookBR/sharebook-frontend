@@ -56,7 +56,7 @@
             <span class="meta-label">Logística:</span>
             <span class="meta-value">{{ getLogisticsLabel(element) }}</span>
           </div>
-          <div class="meta-line">
+          <div class="meta-line" *ngIf="isDonated(element.status)">
             <span class="meta-label">Rastreio:</span>
             <span class="meta-value">{{ getTrackingNumber(element) || 'Rastreio indisponível' }}</span>
           </div>
