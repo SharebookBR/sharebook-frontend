@@ -44,6 +44,20 @@ curl --location 'https://api-dev.sharebook.com.br/api/Account/Login' \
 - Em ambientes com proxy corporativo, comandos de CLI para APIs externas podem falhar, mesmo quando o acesso via browser funciona.
 - Para inspeção visual e feedback rápido, o MCP browser/playwright costuma funcionar bem com o frontend em `--host 0.0.0.0`.
 
+## Browser container (screenshots / inspeção visual)
+- **Pré-condição:** a ferramenta `browser_container` precisa estar habilitada no ambiente da sessão (isso é configuração da plataforma, não do repositório).
+- Quando estiver disponível, subir o app com host exposto:
+  1. `npm install`
+  2. `npm start -- --host 0.0.0.0 --port 4200`
+  3. Abrir `http://127.0.0.1:4200` (ou URL/porta indicada pelo ambiente) no browser container.
+- Se houver erro de conexão:
+  - verificar se o servidor Angular realmente subiu (`Compiled successfully`);
+  - conferir porta ocupada (`EADDRINUSE`) e trocar para `--port 4300`;
+  - manter `--host 0.0.0.0` (localhost puro pode não ficar acessível fora do processo);
+  - em app com API externa, validar CORS/ambiente (`npm run start-local` pode ajudar quando backend local está ativo).
+- Se a ferramenta não aparecer na sessão, documentar no report final:  
+  “`browser_container` não está disponível neste ambiente, então não foi possível anexar screenshot.”
+
 ## Troubleshooting testes
 - Sintoma: `npm test` falha por ausência de browser headless ou libs nativas do Chromium.
 - Passos que destravam o ambiente (ordem recomendada):
