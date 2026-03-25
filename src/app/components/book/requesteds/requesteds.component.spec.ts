@@ -78,7 +78,6 @@ describe('RequestedsComponent', () => {
     expect(component.canMarkAsReceived({ status: 'Donated', bookStatus: 'Received' } as any)).toBeFalse();
     expect(component.canMarkAsReceived({ status: 'WaitingAction', bookStatus: 'Sent' } as any)).toBeFalse();
   });
-
   it('should render canceled status badge with danger colors', () => {
     expect(component.getStatusBadgeBackgroundColor('Canceled')).toBe('#dc3545');
     expect(component.getStatusBadgeTextColor('Canceled')).toBe('#fff');
