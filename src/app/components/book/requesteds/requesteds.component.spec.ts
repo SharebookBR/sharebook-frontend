@@ -82,4 +82,9 @@ describe('RequestedsComponent', () => {
     expect(component.getStatusBadgeBackgroundColor('Canceled')).toBe('#dc3545');
     expect(component.getStatusBadgeTextColor('Canceled')).toBe('#fff');
   });
+
+  it('should render refused status badge with soft pink colors', () => {
+    expect(component.getStatusBadgeBackgroundColor('Denied')).toBe('#f8bfd2');
+    expect(component.getStatusBadgeTextColor('Denied')).toBe('#7a284b');
+  });
 });
