@@ -361,6 +361,29 @@
   margin-bottom: 5rem;
 }
 
+.digital-library-cta {
+  margin: -2.5rem auto 4rem;
+  padding: 1.5rem 1.25rem;
+  max-width: 640px;
+  text-align: center;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #dde6f2;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(20, 44, 92, 0.08);
+}
+
+.digital-library-cta__copy {
+  margin: 0 0 1rem;
+  color: #24354d;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.digital-library-cta__button {
+  min-width: 220px;
+  border-radius: 999px;
+}
+
 
 #book-covers {
   margin: 1rem;

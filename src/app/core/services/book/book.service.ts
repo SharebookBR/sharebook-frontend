@@ -43,6 +43,12 @@ export class BookService {
     );
   }
 
+  public getAvailableEbooksCount() {
+    return this._http.get<{ total: number }>(
+      `${this.config.apiEndpoint}/book/AvailableEBooksCount`
+    );
+  }
+
   public getRandom15Books() {
     return this._http.get<Book[]>(
       `${this.config.apiEndpoint}/book/Random15Books`
