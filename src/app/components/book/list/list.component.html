@@ -76,8 +76,7 @@
           <div *ngIf="shouldShowDecisionNotice(element)" class="admin-card__notice">
             {{ getDecisionNoticeLabel(element) }}
           </div>
-          <div><b>Métrica principal:</b> {{ getPrimaryMetric(element) }}</div>
-          <div *ngIf="canShowInterestedCount(element)"><b>Interessados:</b> {{ element.totalInterested || 0 }}</div>
+          <div>{{ getPrimaryMetric(element) }}</div>
           <div *ngIf="canShowWinner(element)"><b>Ganhador(a):</b> {{ element.winner }}</div>
           <div *ngIf="canShowFacilitator(element)"><b>Facilitador:</b> {{ element.facilitator }}</div>
           <div *ngIf="canShowTrackingInfo(element)"><b>Rastreio:</b> {{ element.trackingNumber }}</div>
@@ -112,15 +111,6 @@
 
           <button mat-stroked-button class="action-btn" (click)="onCustom('showUsersInfo', element)">
             <mat-icon class="action-btn__icon">group</mat-icon> Usuários
-          </button>
-
-          <button
-            mat-flat-button
-            class="action-btn action-btn--info"
-            *ngIf="canShowChangeDecisionDate(element)"
-            (click)="onCustom('changeDecisionDate', element)"
-          >
-            <mat-icon class="action-btn__icon">calendar_month</mat-icon> Alterar data
           </button>
 
           <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">

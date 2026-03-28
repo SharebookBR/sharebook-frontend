@@ -122,10 +122,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this._router.navigate([`book/form/${param.id}`]);
         break;
       }
-      case 'changeDecisionDate': {
-        this._router.navigate([`book/form/${param.id}`]);
-        break;
-      }
       case 'facilitatorNotes': {
         const modalRef = this.dialog.open(FacilitatorNotesComponent, { minWidth: 450 });
 
@@ -400,11 +396,6 @@ export class ListComponent implements OnInit, OnDestroy {
   public canShowTrackAction(book: BookVMItem): boolean {
     return !this.isEbook(book) &&
       (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
-  }
-
-  public canShowChangeDecisionDate(book: BookVMItem): boolean {
-    return !this.isEbook(book) &&
-      (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
   }
 
   public shouldShowDecisionNotice(book: BookVMItem): boolean {
