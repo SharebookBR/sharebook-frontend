@@ -16,7 +16,7 @@ import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { BookVMItem } from './../../../core/models/bookVMItem';
 import { BookVM } from './../../../core/models/bookVM';
 
-type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'available';
+type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available';
 
 @Component({
   selector: 'app-list',
@@ -424,6 +424,8 @@ export class ListComponent implements OnInit, OnDestroy {
         return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
       case 'ebooks':
         return this.isEbook(book);
+      case 'physical':
+        return !this.isEbook(book);
       case 'available':
         return book.status === BookDonationStatus.AVAILABLE;
       default:
