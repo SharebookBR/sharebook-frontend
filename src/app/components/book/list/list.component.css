@@ -152,8 +152,19 @@
   margin-top: 10px;
   font-size: 14px;
   display: grid;
-  gap: 2px;
+  gap: 4px;
   color: #273a55;
+}
+
+.admin-card__notice {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #856404;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .admin-card__actions {
