@@ -43,6 +43,12 @@ export class BookService {
     );
   }
 
+  public getRecentEbooks(page: number = 1, items: number = 100, days: number = 7): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/RecentEBooks/${page}/${items}?days=${days}`
+    );
+  }
+
   public getAvailableEbooksCount() {
     return this._http.get<{ total: number }>(
       `${this.config.apiEndpoint}/book/AvailableEBooksCount`

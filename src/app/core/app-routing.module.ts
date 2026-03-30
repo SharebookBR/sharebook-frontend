@@ -32,6 +32,7 @@ import { CategoriesListComponent } from '../components/category/categories-list/
 import { SettingsComponent } from '../components/settings/settings.component';
 import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
+import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
 
 const routes: Routes = [
   {
@@ -93,6 +94,10 @@ const routes: Routes = [
   {
     path: 'categorias/:slug',
     component: CategoryBooksComponent,
+  },
+  {
+    path: 'livros-digitais/novidades',
+    component: EbookRecentComponent,
   },
   {
     path: 'quem-somos',

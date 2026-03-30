@@ -102,6 +102,7 @@ import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component
 import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
 import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from './components/jobs-dashboard/jobs-dashboard.component';
+import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import { JobsDashboardComponent } from './components/jobs-dashboard/jobs-dashboa
     MaisSheetComponent,
     UnsubscribeComponent,
     JobsDashboardComponent,
+    EbookRecentComponent,
   ],
   imports: [
     BrowserModule,

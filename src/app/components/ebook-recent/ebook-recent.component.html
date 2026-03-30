@@ -1,0 +1,34 @@
+<div class="container recent-ebooks-page">
+  <nav aria-label="breadcrumb" class="recent-ebooks-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Vitrine</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Novos livros digitais da semana</li>
+    </ol>
+  </nav>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando novidades...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="recent-ebooks-header">
+    <h1>Novos livros digitais da semana</h1>
+    <p class="recent-ebooks-subtitle">
+      Aqui estão os ebooks aprovados nos últimos 7 dias.
+    </p>
+    <p class="recent-ebooks-count" *ngIf="books.length > 0">
+      {{ totalItems }} livro(s) digital(is) novo(s)
+    </p>
+  </div>
+
+  <div *ngIf="!isLoading && books.length > 0" class="row justify-content-center book-covers">
+    <app-book-card [book]="book" *ngFor="let book of books"></app-book-card>
+  </div>
+
+  <div *ngIf="!isLoading && books.length === 0" class="empty-state">
+    <i class="fa fa-book fa-4x"></i>
+    <h2>Nenhum livro digital novo por aqui</h2>
+    <p>Quando chegarem novidades, elas vão aparecer nesta página.</p>
+    <a routerLink="/" class="btn btn-primary">Voltar para a vitrine</a>
+  </div>
+</div>
