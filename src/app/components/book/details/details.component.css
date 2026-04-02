@@ -13,3 +13,12 @@
 .recaptcha-container {
   margin-bottom: 1rem;
 }
+
+.details-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.details-link:hover {
+  text-decoration: underline;
+}

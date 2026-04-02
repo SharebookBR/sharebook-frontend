@@ -30,8 +30,17 @@
           </span>
         </p>
         <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
-        <p><strong>Autor:</strong><br />{{ bookInfo.author }}</p>
-        <p><strong>Categoria:</strong><br />{{ bookInfo.category }}</p>
+        <p>
+          <strong>Autor:</strong><br />
+          <a class="details-link" [routerLink]="getAuthorSearchLink()">{{ bookInfo.author }}</a>
+        </p>
+        <p>
+          <strong>Categoria:</strong><br />
+          <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+            {{ getCategoryName() }}
+          </a>
+          <ng-template #categoryText>{{ getCategoryName() }}</ng-template>
+        </p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
           <strong>Sinopse:</strong><br />{{ bookInfo.synopsis }}
         </p>

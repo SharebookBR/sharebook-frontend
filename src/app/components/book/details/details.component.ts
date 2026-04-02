@@ -8,6 +8,7 @@ import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { Book } from '../../../core/models/book';
+import { CategoryService } from '../../../core/services/category/category.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
@@ -53,6 +54,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _router: Router,
     public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
+    private _scCategory: CategoryService,
     private _seo: SeoService,
     private _toastr: ToastrService,
     @Inject(APP_CONFIG) private config: AppConfig
@@ -263,6 +265,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   getBookTypeLabel(): string {
     return this.isEbook() ? 'Livro digital' : 'Livro físico';
+  }
+
+  getAuthorSearchLink(): string[] {
+    return ['/buscar', this.bookInfo.author || ''];
+  }
+
+  getCategoryLink(): string[] | null {
+    const categoryName = this.getCategoryName();
+
+    if (!categoryName) {
+      return null;
+    }
+
+    return ['/categorias', this._scCategory.generateSlug(categoryName)];
+  }
+
+  getCategoryName(): string {
+    if (!this.bookInfo?.category) {
+      return '';
+    }
+
+    return typeof this.bookInfo.category === 'string'
+      ? this.bookInfo.category
+      : this.bookInfo.category.name || '';
   }
 
   onDownloadEbook() {
