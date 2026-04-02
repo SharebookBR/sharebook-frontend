@@ -63,7 +63,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
         response => {
-          this.books = response.items || response || [];
+          this.books = this.sortBooksByType(response.items || response || []);
           this.countBooksByType();
           this.isLoading = false;
         },
@@ -90,6 +90,14 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   private countBooksByType() {
     this.ebooksCount = this.books.filter(book => book.type === 'Eletronic').length;
     this.physicalBooksCount = this.books.filter(book => book.type === 'Printed').length;
+  }
+
+  private sortBooksByType(books: Book[]): Book[] {
+    const physicalBooks = books.filter(book => book.type === 'Printed');
+    const ebooks = books.filter(book => book.type === 'Eletronic');
+    const otherBooks = books.filter(book => book.type !== 'Printed' && book.type !== 'Eletronic');
+
+    return [...physicalBooks, ...ebooks, ...otherBooks];
   }
 
   ngOnDestroy() {
