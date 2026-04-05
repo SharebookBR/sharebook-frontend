@@ -272,16 +272,29 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getCategoryLink(): string[] | null {
+    const categoryInfo = this.bookInfo?.categoryInfo;
     const categoryName = this.getCategoryName();
 
     if (!categoryName) {
       return null;
     }
 
+    if (categoryInfo?.parentCategoryName) {
+      return [
+        '/categorias',
+        this._scCategory.generateSlug(categoryInfo.parentCategoryName),
+        this._scCategory.generateSlug(categoryInfo.name),
+      ];
+    }
+
     return ['/categorias', this._scCategory.generateSlug(categoryName)];
   }
 
   getCategoryName(): string {
+    if (this.bookInfo?.categoryInfo?.name) {
+      return this.bookInfo.categoryInfo.name;
+    }
+
     if (!this.bookInfo?.category) {
       return '';
     }
@@ -289,6 +302,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return typeof this.bookInfo.category === 'string'
       ? this.bookInfo.category
       : this.bookInfo.category.name || '';
+  }
+
+  getParentCategoryLink(): string[] | null {
+    const categoryInfo = this.bookInfo?.categoryInfo;
+    if (!categoryInfo?.parentCategoryName) {
+      return null;
+    }
+
+    return ['/categorias', this._scCategory.generateSlug(categoryInfo.parentCategoryName)];
+  }
+
+  getParentCategoryName(): string {
+    return this.bookInfo?.categoryInfo?.parentCategoryName || '';
   }
 
   onDownloadEbook() {

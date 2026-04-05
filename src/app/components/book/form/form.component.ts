@@ -113,7 +113,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scCategory
       .getAll()
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((data) => (this.categories = data));
+      .subscribe((data) => (this.categories = this._scCategory.flattenForSelect(data)));
   }
 
   createFormGroup() {
@@ -521,5 +521,9 @@ export class FormComponent implements OnInit, OnDestroy {
     this.isSaved = true;
     this.pageTitle = 'Registro atualizado';
     this.isLoading = false;
+  }
+
+  getCategoryOptionLabel(category: Category): string {
+    return category.displayName || category.name;
   }
 }

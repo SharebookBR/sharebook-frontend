@@ -36,9 +36,18 @@
         </p>
         <p>
           <strong>Categoria:</strong><br />
-          <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
-            {{ getCategoryName() }}
-          </a>
+          <ng-container *ngIf="getParentCategoryLink() as parentCategoryLink; else singleCategory">
+            <a class="details-link" [routerLink]="parentCategoryLink">{{ getParentCategoryName() }}</a>
+            <span> &gt; </span>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-container>
+          <ng-template #singleCategory>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-template>
           <ng-template #categoryText>{{ getCategoryName() }}</ng-template>
         </p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">

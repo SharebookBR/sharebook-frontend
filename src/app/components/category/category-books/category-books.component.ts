@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Meta, Title } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -16,6 +16,8 @@ import { Category } from '../../../core/models/category';
 })
 export class CategoryBooksComponent implements OnInit, OnDestroy {
   public category: Category | null = null;
+  public parentCategory: Category | null = null;
+  public subcategories: Category[] = [];
   public books: Book[] = [];
   public isLoading = true;
   public notFound = false;
@@ -34,52 +36,77 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        switchMap(params => {
-          this.isLoading = true;
-          const slug = params['slug'];
-          return this.categoryService.getBySlug(slug);
-        })
-      )
-      .subscribe(category => {
-        if (!category) {
-          this.notFound = true;
-          this.isLoading = false;
-          return;
-        }
-
-        this.category = category;
-        this.updateSeoTags();
-        this.loadBooks();
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(params => {
+        this.isLoading = true;
+        this.notFound = false;
+        this.loadCategory(params['slug'], params['parentSlug']);
       });
   }
 
-  private loadBooks() {
-    if (!this.category) return;
+  private loadCategory(slug: string, parentSlug?: string) {
+    const request = parentSlug
+      ? this.categoryService.getByHierarchySlugs(parentSlug, slug)
+      : this.categoryService.getBySlug(slug);
 
-    this.bookService
-      .getBooksByCategoryId(this.category.id)
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(
-        response => {
-          this.books = this.sortBooksByType(response.items || response || []);
-          this.countBooksByType();
-          this.isLoading = false;
-        },
-        error => {
-          console.error('Erro ao carregar livros:', error);
-          this.books = [];
-          this.isLoading = false;
-        }
-      );
+    request.pipe(takeUntil(this._destroySubscribes$)).subscribe(category => {
+      if (!category) {
+        this.notFound = true;
+        this.category = null;
+        this.parentCategory = null;
+        this.subcategories = [];
+        this.books = [];
+        this.isLoading = false;
+        return;
+      }
+
+      this.category = category;
+      this.parentCategory = category.parentCategoryName
+        ? new Category({
+            id: category.parentCategoryId,
+            name: category.parentCategoryName,
+            slug: category.parentCategorySlug
+          })
+        : null;
+      this.subcategories = category.children || [];
+      this.updateSeoTags();
+      this.loadBooks();
+    });
+  }
+
+  private loadBooks() {
+    if (!this.category) {
+      return;
+    }
+
+    const request = this.parentCategory
+      ? this.bookService.getBooksByCategoryId(this.category.id)
+      : this.bookService.getBooksByCategoryTreeId(this.category.id);
+
+    request.pipe(takeUntil(this._destroySubscribes$)).subscribe(
+      response => {
+        this.books = this.sortBooksByType(response.items || response || []);
+        this.countBooksByType();
+        this.isLoading = false;
+      },
+      error => {
+        console.error('Erro ao carregar livros:', error);
+        this.books = [];
+        this.isLoading = false;
+      }
+    );
   }
 
   private updateSeoTags() {
-    if (!this.category) return;
+    if (!this.category) {
+      return;
+    }
 
-    const title = `${this.category.name} - Livros | ShareBook`;
-    const description = `Encontre livros de ${this.category.name} disponíveis para doação no ShareBook. Peça seu livro gratuitamente.`;
+    const categoryPath = this.parentCategory
+      ? `${this.parentCategory.name} > ${this.category.name}`
+      : this.category.name;
+    const title = `${categoryPath} - Livros | ShareBook`;
+    const description = `Encontre livros de ${categoryPath} disponíveis para doação no ShareBook. Peça seu livro gratuitamente.`;
 
     this.titleService.setTitle(title);
     this.metaService.updateTag({ name: 'description', content: description });
@@ -98,6 +125,10 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     const otherBooks = books.filter(book => book.type !== 'Printed' && book.type !== 'Eletronic');
 
     return [...physicalBooks, ...ebooks, ...otherBooks];
+  }
+
+  public getSubcategoryRoute(subcategory: Category): string[] {
+    return ['/categorias', this.category?.slug || '', subcategory.slug || ''];
   }
 
   ngOnDestroy() {

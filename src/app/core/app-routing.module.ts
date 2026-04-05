@@ -92,6 +92,10 @@ const routes: Routes = [
     component: CategoriesListComponent,
   },
   {
+    path: 'categorias/:parentSlug/:slug',
+    component: CategoryBooksComponent,
+  },
+  {
     path: 'categorias/:slug',
     component: CategoryBooksComponent,
   },

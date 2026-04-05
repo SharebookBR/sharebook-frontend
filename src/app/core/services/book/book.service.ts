@@ -228,9 +228,15 @@ export class BookService {
     );
   }
 
-  public getBooksByCategoryId(categoryId: number, page: number = 1, items: number = 100): Observable<any> {
+  public getBooksByCategoryId(categoryId: string, page: number = 1, items: number = 100): Observable<any> {
     return this._http.get<any>(
       `${this.config.apiEndpoint}/book/Category/${categoryId}/${page}/${items}`
+    );
+  }
+
+  public getBooksByCategoryTreeId(categoryId: string, page: number = 1, items: number = 100): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/CategoryTree/${categoryId}/${page}/${items}`
     );
   }
 
