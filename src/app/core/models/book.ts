@@ -3,6 +3,13 @@ import { BookDonationStatus } from './BookDonationStatus';
 
 export type BookType = 'Printed' | 'Eletronic';
 
+export interface BookCategoryInfo {
+  id: string;
+  name: string;
+  parentCategoryId?: string | null;
+  parentCategoryName?: string | null;
+}
+
 export class Book {
   title: string;
   author: string;
@@ -13,7 +20,8 @@ export class Book {
   userId: string;
   categoryId: string;
   userIdFacilitator: string;
-  category: Category;
+  category: Category | string;
+  categoryInfo?: BookCategoryInfo;
   imageUrl: string;
   imageName: string;
   chooseDate: Date;

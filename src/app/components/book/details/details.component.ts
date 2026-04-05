@@ -8,6 +8,7 @@ import { Category } from '../../../core/models/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { Book } from '../../../core/models/book';
+import { CategoryService } from '../../../core/services/category/category.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
@@ -53,6 +54,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _router: Router,
     public dialog: MatDialog,
     private _scAuthentication: AuthenticationService,
+    private _scCategory: CategoryService,
     private _seo: SeoService,
     private _toastr: ToastrService,
     @Inject(APP_CONFIG) private config: AppConfig
@@ -213,7 +215,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
 
-      // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event) => {
         const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
@@ -263,6 +264,56 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   getBookTypeLabel(): string {
     return this.isEbook() ? 'Livro digital' : 'Livro físico';
+  }
+
+  getAuthorSearchLink(): string[] {
+    return ['/buscar', this.bookInfo.author || ''];
+  }
+
+  getCategoryLink(): string[] | null {
+    const categoryInfo = this.bookInfo?.categoryInfo;
+    const categoryName = this.getCategoryName();
+
+    if (!categoryName) {
+      return null;
+    }
+
+    if (categoryInfo?.parentCategoryName) {
+      return [
+        '/categorias',
+        this._scCategory.generateSlug(categoryInfo.parentCategoryName),
+        this._scCategory.generateSlug(categoryInfo.name),
+      ];
+    }
+
+    return ['/categorias', this._scCategory.generateSlug(categoryName)];
+  }
+
+  getCategoryName(): string {
+    if (this.bookInfo?.categoryInfo?.name) {
+      return this.bookInfo.categoryInfo.name;
+    }
+
+    if (!this.bookInfo?.category) {
+      return '';
+    }
+
+    return typeof this.bookInfo.category === 'string'
+      ? this.bookInfo.category
+      : this.bookInfo.category.name || '';
+  }
+
+  getParentCategoryLink(): string[] | null {
+    const categoryInfo = this.bookInfo?.categoryInfo;
+    if (!categoryInfo?.parentCategoryName) {
+      return null;
+    }
+
+    return ['/categorias', this._scCategory.generateSlug(categoryInfo.parentCategoryName)];
+  }
+
+  getParentCategoryName(): string {
+    return this.bookInfo?.categoryInfo?.parentCategoryName || '';
   }
 
   onDownloadEbook() {

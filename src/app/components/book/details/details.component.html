@@ -23,23 +23,38 @@
         />
       </div>
       <div class="form-group col-lg-8">
-        <!-- Tag de tipo de livro -->
         <p>
           <span class="badge" [ngClass]="isEbook() ? 'badge-info' : 'badge-secondary'">
             {{ getBookTypeLabel() }}
           </span>
         </p>
         <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
-        <p><strong>Autor:</strong><br />{{ bookInfo.author }}</p>
-        <p><strong>Categoria:</strong><br />{{ bookInfo.category }}</p>
+        <p>
+          <strong>Autor:</strong><br />
+          <a class="details-link" [routerLink]="getAuthorSearchLink()">{{ bookInfo.author }}</a>
+        </p>
+        <p>
+          <strong>Categoria:</strong><br />
+          <ng-container *ngIf="getParentCategoryLink() as parentCategoryLink; else singleCategory">
+            <a class="details-link" [routerLink]="parentCategoryLink">{{ getParentCategoryName() }}</a>
+            <span> &gt; </span>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-container>
+          <ng-template #singleCategory>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-template>
+          <ng-template #categoryText>{{ getCategoryName() }}</ng-template>
+        </p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
           <strong>Sinopse:</strong><br />{{ bookInfo.synopsis }}
         </p>
-        <!-- Data de escolha do ganhador (apenas para livro físico) -->
         <p *ngIf="available && !isEbook()">
           <strong>Quando será anunciado o(a) ganhador(a) deste livro?</strong><br />{{ chooseDateInfo }}
         </p>
-        <!-- Informações de frete (apenas para livro físico) -->
         <p *ngIf="available && userProfile && !isEbook()"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
         <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight && !isEbook()">
           <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight" />
@@ -48,13 +63,11 @@
           >
         </div>
 
-        <!-- Informação de download para livros digitais -->
         <div *ngIf="isEbook() && available" class="alert alert-info mt-3">
           <strong>Livro digital disponível gratuitamente!</strong><br />
           Clique no botão abaixo para receber este livro.
         </div>
 
-        <!-- Aviso de livro digital indisponível -->
         <div *ngIf="isEbook() && !available" class="alert alert-warning mt-3">
           <strong>Este livro digital não está mais disponível.</strong>
         </div>
@@ -67,7 +80,6 @@
 
           <span class="badge badge-danger" *ngIf="!isEbook() && !requested && !available">Não disponível.</span>
 
-          <!-- Botão de receber livro digital (acesso imediato, sem login) -->
           <button
             mat-flat-button
             color="accent"
@@ -78,7 +90,6 @@
             <mat-icon>download</mat-icon> Receber livro digital
           </button>
 
-          <!-- Botão de interesse (apenas para livros físicos) -->
           <button
             mat-flat-button
             color="primary"
@@ -100,7 +111,6 @@
             Entrar para solicitar este livro
           </button>
 
-          <!-- Botão de denúncia de direitos autorais (apenas para livros digitais, visível para todos) -->
           <button
             mat-stroked-button
             color="warn"

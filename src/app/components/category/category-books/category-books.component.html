@@ -1,21 +1,22 @@
 <div class="container category-page">
-  <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="category-breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a routerLink="/">Vitrine</a></li>
+      <li class="breadcrumb-item"><a routerLink="/categorias">Categorias</a></li>
+      <li class="breadcrumb-item" *ngIf="parentCategory">
+        <a [routerLink]="['/categorias', parentCategory.slug]">{{ parentCategory.name }}</a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">
         {{ category?.name || 'Categoria' }}
       </li>
     </ol>
   </nav>
 
-  <!-- Loading -->
   <div *ngIf="isLoading" class="loading-container">
     <mat-spinner diameter="50"></mat-spinner>
     <p>Carregando livros...</p>
   </div>
 
-  <!-- Not Found -->
   <div *ngIf="notFound && !isLoading" class="not-found-container">
     <i class="fa fa-exclamation-circle fa-4x"></i>
     <h2>Categoria nao encontrada</h2>
@@ -23,7 +24,6 @@
     <a routerLink="/" class="btn btn-primary">Voltar para a Vitrine</a>
   </div>
 
-  <!-- Category Header -->
   <div *ngIf="category && !isLoading && !notFound" class="category-header">
     <h1>{{ category.name }}</h1>
     <p class="books-count">{{ books.length }} livro(s) disponivel(is)</p>
@@ -37,12 +37,31 @@
     </div>
   </div>
 
-  <!-- Books Grid -->
+  <div *ngIf="!isLoading && !notFound && subcategories.length > 0" class="mb-4">
+    <h2 class="h4 mb-3">Subcategorias</h2>
+    <div class="categories-grid">
+      <a
+        *ngFor="let subcategory of subcategories"
+        class="category-card has-books"
+        [routerLink]="getSubcategoryRoute(subcategory)">
+        <div class="category-icon">
+          <i class="fa fa-bookmark"></i>
+        </div>
+        <div class="category-info">
+          <span class="category-name">{{ subcategory.name }}</span>
+          <span class="category-count">Refine sua exploracao</span>
+        </div>
+        <div class="category-arrow">
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+
   <div *ngIf="!isLoading && !notFound && books.length > 0" class="row justify-content-center book-covers">
     <app-book-card [book]="book" *ngFor="let book of books"></app-book-card>
   </div>
 
-  <!-- Empty State -->
   <div *ngIf="!isLoading && !notFound && books.length === 0" class="empty-state">
     <i class="fa fa-book fa-4x"></i>
     <h2>Nenhum livro disponivel</h2>
