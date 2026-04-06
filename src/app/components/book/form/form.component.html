@@ -89,10 +89,29 @@
 
         <div class="form-group col-md-8 mb-4">
           <label class="col-form-label" for="categoryId">Categoria</label>
-          <select class="form-control" formControlName="categoryId" id="categoryId">
-            <option value=""></option>
-            <option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</option>
-          </select>
+          <input
+            id="categoryId"
+            type="text"
+            class="form-control"
+            [formControl]="categorySearchControl"
+            [matAutocomplete]="categoryAutocomplete"
+            [class.is-invalid]="formGroup.controls['categoryId'].touched && !formGroup.controls['categoryId'].valid"
+            (blur)="onCategoryBlur()"
+          />
+          <mat-autocomplete
+            #categoryAutocomplete="matAutocomplete"
+            [displayWith]="displayCategoryLabel"
+            (optionSelected)="onCategorySelected($event.option.value)"
+          >
+            <mat-option
+              *ngFor="let category of filteredCategories"
+              [value]="category"
+              [disabled]="!isCategorySelectable(category)"
+              [ngStyle]="getCategoryOptionStyles(category)"
+            >
+              {{ getCategoryOptionLabel(category) }}
+            </mat-option>
+          </mat-autocomplete>
           <div *ngIf="formGroup.controls['categoryId'].touched && !formGroup.controls['categoryId'].valid">
             <small class="form-text text-danger" *ngIf="formGroup.controls['categoryId'].hasError('required')">
               Informe a categoria do livro.

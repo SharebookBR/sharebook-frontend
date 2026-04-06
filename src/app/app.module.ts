@@ -24,6 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // used to create fake backend
 import { fakeBackendProvider } from './core/helpers';
@@ -181,6 +182,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MatDialogModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatAutocompleteModule,
     MatIconModule,
     MatBottomSheetModule,
     MatListModule,

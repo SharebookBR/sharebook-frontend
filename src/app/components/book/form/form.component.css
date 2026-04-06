@@ -24,6 +24,10 @@ input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
+input.is-invalid {
+  border: 1px solid red;
+}
+
 @media (max-width: 600px) {
   .form-row {
     flex-direction: column;

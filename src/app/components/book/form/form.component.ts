@@ -3,7 +3,7 @@ import { Profile } from './../../../core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -29,8 +29,10 @@ import { BookType } from 'src/app/core/models/book';
 })
 export class FormComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
+  categorySearchControl = new FormControl('');
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
+  filteredCategories: Category[] = [];
   facilitators: User[] = [];
   isSaved: Boolean;
 
@@ -113,7 +115,25 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scCategory
       .getAll()
       .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((data) => (this.categories = data));
+      .subscribe((data) => {
+        this.categories = this._scCategory.flattenForSelect(data);
+        this.filteredCategories = this.categories;
+        this.syncCategorySearchControl();
+      });
+
+    this.categorySearchControl.valueChanges
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((value) => {
+        const searchTerm = this.getCategorySearchTerm(value);
+        this.filteredCategories = this.filterCategories(searchTerm);
+
+        const selectedCategory = this.findSelectedCategory();
+        const selectedLabel = selectedCategory ? this.getCategoryOptionLabel(selectedCategory) : '';
+
+        if (typeof value === 'string' && value !== selectedLabel) {
+          this.formGroup.get('categoryId').setValue('');
+        }
+      });
   }
 
   createFormGroup() {
@@ -260,6 +280,7 @@ export class FormComponent implements OnInit, OnDestroy {
             .get('userIdFacilitator')
             .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
           this.formGroup.setValue(bookForUpdate);
+          this.syncCategorySearchControl();
           this.getAllFacilitators();
         });
     }
@@ -521,5 +542,110 @@ export class FormComponent implements OnInit, OnDestroy {
     this.isSaved = true;
     this.pageTitle = 'Registro atualizado';
     this.isLoading = false;
+  }
+
+  getCategoryOptionLabel(category: Category): string {
+    if (category.parentCategoryId) {
+      return `└ ${category.name}`;
+    }
+
+    return category.displayName || category.name;
+  }
+
+  isCategorySelectable(category: Category): boolean {
+    return !category.children || category.children.length === 0;
+  }
+
+  getCategoryOptionStyles(category: Category): { [key: string]: string } | null {
+    if (!this.isCategorySelectable(category)) {
+      return {
+        'background-color': '#e2e6ea',
+        color: '#5a6268',
+        'font-weight': '600'
+      };
+    }
+
+    return null;
+  }
+
+  displayCategoryLabel = (value?: Category | string | null): string => {
+    if (!value) {
+      return '';
+    }
+
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    return value.displayName || value.name;
+  };
+
+  onCategorySelected(category: Category) {
+    if (!this.isCategorySelectable(category)) {
+      return;
+    }
+
+    this.formGroup.get('categoryId').setValue(category.id);
+    this.formGroup.get('categoryId').markAsTouched();
+    this.categorySearchControl.setValue(category, { emitEvent: false });
+  }
+
+  onCategoryBlur() {
+    this.formGroup.get('categoryId').markAsTouched();
+    this.syncCategorySearchControl();
+  }
+
+  private syncCategorySearchControl() {
+    const selectedCategory = this.findSelectedCategory();
+
+    if (selectedCategory) {
+      this.categorySearchControl.setValue(selectedCategory, { emitEvent: false });
+      return;
+    }
+
+    this.categorySearchControl.setValue('', { emitEvent: false });
+  }
+
+  private findSelectedCategory(): Category | undefined {
+    const selectedCategoryId = this.formGroup.get('categoryId').value;
+    return this.categories.find(category => category.id === selectedCategoryId);
+  }
+
+  private filterCategories(searchTerm: string): Category[] {
+    const normalizedSearch = this.normalizeSearchText(searchTerm);
+
+    if (!normalizedSearch) {
+      return this.categories;
+    }
+
+    return this.categories.filter(category =>
+      this.normalizeSearchText(this.getCategoryFilterText(category)).includes(normalizedSearch)
+    );
+  }
+
+  private getCategorySearchTerm(value: Category | string | null): string {
+    if (!value) {
+      return '';
+    }
+
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    return this.getCategoryFilterText(value);
+  }
+
+  private getCategoryFilterText(category: Category): string {
+    return [category.parentCategoryName, category.name, category.displayName]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  private normalizeSearchText(value: string): string {
+    return (value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
   }
 }

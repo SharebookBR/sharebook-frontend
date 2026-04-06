@@ -45,7 +45,7 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
       .getAllWithSlug()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((categories) => {
-        this.categories = categories;
+        this.categories = this._scCategory.getRootCategories(categories);
         categoriesLoaded = true;
         if (booksLoaded) {
           this.isLoading = false;
@@ -74,8 +74,10 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCategoryBookCount(categoryId: number): number {
-    return this.categoryBookCount.get(String(categoryId)) || 0;
+  getCategoryBookCount(category: Category): number {
+    return this._scCategory
+      .collectCategoryIds(category)
+      .reduce((total, categoryId) => total + (this.categoryBookCount.get(String(categoryId)) || 0), 0);
   }
 
   ngOnDestroy() {

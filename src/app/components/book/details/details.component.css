@@ -22,3 +22,61 @@
 .details-link:hover {
   text-decoration: underline;
 }
+
+.book-type-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+}
+
+.book-type-badge i {
+  font-size: 10px;
+}
+
+.details-book-type-badge {
+  margin-bottom: 4px;
+}
+
+.badge-ebook {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badge-physical {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.details-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.details-action-button {
+  min-height: 42px;
+}
+
+@media (max-width: 767px) {
+  .details-actions {
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .details-action-button {
+    width: min(100%, 280px);
+    justify-content: center;
+    margin: 0;
+  }
+}
