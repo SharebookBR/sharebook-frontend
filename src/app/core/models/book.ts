@@ -10,6 +10,11 @@ export interface BookCategoryInfo {
   parentCategoryName?: string | null;
 }
 
+export interface BookDonorInfo {
+  displayName: string;
+  linkedin?: string | null;
+}
+
 export class Book {
   title: string;
   author: string;
@@ -34,4 +39,5 @@ export class Book {
   type: BookType;
   pdfBytes?: string;
   eBookPdfPath?: string;
+  donor?: BookDonorInfo;
 }

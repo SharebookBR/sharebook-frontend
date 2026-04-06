@@ -215,7 +215,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
 
-      // tslint:disable-next-line:no-shadowed-variable
       reader.onload = (event) => {
         const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
@@ -286,7 +285,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this._scCategory.generateSlug(categoryInfo.name),
       ];
     }
-
     return ['/categorias', this._scCategory.generateSlug(categoryName)];
   }
 
@@ -294,7 +292,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.bookInfo?.categoryInfo?.name) {
       return this.bookInfo.categoryInfo.name;
     }
-
     if (!this.bookInfo?.category) {
       return '';
     }
@@ -316,7 +313,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getParentCategoryName(): string {
     return this.bookInfo?.categoryInfo?.parentCategoryName || '';
   }
-
   onDownloadEbook() {
     if (this.bookInfo.slug) {
       const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
