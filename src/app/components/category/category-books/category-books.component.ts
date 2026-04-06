@@ -68,7 +68,9 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
             slug: category.parentCategorySlug
           })
         : null;
-      this.subcategories = category.children || [];
+      this.subcategories = [...(category.children || [])].sort((left, right) =>
+        left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+      );
       this.updateSeoTags();
       this.loadBooks();
     });
@@ -130,6 +132,23 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   public getSubcategoryRoute(subcategory: Category): string[] {
     return ['/categorias', this.category?.slug || '', subcategory.slug || ''];
   }
+
+  public getSubcategoryBookCount(subcategory: Category): number {
+    return this.books.filter(book => book.categoryId === subcategory.id).length;
+  }
+
+  public shouldShowBooksGrid(): boolean {
+    return !this.subcategories.length && this.books.length > 0;
+  }
+
+  public shouldShowEmptyState(): boolean {
+    return !this.subcategories.length && this.books.length === 0;
+  }
+
+  public getBooksAvailableLabel(): string {
+    return this.books.length === 1 ? '1 livro disponível' : `${this.books.length} livros disponíveis`;
+  }
+
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();

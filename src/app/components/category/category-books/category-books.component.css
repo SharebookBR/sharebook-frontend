@@ -104,6 +104,29 @@
   box-shadow: 0 10px 24px rgba(48, 45, 89, 0.08);
 }
 
+.category-card.has-books {
+  border-left: 3px solid #302d59;
+}
+
+.category-card.no-books {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.category-card.no-books:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.category-card.no-books .category-icon {
+  background: #d7d9df;
+  color: #ffffff;
+}
+
+.category-card.no-books .category-arrow {
+  display: none;
+}
+
 .category-icon {
   width: 42px;
   height: 42px;

@@ -16,6 +16,7 @@ import { Book } from '../../../core/models/book';
 export class CategoriesListComponent implements OnInit, OnDestroy {
   public categories: Category[] = [];
   public categoryBookCount: Map<string, number> = new Map();
+  public expandedCategoryIds: Set<string> = new Set();
   public isLoading = true;
 
   private _destroySubscribes$ = new Subject<void>();
@@ -78,6 +79,43 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     return this._scCategory
       .collectCategoryIds(category)
       .reduce((total, categoryId) => total + (this.categoryBookCount.get(String(categoryId)) || 0), 0);
+  }
+
+  hasSubcategories(category: Category): boolean {
+    return !!category.children && category.children.length > 0;
+  }
+
+  isExpanded(category: Category): boolean {
+    return this.expandedCategoryIds.has(category.id);
+  }
+
+  toggleCategory(category: Category) {
+    if (!this.hasSubcategories(category)) {
+      return;
+    }
+
+    if (this.isExpanded(category)) {
+      this.expandedCategoryIds.delete(category.id);
+      return;
+    }
+
+    this.expandedCategoryIds.add(category.id);
+  }
+
+  getCategoryCountLabel(category: Category): string {
+    const totalBooks = this.getCategoryBookCount(category);
+
+    if (this.hasSubcategories(category)) {
+      return `${totalBooks} livro(s) nas subcategorias`;
+    }
+
+    return `${totalBooks} livro(s)`;
+  }
+
+  getSortedSubcategories(category: Category): Category[] {
+    return [...(category.children || [])].sort((left, right) =>
+      left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+    );
   }
 
   ngOnDestroy() {
