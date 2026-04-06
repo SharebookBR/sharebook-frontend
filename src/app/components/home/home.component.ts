@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public availableBooks: Book[] = [];
   public hasBook: Boolean = true;
   public ebooks: Book[] = [];
+  public totalAvailableEbooks: number = 0;
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -57,6 +58,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((ebooks) => {
         this.ebooks = ebooks;
       });
+
+    this._scBook
+      .getAvailableEbooksCount()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((response) => {
+        this.totalAvailableEbooks = response?.total || 0;
+      });
+  }
+
+  public get remainingEbooksCount(): number {
+    return Math.max(0, this.totalAvailableEbooks - this.ebooks.length);
   }
 
   getMeetups() {

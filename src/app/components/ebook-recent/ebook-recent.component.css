@@ -1,0 +1,98 @@
+.recent-ebooks-page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  min-height: 60vh;
+}
+
+.recent-ebooks-breadcrumb {
+  margin-bottom: 1.5rem;
+}
+
+.recent-ebooks-breadcrumb .breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-ebooks-breadcrumb .breadcrumb-item a {
+  color: #302d59;
+  text-decoration: none;
+}
+
+.recent-ebooks-breadcrumb .breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.recent-ebooks-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.recent-ebooks-header h1 {
+  color: #302d59;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.recent-ebooks-subtitle,
+.recent-ebooks-count {
+  color: #666;
+  margin: 0.35rem 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  color: #666;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.empty-state i {
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state .btn {
+  background-color: #302d59;
+  border-color: #302d59;
+}
+
+.empty-state .btn:hover {
+  background-color: #252347;
+  border-color: #252347;
+}
+
+.book-covers {
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .recent-ebooks-header h1 {
+    font-size: 1.5rem;
+  }
+}

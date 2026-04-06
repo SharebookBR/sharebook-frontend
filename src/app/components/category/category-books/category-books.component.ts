@@ -130,7 +130,6 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   public getSubcategoryRoute(subcategory: Category): string[] {
     return ['/categorias', this.category?.slug || '', subcategory.slug || ''];
   }
-
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();

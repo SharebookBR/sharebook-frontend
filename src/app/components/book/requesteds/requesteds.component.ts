@@ -99,6 +99,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       case BookRequestStatus.DONATED:
         return '#28a745'; // success
       case BookRequestStatus.REFUSED:
+        return '#f8bfd2'; // soft pink
       case BookRequestStatus.CANCELED:
         return '#dc3545'; // danger
       case BookRequestStatus.AWAITING_ACTION:
@@ -113,6 +114,7 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       case BookRequestStatus.DONATED:
         return '#fff';
       case BookRequestStatus.REFUSED:
+        return '#7a284b';
       case BookRequestStatus.CANCELED:
       case BookRequestStatus.AWAITING_ACTION:
         return '#fff';

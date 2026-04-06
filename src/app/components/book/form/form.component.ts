@@ -159,6 +159,7 @@ export class FormComponent implements OnInit, OnDestroy {
       userIdFacilitator: [''],
       userId: ['', [Validators.required]],
       freightOption: [null],
+      chooseDate: [null],
       imageBytes: [''],
       imageName: [''],
       approve: [''],
@@ -247,6 +248,7 @@ export class FormComponent implements OnInit, OnDestroy {
               : null,
             userId: book.userId,
             freightOption: book.freightOption,
+            chooseDate: book.chooseDate ? this.formatDateForInput(book.chooseDate) : null,
             imageBytes: '',
             imageName: null,
             imageUrl: book.imageUrl,
@@ -436,6 +438,7 @@ export class FormComponent implements OnInit, OnDestroy {
       delete formValue.pdfBytes;
     } else {
       delete formValue.freightOption;
+      formValue.chooseDate = null;
     }
 
     return formValue;
@@ -515,6 +518,15 @@ export class FormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  private formatDateForInput(date: Date | string): string {
+    const parsedDate = new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return null;
+    }
+
+    return parsedDate.toISOString().slice(0, 10);
   }
 
   approve() {

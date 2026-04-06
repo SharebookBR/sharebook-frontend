@@ -16,7 +16,7 @@ import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { BookVMItem } from './../../../core/models/bookVMItem';
 import { BookVM } from './../../../core/models/bookVM';
 
-type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks';
+type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available';
 
 @Component({
   selector: 'app-list',
@@ -24,6 +24,7 @@ type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebook
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, OnDestroy {
+  public readonly BookDonationStatus = BookDonationStatus;
   myBookArray = new MatTableDataSource<BookVMItem>();
   allBooks: BookVMItem[] = [];
   statusSearchValues = [];
@@ -296,6 +297,112 @@ export class ListComponent implements OnInit, OnDestroy {
     ).length;
   }
 
+  public getPrimaryMetric(book: BookVMItem): string {
+    if (this.isEbook(book)) {
+      return `${book.downloadCount || 0} download(s)`;
+    }
+
+    if (!this.canShowInterestedCount(book)) {
+      return 'Sem etapa pública de pedidos ainda';
+    }
+
+    const interestedCount = book.totalInterested || 0;
+    const interestedLabel = interestedCount === 1 ? 'interessado' : 'interessados';
+    return `${interestedCount} ${interestedLabel}`;
+  }
+
+  public getPrimaryActionLabel(book: BookVMItem): string {
+    if (this.canChooseWinnerNow(book)) {
+      return 'Escolher ganhador';
+    }
+
+    return 'Ver pedidos';
+  }
+
+  public getPrimaryActionIcon(book: BookVMItem): string {
+    return this.canChooseWinnerNow(book) ? 'emoji_events' : 'format_list_bulleted';
+  }
+
+  public getDecisionNoticeLabel(book: BookVMItem): string {
+    if (!this.shouldShowDecisionNotice(book) || !book.chooseDate) {
+      return '';
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return '';
+    }
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const dueDate = new Date(chooseDate.getFullYear(), chooseDate.getMonth(), chooseDate.getDate()).getTime();
+    const dayDiff = Math.round((dueDate - today) / (24 * 60 * 60 * 1000));
+
+    if (dayDiff > 0) {
+      return `Decisão em ${dayDiff} ${dayDiff === 1 ? 'dia' : 'dias'}`;
+    }
+
+    if (dayDiff === 0) {
+      return 'Decisão hoje';
+    }
+
+    const lateDays = Math.abs(dayDiff);
+    return `Decisão atrasada há ${lateDays} ${lateDays === 1 ? 'dia' : 'dias'}`;
+  }
+
+  public canChooseWinnerNow(book: BookVMItem): boolean {
+    if (book.status !== BookDonationStatus.WAITING_DECISION || !book.chooseDate) {
+      return false;
+    }
+
+    const chooseDate = new Date(book.chooseDate);
+    if (Number.isNaN(chooseDate.getTime())) {
+      return false;
+    }
+
+    return Date.now() >= chooseDate.getTime();
+  }
+
+  public canShowPrimaryAction(book: BookVMItem): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
+  }
+
+  public canShowDecisionDate(book: BookVMItem): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
+  }
+
+  public canShowInterestedCount(book: BookVMItem): boolean {
+    return !this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL;
+  }
+
+  public canShowWinner(book: BookVMItem): boolean {
+    return !this.isEbook(book) && !!book.winner;
+  }
+
+  public canShowTrackingInfo(book: BookVMItem): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND ||
+        book.status === BookDonationStatus.SENT ||
+        book.status === BookDonationStatus.RECEIVED) &&
+      !!book.trackingNumber;
+  }
+
+  public canShowFacilitator(book: BookVMItem): boolean {
+    return !this.isEbook(book) && !!book.facilitator;
+  }
+
+  public canShowTrackAction(book: BookVMItem): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public shouldShowDecisionNotice(book: BookVMItem): boolean {
+    return !this.isEbook(book) &&
+      (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
+  }
+
   private applyFilters(): void {
     this.myBookArray.data = this.allBooks.filter(book => {
       const matchesFilter = this.matchesFilter(book);
@@ -317,6 +424,10 @@ export class ListComponent implements OnInit, OnDestroy {
         return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
       case 'ebooks':
         return this.isEbook(book);
+      case 'physical':
+        return !this.isEbook(book);
+      case 'available':
+        return book.status === BookDonationStatus.AVAILABLE;
       default:
         return true;
     }

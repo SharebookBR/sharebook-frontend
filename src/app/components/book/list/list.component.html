@@ -28,8 +28,10 @@
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'all'" (click)="setFilter('all')">Todos</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'needsAction'" (click)="setFilter('needsAction')">Precisa de ação</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'shipping'" (click)="setFilter('shipping')">Logística</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'physical'" (click)="setFilter('physical')">Físicos</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'ebooks'" (click)="setFilter('ebooks')">Digitais</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'finished'" (click)="setFilter('finished')">Finalizados</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'available'" (click)="setFilter('available')">Disponíveis</button>
   </div>
 
   <div class="container mt-4">
@@ -68,17 +70,17 @@
 
         <div class="admin-card__meta">
           <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
-          <div><b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}</div>
           <div><b>Doador:</b> {{ element.donor || '-' }}</div>
-          <div><b>Ganhador(a):</b> {{ element.winner || '-' }}</div>
-          <div><b>Facilitador:</b> {{ element.facilitator || '-' }}</div>
-          <ng-container *ngIf="isEbook(element); else physicalMetrics">
-            <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
-          </ng-container>
-          <ng-template #physicalMetrics>
-            <div><b>Interessados:</b> {{ element.totalInterested || 0 }}</div>
-            <div><b>Dias na vitrine:</b> {{ element.daysInShowcase || 0 }}</div>
-          </ng-template>
+          <div *ngIf="canShowDecisionDate(element)">
+            <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}
+          </div>
+          <div *ngIf="shouldShowDecisionNotice(element)" class="admin-card__notice">
+            {{ getDecisionNoticeLabel(element) }}
+          </div>
+          <div>{{ getPrimaryMetric(element) }}</div>
+          <div *ngIf="canShowWinner(element)"><b>Ganhador(a):</b> {{ element.winner }}</div>
+          <div *ngIf="canShowFacilitator(element)"><b>Facilitador:</b> {{ element.facilitator }}</div>
+          <div *ngIf="canShowTrackingInfo(element)"><b>Rastreio:</b> {{ element.trackingNumber }}</div>
         </div>
 
         <div class="admin-card__actions">
@@ -86,19 +88,25 @@
             <mat-icon class="action-btn__icon">edit_note</mat-icon> Editar
           </button>
 
-          <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">
-            <mat-icon class="action-btn__icon">delete_outline</mat-icon> Cancelar
-          </button>
-
-          <button mat-flat-button class="action-btn action-btn--yellow" (click)="onCustom('donate', element)">
-            <mat-icon class="action-btn__icon">format_list_bulleted</mat-icon> Ver pedidos
+          <button
+            mat-flat-button
+            class="action-btn action-btn--yellow"
+            *ngIf="canShowPrimaryAction(element)"
+            (click)="onCustom('donate', element)"
+          >
+            <mat-icon class="action-btn__icon">{{ getPrimaryActionIcon(element) }}</mat-icon> {{ getPrimaryActionLabel(element) }}
           </button>
 
           <button mat-flat-button class="action-btn action-btn--info" (click)="onCustom('facilitatorNotes', element)">
             <mat-icon class="action-btn__icon">sticky_note_2</mat-icon> Comentários
           </button>
 
-          <button mat-flat-button class="action-btn action-btn--neutral" (click)="onCustom('trackNumber', element)">
+          <button
+            mat-flat-button
+            class="action-btn action-btn--neutral"
+            *ngIf="canShowTrackAction(element)"
+            (click)="onCustom('trackNumber', element)"
+          >
             <mat-icon class="action-btn__icon">local_shipping</mat-icon> Rastreio
           </button>
 
@@ -106,8 +114,8 @@
             <mat-icon class="action-btn__icon">group</mat-icon> Usuários
           </button>
 
-          <button mat-flat-button class="action-btn action-btn--info" (click)="onCustom('renewChooseDate', element)">
-            <mat-icon class="action-btn__icon">calendar_month</mat-icon> Renovar data
+          <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">
+            <mat-icon class="action-btn__icon">delete_outline</mat-icon> Cancelar
           </button>
         </div>
       </div>
