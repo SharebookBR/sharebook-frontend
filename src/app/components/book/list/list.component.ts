@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
+import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
@@ -14,7 +13,8 @@ import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { BookVMItem } from './../../../core/models/bookVMItem';
-import { BookVM } from './../../../core/models/bookVM';
+import { AdminBookList } from './../../../core/models/adminBookList';
+import { AdminBookSummary } from './../../../core/models/adminBookSummary';
 
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available';
 
@@ -25,14 +25,19 @@ type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebook
 })
 export class ListComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;
-  myBookArray = new MatTableDataSource<BookVMItem>();
-  allBooks: BookVMItem[] = [];
+  pagedBooks: BookVMItem[] = [];
   statusSearchValues = [];
   selectedFilter: AdminBooksFilter = 'needsAction';
   statusFilter = '';
   searchTerm = '';
+  currentPage = 1;
+  pageSize = 24;
+  totalItems = 0;
+  summary: AdminBookSummary = this.createEmptySummary();
+  readonly pageSizeOptions = [12, 24, 48, 96];
 
   private _destroySubscribes$ = new Subject<void>();
+  private _searchInput$ = new Subject<string>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
@@ -44,35 +49,44 @@ export class ListComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {}
 
-  getAllBooks() {
+  loadBooks() {
     this.isLoadingSubject.next(true);
     this._scBook
-      .getAll()
+      .getAdminBooks(this.currentPage, this.pageSize, this.searchTerm, this.statusFilter, this.selectedFilter)
       .pipe(
         takeUntil(this._destroySubscribes$),
         finalize(() => this.isLoadingSubject.next(false))
       )
-      .subscribe((resp: BookVM) => {
-        this.allBooks = resp.items || [];
-        this.applyFilters();
+      .subscribe((resp: AdminBookList) => {
+        this.pagedBooks = resp.items || [];
+        this.summary = resp.summary || this.createEmptySummary();
+        this.totalItems = resp.totalItems || 0;
+        this.currentPage = resp.page || 1;
+        this.pageSize = resp.itemsPerPage || this.pageSize;
       });
   }
 
   ngOnInit() {
-    this.getAllBooks();
-    // Carrega Status do ENUM BookDonationStatus
-    const myBookDonationStatus = new Array();
-    Object.keys(BookDonationStatus).forEach((key) => {
-      myBookDonationStatus.push({
-        value: BookDonationStatus[key],
-        title: BookDonationStatus[key],
+    this._searchInput$
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe((value) => {
+        this.searchTerm = value;
+        this.currentPage = 1;
+        this.loadBooks();
       });
 
+    Object.keys(BookDonationStatus).forEach((key) => {
       this.statusSearchValues.push({
         value: BookDonationStatus[key],
         title: getStatusDescription(BookDonationStatus[key]),
       });
     });
+
+    this.loadBooks();
   }
 
   onCustom(iconClicked: string, param: BookVMItem) {
@@ -245,12 +259,12 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   reloadData() {
-    this.getAllBooks();
+    this.loadBooks();
   }
 
   public doFilter = (value: string) => {
-    this.searchTerm = (value || '').trim().toLocaleLowerCase();
-    this.applyFilters();
+    this.searchTerm = (value || '').trim();
+    this._searchInput$.next(this.searchTerm);
   };
 
   ngOnDestroy() {
@@ -259,20 +273,19 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   searchByStatus(status: string) {
-    this.statusFilter = (status || '').trim().toLocaleLowerCase();
-    this.applyFilters();
+    this.statusFilter = (status || '').trim();
+    this.currentPage = 1;
+    this.loadBooks();
   }
 
   search(searchStr: string) {
-    const mySelect = document.getElementById('selectSearchByStatus') as HTMLInputElement;
-    mySelect.value = '';
-    this.statusFilter = '';
     this.doFilter(searchStr);
   }
 
   public setFilter(filter: AdminBooksFilter): void {
     this.selectedFilter = filter;
-    this.applyFilters();
+    this.currentPage = 1;
+    this.loadBooks();
   }
 
   public isEbook(book: BookVMItem): boolean {
@@ -280,21 +293,71 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public get needsActionCount(): number {
-    return this.allBooks.filter(x =>
-      x.status === BookDonationStatus.WAITING_APPROVAL || x.status === BookDonationStatus.WAITING_DECISION
-    ).length;
+    return this.summary.needsAction || 0;
   }
 
   public get shippingCount(): number {
-    return this.allBooks.filter(x =>
-      x.status === BookDonationStatus.WAITING_SEND || x.status === BookDonationStatus.SENT
-    ).length;
+    return this.summary.shipping || 0;
   }
 
   public get finishedCount(): number {
-    return this.allBooks.filter(x =>
-      x.status === BookDonationStatus.RECEIVED || x.status === BookDonationStatus.CANCELED
-    ).length;
+    return this.summary.finished || 0;
+  }
+
+  public get totalFilteredBooks(): number {
+    return this.totalItems;
+  }
+
+  public get totalPages(): number {
+    return Math.max(Math.ceil(this.totalFilteredBooks / this.pageSize), 1);
+  }
+
+  public get paginationStart(): number {
+    if (this.totalFilteredBooks === 0) {
+      return 0;
+    }
+
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  public get paginationEnd(): number {
+    if (this.totalFilteredBooks === 0) {
+      return 0;
+    }
+
+    return Math.min(this.currentPage * this.pageSize, this.totalFilteredBooks);
+  }
+
+  public get visiblePages(): number[] {
+    if (this.totalPages <= 5) {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    }
+
+    const startPage = Math.max(1, Math.min(this.currentPage - 2, this.totalPages - 4));
+    return Array.from({ length: 5 }, (_, index) => startPage + index);
+  }
+
+  public changePageSize(value: string): void {
+    const nextPageSize = Number(value);
+
+    if (!nextPageSize || nextPageSize === this.pageSize) {
+      return;
+    }
+
+    this.pageSize = nextPageSize;
+    this.currentPage = 1;
+    this.loadBooks();
+  }
+
+  public goToPage(page: number): void {
+    const nextPage = Math.min(Math.max(page, 1), this.totalPages);
+
+    if (nextPage === this.currentPage) {
+      return;
+    }
+
+    this.currentPage = nextPage;
+    this.loadBooks();
   }
 
   public getPrimaryMetric(book: BookVMItem): string {
@@ -403,33 +466,15 @@ export class ListComponent implements OnInit, OnDestroy {
       (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
   }
 
-  private applyFilters(): void {
-    this.myBookArray.data = this.allBooks.filter(book => {
-      const matchesFilter = this.matchesFilter(book);
-      const matchesStatus = !this.statusFilter || (book.status || '').toLocaleLowerCase() === this.statusFilter;
-      const searchable = `${book.title || ''} ${book.author || ''} ${book.donor || ''} ${book.winner || ''} ${book.facilitator || ''}`.toLocaleLowerCase();
-      const matchesSearch = !this.searchTerm || searchable.includes(this.searchTerm);
-
-      return matchesFilter && matchesStatus && matchesSearch;
-    });
-  }
-
-  private matchesFilter(book: BookVMItem): boolean {
-    switch (this.selectedFilter) {
-      case 'needsAction':
-        return book.status === BookDonationStatus.WAITING_APPROVAL || book.status === BookDonationStatus.WAITING_DECISION;
-      case 'shipping':
-        return book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT;
-      case 'finished':
-        return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
-      case 'ebooks':
-        return this.isEbook(book);
-      case 'physical':
-        return !this.isEbook(book);
-      case 'available':
-        return book.status === BookDonationStatus.AVAILABLE;
-      default:
-        return true;
-    }
+  private createEmptySummary(): AdminBookSummary {
+    return {
+      all: 0,
+      needsAction: 0,
+      shipping: 0,
+      physical: 0,
+      ebooks: 0,
+      finished: 0,
+      available: 0,
+    };
   }
 }

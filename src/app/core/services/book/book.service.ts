@@ -1,9 +1,10 @@
 import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';
+import { AdminBookList } from '../../models/adminBookList';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map, filter } from 'rxjs/operators';
 
@@ -29,6 +30,37 @@ export class BookService {
 
   public getAll(): Observable<BookVM> {
     return this._http.get<BookVM>(`${this.config.apiEndpoint}/book/1/9999`);
+  }
+
+  public getAdminBooks(
+    page: number,
+    pageSize: number,
+    search?: string,
+    status?: string,
+    bucket?: string,
+    type?: string
+  ): Observable<AdminBookList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    return this._http.get<AdminBookList>(`${this.config.apiEndpoint}/book/Admin`, { params });
   }
 
   public getAvailableBooks() {

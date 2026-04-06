@@ -86,6 +86,41 @@
   box-shadow: 0 6px 14px rgba(10, 67, 168, 0.25);
 }
 
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 12px;
+  padding: 12px 14px;
+  border: 1px solid #dbe6f7;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+}
+
+.results-toolbar__summary {
+  color: #1f3352;
+  font-weight: 600;
+}
+
+.results-toolbar__page-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #526784;
+  font-weight: 600;
+}
+
+.results-toolbar__page-size select {
+  min-width: 80px;
+  padding: 6px 10px;
+  border: 1px solid #c5d2e6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f3352;
+}
+
 /* Book type badges */
 .book-type-badge {
   display: inline-flex;
@@ -250,6 +285,57 @@
   color: #ffffff !important;
 }
 
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.pagination-btn {
+  min-width: 42px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #c5d2e6;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f3352;
+  font-weight: 700;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pagination-btn:not(:disabled):hover {
+  border-color: #0a43a8;
+  color: #0a43a8;
+  box-shadow: 0 6px 14px rgba(10, 67, 168, 0.12);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination-btn--page {
+  padding: 0 12px;
+}
+
+.pagination-btn--active {
+  background: #0a43a8;
+  border-color: #0a43a8;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(10, 67, 168, 0.25);
+}
+
+.pagination-caption {
+  margin-top: 10px;
+  text-align: center;
+  color: #60738e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 @media (max-width: 767px) {
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -265,6 +351,19 @@
 
   .admin-card__title {
     font-size: 20px;
+  }
+
+  .results-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .results-toolbar__page-size {
+    justify-content: space-between;
+  }
+
+  .results-toolbar__page-size select {
+    flex: 1;
   }
 }
 

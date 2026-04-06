@@ -34,15 +34,15 @@
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'available'" (click)="setFilter('available')">Disponíveis</button>
   </div>
 
-  <div class="container mt-4">
+    <div class="container mt-4">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
-        <input matInput type="text" (keyup)="search($event.target.value)" placeholder="Pesquisar" />
+        <input matInput type="text" [value]="searchTerm" (keyup)="search($event.target.value)" placeholder="Pesquisar" />
       </mat-form-field>
       &nbsp;&nbsp;
 
       <mat-form-field>
-        <select matNativeControl (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
+        <select matNativeControl [value]="statusFilter" (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
           <option value="">Busca por Status</option>
           <option *ngFor="let status of statusSearchValues; let i = index" [value]="statusSearchValues[i].value">
             {{ statusSearchValues[i].title }}
@@ -51,8 +51,21 @@
       </mat-form-field>
     </div>
 
+    <div class="results-toolbar" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
+      <div class="results-toolbar__summary">
+        Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalFilteredBooks }} livros
+      </div>
+
+      <label class="results-toolbar__page-size">
+        Itens por página
+        <select [value]="pageSize" (change)="changePageSize($event.target.value)">
+          <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+    </div>
+
     <div class="admin-cards-grid" *ngIf="(isLoading$ | async) === false">
-      <div class="admin-card" *ngFor="let element of myBookArray.data">
+      <div class="admin-card" *ngFor="let element of pagedBooks">
         <div class="admin-card__header">
           <div class="admin-card__title">{{ element.title }}</div>
           <div class="admin-card__author">{{ element.author }}</div>
@@ -121,7 +134,31 @@
       </div>
     </div>
 
-    <div class="empty-data" *ngIf="myBookArray.data.length === 0 && (isLoading$ | async) === false">
+    <div class="pagination-bar" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
+      <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        Anterior
+      </button>
+
+      <button
+        class="pagination-btn pagination-btn--page"
+        type="button"
+        *ngFor="let page of visiblePages"
+        [class.pagination-btn--active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        Próxima
+      </button>
+    </div>
+
+    <div class="pagination-caption" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
+      Página {{ currentPage }} de {{ totalPages }}
+    </div>
+
+    <div class="empty-data" *ngIf="totalFilteredBooks === 0 && (isLoading$ | async) === false">
       Nenhum registro encontrado.
     </div>
 
