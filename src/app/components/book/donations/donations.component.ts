@@ -2,7 +2,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
 import { BookService } from '../../../core/services/book/book.service';
@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { getStatusDescription } from 'src/app/core/utils/getStatusDescription';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
+import { UserDonationsList } from 'src/app/core/models/userDonationsList';
+import { UserDonationsSummary } from 'src/app/core/models/userDonationsSummary';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -24,11 +26,16 @@ type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finishe
 export class DonationsComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;
   donatedBooks: MyDonation[] = [];
-  allDonatedBooks: MyDonation[] = [];
   selectedFilter: DonationsFilter = 'needsAction';
   searchTerm = '';
+  currentPage = 1;
+  pageSize = 24;
+  totalItems = 0;
+  summary: UserDonationsSummary = this.createEmptySummary();
+  readonly pageSizeOptions = [12, 24, 48, 96];
 
   private _destroySubscribes$ = new Subject<void>();
+  private _searchInput$ = new Subject<string>();
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$ = this.isLoadingSubject.asObservable();
 
@@ -43,6 +50,18 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._seo.generateTags({ title: 'Minhas Doações' });
+    this._searchInput$
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe((value) => {
+        this.searchTerm = value;
+        this.currentPage = 1;
+        this.getDonations();
+      });
+
     this.getDonations();
   }
 
@@ -87,13 +106,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
   getDonations() {
     this.isLoadingSubject.next(true);
     this._bookService
-      .getDonatedBooks()
+      .getDonatedBooksPaged(this.currentPage, this.pageSize, this.searchTerm, this.selectedFilter)
       .pipe(
         takeUntil(this._destroySubscribes$),
         finalize(() => this.isLoadingSubject.next(false)))
-      .subscribe((resp: MyDonation[]) => {
-        this.allDonatedBooks = this.sortByPriority(resp || []);
-        this.applyFilters();
+      .subscribe((resp: UserDonationsList) => {
+        this.donatedBooks = resp.items || [];
+        this.summary = resp.summary || this.createEmptySummary();
+        this.totalItems = resp.totalItems || 0;
+        this.currentPage = resp.page || 1;
+        this.pageSize = resp.itemsPerPage || this.pageSize;
       });
   }
 
@@ -232,33 +254,82 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   public doFilter = (value: string) => {
-    this.searchTerm = (value || '').trim().toLocaleLowerCase();
-    this.applyFilters();
+    this.searchTerm = (value || '').trim();
+    this._searchInput$.next(this.searchTerm);
   }
 
   public setFilter(filter: DonationsFilter): void {
     this.selectedFilter = filter;
-    this.applyFilters();
+    this.currentPage = 1;
+    this.getDonations();
   }
 
   public get waitingDecisionCount(): number {
-    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_DECISION).length;
+    return this.summary.waitingDecision || 0;
   }
 
   public get waitingSendCount(): number {
-    return this.allDonatedBooks.filter(x => x.status === BookDonationStatus.WAITING_SEND).length;
+    return this.summary.waitingSend || 0;
   }
 
   public get finishedCount(): number {
-    return this.allDonatedBooks.filter(x =>
-      x.status === BookDonationStatus.RECEIVED || x.status === BookDonationStatus.CANCELED
-    ).length;
+    return this.summary.finished || 0;
   }
 
   public get ebookDownloadsTotal(): number {
-    return this.allDonatedBooks
-      .filter(x => this.isEbook(x))
-      .reduce((acc, curr) => acc + (curr.downloadCount || 0), 0);
+    return this.summary.ebookDownloadsTotal || 0;
+  }
+
+  public get totalPages(): number {
+    return Math.max(Math.ceil(this.totalItems / this.pageSize), 1);
+  }
+
+  public get paginationStart(): number {
+    if (this.totalItems === 0) {
+      return 0;
+    }
+
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  public get paginationEnd(): number {
+    if (this.totalItems === 0) {
+      return 0;
+    }
+
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  public get visiblePages(): number[] {
+    if (this.totalPages <= 5) {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    }
+
+    const startPage = Math.max(1, Math.min(this.currentPage - 2, this.totalPages - 4));
+    return Array.from({ length: 5 }, (_, index) => startPage + index);
+  }
+
+  public changePageSize(value: string): void {
+    const nextPageSize = Number(value);
+
+    if (!nextPageSize || nextPageSize === this.pageSize) {
+      return;
+    }
+
+    this.pageSize = nextPageSize;
+    this.currentPage = 1;
+    this.getDonations();
+  }
+
+  public goToPage(page: number): void {
+    const nextPage = Math.min(Math.max(page, 1), this.totalPages);
+
+    if (nextPage === this.currentPage) {
+      return;
+    }
+
+    this.currentPage = nextPage;
+    this.getDonations();
   }
 
   public getMobilePrimaryMetric(book: MyDonation): string {
@@ -386,67 +457,13 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION;
   }
 
-  private applyFilters(): void {
-    const filtered = this.allDonatedBooks.filter(book => {
-      if (!this.matchFilter(book)) {
-        return false;
-      }
-
-      if (!this.searchTerm) {
-        return true;
-      }
-
-      const searchBag = [
-        book.title,
-        book.author,
-        this.getTranslatedStatusDescription(book.status),
-        this.isEbook(book) ? 'digital' : 'fisico'
-      ].join(' ').toLowerCase();
-
-      return searchBag.includes(this.searchTerm);
-    });
-
-    this.donatedBooks = filtered;
-  }
-
-  private matchFilter(book: MyDonation): boolean {
-    switch (this.selectedFilter) {
-      case 'needsAction':
-        return book.status === BookDonationStatus.WAITING_DECISION || book.status === BookDonationStatus.WAITING_SEND;
-      case 'physical':
-        return !this.isEbook(book);
-      case 'digital':
-        return this.isEbook(book);
-      case 'finished':
-        return book.status === BookDonationStatus.RECEIVED || book.status === BookDonationStatus.CANCELED;
-      case 'all':
-      default:
-        return true;
-    }
-  }
-
-  private sortByPriority(books: MyDonation[]): MyDonation[] {
-    return [...books].sort((a, b) => {
-      const dateA = new Date(a.creationDate).getTime() || 0;
-      const dateB = new Date(b.creationDate).getTime() || 0;
-      return dateB - dateA;
-    });
-  }
-
-  private formatDate(value: Date): string {
-    if (!value) {
-      return '--/--/----';
-    }
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return '--/--/----';
-    }
-
-    const day = `${date.getDate()}`.padStart(2, '0');
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+  private createEmptySummary(): UserDonationsSummary {
+    return {
+      waitingDecision: 0,
+      waitingSend: 0,
+      finished: 0,
+      ebookDownloadsTotal: 0,
+    };
   }
 
   ngOnDestroy() {
@@ -454,4 +471,3 @@ export class DonationsComponent implements OnInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 }
-

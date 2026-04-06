@@ -15,6 +15,7 @@ import { Observable, Subject } from 'rxjs';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
+import { UserDonationsList } from '../../models/userDonationsList';
 import { FullSearch } from '../../models/FullSearch';
 import { IRequestResult } from '../../interfaces/IRequestResult';
 
@@ -209,6 +210,27 @@ export class BookService {
 
   public getDonatedBooks(): Observable<MyDonation[]> {
     return this._http.get<MyDonation[]>(`${this.config.apiEndpoint}/book/MyDonations`);
+  }
+
+  public getDonatedBooksPaged(
+    page: number,
+    pageSize: number,
+    search?: string,
+    bucket?: string
+  ): Observable<UserDonationsList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    return this._http.get<UserDonationsList>(`${this.config.apiEndpoint}/book/MyDonationsPaged`, { params });
   }
 
   public setTrackingNumber(

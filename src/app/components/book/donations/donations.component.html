@@ -35,8 +35,21 @@
   <div class="container mt-4">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
-        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
+        <input matInput type="text" [value]="searchTerm" (keyup)="doFilter($event.target.value)" placeholder="Pesquisar" />
       </mat-form-field>
+    </div>
+
+    <div class="results-toolbar" *ngIf="(isLoading$ | async) === false && totalItems > 0">
+      <div class="results-toolbar__summary">
+        Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalItems }} doações
+      </div>
+
+      <label class="results-toolbar__page-size">
+        Itens por página
+        <select [value]="pageSize" (change)="changePageSize($event.target.value)">
+          <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+        </select>
+      </label>
     </div>
 
     <div class="donation-cards-grid">
@@ -101,6 +114,30 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="pagination-bar" *ngIf="(isLoading$ | async) === false && totalItems > 0">
+      <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        Anterior
+      </button>
+
+      <button
+        class="pagination-btn pagination-btn--page"
+        type="button"
+        *ngFor="let page of visiblePages"
+        [class.pagination-btn--active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        Próxima
+      </button>
+    </div>
+
+    <div class="pagination-caption" *ngIf="(isLoading$ | async) === false && totalItems > 0">
+      Página {{ currentPage }} de {{ totalPages }}
     </div>
 
     <div class="empty-data" *ngIf="donatedBooks.length === 0 && (isLoading$ | async) === false">
