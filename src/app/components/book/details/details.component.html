@@ -24,7 +24,8 @@
       </div>
       <div class="form-group col-lg-8">
         <p>
-          <span class="badge" [ngClass]="isEbook() ? 'badge-info' : 'badge-secondary'">
+          <span class="book-type-badge details-book-type-badge" [ngClass]="isEbook() ? 'badge-ebook' : 'badge-physical'">
+            <i class="fa" [ngClass]="isEbook() ? 'fa-cloud-download' : 'fa-book'"></i>
             {{ getBookTypeLabel() }}
           </span>
         </p>
@@ -48,6 +49,19 @@
             </a>
           </ng-template>
           <ng-template #categoryText>{{ getCategoryName() }}</ng-template>
+        </p>
+        <p *ngIf="isEbook() && bookInfo.donor?.displayName">
+          <strong>Doador:</strong><br />
+          <a
+            *ngIf="bookInfo.donor?.linkedin; else donorNameText"
+            class="details-link"
+            [href]="bookInfo.donor.linkedin"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ bookInfo.donor.displayName }}
+          </a>
+          <ng-template #donorNameText>{{ bookInfo.donor.displayName }}</ng-template>
         </p>
         <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
           <strong>Sinopse:</strong><br />{{ bookInfo.synopsis }}
@@ -75,7 +89,7 @@
     </div>
     <div class="form-row">
       <div class="form-group col-lg-12">
-        <div class="modal-footer">
+        <div class="details-actions">
           <span class="badge badge-success" *ngIf="requested && !isEbook()">Você já solicitou. Aguarde e boa sorte!</span>
 
           <span class="badge badge-danger" *ngIf="!isEbook() && !requested && !available">Não disponível.</span>
@@ -83,7 +97,7 @@
           <button
             mat-flat-button
             color="accent"
-            class="mr-2"
+            class="details-action-button"
             *ngIf="isEbook() && available"
             (click)="onDownloadEbook()"
           >
@@ -93,7 +107,7 @@
           <button
             mat-flat-button
             color="primary"
-            class="mr-2"
+            class="details-action-button"
             *ngIf="available && userProfile && !requested && !isEbook()"
             (click)="onRequestBook()"
             [disabled]="!isFreeFreight && !isCheckedFreight"
@@ -104,7 +118,7 @@
           <button
             mat-flat-button
             color="primary"
-            class="mr-2"
+            class="details-action-button"
             *ngIf="available && !userProfile && !isEbook()"
             (click)="onLoginBook()"
           >
@@ -114,7 +128,7 @@
           <button
             mat-stroked-button
             color="warn"
-            class="mr-2"
+            class="details-action-button"
             *ngIf="isEbook()"
             (click)="onReportCopyright()"
           >
