@@ -266,8 +266,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return this.isEbook() ? 'Livro digital' : 'Livro físico';
   }
 
-  getAuthorSearchLink(): string[] {
-    return ['/buscar', this.bookInfo.author || ''];
+  getAuthorSearchLink(author?: string): string[] {
+    return ['/buscar', (author || this.bookInfo.author || '').trim()];
+  }
+
+  getAuthorList(): string[] {
+    const rawAuthor = (this.bookInfo?.author || '').trim();
+    if (!rawAuthor) {
+      return [];
+    }
+
+    return rawAuthor
+      .split(/\s*(?:,|;|\s+e\s+|\s+&\s+|\s+and\s+)\s*/i)
+      .map(author => author.trim())
+      .filter(Boolean);
   }
 
   getCategoryLink(): string[] | null {

@@ -32,7 +32,14 @@
         <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
         <p>
           <strong>Autor:</strong><br />
-          <a class="details-link" [routerLink]="getAuthorSearchLink()">{{ bookInfo.author }}</a>
+          <ng-container *ngIf="getAuthorList().length; else singleAuthorLink">
+            <ng-container *ngFor="let author of getAuthorList(); let isLast = last">
+              <a class="details-link" [routerLink]="getAuthorSearchLink(author)">{{ author }}</a><span *ngIf="!isLast">, </span>
+            </ng-container>
+          </ng-container>
+          <ng-template #singleAuthorLink>
+            <a class="details-link" [routerLink]="getAuthorSearchLink()">{{ bookInfo.author }}</a>
+          </ng-template>
         </p>
         <p>
           <strong>Categoria:</strong><br />
