@@ -1,0 +1,158 @@
+<div class="container form-horizontal">
+  <h1 class="text-center display-4">{{ pageTitle }}</h1>
+
+  <div *ngIf="state == 'not-found'" class="text-center">
+    <button mat-stroked-button color="primary" style="margin: 0 3px 3px 0" routerLink="/">Voltar para a Vitrine</button>
+  </div>
+
+  <div class="text-center" *ngIf="state == 'loading'"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
+
+  <div class="container" *ngIf="state == 'ready'">
+    <div class="form-row">
+      <div class="form-group col-lg-4">
+        <img
+          [src]="
+            bookInfo.imageBytes?.length
+              ? 'data:image/png;base64,' + bookInfo.imageBytes
+              : bookInfo.imageUrl
+              ? bookInfo.imageUrl
+              : 'assets/img/img-placeholder.png'
+          "
+          class="img-thumbnail"
+          alt="Book image"
+        />
+      </div>
+      <div class="form-group col-lg-8">
+        <p>
+          <span class="book-type-badge details-book-type-badge" [ngClass]="isEbook() ? 'badge-ebook' : 'badge-physical'">
+            <i class="fa" [ngClass]="isEbook() ? 'fa-cloud-download' : 'fa-book'"></i>
+            {{ getBookTypeLabel() }}
+          </span>
+        </p>
+        <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
+        <p>
+          <strong>Autor:</strong><br />
+          <ng-container *ngIf="getAuthorList().length; else singleAuthorLink">
+            <ng-container *ngFor="let author of getAuthorList(); let isLast = last">
+              <a class="details-link" [routerLink]="getAuthorSearchLink(author)">{{ author }}</a><span *ngIf="!isLast">, </span>
+            </ng-container>
+          </ng-container>
+          <ng-template #singleAuthorLink>
+            <a class="details-link" [routerLink]="getAuthorSearchLink()">{{ bookInfo.author }}</a>
+          </ng-template>
+        </p>
+        <p>
+          <strong>Categoria:</strong><br />
+          <ng-container *ngIf="getParentCategoryLink() as parentCategoryLink; else singleCategory">
+            <a class="details-link" [routerLink]="parentCategoryLink">{{ getParentCategoryName() }}</a>
+            <span> &gt; </span>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-container>
+          <ng-template #singleCategory>
+            <a *ngIf="getCategoryLink() as categoryLink; else categoryText" class="details-link" [routerLink]="categoryLink">
+              {{ getCategoryName() }}
+            </a>
+          </ng-template>
+          <ng-template #categoryText>{{ getCategoryName() }}</ng-template>
+        </p>
+        <p *ngIf="isEbook() && bookInfo.donor?.displayName">
+          <strong>Doador:</strong><br />
+          <a
+            *ngIf="bookInfo.donor?.linkedin; else donorNameText"
+            class="details-link"
+            [href]="bookInfo.donor.linkedin"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ bookInfo.donor.displayName }}
+          </a>
+          <ng-template #donorNameText>{{ bookInfo.donor.displayName }}</ng-template>
+        </p>
+        <p *ngIf="!!bookInfo.synopsis" style="white-space: pre-wrap">
+          <strong>Sinopse:</strong><br />{{ bookInfo.synopsis }}
+        </p>
+        <p *ngIf="available && !isEbook()">
+          <strong>Quando será anunciado o(a) ganhador(a) deste livro?</strong><br />{{ chooseDateInfo }}
+        </p>
+        <p *ngIf="available && userProfile && !isEbook()"><strong>Frete grátis?</strong><br />{{ isFreeFreight ? 'Sim' : 'Não' }}</p>
+        <div class="custom-control custom-checkbox" *ngIf="available && userProfile && !requested && !isFreeFreight && !isEbook()">
+          <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight" />
+          <label class="custom-control-label" for="checkFreight"
+            >Estou ciente que o frete não é grátis. Caso seja escolhido, me comprometo a reembolsar o doador.</label
+          >
+        </div>
+
+        <div *ngIf="isEbook() && available" class="alert alert-info mt-3">
+          <strong>Livro digital disponível gratuitamente!</strong><br />
+          Clique no botão abaixo para receber este livro.
+        </div>
+
+        <div *ngIf="isEbook() && !available" class="alert alert-warning mt-3">
+          <strong>Este livro digital não está mais disponível.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-lg-12">
+        <div class="details-actions">
+          <span class="badge badge-success" *ngIf="requested && !isEbook()">Você já solicitou. Aguarde e boa sorte!</span>
+
+          <span class="badge badge-danger" *ngIf="!isEbook() && !requested && !available">Não disponível.</span>
+
+          <button
+            mat-flat-button
+            color="accent"
+            class="details-action-button"
+            *ngIf="isEbook() && available"
+            (click)="onDownloadEbook()"
+          >
+            <mat-icon>download</mat-icon> Receber livro digital
+          </button>
+
+          <button
+            mat-flat-button
+            color="primary"
+            class="details-action-button"
+            *ngIf="available && userProfile && !requested && !isEbook()"
+            (click)="onRequestBook()"
+            [disabled]="!isFreeFreight && !isCheckedFreight"
+          >
+            Solicitar livro
+          </button>
+
+          <button
+            mat-flat-button
+            color="primary"
+            class="details-action-button"
+            *ngIf="available && !userProfile && !isEbook()"
+            (click)="onLoginBook()"
+          >
+            Entrar para solicitar este livro
+          </button>
+
+          <button
+            mat-stroked-button
+            color="warn"
+            class="details-action-button"
+            *ngIf="isEbook()"
+            (click)="onReportCopyright()"
+          >
+            <mat-icon>flag</mat-icon> Denunciar direitos autorais
+          </button>
+
+          <button
+            mat-stroked-button
+            color="primary"
+            class="details-action-button"
+            *ngIf="isAdminLogged && bookInfo.id"
+            [routerLink]="['/book/form', bookInfo.id]"
+          >
+            <mat-icon>edit</mat-icon> Editar livro
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
