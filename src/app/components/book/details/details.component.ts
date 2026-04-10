@@ -333,4 +333,55 @@ export class DetailsComponent implements OnInit, OnDestroy {
       window.open(downloadUrl, '_blank');
     }
   }
+
+  getEbookSocialProofLabel(): string {
+    const totalReceived = this.bookInfo?.downloadCount || 0;
+
+    if (totalReceived <= 0) {
+      return 'Seja o primeiro a receber este livro';
+    }
+
+    if (totalReceived === 1) {
+      return '1 pessoa já recebeu este livro';
+    }
+
+    return `${totalReceived} pessoas já receberam este livro`;
+  }
+
+  onShareWithFriends(): void {
+    const shareTitle = this.bookInfo?.title || 'Livro no ShareBook';
+    const shareText = `Encontrei este livro grátis no ShareBook: ${shareTitle}`;
+    const shareUrl = window.location.href;
+
+    const nativeNavigator = navigator as Navigator & {
+      share?: (data: { title?: string; text?: string; url?: string }) => Promise<void>;
+    };
+
+    if (nativeNavigator.share) {
+      nativeNavigator
+        .share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        })
+        .catch(() => {
+          // usuário cancelou; sem toast de erro
+        });
+      return;
+    }
+
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          this._toastr.success('Link copiado! Compartilhe com seus amigos.');
+        })
+        .catch(() => {
+          this._toastr.info('Copie o link da barra de endereço para compartilhar.');
+        });
+      return;
+    }
+
+    this._toastr.info('Copie o link da barra de endereço para compartilhar.');
+  }
 }

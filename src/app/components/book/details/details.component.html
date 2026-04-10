@@ -89,6 +89,11 @@
           Clique no botão abaixo para receber este livro.
         </div>
 
+        <div *ngIf="isEbook()" class="ebook-social-proof">
+          <mat-icon>groups</mat-icon>
+          <span>{{ getEbookSocialProofLabel() }}</span>
+        </div>
+
         <div *ngIf="isEbook() && !available" class="alert alert-warning mt-3">
           <strong>Este livro digital não está mais disponível.</strong>
         </div>
@@ -134,8 +139,18 @@
 
           <button
             mat-stroked-button
-            color="warn"
+            color="primary"
             class="details-action-button"
+            *ngIf="isEbook()"
+            (click)="onShareWithFriends()"
+          >
+            <mat-icon>share</mat-icon> Compartilhar com amigos
+          </button>
+
+          <button
+            mat-stroked-button
+            color="warn"
+            class="details-action-button details-action-button--danger"
             *ngIf="isEbook()"
             (click)="onReportCopyright()"
           >

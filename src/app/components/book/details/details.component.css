@@ -66,6 +66,29 @@
   min-height: 42px;
 }
 
+.details-action-button--danger {
+  opacity: 0.85;
+}
+
+.ebook-social-proof {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #0f6f86;
+  background: #e8f7fb;
+  border: 1px solid #c6ecf5;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.ebook-social-proof mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
 @media (max-width: 767px) {
   .details-actions {
     justify-content: center;

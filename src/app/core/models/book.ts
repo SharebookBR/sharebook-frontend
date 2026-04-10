@@ -24,6 +24,7 @@ export class Book {
   freightOption: string;
   userId: string;
   categoryId: string;
+  downloadCount?: number;
   userIdFacilitator: string;
   category: Category | string;
   categoryInfo?: BookCategoryInfo;
