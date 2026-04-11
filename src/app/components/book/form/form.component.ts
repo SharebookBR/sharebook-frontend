@@ -371,7 +371,7 @@ export class FormComponent implements OnInit, OnDestroy {
           });
       }
     } else {
-      const book = this.formGroup.value;
+      const book = this.prepareBookPayload();
       book.id = this.formGroup.value.bookId;
       if (book.imageBytes && !book.imageName) {
         book.imageName = 'capa-atualizada.jpg';
