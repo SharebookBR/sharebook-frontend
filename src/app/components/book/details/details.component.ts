@@ -362,19 +362,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
     const shareUrl = window.location.href;
     const title = this.bookInfo?.title || 'Livro no ShareBook';
     const viralText = `Encontrei este livro grátis no ShareBook 📚 ${title}. Bora ler também?`;
+    const shareTextWithLink = `${viralText} ${shareUrl}`;
 
     let targetUrl = '';
     if (channel === 'linkedin') {
-      targetUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+      targetUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareTextWithLink)}`;
     }
 
     if (channel === 'whatsapp') {
-      const text = `${viralText} ${shareUrl}`;
-      targetUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      targetUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareTextWithLink)}`;
     }
 
     if (channel === 'facebook') {
-      targetUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(viralText)}`;
+      targetUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      this.copyShareText(shareTextWithLink)
+        .then(() => this._toastr.success('Texto copiado! Cole no post do Facebook.'))
+        .catch(() => this._toastr.info('Copie o texto manualmente após abrir o Facebook.'));
     }
 
     if (targetUrl) {
@@ -384,5 +387,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     this._toastr.info('Não foi possível abrir o compartilhamento.');
+  }
+
+  private copyShareText(text: string): Promise<void> {
+    if (navigator.clipboard?.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return Promise.reject();
   }
 }
