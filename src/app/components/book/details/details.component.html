@@ -170,4 +170,24 @@
       </div>
     </div>
   </div>
+
+  <div class="share-modal-backdrop" *ngIf="showShareModal" (click)="closeShareModal()">
+    <div class="share-modal-card" (click)="$event.stopPropagation()">
+      <button class="share-modal-close" type="button" (click)="closeShareModal()" aria-label="Fechar">×</button>
+      <h3>Compartilhar com amigos</h3>
+      <p>Escolha onde você quer espalhar essa leitura:</p>
+
+      <div class="share-modal-actions">
+        <button mat-flat-button color="primary" type="button" (click)="shareTo('linkedin')">
+          LinkedIn
+        </button>
+        <button mat-flat-button color="accent" type="button" (click)="shareTo('whatsapp')">
+          WhatsApp
+        </button>
+        <button mat-stroked-button color="primary" type="button" (click)="shareTo('facebook')">
+          Facebook
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -348,40 +348,41 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return `${totalReceived} pessoas já receberam este livro`;
   }
 
+  showShareModal = false;
+
   onShareWithFriends(): void {
-    const shareTitle = this.bookInfo?.title || 'Livro no ShareBook';
-    const shareText = `Encontrei este livro grátis no ShareBook: ${shareTitle}`;
+    this.showShareModal = true;
+  }
+
+  closeShareModal(): void {
+    this.showShareModal = false;
+  }
+
+  shareTo(channel: 'linkedin' | 'whatsapp' | 'facebook'): void {
     const shareUrl = window.location.href;
+    const title = this.bookInfo?.title || 'Livro no ShareBook';
+    const viralText = `Encontrei este livro grátis no ShareBook 📚 ${title}. Bora ler também?`;
 
-    const nativeNavigator = navigator as Navigator & {
-      share?: (data: { title?: string; text?: string; url?: string }) => Promise<void>;
-    };
+    let targetUrl = '';
+    if (channel === 'linkedin') {
+      targetUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    }
 
-    if (nativeNavigator.share) {
-      nativeNavigator
-        .share({
-          title: shareTitle,
-          text: shareText,
-          url: shareUrl,
-        })
-        .catch(() => {
-          // usuário cancelou; sem toast de erro
-        });
+    if (channel === 'whatsapp') {
+      const text = `${viralText} ${shareUrl}`;
+      targetUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    }
+
+    if (channel === 'facebook') {
+      targetUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(viralText)}`;
+    }
+
+    if (targetUrl) {
+      window.open(targetUrl, '_blank');
+      this.closeShareModal();
       return;
     }
 
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard
-        .writeText(shareUrl)
-        .then(() => {
-          this._toastr.success('Link copiado! Compartilhe com seus amigos.');
-        })
-        .catch(() => {
-          this._toastr.info('Copie o link da barra de endereço para compartilhar.');
-        });
-      return;
-    }
-
-    this._toastr.info('Copie o link da barra de endereço para compartilhar.');
+    this._toastr.info('Não foi possível abrir o compartilhamento.');
   }
 }
