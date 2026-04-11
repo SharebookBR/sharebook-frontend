@@ -366,7 +366,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     let targetUrl = '';
     if (channel === 'linkedin') {
-      targetUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareTextWithLink)}`;
+      targetUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(viralText)}`;
     }
 
     if (channel === 'whatsapp') {
