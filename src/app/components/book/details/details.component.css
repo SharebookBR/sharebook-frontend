@@ -70,6 +70,15 @@
   opacity: 0.85;
 }
 
+.details-action-button--share {
+  background: #1976d2;
+  color: #fff;
+}
+
+.details-action-button--share:hover {
+  background: #1565c0;
+}
+
 .ebook-social-proof {
   margin-top: 10px;
   display: inline-flex;
