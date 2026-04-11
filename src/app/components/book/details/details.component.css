@@ -141,6 +141,44 @@
   gap: 10px;
 }
 
+.share-btn {
+  border: none;
+  border-radius: 10px;
+  min-height: 46px;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.share-btn i {
+  font-size: 18px;
+}
+
+.share-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+}
+
+.share-btn--linkedin {
+  background: #0a66c2;
+  color: #fff;
+}
+
+.share-btn--whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+
+.share-btn--facebook {
+  background: #1877f2;
+  color: #fff;
+}
+
 .share-modal-close {
   position: absolute;
   right: 10px;
