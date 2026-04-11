@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="form-group col-md-8 mb-4" *ngIf="userProfile.profile === 'Administrator' && itsEditMode">
+        <div class="form-group col-md-8 mb-4" *ngIf="userProfile.profile === 'Administrator' && itsEditMode && selectedBookType === 'Printed'">
           <label class="col-form-label" for="userIdFacilitator">Facilitador <span class="text-danger">*</span></label>
           <select class="form-control" formControlName="userIdFacilitator" id="userIdFacilitator">
             <option value=""></option>
