@@ -359,7 +359,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   shareTo(channel: 'linkedin' | 'whatsapp' | 'facebook'): void {
-    const shareUrl = window.location.href;
+    const shareUrl = `https://api.sharebook.com.br/share/livros/${this.bookInfo?.slug || ''}`;
     const title = this.bookInfo?.title || 'Livro no ShareBook';
     const viralText = `Encontrei este livro grátis no ShareBook 📚 ${title}. Bora ler também?`;
     const shareTextWithLink = `${viralText} ${shareUrl}`;
