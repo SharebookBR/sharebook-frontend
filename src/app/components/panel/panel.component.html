@@ -12,6 +12,15 @@
     </div>
 
     <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/importer" title="Acompanhar importador">
+        <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel do importador" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Painel do Importador</h5>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="card">
       <a routerLink="/admin/jobs" title="Acompanhar jobs">
         <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
       </a>

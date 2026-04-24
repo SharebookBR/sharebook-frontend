@@ -103,6 +103,7 @@ import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component
 import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
 import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from './components/jobs-dashboard/jobs-dashboard.component';
+import { ImporterDashboardComponent } from './components/importer-dashboard/importer-dashboard.component';
 import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
 
 @NgModule({
@@ -156,6 +157,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MaisSheetComponent,
     UnsubscribeComponent,
     JobsDashboardComponent,
+    ImporterDashboardComponent,
     EbookRecentComponent,
   ],
   imports: [

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+import { ImporterDashboard } from '../../models/importer-dashboard';
 import { JobMonitorDashboard } from '../../models/job-monitor';
 
 @Injectable({ providedIn: 'root' })
@@ -11,5 +12,9 @@ export class OperationsService {
 
   getJobsDashboard(): Observable<JobMonitorDashboard> {
     return this._http.get<JobMonitorDashboard>(`${this.config.apiEndpoint}/Operations/Jobs`);
+  }
+
+  getImporterDashboard(): Observable<ImporterDashboard> {
+    return this._http.get<ImporterDashboard>(`${this.config.apiEndpoint}/Operations/ImporterDashboard`);
   }
 }
