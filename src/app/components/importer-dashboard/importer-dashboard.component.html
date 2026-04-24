@@ -25,16 +25,27 @@
   </div>
 
   <ng-container *ngIf="!isLoading && !loadError">
+    <div class="importer-dashboard__filters">
+      <label class="importer-dashboard__source-filter">
+        <span>Source</span>
+        <select [(ngModel)]="selectedSourceId" (ngModelChange)="applyFilters()">
+          <option *ngFor="let source of availableSources; trackBy: trackBySource" [value]="getSourceKey(source)">
+            {{ source.sourceName }}
+          </option>
+        </select>
+      </label>
+    </div>
+
     <div class="summary-grid">
       <div class="summary-card">
-        <div class="summary-card__label">Sources</div>
-        <div class="summary-card__value">{{ sources.length }}</div>
-        <div class="summary-card__meta">{{ activeSources }} ativas</div>
+        <div class="summary-card__label">Source</div>
+        <div class="summary-card__value">{{ selectedSource?.sourceName || '-' }}</div>
+        <div class="summary-card__meta">{{ activeSources }} ativa</div>
       </div>
 
       <div class="summary-card">
         <div class="summary-card__label">Itens totais</div>
-        <div class="summary-card__value">{{ totalItems }}</div>
+        <div class="summary-card__value">{{ selectedSource?.totalItems || 0 }}</div>
         <div class="summary-card__meta">{{ completionRate }}% concluído</div>
       </div>
 
@@ -55,12 +66,12 @@
       <div class="section-heading">
         <div>
           <h2>Visão geral do pipeline</h2>
-          <p>Resumo por source com progresso, próximo item e último ciclo conhecido.</p>
+          <p>Resumo da source selecionada com progresso, próximo item e último ciclo conhecido.</p>
         </div>
       </div>
 
       <div class="sources-grid">
-        <article class="source-card" *ngFor="let source of sources; trackBy: trackBySource">
+        <article class="source-card" *ngFor="let source of filteredSources; trackBy: trackBySource">
           <div class="source-card__top">
             <div>
               <h3>{{ source.sourceName }}</h3>

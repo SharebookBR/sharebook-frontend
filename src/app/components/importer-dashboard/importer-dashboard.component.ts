@@ -17,10 +17,12 @@ export class ImporterDashboardComponent implements OnInit {
   generatedAtUtc: string;
   totalItems = 0;
   sources: ImporterSourceStatus[] = [];
+  filteredSources: ImporterSourceStatus[] = [];
   queueItems: ImporterQueueItem[] = [];
   filteredQueueItems: ImporterQueueItem[] = [];
   selectedItem: ImporterItemDetail | null = null;
 
+  selectedSourceId = 'ebook_foundation';
   selectedStatus = 'all';
   searchTerm = '';
 
@@ -47,32 +49,41 @@ export class ImporterDashboardComponent implements OnInit {
     this.loadDashboard();
   }
 
+  get availableSources(): ImporterSourceStatus[] {
+    return this.sources;
+  }
+
+  get selectedSource(): ImporterSourceStatus | null {
+    return this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) || null;
+  }
+
   get activeSources(): number {
-    return this.sources.filter(source => source.enabled).length;
+    return this.filteredSources.filter(source => source.enabled).length;
   }
 
   get blockedSources(): number {
-    return this.sources.filter(source => source.sourceBlocked > 0).length;
+    return this.filteredSources.filter(source => source.sourceBlocked > 0).length;
   }
 
   get erroredItems(): number {
-    return this.sources.reduce((total, source) => total + source.error, 0);
+    return this.filteredSources.reduce((total, source) => total + source.error, 0);
   }
 
   get pendingItems(): number {
-    return this.sources.reduce(
+    return this.filteredSources.reduce(
       (total, source) => total + source.waitingTriage + source.triaging + source.waitingEditor + source.editing + source.waitingProcess + source.processing + source.retryLater,
       0
     );
   }
 
   get completionRate(): number {
-    if (!this.totalItems) {
+    const selectedSource = this.selectedSource;
+
+    if (!selectedSource?.totalItems) {
       return 0;
     }
 
-    const doneItems = this.sources.reduce((total, source) => total + source.done, 0);
-    return Math.round((doneItems / this.totalItems) * 100);
+    return Math.round((selectedSource.done / selectedSource.totalItems) * 100);
   }
 
   trackBySource(index: number, source: ImporterSourceStatus): number {
@@ -86,13 +97,16 @@ export class ImporterDashboardComponent implements OnInit {
   applyFilters(): void {
     const term = this.searchTerm.trim().toLowerCase();
 
+    this.filteredSources = this.selectedSource ? [this.selectedSource] : [];
+
     this.filteredQueueItems = this.queueItems.filter(item => {
+      const sourceMatches = !this.selectedSource || item.sourceId === this.selectedSource.sourceId;
       const statusMatches = this.selectedStatus === 'all' || item.status === this.selectedStatus;
       const termMatches = !term || [item.title, item.sourceName, item.status, item.position != null ? String(item.position) : ''].some(value =>
         (value || '').toLowerCase().includes(term)
       );
 
-      return statusMatches && termMatches;
+      return sourceMatches && statusMatches && termMatches;
     });
 
     if (!this.filteredQueueItems.length) {
@@ -131,6 +145,10 @@ export class ImporterDashboardComponent implements OnInit {
     return source.waitingTriage + source.triaging + source.waitingEditor + source.editing + source.waitingProcess + source.processing + source.retryLater + source.error;
   }
 
+  getSourceKey(source: ImporterSourceStatus): string {
+    return source.sourceName;
+  }
+
   getLastRunBadgeClass(source: ImporterSourceStatus): string {
     return source.lastRunStatus === 'error' ? 'status-pill status-pill--error' : 'status-pill status-pill--neutral';
   }
@@ -163,6 +181,11 @@ export class ImporterDashboardComponent implements OnInit {
         this.generatedAtUtc = dashboard.generatedAtUtc;
         this.totalItems = dashboard.totalItems;
         this.sources = dashboard.sources || [];
+
+        if (!this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) && this.sources.length) {
+          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'ebook_foundation')?.sourceName || this.getSourceKey(this.sources[0]);
+        }
+
         this.queueItems = viewModel.queueItems;
         this.selectedItem = viewModel.initialSelectedItem;
         this.applyFilters();

@@ -27,7 +27,8 @@
 
 .importer-dashboard__subtitle,
 .section-heading p,
-.importer-dashboard__generated-at {
+.importer-dashboard__generated-at,
+.importer-dashboard__source-filter span {
   color: #5f6b7a;
 }
 
@@ -35,6 +36,24 @@
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+.importer-dashboard__filters {
+  margin-bottom: 1.5rem;
+}
+
+.importer-dashboard__source-filter {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 320px;
+}
+
+.importer-dashboard__source-filter select {
+  min-height: 42px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 12px;
+  background: #fff;
 }
 
 .summary-grid,
