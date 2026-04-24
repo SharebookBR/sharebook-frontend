@@ -241,6 +241,61 @@
   --summary-glow: rgba(180, 35, 24, 0.18);
 }
 
+.importer-item--waiting-triage {
+  --summary-accent: #3b82f6;
+  --summary-glow: rgba(59, 130, 246, 0.18);
+}
+
+.importer-item--triaging {
+  --summary-accent: #0ea5e9;
+  --summary-glow: rgba(14, 165, 233, 0.18);
+}
+
+.importer-item--waiting-editor {
+  --summary-accent: #8b5cf6;
+  --summary-glow: rgba(139, 92, 246, 0.18);
+}
+
+.importer-item--editing {
+  --summary-accent: #7c3aed;
+  --summary-glow: rgba(124, 58, 237, 0.18);
+}
+
+.importer-item--waiting-process {
+  --summary-accent: #f59e0b;
+  --summary-glow: rgba(245, 158, 11, 0.2);
+}
+
+.importer-item--processing {
+  --summary-accent: #f97316;
+  --summary-glow: rgba(249, 115, 22, 0.2);
+}
+
+.importer-item--done {
+  --summary-accent: #10b981;
+  --summary-glow: rgba(16, 185, 129, 0.18);
+}
+
+.importer-item--retry-later {
+  --summary-accent: #f97316;
+  --summary-glow: rgba(249, 115, 22, 0.18);
+}
+
+.importer-item--source-blocked {
+  --summary-accent: #ef4444;
+  --summary-glow: rgba(239, 68, 68, 0.18);
+}
+
+.importer-item--duplicate {
+  --summary-accent: #14b8a6;
+  --summary-glow: rgba(20, 184, 166, 0.18);
+}
+
+.importer-item--error {
+  --summary-accent: #b42318;
+  --summary-glow: rgba(180, 35, 24, 0.18);
+}
+
 .summary-card--waiting-triage,
 .summary-card--triaging,
 .summary-card--waiting-editor,
@@ -297,12 +352,12 @@
   margin-top: 1.25rem;
 }
 
-.importer-items__toolbar {
+.importer-items__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   padding: 0.85rem 1rem;
   border: 1px solid #dbe6f7;
   border-radius: 12px;
@@ -334,36 +389,64 @@
 
 .importer-items__list {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.75rem;
 }
 
 .importer-item {
   position: relative;
   display: grid;
-  gap: 0.75rem;
-  padding: 1rem 1.1rem;
-  border: 1px solid #dbe6f7;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-  box-shadow: 0 10px 22px rgba(22, 47, 93, 0.08);
+  gap: 0.7rem;
+  overflow: hidden;
+  padding: 0.95rem 1rem 0.95rem 1.15rem;
+  border: 1px solid #dfe7f2;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, var(--summary-glow, rgba(152, 162, 179, 0.1)) 0%, rgba(255, 255, 255, 0) 28%),
+    #ffffff;
+  box-shadow: 0 8px 18px rgba(22, 47, 93, 0.06);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.importer-item:hover {
+  border-color: var(--summary-accent, #98a2b3);
+  box-shadow: 0 12px 24px rgba(22, 47, 93, 0.1);
+  transform: translateY(-1px);
+}
+
+.importer-item::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--summary-accent, #98a2b3);
+}
+
+.importer-item__topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  min-width: 0;
 }
 
 .importer-item__main {
   display: flex;
-  gap: 0.85rem;
+  gap: 0.75rem;
   align-items: flex-start;
   min-width: 0;
 }
 
 .importer-item__position {
   flex: 0 0 auto;
-  min-width: 3.2rem;
-  padding: 0.35rem 0.55rem;
+  min-width: 3rem;
+  padding: 0.32rem 0.5rem;
   border-radius: 8px;
-  background: #eef5ff;
-  color: #24416f;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--summary-glow, rgba(152, 162, 179, 0.22));
+  color: #24354d;
   font-weight: 800;
   text-align: center;
+  line-height: 1.1;
 }
 
 .importer-item__content {
@@ -372,58 +455,88 @@
 
 .importer-item__content h2 {
   margin: 0;
-  color: #18263a;
-  font-size: 1.15rem;
+  color: #172033;
+  font-size: 1.05rem;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .importer-item__content p {
-  margin: 0.2rem 0 0;
+  margin: 0.16rem 0 0;
   color: #667085;
+  font-size: 0.92rem;
 }
 
 .importer-item__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.45rem;
   align-items: center;
+  padding-left: 3.75rem;
   color: #526784;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .importer-item__status {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.65rem;
+  flex: 0 0 auto;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
   background: var(--summary-glow, rgba(152, 162, 179, 0.14));
   color: #24354d;
   font-weight: 800;
+  font-size: 0.78rem;
+  line-height: 1;
 }
 
-.importer-item__note {
-  color: #344054;
-  font-size: 0.92rem;
+.importer-item__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.58rem;
+  border-radius: 999px;
+  background: #f4f7fb;
+  color: #41546f;
+  font-weight: 700;
+}
+
+.importer-item__chip--muted {
+  background: #f8fafc;
+  color: #667085;
 }
 
 .importer-item__error {
-  padding: 0.75rem 0.85rem;
-  border-radius: 10px;
+  margin-left: 3.75rem;
+  padding: 0.65rem 0.75rem;
+  border-left: 3px solid #d92d20;
+  border-radius: 8px;
   background: #fff7f6;
   color: #8a2a21;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
+}
+
+.importer-item__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-left: 3.75rem;
 }
 
 .importer-item__link {
-  justify-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 0.8rem;
+  border: 1px solid #d8e2ef;
+  border-radius: 8px;
+  background: #ffffff;
   color: #302d59;
   font-weight: 800;
   text-decoration: none;
 }
 
 .importer-item__link:hover {
-  text-decoration: underline;
+  border-color: #302d59;
+  text-decoration: none;
 }
 
 .pagination-bar {
@@ -484,7 +597,7 @@
 
 @media (max-width: 767px) {
   .importer-dashboard__header,
-  .importer-items__toolbar {
+  .importer-items__footer {
     flex-direction: column;
     align-items: stretch;
   }
@@ -505,13 +618,33 @@
     padding: 0.9rem;
   }
 
-  .importer-item__main {
+  .importer-item__topline {
     flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .importer-item__main {
     gap: 0.6rem;
   }
 
   .importer-item__position {
     min-width: auto;
+  }
+
+  .importer-item__meta,
+  .importer-item__error,
+  .importer-item__actions {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .importer-item__actions {
+    justify-content: stretch;
+  }
+
+  .importer-item__link {
+    justify-content: center;
+    width: 100%;
   }
 
   .importer-items__page-size {

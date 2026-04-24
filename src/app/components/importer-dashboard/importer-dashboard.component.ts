@@ -126,6 +126,10 @@ export class ImporterDashboardComponent implements OnInit {
     return `summary-card--${status.replace(/_/g, '-')}`;
   }
 
+  getImporterItemStatusClass(status: string): string {
+    return `importer-item--${status.replace(/_/g, '-')}`;
+  }
+
   isStatusSelected(status: string): boolean {
     return this.selectedStatus === status;
   }

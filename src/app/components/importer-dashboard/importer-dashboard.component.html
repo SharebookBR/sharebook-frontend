@@ -57,7 +57,53 @@
     </div>
 
     <section class="importer-items">
-      <div class="importer-items__toolbar" *ngIf="!isItemsLoading && !itemsLoadError">
+      <div class="alert alert-danger" *ngIf="itemsLoadError">
+        Não foi possível carregar os itens do importador agora.
+      </div>
+
+      <div class="spinner-container" *ngIf="isItemsLoading">
+        <mat-spinner diameter="42"></mat-spinner>
+      </div>
+
+      <div class="importer-items__list" *ngIf="!isItemsLoading && !itemsLoadError && importerItems.length">
+        <article class="importer-item" *ngFor="let item of importerItems; trackBy: trackByImporterItem" [ngClass]="getImporterItemStatusClass(item.status)">
+          <div class="importer-item__topline">
+            <div class="importer-item__main">
+              <div class="importer-item__position">#{{ item.position }}</div>
+              <div class="importer-item__content">
+                <h2>{{ getItemTitle(item) }}</h2>
+                <p>{{ getItemAuthor(item) }}</p>
+              </div>
+            </div>
+
+            <span class="importer-item__status">
+              {{ getStatusLabel(item.status) }}
+            </span>
+          </div>
+
+          <div class="importer-item__meta">
+            <span class="importer-item__chip">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+            <span class="importer-item__chip importer-item__chip--muted">{{ getItemSecondaryInfo(item) }}</span>
+          </div>
+
+          <div class="importer-item__error" *ngIf="getShortError(item)">
+            {{ getShortError(item) }}
+          </div>
+
+          <div class="importer-item__actions">
+            <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
+              Abrir fonte
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-state" *ngIf="!isItemsLoading && !itemsLoadError && !importerItems.length">
+        Nenhum item encontrado para a seleção atual.
+      </div>
+
+      <div class="importer-items__footer" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
         <div class="importer-items__summary">
           Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalQueueItems }} itens
           <span *ngIf="selectedStatus">em {{ getStatusLabel(selectedStatus) }}</span>
@@ -69,50 +115,6 @@
             <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
           </select>
         </label>
-      </div>
-
-      <div class="alert alert-danger" *ngIf="itemsLoadError">
-        Não foi possível carregar os itens do importador agora.
-      </div>
-
-      <div class="spinner-container" *ngIf="isItemsLoading">
-        <mat-spinner diameter="42"></mat-spinner>
-      </div>
-
-      <div class="importer-items__list" *ngIf="!isItemsLoading && !itemsLoadError && importerItems.length">
-        <article class="importer-item" *ngFor="let item of importerItems; trackBy: trackByImporterItem">
-          <div class="importer-item__main">
-            <div class="importer-item__position">#{{ item.position }}</div>
-            <div class="importer-item__content">
-              <h2>{{ getItemTitle(item) }}</h2>
-              <p>{{ getItemAuthor(item) }}</p>
-            </div>
-          </div>
-
-          <div class="importer-item__meta">
-            <span class="importer-item__status" [ngClass]="getStatusCardClass(item.status)">
-              {{ getStatusLabel(item.status) }}
-            </span>
-            <span>Tentativas: {{ item.attempts || 0 }}</span>
-            <span>Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-
-          <div class="importer-item__note">
-            {{ getItemSecondaryInfo(item) }}
-          </div>
-
-          <div class="importer-item__error" *ngIf="getShortError(item)">
-            {{ getShortError(item) }}
-          </div>
-
-          <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
-            Fonte
-          </a>
-        </article>
-      </div>
-
-      <div class="empty-state" *ngIf="!isItemsLoading && !itemsLoadError && !importerItems.length">
-        Nenhum item encontrado para a seleção atual.
       </div>
 
       <div class="pagination-bar" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
