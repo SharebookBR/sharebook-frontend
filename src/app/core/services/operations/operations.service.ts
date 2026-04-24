@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
-import { ImporterDashboard } from '../../models/importer-dashboard';
+import { ImporterDashboard, ImporterQueueItemsPage } from '../../models/importer-dashboard';
 import { JobMonitorDashboard } from '../../models/job-monitor';
 
 @Injectable({ providedIn: 'root' })
@@ -16,5 +16,16 @@ export class OperationsService {
 
   getImporterDashboard(): Observable<ImporterDashboard> {
     return this._http.get<ImporterDashboard>(`${this.config.apiEndpoint}/Operations/ImporterDashboard`);
+  }
+
+  getImporterItems(sourceId: number, status: string, page: number, pageSize: number): Observable<ImporterQueueItemsPage> {
+    const params = {
+      sourceId: String(sourceId),
+      page: String(page),
+      pageSize: String(pageSize),
+      ...(status ? { status } : {}),
+    };
+
+    return this._http.get<ImporterQueueItemsPage>(`${this.config.apiEndpoint}/Operations/ImporterItems`, { params });
   }
 }

@@ -1,18 +1,14 @@
 <div class="importer-dashboard container">
+  <nav aria-label="breadcrumb" class="importer-dashboard__breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Importador</li>
+    </ol>
+  </nav>
+
   <div class="importer-dashboard__header">
     <div>
       <h1 class="display-4">Painel do importador</h1>
-      <p class="importer-dashboard__subtitle">
-        Visão operacional do pipeline, fila ativa e detalhe do item em andamento por source.
-      </p>
-      <p class="importer-dashboard__generated-at" *ngIf="generatedAtUtc">
-        Atualizado em {{ generatedAtUtc | date: 'dd/MM/yyyy HH:mm' : '+0000' }} UTC
-      </p>
-    </div>
-
-    <div class="importer-dashboard__actions">
-      <button mat-stroked-button color="primary" routerLink="/admin/jobs">Ver jobs</button>
-      <button mat-stroked-button color="primary" routerLink="/panel">Voltar ao painel</button>
     </div>
   </div>
 
@@ -28,7 +24,7 @@
     <div class="importer-dashboard__filters">
       <label class="importer-dashboard__source-filter">
         <span>Source</span>
-        <select [(ngModel)]="selectedSourceId" (ngModelChange)="applyFilters()">
+        <select [(ngModel)]="selectedSourceId" (ngModelChange)="onSourceChanged()">
           <option *ngFor="let source of availableSources; trackBy: trackBySource" [value]="getSourceKey(source)">
             {{ source.sourceName }}
           </option>
@@ -36,182 +32,112 @@
       </label>
     </div>
 
-    <div class="summary-grid">
-      <div class="summary-card">
-        <div class="summary-card__label">Source</div>
-        <div class="summary-card__value">{{ selectedSource?.sourceName || '-' }}</div>
-        <div class="summary-card__meta">{{ activeSources }} ativa</div>
+    <div class="importer-dashboard__progress" *ngIf="selectedSource">
+      <div class="importer-dashboard__progress-bar">
+        <div class="importer-dashboard__progress-fill" [style.width.%]="completionRate"></div>
       </div>
-
-      <div class="summary-card">
-        <div class="summary-card__label">Itens totais</div>
-        <div class="summary-card__value">{{ selectedSource?.totalItems || 0 }}</div>
-        <div class="summary-card__meta">{{ completionRate }}% concluído</div>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-card__label">Pendentes</div>
-        <div class="summary-card__value">{{ pendingItems }}</div>
-        <div class="summary-card__meta">Fila operacional atual</div>
-      </div>
-
-      <div class="summary-card">
-        <div class="summary-card__label">Erros</div>
-        <div class="summary-card__value">{{ erroredItems }}</div>
-        <div class="summary-card__meta">{{ blockedSources }} sources bloqueadas</div>
-      </div>
+      <span class="importer-dashboard__progress-value">{{ completionRate }}%</span>
     </div>
 
-    <section class="dashboard-section">
-      <div class="section-heading">
-        <div>
-          <h2>Visão geral do pipeline</h2>
-          <p>Resumo da source selecionada com progresso, próximo item e último ciclo conhecido.</p>
+    <div class="summary-grid">
+      <button
+        type="button"
+        class="summary-card"
+        *ngFor="let card of statusSummaryCards"
+        [ngClass]="[getStatusCardClass(card.status), isStatusSelected(card.status) ? 'summary-card--selected' : '']"
+        [attr.aria-pressed]="isStatusSelected(card.status)"
+        (click)="toggleStatus(card.status)"
+      >
+        <div class="summary-card__value">{{ card.total }}</div>
+        <div class="summary-card__footer">
+          <span class="summary-card__dot"></span>
+          <span>{{ getStatusLabel(card.status) }}</span>
         </div>
-      </div>
+      </button>
+    </div>
 
-      <div class="sources-grid">
-        <article class="source-card" *ngFor="let source of filteredSources; trackBy: trackBySource">
-          <div class="source-card__top">
-            <div>
-              <h3>{{ source.sourceName }}</h3>
-              <a [href]="source.sourceUrl" target="_blank" rel="noopener noreferrer">{{ source.sourceUrl }}</a>
-            </div>
-            <span class="status-pill" [class.status-pill--success]="source.enabled" [class.status-pill--muted]="!source.enabled">
-              {{ source.enabled ? 'Ativa' : 'Inativa' }}
-            </span>
-          </div>
-
-          <div class="source-card__metrics">
-            <div>
-              <span>Total</span>
-              <strong>{{ source.totalItems }}</strong>
-            </div>
-            <div>
-              <span>Done</span>
-              <strong>{{ source.done }}</strong>
-            </div>
-            <div>
-              <span>Pendentes</span>
-              <strong>{{ getSourcePendingCount(source) }}</strong>
-            </div>
-            <div>
-              <span>Duplicados</span>
-              <strong>{{ source.duplicate }}</strong>
-            </div>
-          </div>
-
-          <div class="source-card__progress">
-            <div class="source-card__progress-bar">
-              <div class="source-card__progress-fill" [style.width.%]="source.totalItems ? (source.done / source.totalItems) * 100 : 0"></div>
-            </div>
-            <span>{{ source.totalItems ? ((source.done / source.totalItems) * 100 | number: '1.0-0') : 0 }}%</span>
-          </div>
-
-          <div class="source-card__queue">
-            <div class="source-card__queue-title">Próximo item da fila</div>
-            <div class="source-card__queue-main" *ngIf="source.nextItemStatus; else noNextItem">
-              <span class="status-pill status-pill--neutral">{{ getStatusLabel(source.nextItemStatus) }}</span>
-              <strong>#{{ source.nextItemPosition || '-' }}</strong>
-              <span>{{ source.nextItemTitle || 'Sem título no contrato atual' }}</span>
-            </div>
-            <ng-template #noNextItem>
-              <div class="source-card__queue-empty">Sem item pendente exposto pelo backend.</div>
-            </ng-template>
-          </div>
-
-          <div class="source-card__footer" *ngIf="source.lastRunAt || source.lastRunMessage">
-            <span [class]="getLastRunBadgeClass(source)">{{ source.lastRunStatus || 'sem status' }}</span>
-            <span *ngIf="source.lastRunAt">{{ source.lastRunAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-
-          <pre class="source-card__log" *ngIf="source.lastRunMessage">{{ source.lastRunMessage }}</pre>
-        </article>
-      </div>
-    </section>
-
-    <section class="dashboard-section dashboard-section--queue">
-      <div class="section-heading">
-        <div>
-          <h2>Fila de itens</h2>
-          <p>V1 usa o contrato atual do backend. Se a API passar a expor a fila completa, esta seção absorve sem espalhar gambiarra.</p>
+    <section class="importer-items">
+      <div class="importer-items__toolbar" *ngIf="!isItemsLoading && !itemsLoadError">
+        <div class="importer-items__summary">
+          Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalQueueItems }} itens
+          <span *ngIf="selectedStatus">em {{ getStatusLabel(selectedStatus) }}</span>
         </div>
-      </div>
 
-      <div class="queue-toolbar">
-        <label>
-          <span>Status</span>
-          <select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilters()">
-            <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+        <label class="importer-items__page-size">
+          Itens por página
+          <select [value]="pageSize" (change)="changePageSize($event.target.value)">
+            <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
           </select>
         </label>
-
-        <label class="queue-toolbar__search">
-          <span>Buscar</span>
-          <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Título, source ou posição" />
-        </label>
       </div>
 
-      <div class="queue-layout" *ngIf="filteredQueueItems.length; else emptyQueueState">
-        <div class="queue-list">
-          <button
-            type="button"
-            class="queue-item"
-            *ngFor="let item of filteredQueueItems; trackBy: trackByQueue"
-            [class.queue-item--active]="selectedItem?.id === item.id"
-            (click)="selectQueueItem(item)"
-          >
-            <div class="queue-item__top">
-              <span class="status-pill status-pill--neutral">{{ getStatusLabel(item.status) }}</span>
-              <span *ngIf="item.position != null">#{{ item.position }}</span>
-            </div>
-            <strong>{{ item.title || 'Sem título no contrato atual' }}</strong>
-            <span>{{ item.sourceName }}</span>
-          </button>
-        </div>
-
-        <aside class="queue-detail" *ngIf="selectedItem">
-          <div class="queue-detail__header">
-            <h3>Detalhe do item</h3>
-            <span class="status-pill status-pill--neutral">{{ getStatusLabel(selectedItem.status) }}</span>
-          </div>
-
-          <dl class="queue-detail__meta">
-            <div>
-              <dt>Source</dt>
-              <dd>{{ selectedItem.sourceName }}</dd>
-            </div>
-            <div>
-              <dt>Posição</dt>
-              <dd>{{ selectedItem.position != null ? ('#' + selectedItem.position) : '-' }}</dd>
-            </div>
-            <div>
-              <dt>Título</dt>
-              <dd>{{ selectedItem.title || 'Sem título no contrato atual' }}</dd>
-            </div>
-            <div *ngIf="selectedItem.externalUrl">
-              <dt>URL</dt>
-              <dd><a [href]="selectedItem.externalUrl" target="_blank" rel="noopener noreferrer">Abrir source</a></dd>
-            </div>
-          </dl>
-
-          <div class="queue-detail__block" *ngIf="selectedItem.errorMessage">
-            <h4>Erro</h4>
-            <pre>{{ selectedItem.errorMessage }}</pre>
-          </div>
-
-          <div class="queue-detail__block" *ngIf="selectedItem.rawPayload">
-            <h4>Log bruto / payload</h4>
-            <pre>{{ selectedItem.rawPayload }}</pre>
-          </div>
-        </aside>
+      <div class="alert alert-danger" *ngIf="itemsLoadError">
+        Não foi possível carregar os itens do importador agora.
       </div>
 
-      <ng-template #emptyQueueState>
-        <div class="empty-state">
-          {{ getQueueEmptyStateMessage() }}
-        </div>
-      </ng-template>
+      <div class="spinner-container" *ngIf="isItemsLoading">
+        <mat-spinner diameter="42"></mat-spinner>
+      </div>
+
+      <div class="importer-items__list" *ngIf="!isItemsLoading && !itemsLoadError && importerItems.length">
+        <article class="importer-item" *ngFor="let item of importerItems; trackBy: trackByImporterItem">
+          <div class="importer-item__main">
+            <div class="importer-item__position">#{{ item.position }}</div>
+            <div class="importer-item__content">
+              <h2>{{ getItemTitle(item) }}</h2>
+              <p>{{ getItemAuthor(item) }}</p>
+            </div>
+          </div>
+
+          <div class="importer-item__meta">
+            <span class="importer-item__status" [ngClass]="getStatusCardClass(item.status)">
+              {{ getStatusLabel(item.status) }}
+            </span>
+            <span>Tentativas: {{ item.attempts || 0 }}</span>
+            <span>Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <div class="importer-item__note">
+            {{ getItemSecondaryInfo(item) }}
+          </div>
+
+          <div class="importer-item__error" *ngIf="getShortError(item)">
+            {{ getShortError(item) }}
+          </div>
+
+          <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
+            Fonte
+          </a>
+        </article>
+      </div>
+
+      <div class="empty-state" *ngIf="!isItemsLoading && !itemsLoadError && !importerItems.length">
+        Nenhum item encontrado para a seleção atual.
+      </div>
+
+      <div class="pagination-bar" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
+        <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          Anterior
+        </button>
+
+        <button
+          class="pagination-btn pagination-btn--page"
+          type="button"
+          *ngFor="let page of visiblePages"
+          [class.pagination-btn--active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+
+        <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          Próxima
+        </button>
+      </div>
+
+      <div class="pagination-caption" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
+        Página {{ currentPage }} de {{ totalPages }}
+      </div>
     </section>
   </ng-container>
 </div>

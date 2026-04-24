@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
-import { ImporterDashboardFacade } from '../../core/services/operations/importer-dashboard.facade';
-import { ImporterItemDetail, ImporterQueueItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
+import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
 import { OperationsService } from '../../core/services/operations/operations.service';
 
 @Component({
@@ -17,30 +17,33 @@ export class ImporterDashboardComponent implements OnInit {
   generatedAtUtc: string;
   totalItems = 0;
   sources: ImporterSourceStatus[] = [];
-  filteredSources: ImporterSourceStatus[] = [];
-  queueItems: ImporterQueueItem[] = [];
-  filteredQueueItems: ImporterQueueItem[] = [];
-  selectedItem: ImporterItemDetail | null = null;
+  importerItems: ImporterQueueListItem[] = [];
 
   selectedSourceId = 'ebook_foundation';
-  selectedStatus = 'all';
-  searchTerm = '';
+  selectedStatus = '';
+  isItemsLoading = false;
+  itemsLoadError = false;
+  currentPage = 1;
+  pageSize = 50;
+  totalQueueItems = 0;
+  readonly pageSizeOptions = [50, 100, 200];
 
-  readonly statusOptions = [
-    { value: 'all', label: 'Todos os status' },
-    { value: 'error', label: 'Erro' },
-    { value: 'retry_later', label: 'Retry later' },
-    { value: 'triaging', label: 'Triaging' },
-    { value: 'editing', label: 'Editing' },
-    { value: 'processing', label: 'Processing' },
-    { value: 'waiting_triage', label: 'Waiting triage' },
-    { value: 'waiting_editor', label: 'Waiting editor' },
-    { value: 'waiting_process', label: 'Waiting process' },
+  readonly statusSummaryOrder = [
+    'waiting_triage',
+    'triaging',
+    'waiting_editor',
+    'editing',
+    'waiting_process',
+    'processing',
+    'done',
+    'retry_later',
+    'source_blocked',
+    'duplicate',
+    'error',
   ];
 
   constructor(
     private _operationsService: OperationsService,
-    private _importerDashboardFacade: ImporterDashboardFacade,
     private _seo: SeoService
   ) {}
 
@@ -57,100 +60,48 @@ export class ImporterDashboardComponent implements OnInit {
     return this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) || null;
   }
 
-  get activeSources(): number {
-    return this.filteredSources.filter(source => source.enabled).length;
-  }
+  get statusSummaryCards(): Array<{ status: string; total: number }> {
+    const source = this.selectedSource;
 
-  get blockedSources(): number {
-    return this.filteredSources.filter(source => source.sourceBlocked > 0).length;
-  }
-
-  get erroredItems(): number {
-    return this.filteredSources.reduce((total, source) => total + source.error, 0);
-  }
-
-  get pendingItems(): number {
-    return this.filteredSources.reduce(
-      (total, source) => total + source.waitingTriage + source.triaging + source.waitingEditor + source.editing + source.waitingProcess + source.processing + source.retryLater,
-      0
-    );
+    return this.statusSummaryOrder.map(status => ({
+      status,
+      total: source ? this.getStatusCount(source, status) : 0,
+    }));
   }
 
   get completionRate(): number {
-    const selectedSource = this.selectedSource;
+    const source = this.selectedSource;
 
-    if (!selectedSource?.totalItems) {
+    if (!source?.totalItems) {
       return 0;
     }
 
-    return Math.round((selectedSource.done / selectedSource.totalItems) * 100);
+    const resolvedItems = source.done + source.duplicate + source.sourceBlocked;
+
+    return Math.round((resolvedItems / source.totalItems) * 100);
   }
 
   trackBySource(index: number, source: ImporterSourceStatus): number {
     return source.sourceId;
   }
 
-  trackByQueue(index: number, item: ImporterQueueItem): string {
-    return item.id || `${item.sourceId}-${item.position || index}-${item.status}`;
+  trackByImporterItem(index: number, item: ImporterQueueListItem): number {
+    return item.id;
   }
 
-  applyFilters(): void {
-    const term = this.searchTerm.trim().toLowerCase();
-
-    this.filteredSources = this.selectedSource ? [this.selectedSource] : [];
-
-    this.filteredQueueItems = this.queueItems.filter(item => {
-      const sourceMatches = !this.selectedSource || item.sourceId === this.selectedSource.sourceId;
-      const statusMatches = this.selectedStatus === 'all' || item.status === this.selectedStatus;
-      const termMatches = !term || [item.title, item.sourceName, item.status, item.position != null ? String(item.position) : ''].some(value =>
-        (value || '').toLowerCase().includes(term)
-      );
-
-      return sourceMatches && statusMatches && termMatches;
-    });
-
-    if (!this.filteredQueueItems.length) {
-      this.selectedItem = null;
-      return;
-    }
-
-    const selectedId = this.selectedItem?.id;
-    const stillSelected = this.filteredQueueItems.find(item => item.id === selectedId);
-    this.selectQueueItem(stillSelected || this.filteredQueueItems[0]);
+  onSourceChanged(): void {
+    this.currentPage = 1;
+    this.loadItems();
   }
 
-  selectQueueItem(item: ImporterQueueItem): void {
-    this.selectedItem = {
-      id: item.id,
-      sourceId: item.sourceId,
-      sourceName: item.sourceName,
-      title: item.title,
-      status: item.status,
-      position: item.position,
-      errorMessage: item.errorMessage,
-      rawPayload: item.rawPayload,
-      externalUrl: item.sourceUrl,
-    };
-  }
-
-  getQueueEmptyStateMessage(): string {
-    if (!this.queueItems.length) {
-      return 'Nenhum item pendente apareceu no contrato atual do backend.';
-    }
-
-    return 'Nenhum item bate com os filtros aplicados.';
-  }
-
-  getSourcePendingCount(source: ImporterSourceStatus): number {
-    return source.waitingTriage + source.triaging + source.waitingEditor + source.editing + source.waitingProcess + source.processing + source.retryLater + source.error;
+  toggleStatus(status: string): void {
+    this.selectedStatus = this.selectedStatus === status ? '' : status;
+    this.currentPage = 1;
+    this.loadItems();
   }
 
   getSourceKey(source: ImporterSourceStatus): string {
     return source.sourceName;
-  }
-
-  getLastRunBadgeClass(source: ImporterSourceStatus): string {
-    return source.lastRunStatus === 'error' ? 'status-pill status-pill--error' : 'status-pill status-pill--neutral';
   }
 
   getStatusLabel(status: string): string {
@@ -165,9 +116,116 @@ export class ImporterDashboardComponent implements OnInit {
       waiting_process: 'Waiting process',
       done: 'Done',
       source_blocked: 'Source blocked',
+      duplicate: 'Duplicate',
     };
 
     return labels[status] || status || 'Sem status';
+  }
+
+  getStatusCardClass(status: string): string {
+    return `summary-card--${status.replace(/_/g, '-')}`;
+  }
+
+  isStatusSelected(status: string): boolean {
+    return this.selectedStatus === status;
+  }
+
+  getItemTitle(item: ImporterQueueListItem): string {
+    return item.plannedTitle || item.title || 'Sem título';
+  }
+
+  getItemAuthor(item: ImporterQueueListItem): string {
+    return item.plannedAuthor || item.author || 'Autor não informado';
+  }
+
+  getItemSecondaryInfo(item: ImporterQueueListItem): string {
+    if (item.sharebookBookId) {
+      return `Livro Sharebook #${item.sharebookBookId}`;
+    }
+
+    if (item.plannedCategoryId) {
+      return `Categoria planejada #${item.plannedCategoryId}`;
+    }
+
+    return 'Sem planejamento editorial completo';
+  }
+
+  getShortError(item: ImporterQueueListItem): string {
+    if (!item.lastError) {
+      return '';
+    }
+
+    return item.lastError.length > 160 ? `${item.lastError.slice(0, 157)}...` : item.lastError;
+  }
+
+  get totalPages(): number {
+    return Math.max(Math.ceil(this.totalQueueItems / this.pageSize), 1);
+  }
+
+  get paginationStart(): number {
+    if (this.totalQueueItems === 0) {
+      return 0;
+    }
+
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  get paginationEnd(): number {
+    if (this.totalQueueItems === 0) {
+      return 0;
+    }
+
+    return Math.min(this.currentPage * this.pageSize, this.totalQueueItems);
+  }
+
+  get visiblePages(): number[] {
+    if (this.totalPages <= 5) {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    }
+
+    const startPage = Math.max(1, Math.min(this.currentPage - 2, this.totalPages - 4));
+    return Array.from({ length: 5 }, (_, index) => startPage + index);
+  }
+
+  changePageSize(value: string): void {
+    const nextPageSize = Number(value);
+
+    if (!nextPageSize || nextPageSize === this.pageSize) {
+      return;
+    }
+
+    this.pageSize = nextPageSize;
+    this.currentPage = 1;
+    this.loadItems();
+  }
+
+  goToPage(page: number): void {
+    const nextPage = Math.min(Math.max(page, 1), this.totalPages);
+
+    if (nextPage === this.currentPage) {
+      return;
+    }
+
+    this.currentPage = nextPage;
+    this.loadItems();
+  }
+
+  private getStatusCount(source: ImporterSourceStatus, status: string): number {
+    const counts = {
+      waiting_triage: source.waitingTriage,
+      triaging: source.triaging,
+      waiting_editor: source.waitingEditor,
+      editing: source.editing,
+      waiting_process: source.waitingProcess,
+      processing: source.processing,
+      done: source.done,
+      retry_later: source.retryLater,
+      source_blocked: source.sourceBlocked,
+      duplicate: source.duplicate,
+      error: source.error,
+    };
+
+    return counts[status] || 0;
   }
 
   private loadDashboard(): void {
@@ -176,8 +234,6 @@ export class ImporterDashboardComponent implements OnInit {
 
     this._operationsService.getImporterDashboard().subscribe({
       next: dashboard => {
-        const viewModel = this._importerDashboardFacade.toViewModel(dashboard);
-
         this.generatedAtUtc = dashboard.generatedAtUtc;
         this.totalItems = dashboard.totalItems;
         this.sources = dashboard.sources || [];
@@ -186,15 +242,43 @@ export class ImporterDashboardComponent implements OnInit {
           this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'ebook_foundation')?.sourceName || this.getSourceKey(this.sources[0]);
         }
 
-        this.queueItems = viewModel.queueItems;
-        this.selectedItem = viewModel.initialSelectedItem;
-        this.applyFilters();
         this.isLoading = false;
+        this.loadItems();
       },
       error: () => {
         this.loadError = true;
         this.isLoading = false;
       },
     });
+  }
+
+  private loadItems(): void {
+    const source = this.selectedSource;
+
+    if (!source) {
+      this.importerItems = [];
+      this.totalQueueItems = 0;
+      return;
+    }
+
+    this.isItemsLoading = true;
+    this.itemsLoadError = false;
+
+    this._operationsService
+      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize)
+      .pipe(finalize(() => (this.isItemsLoading = false)))
+      .subscribe({
+        next: response => {
+          this.importerItems = response.items || [];
+          this.totalQueueItems = response.totalItems || 0;
+          this.currentPage = response.page || 1;
+          this.pageSize = response.itemsPerPage || this.pageSize;
+        },
+        error: () => {
+          this.importerItems = [];
+          this.totalQueueItems = 0;
+          this.itemsLoadError = true;
+        },
+      });
   }
 }

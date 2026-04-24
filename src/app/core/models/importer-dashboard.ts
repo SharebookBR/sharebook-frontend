@@ -23,6 +23,32 @@ export interface ImporterItemDetail {
   externalUrl?: string;
 }
 
+export interface ImporterQueueListItem {
+  id: number;
+  sourceId: number;
+  sourceName: string;
+  position: number;
+  title: string;
+  author?: string;
+  sourceUrl: string;
+  status: string;
+  plannedTitle?: string;
+  plannedAuthor?: string;
+  plannedCategoryId?: string;
+  attempts: number;
+  lastError?: string;
+  sharebookBookId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ImporterQueueItemsPage {
+  page: number;
+  itemsPerPage: number;
+  totalItems: number;
+  items: ImporterQueueListItem[];
+}
+
 export interface ImporterSourceStatus {
   sourceId: number;
   sourceName: string;
