@@ -196,6 +196,11 @@
   --summary-glow: rgba(14, 165, 233, 0.18);
 }
 
+.summary-card--triage-rejected {
+  --summary-accent: #64748b;
+  --summary-glow: rgba(100, 116, 139, 0.18);
+}
+
 .summary-card--waiting-editor {
   --summary-accent: #8b5cf6;
   --summary-glow: rgba(139, 92, 246, 0.18);
@@ -251,6 +256,11 @@
   --summary-glow: rgba(14, 165, 233, 0.18);
 }
 
+.importer-item--triage-rejected {
+  --summary-accent: #64748b;
+  --summary-glow: rgba(100, 116, 139, 0.18);
+}
+
 .importer-item--waiting-editor {
   --summary-accent: #8b5cf6;
   --summary-glow: rgba(139, 92, 246, 0.18);
@@ -298,6 +308,7 @@
 
 .summary-card--waiting-triage,
 .summary-card--triaging,
+.summary-card--triage-rejected,
 .summary-card--waiting-editor,
 .summary-card--editing,
 .summary-card--waiting-process,
@@ -314,6 +325,7 @@
 
 .summary-card--waiting-triage::before,
 .summary-card--triaging::before,
+.summary-card--triage-rejected::before,
 .summary-card--waiting-editor::before,
 .summary-card--editing::before,
 .summary-card--waiting-process::before,
@@ -331,6 +343,7 @@
 
 .summary-card--waiting-triage::after,
 .summary-card--triaging::after,
+.summary-card--triage-rejected::after,
 .summary-card--waiting-editor::after,
 .summary-card--editing::after,
 .summary-card--waiting-process::after,

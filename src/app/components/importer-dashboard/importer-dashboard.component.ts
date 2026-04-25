@@ -31,6 +31,7 @@ export class ImporterDashboardComponent implements OnInit {
   readonly statusSummaryOrder = [
     'waiting_triage',
     'triaging',
+    'triage_rejected',
     'waiting_editor',
     'editing',
     'waiting_process',
@@ -76,7 +77,7 @@ export class ImporterDashboardComponent implements OnInit {
       return 0;
     }
 
-    const resolvedItems = source.done + source.duplicate + source.sourceBlocked;
+    const resolvedItems = source.done + source.duplicate + source.sourceBlocked + source.triageRejected;
 
     return Math.round((resolvedItems / source.totalItems) * 100);
   }
@@ -109,6 +110,7 @@ export class ImporterDashboardComponent implements OnInit {
       error: 'Erro',
       retry_later: 'Retry later',
       triaging: 'Triaging',
+      triage_rejected: 'Triage rejected',
       editing: 'Editing',
       processing: 'Processing',
       waiting_triage: 'Waiting triage',
@@ -218,6 +220,7 @@ export class ImporterDashboardComponent implements OnInit {
     const counts = {
       waiting_triage: source.waitingTriage,
       triaging: source.triaging,
+      triage_rejected: source.triageRejected,
       waiting_editor: source.waitingEditor,
       editing: source.editing,
       waiting_process: source.waitingProcess,

@@ -82,9 +82,9 @@
           </div>
 
           <div class="importer-item__meta">
-            <span class="importer-item__chip">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected'">Tentativas: {{ item.attempts || 0 }}</span>
             <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-            <span class="importer-item__chip importer-item__chip--muted">{{ getItemSecondaryInfo(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected'">{{ getItemSecondaryInfo(item) }}</span>
           </div>
 
           <div class="importer-item__error" *ngIf="getShortError(item)">

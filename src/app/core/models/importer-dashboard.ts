@@ -58,6 +58,7 @@ export interface ImporterSourceStatus {
   done: number;
   waitingTriage: number;
   triaging: number;
+  triageRejected: number;
   waitingEditor: number;
   editing: number;
   waitingProcess: number;
