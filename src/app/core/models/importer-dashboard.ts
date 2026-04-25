@@ -38,6 +38,7 @@ export interface ImporterQueueListItem {
   attempts: number;
   lastError?: string;
   sharebookBookId?: string;
+  metadataJson?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -92,6 +92,9 @@
           </div>
 
           <div class="importer-item__actions">
+            <button class="importer-item__link" type="button" *ngIf="item.metadataJson" (click)="viewMetadata(item)" title="Ver metadata original">
+              Ver metadata
+            </button>
             <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
               Abrir fonte
             </a>

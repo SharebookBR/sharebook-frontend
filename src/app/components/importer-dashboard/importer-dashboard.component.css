@@ -531,10 +531,12 @@
 .importer-item__actions {
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
   padding-left: 3.75rem;
 }
 
 .importer-item__link {
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   min-height: 34px;
@@ -545,6 +547,7 @@
   color: #302d59;
   font-weight: 800;
   text-decoration: none;
+  font-size: 0.82rem;
 }
 
 .importer-item__link:hover {

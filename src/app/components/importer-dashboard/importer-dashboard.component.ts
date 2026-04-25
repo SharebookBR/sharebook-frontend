@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
@@ -45,7 +46,8 @@ export class ImporterDashboardComponent implements OnInit {
 
   constructor(
     private _operationsService: OperationsService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -162,6 +164,19 @@ export class ImporterDashboardComponent implements OnInit {
     }
 
     return item.lastError.length > 160 ? `${item.lastError.slice(0, 157)}...` : item.lastError;
+  }
+
+  viewMetadata(item: ImporterQueueListItem): void {
+    if (!item.metadataJson) {
+      return;
+    }
+
+    try {
+      const metadata = JSON.parse(item.metadataJson);
+      alert(`Metadata Original:\n\n${JSON.stringify(metadata, null, 2)}`);
+    } catch {
+      alert('Erro ao processar metadata (JSON inválido).');
+    }
   }
 
   get totalPages(): number {
