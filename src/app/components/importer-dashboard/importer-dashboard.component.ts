@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 
@@ -12,6 +12,8 @@ import { OperationsService } from '../../core/services/operations/operations.ser
   styleUrls: ['./importer-dashboard.component.css'],
 })
 export class ImporterDashboardComponent implements OnInit {
+  @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
+
   isLoading = true;
   loadError = false;
 
@@ -19,6 +21,7 @@ export class ImporterDashboardComponent implements OnInit {
   totalItems = 0;
   sources: ImporterSourceStatus[] = [];
   importerItems: ImporterQueueListItem[] = [];
+  selectedItemMetadata: any = null;
 
   selectedSourceId = 'ebook_foundation';
   selectedStatus = '';
@@ -166,17 +169,66 @@ export class ImporterDashboardComponent implements OnInit {
     return item.lastError.length > 160 ? `${item.lastError.slice(0, 157)}...` : item.lastError;
   }
 
+  getTriageDetail(item: ImporterQueueListItem): string {
+    if (!item.metadataJson) {
+      return '';
+    }
+
+    try {
+      const metadata = JSON.parse(item.metadataJson);
+      return metadata?.triage?.detail || '';
+    } catch {
+      return '';
+    }
+  }
+
   viewMetadata(item: ImporterQueueListItem): void {
     if (!item.metadataJson) {
       return;
     }
 
     try {
-      const metadata = JSON.parse(item.metadataJson);
-      alert(`Metadata Original:\n\n${JSON.stringify(metadata, null, 2)}`);
+      this.selectedItemMetadata = JSON.parse(item.metadataJson);
+      this._dialog.open(this.metadataDialog, {
+        width: '600px',
+        maxHeight: '80vh',
+        panelClass: 'custom-metadata-dialog'
+      });
     } catch {
       alert('Erro ao processar metadata (JSON inválido).');
     }
+  }
+
+  getMetadataEntries(): Array<{ key: string; value: any; type: string }> {
+    if (!this.selectedItemMetadata) {
+      return [];
+    }
+
+    const entries: Array<{ key: string; value: any; type: string }> = [];
+
+    const flatten = (obj: any, prefix = '') => {
+      Object.entries(obj).forEach(([key, value]) => {
+        const k = prefix ? `${prefix} > ${key}` : key;
+        const readableKey = k.replace(/_/g, ' ');
+
+        if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+          flatten(value, k);
+        } else {
+          let valueType: string = typeof value;
+          if (value === null) valueType = 'null';
+          if (Array.isArray(value)) valueType = 'array';
+
+          entries.push({
+            key: readableKey,
+            value: valueType === 'array' ? JSON.stringify(value) : value,
+            type: valueType
+          });
+        }
+      });
+    };
+
+    flatten(this.selectedItemMetadata);
+    return entries;
   }
 
   get totalPages(): number {

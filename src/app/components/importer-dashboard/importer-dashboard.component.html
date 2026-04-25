@@ -87,7 +87,11 @@
             <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected'">{{ getItemSecondaryInfo(item) }}</span>
           </div>
 
-          <div class="importer-item__error" *ngIf="getShortError(item)">
+          <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
+            {{ getTriageDetail(item) }}
+          </div>
+
+          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && getShortError(item)">
             {{ getShortError(item) }}
           </div>
 
@@ -146,3 +150,24 @@
     </section>
   </ng-container>
 </div>
+
+<ng-template #metadataDialog>
+  <div class="metadata-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>Metadata</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-dialog-content>
+      <div class="metadata-inspector">
+        <div class="metadata-inspector__row" *ngFor="let entry of getMetadataEntries()">
+          <div class="metadata-inspector__key">{{ entry.key }}</div>
+          <div class="metadata-inspector__value" [ngClass]="'metadata-inspector__value--' + entry.type">
+            {{ entry.value === null ? 'null' : entry.value }}
+          </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </div>
+</ng-template>
