@@ -362,7 +362,9 @@
 }
 
 .importer-items {
-  margin-top: 1.25rem;
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 2px solid #f2f4f7;
 }
 
 .importer-items__footer {
@@ -398,6 +400,140 @@
   border-radius: 8px;
   background: #ffffff;
   color: #1f3352;
+}
+
+.importer-items__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+}
+
+.importer-items__header-title h2 {
+  margin: 0;
+  color: #101828;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.importer-items__count {
+  display: block;
+  margin-top: 0.25rem;
+  color: #667085;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.importer-items__controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.importer-items__sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.importer-items__select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.importer-items__select-wrapper mat-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: #667085;
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+}
+
+.importer-items__sort select {
+  height: 44px;
+  padding: 0 2.5rem 0 2.5rem;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #101828;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.1rem;
+}
+
+.importer-items__sort select:focus {
+  outline: none;
+  border-color: #302d59;
+  box-shadow: 0 0 0 4px rgba(48, 45, 89, 0.1);
+}
+
+.importer-items__search {
+  position: relative;
+  flex: 1;
+  max-width: 200px;
+}
+
+.importer-items__search mat-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #667085;
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.importer-items__search input {
+  width: 100%;
+  height: 44px;
+  padding: 0 1rem 0 3rem;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #101828;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05);
+}
+
+.importer-items__search input:focus {
+  outline: none;
+  border-color: #302d59;
+  box-shadow: 0 0 0 4px rgba(48, 45, 89, 0.1);
+}
+
+.importer-items__search input::placeholder {
+  color: #667085;
+  font-weight: 500;
+}
+
+/* Remove arrows from number input */
+.importer-items__search input::-webkit-outer-spin-button,
+.importer-items__search input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.importer-items__search input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .importer-items__list {
@@ -460,6 +596,23 @@
   font-weight: 800;
   text-align: center;
   line-height: 1.1;
+}
+
+.importer-item__thumbnail {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f2f4f7;
+  border: 1px solid #eaecf0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.importer-item__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .importer-item__content {
@@ -580,6 +733,16 @@
 .importer-item__link[title*="metadata"]:hover {
   background: #f4f7fb;
   box-shadow: 0 6px 14px rgba(48, 45, 89, 0.1);
+}
+
+.importer-item__link--pdp {
+  background: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.24);
+}
+
+.importer-item__link--pdp:hover {
+  background: #059669;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
 }
 
 .pagination-bar {

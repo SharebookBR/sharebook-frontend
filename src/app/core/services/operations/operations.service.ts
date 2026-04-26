@@ -18,12 +18,14 @@ export class OperationsService {
     return this._http.get<ImporterDashboard>(`${this.config.apiEndpoint}/Operations/ImporterDashboard`);
   }
 
-  getImporterItems(sourceId: number, status: string, page: number, pageSize: number): Observable<ImporterQueueItemsPage> {
+  getImporterItems(sourceId: number, status: string, page: number, pageSize: number, position?: number, sort?: string): Observable<ImporterQueueItemsPage> {
     const params = {
       sourceId: String(sourceId),
       page: String(page),
       pageSize: String(pageSize),
       ...(status ? { status } : {}),
+      ...(position ? { position: String(position) } : {}),
+      ...(sort ? { sort } : {}),
     };
 
     return this._http.get<ImporterQueueItemsPage>(`${this.config.apiEndpoint}/Operations/ImporterItems`, { params });

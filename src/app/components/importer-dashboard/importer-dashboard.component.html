@@ -56,7 +56,39 @@
       </button>
     </div>
 
-    <section class="importer-items">
+    <section class="importer-items" #importerItemsSection>
+      <header class="importer-items__header" *ngIf="!isLoading && !loadError">
+        <div class="importer-items__header-title">
+          <h2>Itens na Fila</h2>
+          <span class="importer-items__count" *ngIf="totalQueueItems > 0">
+            {{ totalQueueItems }} {{ totalQueueItems === 1 ? 'item encontrado' : 'itens encontrados' }}
+          </span>
+        </div>
+
+        <div class="importer-items__controls">
+          <div class="importer-items__sort">
+            <div class="importer-items__select-wrapper">
+              <mat-icon>swap_vert</mat-icon>
+              <select [(ngModel)]="selectedSort" (ngModelChange)="onSortChanged()">
+                <option value="updated_at_desc">Última atualização</option>
+                <option value="position_asc">Posição (ASC)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="importer-items__search">
+            <mat-icon>search</mat-icon>
+            <input
+              type="number"
+              placeholder="Posição..."
+              [(ngModel)]="searchPosition"
+              (ngModelChange)="onSearchPosition()"
+              (keyup.enter)="onSearchPosition()"
+            />
+          </div>
+        </div>
+      </header>
+
       <div class="alert alert-danger" *ngIf="itemsLoadError">
         Não foi possível carregar os itens do importador agora.
       </div>
@@ -70,6 +102,11 @@
           <div class="importer-item__topline">
             <div class="importer-item__main">
               <div class="importer-item__position">#{{ item.position }}</div>
+              
+              <div class="importer-item__thumbnail" *ngIf="item.status === 'done' && item.bookSlug">
+                <img [src]="getBookImageUrl(item)" [alt]="item.title" loading="lazy">
+              </div>
+
               <div class="importer-item__content">
                 <h2>{{ getItemTitle(item) }}</h2>
                 <p>{{ getItemAuthor(item) }}</p>
@@ -82,20 +119,23 @@
           </div>
 
           <div class="importer-item__meta">
-            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected'">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done'">Tentativas: {{ item.attempts || 0 }}</span>
             <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected'">{{ getItemSecondaryInfo(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done'">{{ getItemSecondaryInfo(item) }}</span>
           </div>
 
           <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
             {{ getTriageDetail(item) }}
           </div>
 
-          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && getShortError(item)">
+          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && getShortError(item)">
             {{ getShortError(item) }}
           </div>
 
           <div class="importer-item__actions">
+            <a class="importer-item__link importer-item__link--pdp" [href]="getPdpUrl(item)" target="_blank" rel="noopener noreferrer" *ngIf="item.status === 'done' && item.bookSlug" title="Ver na PDP">
+              Ver na PDP
+            </a>
             <button class="importer-item__link" type="button" *ngIf="item.metadataJson" (click)="viewMetadata(item)" title="Ver metadata original">
               Ver metadata
             </button>
@@ -110,21 +150,7 @@
         Nenhum item encontrado para a seleção atual.
       </div>
 
-      <div class="importer-items__footer" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
-        <div class="importer-items__summary">
-          Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalQueueItems }} itens
-          <span *ngIf="selectedStatus">em {{ getStatusLabel(selectedStatus) }}</span>
-        </div>
-
-        <label class="importer-items__page-size">
-          Itens por página
-          <select [value]="pageSize" (change)="changePageSize($event.target.value)">
-            <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="pagination-bar" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
+      <div class="pagination-bar" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > pageSize">
         <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
           Anterior
         </button>
@@ -144,7 +170,7 @@
         </button>
       </div>
 
-      <div class="pagination-caption" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > 0">
+      <div class="pagination-caption" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > pageSize">
         Página {{ currentPage }} de {{ totalPages }}
       </div>
     </section>

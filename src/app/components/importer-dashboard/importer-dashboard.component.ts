@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 
@@ -13,6 +13,7 @@ import { OperationsService } from '../../core/services/operations/operations.ser
 })
 export class ImporterDashboardComponent implements OnInit {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
+  @ViewChild('importerItemsSection') importerItemsSection: ElementRef;
 
   isLoading = true;
   loadError = false;
@@ -25,6 +26,8 @@ export class ImporterDashboardComponent implements OnInit {
 
   selectedSourceId = 'ebook_foundation';
   selectedStatus = '';
+  selectedSort = 'updated_at_desc';
+  searchPosition: number | null = null;
   isItemsLoading = false;
   itemsLoadError = false;
   currentPage = 1;
@@ -97,6 +100,17 @@ export class ImporterDashboardComponent implements OnInit {
 
   onSourceChanged(): void {
     this.currentPage = 1;
+    this.searchPosition = null;
+    this.loadItems();
+  }
+
+  onSearchPosition(): void {
+    this.currentPage = 1;
+    this.loadItems();
+  }
+
+  onSortChanged(): void {
+    this.currentPage = 1;
     this.loadItems();
   }
 
@@ -104,6 +118,12 @@ export class ImporterDashboardComponent implements OnInit {
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.currentPage = 1;
     this.loadItems();
+
+    if (this.selectedStatus) {
+      setTimeout(() => {
+        this.importerItemsSection?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   }
 
   getSourceKey(source: ImporterSourceStatus): string {
@@ -167,6 +187,24 @@ export class ImporterDashboardComponent implements OnInit {
     }
 
     return item.lastError.length > 160 ? `${item.lastError.slice(0, 157)}...` : item.lastError;
+  }
+
+  getPdpUrl(item: ImporterQueueListItem): string {
+    if (!item.bookSlug) {
+      return '';
+    }
+
+    return `https://www.sharebook.com.br/livros/${item.bookSlug}`;
+  }
+
+  getBookImageUrl(item: ImporterQueueListItem): string {
+    const imageName = item.bookImageSlug || (item.bookSlug ? `${item.bookSlug}.jpg` : '');
+
+    if (!imageName) {
+      return '';
+    }
+
+    return `https://api.sharebook.com.br/Images/Books/${imageName}`;
   }
 
   getTriageDetail(item: ImporterQueueListItem): string {
@@ -339,7 +377,7 @@ export class ImporterDashboardComponent implements OnInit {
     this.itemsLoadError = false;
 
     this._operationsService
-      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize)
+      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, this.searchPosition || undefined, this.selectedSort)
       .pipe(finalize(() => (this.isItemsLoading = false)))
       .subscribe({
         next: response => {
