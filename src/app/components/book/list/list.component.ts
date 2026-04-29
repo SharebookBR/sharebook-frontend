@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
+import { AppConfig, APP_CONFIG } from '../../../app-config.module';
 import { BookService } from '../../../core/services/book/book.service';
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { BookDonationStatus } from './../../../core/models/BookDonationStatus';
@@ -46,7 +47,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    @Inject(APP_CONFIG) public config: AppConfig
   ) {}
 
   loadBooks() {
@@ -146,6 +148,10 @@ export class ListComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
         modalRef.componentInstance.facilitatorNotes = param.facilitatorNotes === null ? '' : param.facilitatorNotes;
+        break;
+      }
+      case 'openPdf': {
+        window.open(this.getPdfUrl(param), '_blank');
         break;
       }
       case 'trackNumber': {
@@ -459,6 +465,14 @@ export class ListComponent implements OnInit, OnDestroy {
   public canShowTrackAction(book: BookVMItem): boolean {
     return !this.isEbook(book) &&
       (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public canOpenPdf(book: BookVMItem): boolean {
+    return this.isEbook(book) && !!book.slug;
+  }
+
+  public getPdfUrl(book: BookVMItem): string {
+    return `${this.config.apiEndpoint}/book/DownloadEBook/${book.slug}`;
   }
 
   public shouldShowDecisionNotice(book: BookVMItem): boolean {

@@ -115,6 +115,15 @@
           </button>
 
           <button
+            mat-stroked-button
+            class="action-btn action-btn--pdf"
+            *ngIf="canOpenPdf(element)"
+            (click)="onCustom('openPdf', element)"
+          >
+            <mat-icon class="action-btn__icon">picture_as_pdf</mat-icon> Ver PDF
+          </button>
+
+          <button
             mat-flat-button
             class="action-btn action-btn--neutral"
             *ngIf="canShowTrackAction(element)"

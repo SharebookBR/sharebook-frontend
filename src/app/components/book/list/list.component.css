@@ -285,6 +285,15 @@
   color: #ffffff !important;
 }
 
+.action-btn--pdf {
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+}
+
+.action-btn--pdf:hover {
+  background: rgba(220, 53, 69, 0.08) !important;
+}
+
 .pagination-bar {
   display: flex;
   align-items: center;
