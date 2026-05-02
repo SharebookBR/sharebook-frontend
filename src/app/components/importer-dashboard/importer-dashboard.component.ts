@@ -24,7 +24,7 @@ export class ImporterDashboardComponent implements OnInit {
   importerItems: ImporterQueueListItem[] = [];
   selectedItemMetadata: any = null;
 
-  selectedSourceId = 'ebook_foundation';
+  selectedSourceId = 'baixelivros_infantil';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
   searchPosition: number | null = null;
@@ -351,7 +351,7 @@ export class ImporterDashboardComponent implements OnInit {
         this.sources = dashboard.sources || [];
 
         if (!this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) && this.sources.length) {
-          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'ebook_foundation')?.sourceName || this.getSourceKey(this.sources[0]);
+          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'baixelivros_infantil')?.sourceName || this.getSourceKey(this.sources[0]);
         }
 
         this.isLoading = false;
