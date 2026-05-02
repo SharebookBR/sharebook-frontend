@@ -43,11 +43,11 @@ export class ImporterDashboardComponent implements OnInit {
     'editing',
     'waiting_process',
     'processing',
-    'done',
     'retry_later',
     'source_blocked',
     'duplicate',
     'error',
+    'done',
   ];
 
   constructor(
@@ -115,8 +115,18 @@ export class ImporterDashboardComponent implements OnInit {
   }
 
   toggleStatus(status: string): void {
+    const previousStatus = this.selectedStatus;
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.currentPage = 1;
+
+    // Se mudou para um status de "waiting", muda o sort para posição ASC
+    // Se saiu de um status de "waiting" ou mudou para outro tipo, volta para última atualização DESC
+    if (this.selectedStatus.startsWith('waiting_')) {
+      this.selectedSort = 'position_asc';
+    } else if (previousStatus.startsWith('waiting_') || !this.selectedStatus) {
+      this.selectedSort = 'updated_at_desc';
+    }
+
     this.loadItems();
 
     if (this.selectedStatus) {
@@ -159,6 +169,19 @@ export class ImporterDashboardComponent implements OnInit {
 
   isStatusSelected(status: string): boolean {
     return this.selectedStatus === status;
+  }
+
+  getAgentInfo(status: string): { name: string; icon: string } | null {
+    const mapping: { [key: string]: { name: string; icon: string } } = {
+      waiting_triage: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
+      triaging: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
+      waiting_editor: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
+      editing: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
+      waiting_process: { name: 'Python Worker', icon: 'precision_manufacturing' },
+      processing: { name: 'Python Worker', icon: 'precision_manufacturing' },
+      retry_later: { name: 'Python Worker', icon: 'precision_manufacturing' },
+    };
+    return mapping[status] || null;
   }
 
   getItemTitle(item: ImporterQueueListItem): string {

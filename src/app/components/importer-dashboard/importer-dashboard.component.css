@@ -186,6 +186,41 @@
   box-shadow: 0 0 0 4px var(--summary-glow, rgba(152, 162, 179, 0.14));
 }
 
+.summary-card__agent-tag {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  /* Cores dinâmicas baseadas no card (escolhido pelo usuário) */
+  background: var(--summary-accent);
+  color: #fff;
+  box-shadow: 0 4px 15px var(--summary-glow);
+  border: none;
+}
+
+.summary-card__agent-tag mat-icon {
+  font-size: 0.85rem;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* Efeito de hover no card para destacar o badge */
+.summary-card:hover .summary-card__agent-tag {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 20px var(--summary-glow);
+}
+
 .summary-card--waiting-triage {
   --summary-accent: #3b82f6;
   --summary-glow: rgba(59, 130, 246, 0.18);
@@ -883,6 +918,81 @@
   font-family: 'Fira Code', monospace;
   font-size: 0.8rem;
   color: #475569;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.empty-state {
+  color: #475467;
+}
+
+@media (max-width: 767px) {
+  .metadata-dialog__footer {
+    display: none;
+  }
+
+  .importer-dashboard__header,
+  .importer-items__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summary-card {
+    min-height: 118px;
+  }
+
+  .summary-card__value {
+    font-size: 2rem;
+  }
+
+  .importer-item {
+    padding: 0.9rem;
+  }
+
+  .importer-item__topline {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .importer-item__main {
+    gap: 0.6rem;
+  }
+
+  .importer-item__position {
+    min-width: auto;
+  }
+
+  .importer-item__meta,
+  .importer-item__error,
+  .importer-item__actions {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .importer-item__actions {
+    justify-content: stretch;
+  }
+
+  .importer-item__link {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .importer-items__page-size {
+    justify-content: space-between;
+  }
+
+  .importer-items__page-size select {
+    flex: 1;
+  }
 }
 
 .spinner-container {

@@ -53,6 +53,10 @@
           <span class="summary-card__dot"></span>
           <span>{{ getStatusLabel(card.status) }}</span>
         </div>
+        <div class="summary-card__agent-tag" *ngIf="getAgentInfo(card.status) as info">
+          <mat-icon>{{ info.icon }}</mat-icon>
+          <span>{{ info.name }}</span>
+        </div>
       </button>
     </div>
 
