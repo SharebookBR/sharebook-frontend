@@ -250,14 +250,10 @@ export class ImporterDashboardComponent implements OnInit {
 
     try {
       this.selectedItemMetadata = JSON.parse(item.metadataJson);
-      
-      const isMobile = window.innerWidth <= 767;
       this._dialog.open(this.metadataDialog, {
-        width: isMobile ? '100vw' : '600px',
-        maxWidth: isMobile ? '100vw' : '80vw',
-        maxHeight: isMobile ? '100vh' : '80vh',
-        height: isMobile ? '100vh' : 'auto',
-        panelClass: 'custom-metadata-dialog'
+        width: '600px',
+        maxWidth: '100vw',
+        maxHeight: '80vh',
       });
     } catch {
       alert('Erro ao processar metadata (JSON inválido).');
