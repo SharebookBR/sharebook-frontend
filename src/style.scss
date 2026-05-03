@@ -238,7 +238,7 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
 
 /* Metadata Dialog Full-Screen on Mobile */
 @media (max-width: 767px) {
-  .custom-metadata-dialog {
+  .cdk-overlay-container .cdk-overlay-pane.custom-metadata-dialog {
     max-width: 100vw !important;
     width: 100vw !important;
     height: 100vh !important;
@@ -251,7 +251,9 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
       margin: 0 !important;
       box-sizing: border-box;
     }
+  }
 
+  .custom-metadata-dialog {
     .metadata-dialog {
       height: 100vh;
       display: flex;
