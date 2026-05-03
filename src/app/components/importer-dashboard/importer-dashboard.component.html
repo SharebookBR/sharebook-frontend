@@ -63,10 +63,7 @@
     <section class="importer-items" #importerItemsSection>
       <header class="importer-items__header" *ngIf="!isLoading && !loadError">
         <div class="importer-items__header-title">
-          <h2>Itens na Fila</h2>
-          <span class="importer-items__count" *ngIf="totalQueueItems > 0">
-            {{ totalQueueItems }} {{ totalQueueItems === 1 ? 'item encontrado' : 'itens encontrados' }}
-          </span>
+          <h2>Itens na Fila<ng-container *ngIf="totalQueueItems > 0"> - {{ totalQueueItems }}</ng-container></h2>
         </div>
 
         <div class="importer-items__controls">
@@ -113,7 +110,7 @@
 
               <div class="importer-item__content">
                 <h2>{{ getItemTitle(item) }}</h2>
-                <p>{{ getItemAuthor(item) }}</p>
+                <p *ngIf="getItemAuthor(item)">{{ getItemAuthor(item) }}</p>
               </div>
             </div>
 
@@ -123,9 +120,9 @@
           </div>
 
           <div class="importer-item__meta">
-            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done'">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && !item.status.includes('triage') && !item.status.includes('editor')">Tentativas: {{ item.attempts || 0 }}</span>
             <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done'">{{ getItemSecondaryInfo(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && getItemSecondaryInfo(item)">{{ getItemSecondaryInfo(item) }}</span>
           </div>
 
           <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
@@ -189,7 +186,7 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <mat-dialog-content>
+    <div class="metadata-dialog__content">
       <div class="metadata-inspector">
         <div class="metadata-inspector__row" *ngFor="let entry of getMetadataEntries()">
           <div class="metadata-inspector__key">{{ entry.key }}</div>
@@ -198,6 +195,6 @@
           </div>
         </div>
       </div>
-    </mat-dialog-content>
+    </div>
   </div>
 </ng-template>

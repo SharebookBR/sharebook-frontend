@@ -38,12 +38,12 @@ export class ImporterDashboardComponent implements OnInit {
   readonly statusSummaryOrder = [
     'waiting_triage',
     'triaging',
-    'triage_rejected',
     'waiting_editor',
     'editing',
     'waiting_process',
     'processing',
     'retry_later',
+    'triage_rejected',
     'source_blocked',
     'duplicate',
     'error',
@@ -119,11 +119,11 @@ export class ImporterDashboardComponent implements OnInit {
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.currentPage = 1;
 
-    // Se mudou para um status de "waiting", muda o sort para posição ASC
+    // Se mudou para um status de "waiting" ou "retry_later", muda o sort para posição ASC
     // Se saiu de um status de "waiting" ou mudou para outro tipo, volta para última atualização DESC
-    if (this.selectedStatus.startsWith('waiting_')) {
+    if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'retry_later') {
       this.selectedSort = 'position_asc';
-    } else if (previousStatus.startsWith('waiting_') || !this.selectedStatus) {
+    } else if (previousStatus.startsWith('waiting_') || previousStatus === 'retry_later' || !this.selectedStatus) {
       this.selectedSort = 'updated_at_desc';
     }
 
@@ -189,7 +189,7 @@ export class ImporterDashboardComponent implements OnInit {
   }
 
   getItemAuthor(item: ImporterQueueListItem): string {
-    return item.plannedAuthor || item.author || 'Autor não informado';
+    return item.plannedAuthor || item.author || '';
   }
 
   getItemSecondaryInfo(item: ImporterQueueListItem): string {
@@ -201,7 +201,7 @@ export class ImporterDashboardComponent implements OnInit {
       return `Categoria planejada #${item.plannedCategoryId}`;
     }
 
-    return 'Sem planejamento editorial completo';
+    return '';
   }
 
   getShortError(item: ImporterQueueListItem): string {
@@ -250,9 +250,13 @@ export class ImporterDashboardComponent implements OnInit {
 
     try {
       this.selectedItemMetadata = JSON.parse(item.metadataJson);
+      
+      const isMobile = window.innerWidth <= 767;
       this._dialog.open(this.metadataDialog, {
-        width: '600px',
-        maxHeight: '80vh',
+        width: isMobile ? '100vw' : '600px',
+        maxWidth: isMobile ? '100vw' : '80vw',
+        maxHeight: isMobile ? '100vh' : '80vh',
+        height: isMobile ? '100vh' : 'auto',
         panelClass: 'custom-metadata-dialog'
       });
     } catch {

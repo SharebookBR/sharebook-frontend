@@ -20,6 +20,10 @@
     <mat-icon mat-list-icon>dashboard</mat-icon>
     <span mat-line>Meu Painel</span>
   </a>
+  <a mat-list-item (click)="navigate('/admin/importer')" *ngIf="isAdmin">
+    <mat-icon mat-list-icon>auto_awesome</mat-icon>
+    <span mat-line>Importador de Livros</span>
+  </a>
   <a mat-list-item (click)="navigate('/myaccount')" *ngIf="userLogged">
     <mat-icon mat-list-icon>manage_accounts</mat-icon>
     <span mat-line>Minha Conta</span>

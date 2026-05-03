@@ -47,6 +47,9 @@
         <a class="user-dropdown__item" routerLink="/panel" (click)="closeUserMenu()">
           <mat-icon>dashboard</mat-icon> Meu Painel
         </a>
+        <a class="user-dropdown__item" routerLink="/admin/importer" *ngIf="isAdmin" (click)="closeUserMenu()">
+          <mat-icon>auto_awesome</mat-icon> Importador
+        </a>
         <a class="user-dropdown__item" routerLink="/myaccount" (click)="closeUserMenu()">
           <mat-icon>manage_accounts</mat-icon> Minha Conta
         </a>

@@ -15,6 +15,11 @@ import { AuthenticationService } from '../../core/services/authentication/authen
 export class MaisSheetComponent {
   userLogged = false;
   userName = '';
+  private _profile = '';
+
+  get isAdmin(): boolean {
+    return this._profile === 'Administrator';
+  }
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<MaisSheetComponent>,
@@ -27,6 +32,7 @@ export class MaisSheetComponent {
     if (user) {
       this.userLogged = true;
       this.userName = user.name;
+      this._profile = typeof user.profile === 'string' ? user.profile : user.profile?.profile;
     }
   }
 

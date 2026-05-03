@@ -25,6 +25,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.shareBookUser.name.split(' ')[0];
   }
 
+  get isAdmin(): boolean {
+    return (this.shareBookUser?.profile as any) === 'Administrator';
+  }
+
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(

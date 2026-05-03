@@ -235,3 +235,50 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
 .cdk-overlay-pane {
   z-index: 2001 !important;
 }
+
+/* Metadata Dialog Full-Screen on Mobile */
+@media (max-width: 767px) {
+  .custom-metadata-dialog {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+
+    mat-dialog-container {
+      border-radius: 0 !important;
+      padding: 0 !important;
+    }
+
+    .metadata-dialog {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+    }
+
+    .metadata-dialog__header {
+      padding: 1rem;
+      border-radius: 0;
+    }
+
+    .metadata-dialog__content {
+      flex: 1;
+      padding: 0.5rem;
+      overflow-y: auto;
+    }
+
+    /* Ajuste para a tabela de metadados não quebrar layout */
+    .metadata-inspector__row {
+      grid-template-columns: 100px 1fr !important;
+    }
+
+    .metadata-table {
+      font-size: 0.85rem;
+      
+      td {
+        padding: 0.5rem;
+      }
+    }
+  }
+}
