@@ -177,9 +177,9 @@ export class ImporterDashboardComponent implements OnInit {
       triaging: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
       waiting_editor: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
       editing: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
-      waiting_process: { name: 'Python Worker', icon: 'precision_manufacturing' },
-      processing: { name: 'Python Worker', icon: 'precision_manufacturing' },
-      retry_later: { name: 'Python Worker', icon: 'precision_manufacturing' },
+      waiting_process: { name: 'Python Worker', icon: 'settings' },
+      processing: { name: 'Python Worker', icon: 'settings' },
+      retry_later: { name: 'Python Worker', icon: 'settings' },
     };
     return mapping[status] || null;
   }
