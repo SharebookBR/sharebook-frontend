@@ -40,3 +40,21 @@ body {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+/* Global Material Modal Responsive Fix */
+@media (max-width: 767px) {
+  .cdk-overlay-pane {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    margin: 0 !important;
+  }
+
+  .mat-dialog-container {
+    border-radius: 0 !important;
+    padding: 15px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    width: 100vw !important;
+    min-width: 100vw !important;
+  }
+}
