@@ -264,8 +264,16 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
 
     .metadata-dialog__content {
       flex: 1;
-      padding: 0.5rem;
+      padding: 0 !important;
       overflow-y: auto;
+    }
+
+    .metadata-inspector {
+      border-radius: 0 !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      margin: 0 !important;
     }
 
     /* Ajuste para a tabela de metadados não quebrar layout */
