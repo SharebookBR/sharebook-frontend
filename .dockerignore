@@ -1,0 +1,13 @@
+.angular
+.git
+.gitignore
+.github
+.vscode
+node_modules
+dist
+e2e
+src/assets
+.env
+*.md
+Dockerfile
+.dockerignore
