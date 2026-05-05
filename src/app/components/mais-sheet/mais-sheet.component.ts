@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
+import { ViewportScroller, isPlatformBrowser } from '@angular/common';
 import { take } from 'rxjs/operators';
 
 import { UserService } from '../../core/services/user/user.service';
@@ -26,7 +26,8 @@ export class MaisSheetComponent {
     private _router: Router,
     private _viewportScroller: ViewportScroller,
     private _scUser: UserService,
-    private _scAuthentication: AuthenticationService
+    private _scAuthentication: AuthenticationService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     const user = this._scUser.getLoggedUserFromLocalStorage();
     if (user) {
@@ -54,7 +55,9 @@ export class MaisSheetComponent {
 
   private scrollToTop(): void {
     this._viewportScroller.scrollToPosition([0, 0]);
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
   }
 
   private dismissAndNavigate(commands: any[]): void {

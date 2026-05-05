@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
@@ -48,6 +49,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     public dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: object,
     @Inject(APP_CONFIG) public config: AppConfig
   ) {}
 
@@ -151,7 +153,9 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'openPdf': {
-        window.open(this.getPdfUrl(param), '_blank');
+        if (isPlatformBrowser(this.platformId)) {
+          window.open(this.getPdfUrl(param), '_blank');
+        }
         break;
       }
       case 'trackNumber': {

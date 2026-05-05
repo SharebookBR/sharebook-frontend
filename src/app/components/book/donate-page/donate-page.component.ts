@@ -1,5 +1,5 @@
-import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { DatePipe, ViewportScroller, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -60,7 +60,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private _confetti: ConfettiService,
     private _breakpointObserver: BreakpointObserver,
-    private _viewportScroller: ViewportScroller
+    private _viewportScroller: ViewportScroller,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -234,6 +235,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private scrollToTop(): void {
     this._viewportScroller.scrollToPosition([0, 0]);
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
   }
 }

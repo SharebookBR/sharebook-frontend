@@ -37,7 +37,9 @@ export class InputSearchComponent implements OnInit {
 
   // remove o alerta, e joga para a home do site ajustando o menu novamente sem o alerta
   closeAlert() {
-    this.alert.nativeElement.classList.remove('show');
+    if (this._platform.isBrowser() && this.alert?.nativeElement) {
+      this.alert.nativeElement.classList.remove('show');
+    }
     this._router.navigate(['/']);
     this.searchAlert = false;
   }

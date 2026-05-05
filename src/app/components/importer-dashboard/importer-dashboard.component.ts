@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, TemplateRef, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { isPlatformBrowser } from '@angular/common';
 import { finalize } from 'rxjs/operators';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
@@ -53,7 +54,8 @@ export class ImporterDashboardComponent implements OnInit {
   constructor(
     private _operationsService: OperationsService,
     private _seo: SeoService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   ngOnInit(): void {
@@ -131,7 +133,9 @@ export class ImporterDashboardComponent implements OnInit {
 
     if (this.selectedStatus) {
       setTimeout(() => {
-        this.importerItemsSection?.nativeElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (isPlatformBrowser(this.platformId) && this.importerItemsSection?.nativeElement) {
+          this.importerItemsSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }, 100);
     }
   }

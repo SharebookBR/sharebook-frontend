@@ -2,7 +2,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from './../../core/services/user/user.service';
 import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize.component';
@@ -20,7 +21,11 @@ export class MyaccountComponent implements OnInit, OnDestroy {
   whoAccessedList: any;
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scUser: UserService, public dialog: MatDialog) {}
+  constructor(
+    private _scUser: UserService,
+    public dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   ngOnInit() {
     this._scUser
@@ -67,6 +72,10 @@ export class MyaccountComponent implements OnInit, OnDestroy {
   }
 
   writeContents(content, fileName, contentType) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const a = document.createElement('a');
     const file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);

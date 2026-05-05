@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -25,7 +26,11 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public dialogRef: MatDialogRef<WinnerUsersComponent>, private _scBook: BookService) { }
+  constructor(
+    public dialogRef: MatDialogRef<WinnerUsersComponent>,
+    private _scBook: BookService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) { }
 
   private removeDiacritics(text: string): string {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -73,7 +78,9 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
 
     const message = `Olá, ${winnerUser.name}! Você ganhou o livro "${this.bookTitle}" no Sharebook.`;
     const whatsappUrl = `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(whatsappUrl, '_blank');
+    }
   }
 
   hasWhatsappPhone(winnerUser: UserInfo): boolean {
@@ -149,7 +156,9 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
     params.set('pesototal', '1');
 
     const url = `${baseUrl}?${params.toString()}`;
-    window.open(url, '_blank');
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(url, '_blank');
+    }
   }
 
   generateEtiquetas(winnerUser: UserInfo) {
@@ -198,22 +207,24 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
       ...this.getEmptyPositionData(4)
     };
 
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://www2.correios.com.br/enderecador/encomendas/act/gerarEtiqueta.cfm?etq=1";
-    form.target = "_blank";
+    if (isPlatformBrowser(this.platformId)) {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "https://www2.correios.com.br/enderecador/encomendas/act/gerarEtiqueta.cfm?etq=1";
+      form.target = "_blank";
 
-    for (const [key, value] of Object.entries(formData)) {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
+      for (const [key, value] of Object.entries(formData)) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
     }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
   }
 
   private getEmptyPositionData(position: number) {

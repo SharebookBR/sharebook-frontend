@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -21,7 +22,11 @@ export class DonorModalComponent implements OnInit {
 
   userInfo$: Observable<UserInfoBook>;
 
-  constructor(public dialogRef: MatDialogRef<DonorModalComponent>, private readonly _bookService: BookService) {}
+  constructor(
+    public dialogRef: MatDialogRef<DonorModalComponent>,
+    private readonly _bookService: BookService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   contactOnWhatsapp(user: UserInfo) {
     const normalizedPhone = this.normalizeWhatsappPhone(user?.phone);
@@ -31,7 +36,9 @@ export class DonorModalComponent implements OnInit {
 
     const message = `Olá, ${user.name}! Aqui é do Sharebook sobre o livro "${this.bookTitle}".`;
     const whatsappUrl = `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(whatsappUrl, '_blank');
+    }
   }
 
   hasWhatsappPhone(user: UserInfo): boolean {

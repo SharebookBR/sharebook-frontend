@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-freight-incentive-dialog',
@@ -7,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FreightIncentiveDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: object) { }
 
   ngOnInit(): void {
   }
 
   AbrirRegistroModico(): void {
-    window.open('https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544');
+    if (isPlatformBrowser(this.platformId)) {
+      window.open('https://www.linkedin.com/feed/update/urn:li:activity:6447871003954540544');
+    }
   }
 }

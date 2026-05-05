@@ -19,6 +19,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { PlatformService } from '../../../core/services/platform/platform.service';
 
 @Component({
   selector: 'app-details',
@@ -58,6 +59,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _scCategory: CategoryService,
     private _seo: SeoService,
     private _toastr: ToastrService,
+    private _platform: PlatformService,
     @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this._scAuthentication.checkTokenValidity();
@@ -330,7 +332,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   onDownloadEbook() {
     if (this.bookInfo.slug) {
       const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
-      window.open(downloadUrl, '_blank');
+      this._platform.open(downloadUrl, '_blank');
     }
   }
 
@@ -381,7 +383,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     if (targetUrl) {
-      window.open(targetUrl, '_blank');
+      this._platform.open(targetUrl, '_blank');
       this.closeShareModal();
       return;
     }
@@ -390,10 +392,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   private copyShareText(text: string): Promise<void> {
-    if (navigator.clipboard?.writeText) {
-      return navigator.clipboard.writeText(text);
-    }
-
-    return Promise.reject();
+    return this._platform.writeClipboardText(text);
   }
 }

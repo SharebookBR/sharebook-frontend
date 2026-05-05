@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -20,7 +21,11 @@ export class MainUsersComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(public dialogRef: MatDialogRef<MainUsersComponent>, private _scBook: BookService) {}
+  constructor(
+    public dialogRef: MatDialogRef<MainUsersComponent>,
+    private _scBook: BookService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   contactOnWhatsapp(mainUser: UserInfo) {
     const normalizedPhone = this.normalizeWhatsappPhone(mainUser?.phone);
@@ -30,7 +35,9 @@ export class MainUsersComponent implements OnInit, OnDestroy {
 
     const message = `Olá, ${mainUser.name}! Aqui é do Sharebook sobre o livro "${this.bookTitle}".`;
     const whatsappUrl = `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(whatsappUrl, '_blank');
+    }
   }
 
   hasWhatsappPhone(mainUser: UserInfo): boolean {

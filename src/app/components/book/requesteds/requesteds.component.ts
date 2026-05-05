@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -34,7 +35,8 @@ export class RequestedsComponent implements OnInit, OnDestroy {
     private _bookService: BookService,
     private _toastr: ToastrService,
     public dialog: MatDialog,
-    private _seo: SeoService
+    private _seo: SeoService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   ngOnInit() {
@@ -194,14 +196,18 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   public copyTrackingCode(param: MyRequestItem): void {
     const trackingNumber = this.getTrackingNumber(param);
 
-    if (!trackingNumber || !navigator?.clipboard?.writeText) {
+    if (!trackingNumber) {
       this._toastr.info('Código de rastreio indisponível para cópia.');
       return;
     }
 
-    navigator.clipboard.writeText(trackingNumber)
-      .then(() => this._toastr.success('Código de rastreio copiado!'))
-      .catch(() => this._toastr.error('Não foi possível copiar o código.'));
+    if (isPlatformBrowser(this.platformId) && navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(trackingNumber)
+        .then(() => this._toastr.success('Código de rastreio copiado!'))
+        .catch(() => this._toastr.error('Não foi possível copiar o código.'));
+    } else {
+      this._toastr.info('Código de rastreio indisponível para cópia.');
+    }
   }
 
   public confirmBookReceived(param: MyRequestItem): void {
