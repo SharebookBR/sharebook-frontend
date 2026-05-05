@@ -2,13 +2,16 @@
 FROM public.ecr.aws/docker/library/node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --legacy-peer-deps && npm i -g @angular/cli@13.2.5
+RUN npm ci --include=dev --legacy-peer-deps && npm i -g @angular/cli@13.2.5
 COPY . .
-RUN npm run build-prod -- --output-path=/app/build
+RUN npm run build:ssr
 
 # Runtime
-FROM public.ecr.aws/docker/library/nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-COPY devops/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM public.ecr.aws/docker/library/node:20-alpine AS runtime
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./
+EXPOSE 4000
+ENV PORT=4000
+CMD ["node", "dist/angular/server/main.js"]
