@@ -12,6 +12,6 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./
-EXPOSE 4000
-ENV PORT=4000
+EXPOSE 80
+ENV PORT=80
 CMD ["node", "dist/angular/server/main.js"]
