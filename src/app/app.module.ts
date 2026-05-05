@@ -161,7 +161,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     EbookRecentComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
 @Component({
   selector: 'app-input-search',
@@ -13,10 +14,10 @@ export class InputSearchComponent implements OnInit {
 
   @ViewChild('alert') alert: ElementRef;
 
-  constructor(private fb: FormBuilder, private _router: Router) {}
+  constructor(private fb: FormBuilder, private _router: Router, private _platform: PlatformService) {}
 
   ngOnInit() {
-    const pathParts = window.location.pathname.split('/buscar/');
+    const pathParts = this._platform.getPathname().split('/buscar/');
     const currentSearch = pathParts.length > 1 ? decodeURIComponent(pathParts[1]) : '';
     this.searchForm = this.fb.group({
       paramSearch: [currentSearch, [Validators.minLength(3)]],

@@ -11,12 +11,17 @@ import { ForgotMyPasswordVM } from '../../models/forgotMyPasswordVM';
 import { Profile } from '../../models/profile';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+import { BrowserStorageService } from '../platform/browser-storage.service';
 
 @Injectable()
 export class UserService {
   private _subject = new Subject<any>();
 
-  constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
+  constructor(
+    private _http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _storage: BrowserStorageService
+  ) {}
 
   getAll() {
     return this._http.get<User[]>(`${this.config.apiEndpoint}/users`);
@@ -32,7 +37,7 @@ export class UserService {
         // login successful if there's a jwt token in the response
         if (response.authenticated) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('shareBookUser', JSON.stringify(response));
+          this._storage.setItem('shareBookUser', JSON.stringify(response));
           this.setLoggedUser(response);
         }
         return response;
@@ -78,8 +83,9 @@ export class UserService {
   }
 
   getLoggedUserFromLocalStorage() {
-    if (localStorage.getItem('shareBookUser')) {
-      return JSON.parse(localStorage.getItem('shareBookUser'));
+    const storedUser = this._storage.getItem('shareBookUser');
+    if (storedUser) {
+      return JSON.parse(storedUser);
     }
     return;
   }
@@ -98,7 +104,7 @@ export class UserService {
 
   whoAccessed() {
     return this._http.get<any>(
-      `${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`
+      `${this.config.apiEndpoint}/Account/WhoAccessed/${this.getLoggedUserFromLocalStorage()?.userId}`
     );
   }
 

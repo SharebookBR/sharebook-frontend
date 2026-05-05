@@ -7,7 +7,8 @@ export class AuthGuardAdmin implements CanActivate {
   constructor(private router: Router, private _scUserService: UserService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const { profile } = this._scUserService.getLoggedUserFromLocalStorage();
+    const loggedUser = this._scUserService.getLoggedUserFromLocalStorage();
+    const profile = loggedUser?.profile;
 
     if (profile === 'Administrator') {
       // logged in so return true
