@@ -31,7 +31,7 @@
     "docker-dev": "ng build && docker image build -t sharebook .",
     "dev:ssr": "node ./node_modules/@angular/cli/bin/ng run angular:serve-ssr",
     "serve:ssr": "node dist/angular/server/main.js",
-    "build:ssr": "node ./node_modules/@angular/cli/bin/ng build && node ./node_modules/@angular/cli/bin/ng run angular:server",
+    "build:ssr": "node ./node_modules/@angular/cli/bin/ng build --configuration production && node ./node_modules/@angular/cli/bin/ng run angular:server",
     "prerender": "node ./node_modules/@angular/cli/bin/ng run angular:prerender"
   },
   "private": true,
