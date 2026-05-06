@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this._platform.reload();
         }
 
-        const error = err.error.messages || err.statusText;
+        const error = err?.error?.messages || err?.error?.message || err?.message || err?.statusText || 'Erro inesperado';
         return throwError(error);
       })
     );

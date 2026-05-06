@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { Meetup, MeetupList } from '../../models/Meetup';
+import { PlatformService } from '../platform/platform.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +15,15 @@ export class MeetupService {
     private _http: HttpClient,
     @Inject(APP_CONFIG)
     private config: AppConfig,
-    private _transferState: TransferState
+    private _transferState: TransferState,
+    private _platform: PlatformService
   ) {}
 
   public get(page: number, pageSize: number, upcoming: boolean = false): Observable<MeetupList> {
     const stateKey = makeStateKey<MeetupList>(`meetups-${page}-${pageSize}-${upcoming}`);
-    const storedMeetups = this._transferState.get<MeetupList | null>(stateKey, null);
+    const storedMeetups = this._platform.isBrowser()
+      ? this._transferState.get<MeetupList | null>(stateKey, null)
+      : null;
 
     if (storedMeetups) {
       return new Observable<MeetupList>((observer) => {

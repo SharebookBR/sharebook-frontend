@@ -8,6 +8,7 @@ import { BookVM } from '../../models/bookVM';
 import { AdminBookList } from '../../models/adminBookList';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map, filter, shareReplay, tap } from 'rxjs/operators';
+import { PlatformService } from '../platform/platform.service';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
@@ -34,7 +35,8 @@ export class BookService {
   constructor(
     private _http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig,
-    private _transferState: TransferState
+    private _transferState: TransferState,
+    private _platform: PlatformService
   ) { }
 
   public getAll(): Observable<BookVM> {
@@ -73,7 +75,9 @@ export class BookService {
   }
 
   public getAvailableBooks() {
-    const storedBooks = this._transferState.get<Book[] | null>(this._availableBooksStateKey, null);
+    const storedBooks = this._platform.isBrowser()
+      ? this._transferState.get<Book[] | null>(this._availableBooksStateKey, null)
+      : null;
     if (storedBooks) {
       return new Observable<Book[]>((observer) => {
         observer.next(storedBooks);
@@ -89,7 +93,9 @@ export class BookService {
   }
 
   public getNewestEbooks() {
-    const storedEbooks = this._transferState.get<Book[] | null>(this._newestEbooksStateKey, null);
+    const storedEbooks = this._platform.isBrowser()
+      ? this._transferState.get<Book[] | null>(this._newestEbooksStateKey, null)
+      : null;
     if (storedEbooks) {
       return new Observable<Book[]>((observer) => {
         observer.next(storedEbooks);
@@ -111,7 +117,9 @@ export class BookService {
   }
 
   public getAvailableEbooksCount() {
-    const storedCount = this._transferState.get<{ total: number } | null>(this._availableEbooksCountStateKey, null);
+    const storedCount = this._platform.isBrowser()
+      ? this._transferState.get<{ total: number } | null>(this._availableEbooksCountStateKey, null)
+      : null;
     if (storedCount) {
       return new Observable<{ total: number }>((observer) => {
         observer.next(storedCount);
@@ -165,7 +173,9 @@ export class BookService {
 
   public getBySlug(bookSlug: string) {
     const stateKey = makeStateKey<Book>(`book-slug-${bookSlug}`);
-    const storedBook = this._transferState.get<Book | null>(stateKey, null);
+    const storedBook = this._platform.isBrowser()
+      ? this._transferState.get<Book | null>(stateKey, null)
+      : null;
 
     if (storedBook) {
       return new Observable<Book>((observer) => {
@@ -200,7 +210,9 @@ export class BookService {
   }
 
   public getFreightOptions() {
-    const storedOptions = this._transferState.get<any | null>(this._freightOptionsStateKey, null);
+    const storedOptions = this._platform.isBrowser()
+      ? this._transferState.get<any | null>(this._freightOptionsStateKey, null)
+      : null;
     if (storedOptions) {
       if (!this._freightOptions$) {
         this._freightOptions$ = new Observable<any>((observer) => {
