@@ -75,7 +75,6 @@ export class BookService {
   public getAvailableBooks() {
     const storedBooks = this._transferState.get<Book[] | null>(this._availableBooksStateKey, null);
     if (storedBooks) {
-      this._transferState.remove(this._availableBooksStateKey);
       return new Observable<Book[]>((observer) => {
         observer.next(storedBooks);
         observer.complete();
@@ -92,7 +91,6 @@ export class BookService {
   public getNewestEbooks() {
     const storedEbooks = this._transferState.get<Book[] | null>(this._newestEbooksStateKey, null);
     if (storedEbooks) {
-      this._transferState.remove(this._newestEbooksStateKey);
       return new Observable<Book[]>((observer) => {
         observer.next(storedEbooks);
         observer.complete();
@@ -115,7 +113,6 @@ export class BookService {
   public getAvailableEbooksCount() {
     const storedCount = this._transferState.get<{ total: number } | null>(this._availableEbooksCountStateKey, null);
     if (storedCount) {
-      this._transferState.remove(this._availableEbooksCountStateKey);
       return new Observable<{ total: number }>((observer) => {
         observer.next(storedCount);
         observer.complete();
@@ -171,7 +168,6 @@ export class BookService {
     const storedBook = this._transferState.get<Book | null>(stateKey, null);
 
     if (storedBook) {
-      this._transferState.remove(stateKey);
       return new Observable<Book>((observer) => {
         observer.next(storedBook);
         observer.complete();
@@ -206,7 +202,6 @@ export class BookService {
   public getFreightOptions() {
     const storedOptions = this._transferState.get<any | null>(this._freightOptionsStateKey, null);
     if (storedOptions) {
-      this._transferState.remove(this._freightOptionsStateKey);
       if (!this._freightOptions$) {
         this._freightOptions$ = new Observable<any>((observer) => {
           observer.next(storedOptions);

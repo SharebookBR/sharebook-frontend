@@ -22,7 +22,6 @@ export class MeetupService {
     const storedMeetups = this._transferState.get<MeetupList | null>(stateKey, null);
 
     if (storedMeetups) {
-      this._transferState.remove(stateKey);
       return new Observable<MeetupList>((observer) => {
         observer.next(storedMeetups);
         observer.complete();
