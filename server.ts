@@ -67,6 +67,9 @@ function isPublicCacheableRoute(pathname: string): boolean {
   const normalized = normalizePath(pathname).toLowerCase();
   return PUBLIC_ROUTE_PREFIXES.some(prefix => {
     const normalizedPrefix = normalizePath(prefix).toLowerCase();
+    if (normalizedPrefix === '/') {
+      return normalized === '/';
+    }
     return normalized === normalizedPrefix || normalized.startsWith(`${normalizedPrefix}/`);
   });
 }
