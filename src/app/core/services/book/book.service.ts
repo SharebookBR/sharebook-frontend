@@ -26,6 +26,9 @@ import { IRequestResult } from '../../interfaces/IRequestResult';
 export class BookService {
   // TODO TypicodeInterceptor
   private readonly _freightOptionsStateKey = makeStateKey<any>('book-freight-options');
+  private readonly _availableBooksStateKey = makeStateKey<Book[]>('home-available-books');
+  private readonly _newestEbooksStateKey = makeStateKey<Book[]>('home-newest-ebooks');
+  private readonly _availableEbooksCountStateKey = makeStateKey<{ total: number }>('home-available-ebooks-count');
   private _freightOptions$: Observable<any> | null = null;
 
   constructor(
@@ -70,14 +73,36 @@ export class BookService {
   }
 
   public getAvailableBooks() {
+    const storedBooks = this._transferState.get<Book[] | null>(this._availableBooksStateKey, null);
+    if (storedBooks) {
+      this._transferState.remove(this._availableBooksStateKey);
+      return new Observable<Book[]>((observer) => {
+        observer.next(storedBooks);
+        observer.complete();
+      });
+    }
+
     return this._http.get<Book[]>(
       `${this.config.apiEndpoint}/book/AvailableBooks`
+    ).pipe(
+      tap((books) => this._transferState.set(this._availableBooksStateKey, books))
     );
   }
 
   public getNewestEbooks() {
+    const storedEbooks = this._transferState.get<Book[] | null>(this._newestEbooksStateKey, null);
+    if (storedEbooks) {
+      this._transferState.remove(this._newestEbooksStateKey);
+      return new Observable<Book[]>((observer) => {
+        observer.next(storedEbooks);
+        observer.complete();
+      });
+    }
+
     return this._http.get<Book[]>(
       `${this.config.apiEndpoint}/book/Newest15EBooks`
+    ).pipe(
+      tap((ebooks) => this._transferState.set(this._newestEbooksStateKey, ebooks))
     );
   }
 
@@ -88,8 +113,19 @@ export class BookService {
   }
 
   public getAvailableEbooksCount() {
+    const storedCount = this._transferState.get<{ total: number } | null>(this._availableEbooksCountStateKey, null);
+    if (storedCount) {
+      this._transferState.remove(this._availableEbooksCountStateKey);
+      return new Observable<{ total: number }>((observer) => {
+        observer.next(storedCount);
+        observer.complete();
+      });
+    }
+
     return this._http.get<{ total: number }>(
       `${this.config.apiEndpoint}/book/AvailableEBooksCount`
+    ).pipe(
+      tap((count) => this._transferState.set(this._availableEbooksCountStateKey, count))
     );
   }
 
