@@ -2,11 +2,12 @@ import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';
 import { AdminBookList } from '../../models/adminBookList';
 import { DonateBookUser } from '../../models/donateBookUser';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, shareReplay, tap } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
@@ -24,9 +25,13 @@ import { IRequestResult } from '../../interfaces/IRequestResult';
 })
 export class BookService {
   // TODO TypicodeInterceptor
+  private readonly _freightOptionsStateKey = makeStateKey<any>('book-freight-options');
+  private _freightOptions$: Observable<any> | null = null;
+
   constructor(
     private _http: HttpClient,
-    @Inject(APP_CONFIG) private config: AppConfig
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _transferState: TransferState
   ) { }
 
   public getAll(): Observable<BookVM> {
@@ -126,8 +131,21 @@ export class BookService {
   }
 
   public getBySlug(bookSlug: string) {
+    const stateKey = makeStateKey<Book>(`book-slug-${bookSlug}`);
+    const storedBook = this._transferState.get<Book | null>(stateKey, null);
+
+    if (storedBook) {
+      this._transferState.remove(stateKey);
+      return new Observable<Book>((observer) => {
+        observer.next(storedBook);
+        observer.complete();
+      });
+    }
+
     return this._http.get<Book>(
       `${this.config.apiEndpoint}/book/Slug/${bookSlug}`
+    ).pipe(
+      tap((book) => this._transferState.set(stateKey, book))
     );
   }
 
@@ -150,13 +168,31 @@ export class BookService {
   }
 
   public getFreightOptions() {
-    return this._http
-      .get<any>(`${this.config.apiEndpoint}/book/freightOptions`)
-      .pipe(
-        map((response) => {
-          return response;
-        })
-      );
+    const storedOptions = this._transferState.get<any | null>(this._freightOptionsStateKey, null);
+    if (storedOptions) {
+      this._transferState.remove(this._freightOptionsStateKey);
+      if (!this._freightOptions$) {
+        this._freightOptions$ = new Observable<any>((observer) => {
+          observer.next(storedOptions);
+          observer.complete();
+        }).pipe(shareReplay(1));
+      }
+      return this._freightOptions$;
+    }
+
+    if (!this._freightOptions$) {
+      this._freightOptions$ = this._http
+        .get<any>(`${this.config.apiEndpoint}/book/freightOptions`)
+        .pipe(
+          tap((response) => this._transferState.set(this._freightOptionsStateKey, response)),
+          map((response) => {
+            return response;
+          }),
+          shareReplay(1)
+        );
+    }
+
+    return this._freightOptions$;
   }
 
   public getGranteeUsersByBookId(bookId: string) {

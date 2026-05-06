@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { Category } from '../../../core/models/category';
@@ -67,132 +67,158 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.state = 'loading';
-    if (this._scUser.getLoggedUserFromLocalStorage()) {
-      this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
+    const loggedUser = this._scUser.getLoggedUserFromLocalStorage();
+    if (loggedUser) {
+      this.userProfile = loggedUser.profile;
       this.isAdminLogged = this.userProfile === 'Administrator';
-      this.getMyUser();
-    } else {
-      this.getBook();
     }
+
+    this.getBook();
   }
 
   getMyUser() {
-    this._scUser
-      .getUserData()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((x) => {
-        this.myUser = x;
-        this.getBook();
-      });
+    return this._scUser.getUserData();
   }
 
   getBook() {
-    let slug = '';
     this._activatedRoute.params
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((param) => (slug = param.slug));
-
-    if (slug) {
-      this._scBook
-        .getBySlug(slug)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe(
-          (book) => {
-            this._scBook
-              .getFreightOptions()
-              .pipe(takeUntil(this._destroySubscribes$))
-              .subscribe((data) => {
-                this.freightOptions = data;
-
-                this.freightName = book.freightOption;
-
-                this.bookInfo = book;
-                this.pageTitle = this.bookInfo.title;
-                this.available =
-                  this.bookInfo.status === BookDonationStatus.AVAILABLE;
-
-                const chooseDate = Math.floor(
-                  new Date(this.bookInfo.chooseDate).getTime() /
-                  (3600 * 24 * 1000)
-                );
-                const todayDate = Math.floor(
-                  new Date().getTime() / (3600 * 24 * 1000)
-                );
-
-                this.daysToChoose = chooseDate - todayDate;
-                const daysLeftMessage = (this.daysToChoose && this.daysToChoose > 1)
-                  ? 'Daqui a ' + this.daysToChoose + ' dias'
-                  : 'Daqui a 1 dia';
-                const isToday = (!this.daysToChoose || this.daysToChoose <= 0);
-                this.chooseDateInfo = isToday ? 'Hoje' : daysLeftMessage;
-
-
-                if (this.myUser.name) {
-                  switch (book.freightOption) {
-                    case 'City': {
-                      if (book.city !== this.myUser.address.city) {
-                        this.isFreeFreight = false;
-                      }
-                      break;
-                    }
-                    case 'State': {
-                      if (book.state !== this.myUser.address.state) {
-                        this.isFreeFreight = false;
-                      }
-                      break;
-                    }
-                    case 'WithoutFreight': {
-                      this.isFreeFreight = false;
-                      break;
-                    }
-                    default: {
-                      this.isFreeFreight = true;
-                    }
-                  }
-                }
-
-                if (this.userProfile && book.id) {
-                  this._scBook
-                    .getRequested(book.id)
-                    .pipe(takeUntil(this._destroySubscribes$))
-                    .subscribe((requested) => {
-                      this.requested = requested.value.bookRequested;
-                      this.state = 'ready';
-                    });
-                } else {
-                  this.state = 'ready';
-                }
-
-                this._seo.generateTags({
-                  title: this.bookInfo.title,
-                  description: this.bookInfo.synopsis,
-                  image: this.bookInfo.imageUrl,
-                  slug: slug,
-                });
-
-                this._seo.addStructuredData({
-                  '@context': 'https://schema.org',
-                  '@type': 'Book',
-                  name: this.bookInfo.title,
-                  author: this.bookInfo.author,
-                  description: this.bookInfo.synopsis,
-                  image: this.bookInfo.imageUrl,
-                  publisher: {
-                    '@type': 'Organization',
-                    name: 'ShareBook'
-                  }
-                });
-              });
-          },
-          (err) => {
-            console.error(err);
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        switchMap((param) => {
+          const slug = param.slug;
+          if (!slug) {
             this.pageTitle = 'Ops... Não encontramos esse livro :/';
             this.state = 'not-found';
+            return of(null);
           }
-        );
-    } else {
-      this.pageTitle = 'Ops... Não encontramos esse livro :/';
-      this.state = 'not-found';
+
+          return this._scBook.getBySlug(slug).pipe(
+            switchMap((book) => {
+              const requests: any = { book: of(book), slug: of(slug) };
+
+              if (this.userProfile) {
+                requests.myUser = this.getMyUser();
+              }
+
+              if (!this.isEbookBook(book)) {
+                requests.freightOptions = this._scBook.getFreightOptions();
+              }
+
+              if (this.userProfile && book.id && !this.isEbookBook(book)) {
+                requests.requested = this._scBook.getRequested(book.id);
+              }
+
+              return forkJoin(requests);
+            })
+          );
+        })
+      )
+      .subscribe(
+        (result) => {
+          if (!result) {
+            return;
+          }
+
+          const book = result.book as Book;
+          const slug = result.slug as string;
+          this.bookInfo = book;
+          this.pageTitle = this.bookInfo.title;
+          this.available = this.bookInfo.status === BookDonationStatus.AVAILABLE;
+
+          if (result.myUser) {
+            this.myUser = result.myUser;
+          }
+
+          if (result.freightOptions) {
+            this.freightOptions = result.freightOptions;
+          }
+
+          this.freightName = book.freightOption;
+          this.computeChooseDateInfo();
+          this.computeFreeFreight(book);
+
+          if (result.requested) {
+            this.requested = result.requested.value.bookRequested;
+          }
+
+          this._seo.generateTags({
+            title: this.bookInfo.title,
+            description: this.bookInfo.synopsis,
+            image: this.bookInfo.imageUrl,
+            slug: slug,
+          });
+
+          this._seo.addStructuredData({
+            '@context': 'https://schema.org',
+            '@type': 'Book',
+            name: this.bookInfo.title,
+            author: this.bookInfo.author,
+            description: this.bookInfo.synopsis,
+            image: this.bookInfo.imageUrl,
+            publisher: {
+              '@type': 'Organization',
+              name: 'ShareBook'
+            }
+          });
+
+          this.state = 'ready';
+        },
+        (err) => {
+          console.error(err);
+          this.pageTitle = 'Ops... Não encontramos esse livro :/';
+          this.state = 'not-found';
+        }
+      );
+  }
+
+  private isEbookBook(book: Book): boolean {
+    return book?.type === 'Eletronic';
+  }
+
+  private computeChooseDateInfo(): void {
+    const chooseDate = Math.floor(
+      new Date(this.bookInfo.chooseDate).getTime() /
+      (3600 * 24 * 1000)
+    );
+    const todayDate = Math.floor(
+      new Date().getTime() / (3600 * 24 * 1000)
+    );
+
+    this.daysToChoose = chooseDate - todayDate;
+    const daysLeftMessage = (this.daysToChoose && this.daysToChoose > 1)
+      ? 'Daqui a ' + this.daysToChoose + ' dias'
+      : 'Daqui a 1 dia';
+    const isToday = (!this.daysToChoose || this.daysToChoose <= 0);
+    this.chooseDateInfo = isToday ? 'Hoje' : daysLeftMessage;
+  }
+
+  private computeFreeFreight(book: Book): void {
+    this.isFreeFreight = true;
+
+    if (!this.myUser?.name) {
+      return;
+    }
+
+    switch (book.freightOption) {
+      case 'City': {
+        if (book.city !== this.myUser.address.city) {
+          this.isFreeFreight = false;
+        }
+        break;
+      }
+      case 'State': {
+        if (book.state !== this.myUser.address.state) {
+          this.isFreeFreight = false;
+        }
+        break;
+      }
+      case 'WithoutFreight': {
+        this.isFreeFreight = false;
+        break;
+      }
+      default: {
+        this.isFreeFreight = true;
+      }
     }
   }
 
