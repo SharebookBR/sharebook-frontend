@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
@@ -57,7 +57,7 @@ import { BookCardModule } from './components/book-card/book-card.module';
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
-import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
+import { JwtInterceptor, ErrorInterceptor, TransferStateInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
@@ -161,7 +161,8 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     EbookRecentComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'angular' }),
+    BrowserTransferStateModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -203,6 +204,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MeetupService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TransferStateInterceptor, multi: true },
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

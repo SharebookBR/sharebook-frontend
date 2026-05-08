@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BrowserStorageService } from '../../core/services/platform/browser-storage.service';
 
 @Component({
   selector: 'app-cookie-consent',
@@ -13,18 +14,19 @@ export class CookieConsentComponent implements OnInit {
     accept: 'Quero continuar',
     close: 'Fechar',
   };
-  public consentHide: any =
-    localStorage.getItem('cookieconsent_status') == null
-      ? false
-      : localStorage.getItem('cookieconsent_status');
-  constructor() {}
+  public consentHide: any;
+
+  constructor(private _browserStorage: BrowserStorageService) {
+    const status = this._browserStorage.getItem('cookieconsent_status');
+    this.consentHide = status == null ? false : status;
+  }
 
   ngOnInit() {}
 
   public consentUser(decision) {
     switch (decision) {
       case true:
-        localStorage.setItem('cookieconsent_status', 'true');
+        this._browserStorage.setItem('cookieconsent_status', 'true');
         this.consentHide = true;
         break;
       default:
