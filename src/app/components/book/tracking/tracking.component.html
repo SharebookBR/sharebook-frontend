@@ -12,14 +12,14 @@
 
   <ng-container *ngIf="state === 'choice'">
     <p style="color: #666; margin-bottom: 16px;">Como o livro foi entregue?</p>
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <button mat-stroked-button (click)="onDeliverInPerson()" [disabled]="isLoading" style="text-align: left; padding: 12px 16px; height: auto;">
-        <mat-icon style="margin-right: 8px; vertical-align: middle;">handshake</mat-icon>
-        Entregue pessoalmente
+    <div class="delivery-options">
+      <button mat-stroked-button (click)="onDeliverInPerson()" [disabled]="isLoading" class="delivery-option-button">
+        <mat-icon class="delivery-option-icon">handshake</mat-icon>
+        <span class="delivery-option-label">Entregue pessoalmente</span>
       </button>
-      <button mat-stroked-button (click)="chooseTracking()" [disabled]="isLoading" style="text-align: left; padding: 12px 16px; height: auto;">
-        <mat-icon style="margin-right: 8px; vertical-align: middle;">local_shipping</mat-icon>
-        Enviado pelos Correios - informar código de rastreio
+      <button mat-stroked-button (click)="chooseTracking()" [disabled]="isLoading" class="delivery-option-button">
+        <mat-icon class="delivery-option-icon">local_shipping</mat-icon>
+        <span class="delivery-option-label">Enviado pelos Correios - informar código de rastreio</span>
       </button>
     </div>
   </ng-container>
