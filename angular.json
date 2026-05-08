@@ -177,16 +177,16 @@
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
-            "development": {
-              "browserTarget": "angular:build:development",
-              "serverTarget": "angular:server:development"
+            "local": {
+              "browserTarget": "angular:build:local",
+              "serverTarget": "angular:server:local"
             },
             "production": {
               "browserTarget": "angular:build:production",
               "serverTarget": "angular:server:production"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
@@ -200,9 +200,9 @@
               "browserTarget": "angular:build:production",
               "serverTarget": "angular:server:production"
             },
-            "development": {
-              "browserTarget": "angular:build:development",
-              "serverTarget": "angular:server:development"
+            "local": {
+              "browserTarget": "angular:build:local",
+              "serverTarget": "angular:server:local"
             }
           },
           "defaultConfiguration": "production"
