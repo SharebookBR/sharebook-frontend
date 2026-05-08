@@ -56,5 +56,12 @@ body {
     box-sizing: border-box;
     width: 100vw !important;
     min-width: 100vw !important;
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+  }
+
+  .mat-dialog-content {
+    max-height: none !important;
+    overflow: visible !important;
   }
 }

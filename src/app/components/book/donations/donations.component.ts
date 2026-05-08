@@ -178,7 +178,12 @@ export class DonationsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'markAsFinished': {
-        const modalRef = this.dialog.open(TrackingComponent, { minWidth: 450 });
+        const modalRef = this.dialog.open(TrackingComponent, {
+          width: '95vw',
+          maxWidth: '520px',
+          maxHeight: '90vh',
+          autoFocus: false
+        });
 
         modalRef.afterClosed().subscribe(result => {
           if (result) {
