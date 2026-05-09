@@ -1,14 +1,29 @@
-# Build
+# Build Stage
 FROM public.ecr.aws/docker/library/node:20-alpine AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --legacy-peer-deps && npm i -g @angular/cli@13.2.5
-COPY . .
-RUN npm run build-prod -- --output-path=/app/build
 
-# Runtime
-FROM public.ecr.aws/docker/library/nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-COPY devops/nginx.conf /etc/nginx/nginx.conf
+# Instala dependências
+COPY package*.json ./
+RUN npm ci --legacy-peer-deps
+
+# Copia código e executa build SSR
+COPY . .
+RUN npm run build:ssr
+
+# Runtime Stage
+FROM public.ecr.aws/docker/library/node:20-alpine
+WORKDIR /app
+
+# Copia apenas os artefatos necessários do estágio de build
+COPY --from=build /app/dist/angular/ /app/dist/angular/
+COPY --from=build /app/package*.json /app/
+
+# Instala apenas as dependências de produção para manter a imagem leve
+RUN npm ci --only=production --legacy-peer-deps
+
+# Porta padrão do Sharebook
+ENV PORT=80
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Comando para iniciar o servidor SSR
+CMD ["node", "dist/angular/server/main.js"]

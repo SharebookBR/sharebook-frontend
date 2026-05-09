@@ -2,12 +2,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-const moment = require('moment-timezone');
+import { BrowserStorageService } from '../platform/browser-storage.service';
+import moment from 'moment-timezone';
 
 import { UserService } from '../user/user.service';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
-const { version } = require('package.json');
+import packageJson from '../../../../../package.json';
+const { version } = packageJson;
 
 @Injectable()
 export class AuthenticationService {
@@ -15,7 +17,8 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router,
     private _user: UserService,
-    @Inject(APP_CONFIG) private config: AppConfig
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _browserStorage: BrowserStorageService
   ) {}
   private _localStorageUserKey = 'shareBookUser';
 
@@ -36,7 +39,7 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         if (response.success || response.value.authenticated) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('shareBookUser', JSON.stringify(response.value));
+          this._browserStorage.setItem('shareBookUser', JSON.stringify(response.value));
           this._user.setLoggedUser(response.value);
         }
 
@@ -47,12 +50,13 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem(this._localStorageUserKey);
+    this._browserStorage.removeItem(this._localStorageUserKey);
     this._user.setLoggedUser(null);
   }
 
   checkTokenValidity() {
-    const user = JSON.parse(localStorage.getItem(this._localStorageUserKey));
+    const userJson = this._browserStorage.getItem(this._localStorageUserKey);
+    const user = userJson ? JSON.parse(userJson) : null;
     if (user) {
       const expiration = moment(user.expiration);
       const now = moment();
