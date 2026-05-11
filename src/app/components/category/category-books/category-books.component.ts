@@ -148,7 +148,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   }
 
   public hasMoreBooks(): boolean {
-    return this.books.length < this.totalItems;
+    return this.shouldShowBooksGrid() && this.books.length < this.totalItems;
   }
 
   public getBooksAvailableLabel(): string {
