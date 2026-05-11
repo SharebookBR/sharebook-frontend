@@ -15,14 +15,12 @@ import { Book } from '../../../core/models/book';
 })
 export class CategoriesListComponent implements OnInit, OnDestroy {
   public categories: Category[] = [];
-  public categoryBookCount: Map<string, number> = new Map();
   public expandedCategoryIds: Set<string> = new Set();
   public isLoading = true;
 
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
-    private _scBook: BookService,
     private _scCategory: CategoryService,
     private titleService: Title,
     private metaService: Meta
@@ -35,50 +33,23 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
       content: 'Navegue por todas as categorias de livros disponíveis para doação no ShareBook.',
     });
 
-    this.loadCategoriesAndBooks();
+    this.loadCategoriesWithCounts();
   }
 
-  private loadCategoriesAndBooks() {
-    let categoriesLoaded = false;
-    let booksLoaded = false;
-
+  private loadCategoriesWithCounts() {
     this._scCategory
-      .getAllWithSlug()
+      .getAllWithCounts()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((categories) => {
         this.categories = this._scCategory.getRootCategories(categories);
-        categoriesLoaded = true;
-        if (booksLoaded) {
-          this.isLoading = false;
-        }
+        this.isLoading = false;
+      }, () => {
+        this.isLoading = false;
       });
-
-    this._scBook
-      .getAvailableBooks()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((books: Book[]) => {
-        this.countBooksByCategory(books);
-        booksLoaded = true;
-        if (categoriesLoaded) {
-          this.isLoading = false;
-        }
-      });
-  }
-
-  private countBooksByCategory(books: Book[]) {
-    this.categoryBookCount.clear();
-    books.forEach((book) => {
-      if (book.categoryId) {
-        const count = this.categoryBookCount.get(String(book.categoryId)) || 0;
-        this.categoryBookCount.set(String(book.categoryId), count + 1);
-      }
-    });
   }
 
   getCategoryBookCount(category: Category): number {
-    return this._scCategory
-      .collectCategoryIds(category)
-      .reduce((total, categoryId) => total + (this.categoryBookCount.get(String(categoryId)) || 0), 0);
+    return category.totalBooks || 0;
   }
 
   hasSubcategories(category: Category): boolean {

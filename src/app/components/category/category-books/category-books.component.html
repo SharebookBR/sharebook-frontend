@@ -64,6 +64,13 @@
     <app-book-card [book]="book" *ngFor="let book of books"></app-book-card>
   </div>
 
+  <div *ngIf="hasMoreBooks()" class="load-more-container mt-4 mb-5 text-center">
+    <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="isMoreLoading">
+      <i class="fa fa-spinner fa-spin" *ngIf="isMoreLoading"></i>
+      {{ isMoreLoading ? 'Carregando...' : 'Carregar mais livros' }}
+    </button>
+  </div>
+
   <div *ngIf="!isLoading && !notFound && shouldShowEmptyState()" class="empty-state">
     <i class="fa fa-book fa-4x"></i>
     <h2>Nenhum livro disponivel</h2>

@@ -20,9 +20,13 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   public subcategories: Category[] = [];
   public books: Book[] = [];
   public isLoading = true;
+  public isMoreLoading = false;
   public notFound = false;
   public physicalBooksCount = 0;
   public ebooksCount = 0;
+  public totalItems = 0;
+  public page = 1;
+  public pageSize = 24;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -40,6 +44,8 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.isLoading = true;
         this.notFound = false;
+        this.books = [];
+        this.page = 1;
         this.loadCategory(params['slug'], params['parentSlug']);
       });
   }
@@ -55,7 +61,6 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
         this.category = null;
         this.parentCategory = null;
         this.subcategories = [];
-        this.books = [];
         this.isLoading = false;
         return;
       }
@@ -76,25 +81,35 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     });
   }
 
+  public loadMore() {
+    this.page++;
+    this.isMoreLoading = true;
+    this.loadBooks();
+  }
+
   private loadBooks() {
     if (!this.category) {
       return;
     }
 
     const request = this.parentCategory
-      ? this.bookService.getBooksByCategoryId(this.category.id)
-      : this.bookService.getBooksByCategoryTreeId(this.category.id);
+      ? this.bookService.getBooksByCategoryId(this.category.id, this.page, this.pageSize)
+      : this.bookService.getBooksByCategoryTreeId(this.category.id, this.page, this.pageSize);
 
     request.pipe(takeUntil(this._destroySubscribes$)).subscribe(
       response => {
-        this.books = this.sortBooksByType(response.items || response || []);
-        this.countBooksByType();
+        const newBooks = response.items || [];
+        this.books = [...this.books, ...newBooks];
+        this.totalItems = response.totalItems;
+        this.physicalBooksCount = response.physicalBooksCount;
+        this.ebooksCount = response.ebooksCount;
         this.isLoading = false;
+        this.isMoreLoading = false;
       },
       error => {
         console.error('Erro ao carregar livros:', error);
-        this.books = [];
         this.isLoading = false;
+        this.isMoreLoading = false;
       }
     );
   }
@@ -116,25 +131,12 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     this.metaService.updateTag({ property: 'og:description', content: description });
   }
 
-  private countBooksByType() {
-    this.ebooksCount = this.books.filter(book => book.type === 'Eletronic').length;
-    this.physicalBooksCount = this.books.filter(book => book.type === 'Printed').length;
-  }
-
-  private sortBooksByType(books: Book[]): Book[] {
-    const physicalBooks = books.filter(book => book.type === 'Printed');
-    const ebooks = books.filter(book => book.type === 'Eletronic');
-    const otherBooks = books.filter(book => book.type !== 'Printed' && book.type !== 'Eletronic');
-
-    return [...physicalBooks, ...ebooks, ...otherBooks];
-  }
-
   public getSubcategoryRoute(subcategory: Category): string[] {
     return ['/categorias', this.category?.slug || '', subcategory.slug || ''];
   }
 
   public getSubcategoryBookCount(subcategory: Category): number {
-    return this.books.filter(book => book.categoryId === subcategory.id).length;
+    return subcategory.totalBooks || 0;
   }
 
   public shouldShowBooksGrid(): boolean {
@@ -142,11 +144,16 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   }
 
   public shouldShowEmptyState(): boolean {
-    return !this.subcategories.length && this.books.length === 0;
+    return !this.subcategories.length && this.books.length === 0 && !this.isLoading;
+  }
+
+  public hasMoreBooks(): boolean {
+    return this.books.length < this.totalItems;
   }
 
   public getBooksAvailableLabel(): string {
-    return this.books.length === 1 ? '1 livro disponível' : `${this.books.length} livros disponíveis`;
+    const total = this.totalItems;
+    return total === 1 ? '1 livro disponível' : `${total} livros disponíveis`;
   }
 
   ngOnDestroy() {
