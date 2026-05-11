@@ -19,15 +19,14 @@
       <app-book-card [book]="ebook" *ngFor="let ebook of ebooks"></app-book-card>
     </div>
 
-    <div class="digital-library-cta" *ngIf="remainingEbooksCount > 0">
+    <div class="digital-library-cta" *ngIf="recentEbooksCount > 0">
       <p class="digital-library-cta__copy">
-        Gostou da estante? Tem mais {{ remainingEbooksCount }} livros na biblioteca digital.
+        Gostou da vitrine? Tem mais {{ recentEbooksCount }} livros novos.
       </p>
-      <a mat-flat-button color="primary" [routerLink]="['/categorias']" class="digital-library-cta__button">
-        Explorar categorias
+      <a mat-flat-button color="primary" [routerLink]="['/livros-digitais/novidades']" class="digital-library-cta__button">
+        Ver novidades
       </a>
-    </div>
-  </ng-container>
+    </div>  </ng-container>
 
   <!-- PRÓXIMOS MEETUPS -->
   <ng-container *ngIf="meetupsUpcoming.length > 0">
