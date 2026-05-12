@@ -173,8 +173,8 @@ export class ImporterDashboardComponent implements OnInit {
 
   getAgentInfo(status: string): { name: string; icon: string } | null {
     const mapping: { [key: string]: { name: string; icon: string } } = {
-      waiting_triage: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
-      triaging: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
+      waiting_triage: { name: 'Python Worker', icon: 'settings' },
+      triaging: { name: 'Python Worker', icon: 'settings' },
       waiting_editor: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
       editing: { name: 'GPT-5.4 Editor', icon: 'auto_awesome' },
       waiting_process: { name: 'Python Worker', icon: 'settings' },
