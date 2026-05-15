@@ -27,6 +27,7 @@ export class ImporterDashboardComponent implements OnInit {
   selectedSourceId = 'baixelivros_infantil';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
+  searchTerm = '';
   isItemsLoading = false;
   itemsLoadError = false;
   currentPage = 1;
@@ -98,6 +99,11 @@ export class ImporterDashboardComponent implements OnInit {
   }
 
   onSourceChanged(): void {
+    this.currentPage = 1;
+    this.loadItems();
+  }
+
+  onSearch(): void {
     this.currentPage = 1;
     this.loadItems();
   }
@@ -392,8 +398,19 @@ export class ImporterDashboardComponent implements OnInit {
     this.isItemsLoading = true;
     this.itemsLoadError = false;
 
+    let searchId: number | undefined;
+    let searchTitle: string | undefined;
+
+    if (this.searchTerm) {
+      if (/^\d+$/.test(this.searchTerm.trim())) {
+        searchId = Number(this.searchTerm.trim());
+      } else {
+        searchTitle = this.searchTerm.trim();
+      }
+    }
+
     this._operationsService
-      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, this.selectedSort)
+      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, searchId, searchTitle, this.selectedSort)
       .pipe(finalize(() => (this.isItemsLoading = false)))
       .subscribe({
         next: response => {

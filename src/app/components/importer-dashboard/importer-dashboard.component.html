@@ -76,6 +76,17 @@
               </select>
             </div>
           </div>
+
+          <div class="importer-items__search">
+            <mat-icon>search</mat-icon>
+            <input
+              type="text"
+              placeholder="ID ou Título..."
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearch()"
+              (keyup.enter)="onSearch()"
+            />
+          </div>
         </div>
       </header>
 
