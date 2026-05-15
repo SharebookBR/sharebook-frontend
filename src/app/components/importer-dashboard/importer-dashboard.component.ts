@@ -23,6 +23,7 @@ export class ImporterDashboardComponent implements OnInit {
   sources: ImporterSourceStatus[] = [];
   importerItems: ImporterQueueListItem[] = [];
   selectedItemMetadata: any = null;
+  selectedItemData: any = null;
 
   selectedSourceId = 'baixelivros_infantil';
   selectedStatus = '';
@@ -249,6 +250,7 @@ export class ImporterDashboardComponent implements OnInit {
 
     try {
       this.selectedItemMetadata = JSON.parse(item.metadataJson);
+      this.selectedItemData = null;
       this._dialog.open(this.metadataDialog, {
         width: '600px',
         maxWidth: '100vw',
@@ -259,8 +261,19 @@ export class ImporterDashboardComponent implements OnInit {
     }
   }
 
-  getMetadataEntries(): Array<{ key: string; value: any; type: string }> {
-    if (!this.selectedItemMetadata) {
+  viewData(item: ImporterQueueListItem): void {
+    this.selectedItemData = { ...item };
+    this.selectedItemMetadata = null;
+    this._dialog.open(this.metadataDialog, {
+      width: '600px',
+      maxWidth: '100vw',
+      maxHeight: '80vh',
+    });
+  }
+
+  getInspectorEntries(): Array<{ key: string; value: any; type: string }> {
+    const target = this.selectedItemMetadata || this.selectedItemData;
+    if (!target) {
       return [];
     }
 
@@ -269,7 +282,7 @@ export class ImporterDashboardComponent implements OnInit {
     const flatten = (obj: any, prefix = '') => {
       Object.entries(obj).forEach(([key, value]) => {
         const k = prefix ? `${prefix} > ${key}` : key;
-        const readableKey = k.replace(/_/g, ' ');
+        const readableKey = k.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
 
         if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
           flatten(value, k);
@@ -287,7 +300,7 @@ export class ImporterDashboardComponent implements OnInit {
       });
     };
 
-    flatten(this.selectedItemMetadata);
+    flatten(target);
     return entries;
   }
 

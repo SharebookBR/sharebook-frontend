@@ -734,6 +734,18 @@
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.24);
 }
 
+.importer-item__link--data {
+  background: #ffffff;
+  color: #302d59;
+  border: 1.5px solid #302d59;
+  box-shadow: none;
+}
+
+.importer-item__link--data:hover {
+  background: #f4f7fb;
+  box-shadow: 0 6px 14px rgba(48, 45, 89, 0.1);
+}
+
 .importer-item__link--pdp:hover {
   background: #059669;
   box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
