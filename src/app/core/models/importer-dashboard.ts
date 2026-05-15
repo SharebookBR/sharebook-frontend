@@ -3,7 +3,6 @@ export interface ImporterQueueItem {
   sourceId: number;
   sourceName: string;
   sourceUrl?: string;
-  position?: number;
   title?: string;
   status: string;
   updatedAt?: string;
@@ -17,7 +16,6 @@ export interface ImporterItemDetail {
   sourceName: string;
   title?: string;
   status: string;
-  position?: number;
   errorMessage?: string;
   rawPayload?: string;
   externalUrl?: string;
@@ -27,7 +25,6 @@ export interface ImporterQueueListItem {
   id: number;
   sourceId: number;
   sourceName: string;
-  position: number;
   title: string;
   author?: string;
   sourceUrl: string;
@@ -71,7 +68,6 @@ export interface ImporterSourceStatus {
   duplicate: number;
   error: number;
   nextItemTitle?: string;
-  nextItemPosition?: number;
   nextItemStatus?: string;
   lastRunAt?: string;
   lastRunStatus?: string;

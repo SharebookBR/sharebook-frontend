@@ -27,7 +27,6 @@ export class ImporterDashboardComponent implements OnInit {
   selectedSourceId = 'baixelivros_infantil';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
-  searchPosition: number | null = null;
   isItemsLoading = false;
   itemsLoadError = false;
   currentPage = 1;
@@ -100,12 +99,6 @@ export class ImporterDashboardComponent implements OnInit {
 
   onSourceChanged(): void {
     this.currentPage = 1;
-    this.searchPosition = null;
-    this.loadItems();
-  }
-
-  onSearchPosition(): void {
-    this.currentPage = 1;
     this.loadItems();
   }
 
@@ -119,10 +112,10 @@ export class ImporterDashboardComponent implements OnInit {
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.currentPage = 1;
 
-    // Se mudou para um status de "waiting" ou "retry_later", muda o sort para posição ASC
+    // Se mudou para um status de "waiting" ou "retry_later", muda o sort para ID ASC
     // Se saiu de um status de "waiting" ou mudou para outro tipo, volta para última atualização DESC
     if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'retry_later') {
-      this.selectedSort = 'position_asc';
+      this.selectedSort = 'id_asc';
     } else if (previousStatus.startsWith('waiting_') || previousStatus === 'retry_later' || !this.selectedStatus) {
       this.selectedSort = 'updated_at_desc';
     }
@@ -400,7 +393,7 @@ export class ImporterDashboardComponent implements OnInit {
     this.itemsLoadError = false;
 
     this._operationsService
-      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, this.searchPosition || undefined, this.selectedSort)
+      .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, this.selectedSort)
       .pipe(finalize(() => (this.isItemsLoading = false)))
       .subscribe({
         next: response => {

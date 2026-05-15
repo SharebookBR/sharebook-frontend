@@ -72,20 +72,9 @@
               <mat-icon>swap_vert</mat-icon>
               <select [(ngModel)]="selectedSort" (ngModelChange)="onSortChanged()">
                 <option value="updated_at_desc">Última atualização</option>
-                <option value="position_asc">Posição (ASC)</option>
+                <option value="id_asc">ID (ASC)</option>
               </select>
             </div>
-          </div>
-
-          <div class="importer-items__search">
-            <mat-icon>search</mat-icon>
-            <input
-              type="number"
-              placeholder="Posição..."
-              [(ngModel)]="searchPosition"
-              (ngModelChange)="onSearchPosition()"
-              (keyup.enter)="onSearchPosition()"
-            />
           </div>
         </div>
       </header>
@@ -102,7 +91,7 @@
         <article class="importer-item" *ngFor="let item of importerItems; trackBy: trackByImporterItem" [ngClass]="getImporterItemStatusClass(item.status)">
           <div class="importer-item__topline">
             <div class="importer-item__main">
-              <div class="importer-item__position">#{{ item.position }}</div>
+              <div class="importer-item__position">#{{ item.id }}</div>
               
               <div class="importer-item__thumbnail" *ngIf="item.status === 'done' && item.bookSlug">
                 <img [src]="getBookImageUrl(item)" [alt]="item.title" loading="lazy">
