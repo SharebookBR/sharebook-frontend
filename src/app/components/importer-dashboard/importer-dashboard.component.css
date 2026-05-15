@@ -726,6 +726,7 @@
 
 .importer-item__link[title*="metadata"]:hover {
   background: #f4f7fb;
+  color: #302d59;
   box-shadow: 0 6px 14px rgba(48, 45, 89, 0.1);
 }
 
@@ -743,6 +744,7 @@
 
 .importer-item__link--data:hover {
   background: #f4f7fb;
+  color: #302d59;
   box-shadow: 0 6px 14px rgba(48, 45, 89, 0.1);
 }
 
