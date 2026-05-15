@@ -19,7 +19,7 @@
   "homepage": "https://github.com/SharebookBR/frontend#readme",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node ./node_modules/@angular/cli/bin/ng run angular:serve-ssr",
     "start-local": "ng serve --configuration=local",
     "build-dev": "ng build",
     "build-stg": "ng build --configuration=stage",
