@@ -262,7 +262,9 @@ export class ImporterDashboardComponent implements OnInit {
   }
 
   viewData(item: ImporterQueueListItem): void {
-    this.selectedItemData = { ...item };
+    const data: any = { ...item };
+    delete data.metadataJson; // Omitir metadados pois tem botão próprio
+    this.selectedItemData = data;
     this.selectedItemMetadata = null;
     this._dialog.open(this.metadataDialog, {
       width: '600px',
