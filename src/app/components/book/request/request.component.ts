@@ -9,6 +9,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { BookService } from '../../../core/services/book/book.service';
 import { DonateBookUser } from '../../../core/models/donateBookUser';
 import { ToastrService } from 'ngx-toastr';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-request',
@@ -17,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RequestComponent implements OnInit, OnDestroy {
   @Input() bookId;
+  @Input() bookTitle;
+  @Input() bookSlug;
   donateUsers;
   settings: any;
   isLoading: Boolean = true;
@@ -41,7 +44,8 @@ export class RequestComponent implements OnInit, OnDestroy {
     private _scUser: UserService,
     private _router: Router,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _ga: GoogleAnalyticsService
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -51,6 +55,12 @@ export class RequestComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.state = 'form';
     this.modalTitle = 'Quanto você quer esse livro?';
+
+    this._ga.sendEvent('book_request_modal_open', {
+      book_id: this.bookId,
+      book_title: this.bookTitle,
+      book_slug: this.bookSlug
+    });
 
     this._scUser.getUserData()
       .pipe(
@@ -79,15 +89,32 @@ export class RequestComponent implements OnInit, OnDestroy {
       .subscribe(
         resp => {
           if (resp.success) {
+            this._ga.sendEvent('book_request_success', {
+              book_id: this.bookId,
+              book_title: this.bookTitle,
+              book_slug: this.bookSlug
+            });
             this.state = 'request-success';
             this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
           } else {
+            this._ga.sendEvent('book_request_error', {
+              book_id: this.bookId,
+              book_title: this.bookTitle,
+              book_slug: this.bookSlug,
+              error: resp.messages[0]
+            });
             this.lastError = resp.messages[0];
             this.state = 'request-error';
             this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
           }
         },
         error => {
+          this._ga.sendEvent('book_request_error', {
+            book_id: this.bookId,
+            book_title: this.bookTitle,
+            book_slug: this.bookSlug,
+            error: error
+          });
           this.lastError = error;
           this.state = 'request-error';
           this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';

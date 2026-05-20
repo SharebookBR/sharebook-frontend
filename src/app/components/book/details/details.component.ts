@@ -20,6 +20,7 @@ import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-details',
@@ -60,6 +61,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _seo: SeoService,
     private _toastr: ToastrService,
     private _platform: PlatformService,
+    private _ga: GoogleAnalyticsService,
     @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this._scAuthentication.checkTokenValidity();
@@ -206,6 +208,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
+    modalRef.componentInstance.bookTitle = this.bookInfo.title;
+    modalRef.componentInstance.bookSlug = this.bookInfo.slug;
   }
 
   onLoginBook() {
@@ -331,6 +335,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   onDownloadEbook() {
     if (this.bookInfo.slug) {
+      this._ga.sendEvent('ebook_download', {
+        book_title: this.bookInfo.title,
+        book_slug: this.bookInfo.slug,
+      });
       const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
       this._platform.open(downloadUrl, '_blank');
     }
@@ -353,6 +361,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showShareModal = false;
 
   onShareWithFriends(): void {
+    this._ga.sendEvent('share_modal_open', {
+      book_title: this.bookInfo.title,
+      book_slug: this.bookInfo.slug,
+    });
     this.showShareModal = true;
   }
 
@@ -363,6 +375,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   shareTo(channel: 'linkedin' | 'whatsapp' | 'facebook'): void {
     const shareUrl = `https://api.sharebook.com.br/share/livros/${this.bookInfo?.slug || ''}`;
     const title = this.bookInfo?.title || 'Livro no ShareBook';
+
+    this._ga.sendEvent('social_share', {
+      book_title: title,
+      book_slug: this.bookInfo?.slug,
+      method: channel,
+    });
+
     const viralText = `Encontrei este livro grátis no ShareBook 📚 ${title}. Bora ler também?`;
     const shareTextWithLink = `${viralText} ${shareUrl}`;
 
