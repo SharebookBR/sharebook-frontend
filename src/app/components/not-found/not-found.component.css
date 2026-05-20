@@ -1,0 +1,14 @@
+.not-found-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  font-weight: 700;
+  color: #ff4081;
+}
+
+h2 {
+  color: #333;
+}

@@ -105,6 +105,7 @@ import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.compo
 import { JobsDashboardComponent } from './components/jobs-dashboard/jobs-dashboard.component';
 import { ImporterDashboardComponent } from './components/importer-dashboard/importer-dashboard.component';
 import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [

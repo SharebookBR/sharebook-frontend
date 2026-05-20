@@ -34,6 +34,7 @@ import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.comp
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
 import { ImporterDashboardComponent } from '../components/importer-dashboard/importer-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -181,10 +182,10 @@ const routes: Routes = [
     path: 'descadastrar',
     component: UnsubscribeComponent,
   },
-  // otherwise redirect to home
+  // otherwise show 404 page
   {
     path: '**',
-    redirectTo: '',
+    component: NotFoundComponent,
   },
 ];
 
