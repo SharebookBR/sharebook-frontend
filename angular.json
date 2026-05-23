@@ -28,6 +28,7 @@
               "node_modules/easymde/dist/easymde.min.css"
             ],
             "scripts": [],
+            "allowedCommonJsDependencies": ["easymde", "moment-timezone"],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
