@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, TemplateRef, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
+import EasyMDE from 'easymde';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
@@ -11,9 +12,16 @@ import { OperationsService } from '../../core/services/operations/operations.ser
   templateUrl: './importer-dashboard.component.html',
   styleUrls: ['./importer-dashboard.component.css'],
 })
-export class ImporterDashboardComponent implements OnInit {
+export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
+  @ViewChild('editorialPromptDialog') editorialPromptDialog: TemplateRef<any>;
   @ViewChild('importerItemsSection') importerItemsSection: ElementRef;
+
+  editorialPromptSourceName = '';
+  editorialPromptLoading = false;
+  editorialPromptSaving = false;
+  editorialPromptError = '';
+  private _easyMde: EasyMDE | null = null;
 
   isLoading = true;
   loadError = false;
@@ -34,7 +42,16 @@ export class ImporterDashboardComponent implements OnInit {
   currentPage = 1;
   pageSize = 50;
   totalQueueItems = 0;
+  expandedCard: string | null = null;
   readonly pageSizeOptions = [50, 100, 200];
+
+  readonly aggregateGroups = [
+    { id: 'triagem',     label: 'Triagem',          statuses: ['waiting_triage', 'triaging'],                               badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'editorial',   label: 'Preparo editorial', statuses: ['waiting_editor', 'editing'],                               badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
+    { id: 'publicacao',  label: 'Publicação',        statuses: ['waiting_process', 'processing', 'retry_later'],            badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'done',        label: 'Done',              statuses: ['done'],                                                     badge: null as { name: string; icon: string } | null },
+    { id: 'error',       label: 'Error',             statuses: ['triage_rejected', 'source_blocked', 'duplicate', 'error'], badge: null as { name: string; icon: string } | null },
+  ];
 
   readonly statusSummaryOrder = [
     'waiting_triage',
@@ -77,6 +94,36 @@ export class ImporterDashboardComponent implements OnInit {
       status,
       total: source ? this.getStatusCount(source, status) : 0,
     }));
+  }
+
+  get aggregateCards() {
+    const source = this.selectedSource;
+    return this.aggregateGroups.map(group => ({
+      ...group,
+      total: group.statuses.reduce((sum, s) => sum + (source ? this.getStatusCount(source, s) : 0), 0),
+      breakdown: group.statuses.map(s => ({ status: s, total: source ? this.getStatusCount(source, s) : 0 })),
+    }));
+  }
+
+  get expandedCardBreakdown(): Array<{ status: string; total: number }> {
+    const card = this.aggregateCards.find(c => c.id === this.expandedCard);
+    return card?.breakdown || [];
+  }
+
+  toggleAggregateCard(cardId: string): void {
+    const group = this.aggregateGroups.find(g => g.id === cardId);
+    if (!group) return;
+    if (group.statuses.length === 1) {
+      this.expandedCard = null;
+      this.toggleStatus(group.statuses[0]);
+    } else {
+      this.expandedCard = this.expandedCard === cardId ? null : cardId;
+    }
+  }
+
+  isAggregateCardSelected(cardId: string): boolean {
+    const group = this.aggregateGroups.find(g => g.id === cardId);
+    return !!group && group.statuses.includes(this.selectedStatus);
   }
 
   get completionRate(): number {
@@ -259,6 +306,74 @@ export class ImporterDashboardComponent implements OnInit {
     } catch {
       alert('Erro ao processar metadata (JSON inválido).');
     }
+  }
+
+  openEditorialPrompt(): void {
+    const source = this.selectedSource;
+    if (!source) return;
+
+    this.editorialPromptSourceName = source.sourceName;
+    this.editorialPromptLoading = true;
+    this.editorialPromptError = '';
+
+    const dialogRef = this._dialog.open(this.editorialPromptDialog, {
+      width: '860px',
+      maxWidth: '98vw',
+      maxHeight: '92vh',
+    });
+
+    this._operationsService.getImporterEditorialPrompt(source.sourceName).subscribe({
+      next: ({ prompt }) => {
+        this.editorialPromptLoading = false;
+        dialogRef.afterOpened().subscribe(() => {
+          this._initEasyMde(prompt || '');
+        });
+      },
+      error: () => {
+        this.editorialPromptLoading = false;
+        this.editorialPromptError = 'Erro ao carregar o prompt.';
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => this._destroyEasyMde());
+  }
+
+  saveEditorialPrompt(): void {
+    if (!this._easyMde) return;
+    const prompt = this._easyMde.value();
+    this.editorialPromptSaving = true;
+    this.editorialPromptError = '';
+
+    this._operationsService.updateImporterEditorialPrompt(this.editorialPromptSourceName, prompt)
+      .pipe(finalize(() => (this.editorialPromptSaving = false)))
+      .subscribe({
+        next: () => this._dialog.closeAll(),
+        error: () => (this.editorialPromptError = 'Erro ao salvar. Tente novamente.'),
+      });
+  }
+
+  private _initEasyMde(content: string): void {
+    this._destroyEasyMde();
+    const el = document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
+    if (!el) return;
+    this._easyMde = new EasyMDE({
+      element: el,
+      initialValue: content,
+      spellChecker: false,
+      autofocus: true,
+      toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'preview', 'side-by-side', 'fullscreen'],
+    });
+  }
+
+  private _destroyEasyMde(): void {
+    if (this._easyMde) {
+      this._easyMde.toTextArea();
+      this._easyMde = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this._destroyEasyMde();
   }
 
   viewData(item: ImporterQueueListItem): void {

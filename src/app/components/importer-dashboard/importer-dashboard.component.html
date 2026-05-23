@@ -39,24 +39,41 @@
       <span class="importer-dashboard__progress-value">{{ completionRate }}%</span>
     </div>
 
-    <div class="summary-grid">
-      <button
-        type="button"
-        class="summary-card"
-        *ngFor="let card of statusSummaryCards"
-        [ngClass]="[getStatusCardClass(card.status), isStatusSelected(card.status) ? 'summary-card--selected' : '']"
-        [attr.aria-pressed]="isStatusSelected(card.status)"
-        (click)="toggleStatus(card.status)"
+    <div class="aggregate-grid">
+      <div
+        class="aggregate-card"
+        *ngFor="let card of aggregateCards"
+        [ngClass]="['aggregate-card--' + card.id, (expandedCard === card.id || isAggregateCardSelected(card.id)) ? 'aggregate-card--active' : '']"
+        (click)="toggleAggregateCard(card.id)"
       >
-        <div class="summary-card__value">{{ card.total }}</div>
-        <div class="summary-card__footer">
-          <span class="summary-card__dot"></span>
-          <span>{{ getStatusLabel(card.status) }}</span>
+        <div class="aggregate-card__badge" *ngIf="card.badge">
+          <mat-icon>{{ card.badge.icon }}</mat-icon>
+          <span>{{ card.badge.name }}</span>
         </div>
-        <div class="summary-card__agent-tag" *ngIf="getAgentInfo(card.status) as info">
-          <mat-icon>{{ info.icon }}</mat-icon>
-          <span>{{ info.name }}</span>
+        <div class="aggregate-card__value">{{ card.total }}</div>
+        <div class="aggregate-card__label">
+          <span class="aggregate-card__dot"></span>
+          {{ card.label }}
         </div>
+      </div>
+    </div>
+
+    <div class="aggregate-breakdown" [ngClass]="'aggregate-breakdown--' + expandedCard" *ngIf="expandedCard && expandedCardBreakdown.length">
+      <button
+        class="aggregate-breakdown__bullet"
+        type="button"
+        *ngFor="let item of expandedCardBreakdown"
+        [class.aggregate-breakdown__bullet--selected]="selectedStatus === item.status"
+        (click)="toggleStatus(item.status)"
+      >
+        <span class="aggregate-breakdown__dot"></span>
+        {{ getStatusLabel(item.status) }}
+        <span class="aggregate-breakdown__count">{{ item.total }}</span>
+      </button>
+
+      <button class="aggregate-breakdown__action" type="button" *ngIf="expandedCard === 'editorial'" (click)="openEditorialPrompt()">
+        <mat-icon>edit_note</mat-icon>
+        Prompt editorial
       </button>
     </div>
 
@@ -180,6 +197,31 @@
     </section>
   </ng-container>
 </div>
+
+<ng-template #editorialPromptDialog>
+  <div class="editorial-prompt-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>Prompt editorial — {{ editorialPromptSourceName }}</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="editorial-prompt-dialog__body">
+      <div class="spinner-container" *ngIf="editorialPromptLoading">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+      <div class="alert alert-danger" *ngIf="editorialPromptError">{{ editorialPromptError }}</div>
+      <textarea id="editorial-prompt-editor" *ngIf="!editorialPromptLoading"></textarea>
+    </div>
+    <div class="editorial-prompt-dialog__footer">
+      <button class="importer-item__link" type="button" mat-dialog-close>Cancelar</button>
+      <button class="importer-item__link editorial-prompt-dialog__save" type="button" (click)="saveEditorialPrompt()" [disabled]="editorialPromptSaving">
+        <mat-icon>save</mat-icon>
+        {{ editorialPromptSaving ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #metadataDialog>
   <div class="metadata-dialog">

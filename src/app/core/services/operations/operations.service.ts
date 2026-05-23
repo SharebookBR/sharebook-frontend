@@ -31,4 +31,12 @@ export class OperationsService {
 
     return this._http.get<ImporterQueueItemsPage>(`${this.config.apiEndpoint}/Operations/ImporterItems`, { params });
   }
+
+  getImporterEditorialPrompt(sourceName: string): Observable<{ sourceName: string; prompt: string }> {
+    return this._http.get<{ sourceName: string; prompt: string }>(`${this.config.apiEndpoint}/Operations/ImporterEditorialPrompt`, { params: { sourceName } });
+  }
+
+  updateImporterEditorialPrompt(sourceName: string, prompt: string): Observable<void> {
+    return this._http.put<void>(`${this.config.apiEndpoint}/Operations/ImporterEditorialPrompt`, { sourceName, prompt });
+  }
 }

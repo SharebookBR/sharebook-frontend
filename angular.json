@@ -24,7 +24,8 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/easymde/dist/easymde.min.css"
             ],
             "scripts": [],
             "vendorChunk": true,
