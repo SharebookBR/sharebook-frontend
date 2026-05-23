@@ -12,7 +12,40 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$angular-primary: mat.define-palette(mat.$indigo-palette);
+$sharebook-blue: (
+  50: #e5f5fc,
+  100: #bee6f8,
+  200: #93d5f3,
+  300: #68c4ee,
+  400: #47b7eb,
+  500: #29abe2,
+  600: #24a4df,
+  700: #1d9ada,
+  800: #1791d6,
+  900: #0e80cf,
+  A100: #f7fbff,
+  A200: #c4e4ff,
+  A400: #91ceff,
+  A700: #77c3ff,
+  contrast: (
+    50: rgba(0,0,0,0.87),
+    100: rgba(0,0,0,0.87),
+    200: rgba(0,0,0,0.87),
+    300: rgba(0,0,0,0.87),
+    400: rgba(0,0,0,0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(0,0,0,0.87),
+    A200: rgba(0,0,0,0.87),
+    A400: rgba(0,0,0,0.87),
+    A700: rgba(0,0,0,0.87),
+  )
+);
+
+$angular-primary: mat.define-palette($sharebook-blue, 500);
 $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -64,4 +97,9 @@ body {
     max-height: none !important;
     overflow: visible !important;
   }
+}
+
+/* Garante que os modais do Material apareçam acima do header (z-index: 1040) */
+.cdk-overlay-container {
+  z-index: 1100;
 }
