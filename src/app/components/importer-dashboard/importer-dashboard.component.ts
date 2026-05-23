@@ -248,8 +248,15 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       return `Livro Sharebook #${item.sharebookBookId}`;
     }
 
+    if (item.plannedCategoryName) {
+      const label = item.plannedCategoryParentName
+        ? `${item.plannedCategoryParentName} > ${item.plannedCategoryName}`
+        : item.plannedCategoryName;
+      return label;
+    }
+
     if (item.plannedCategoryId) {
-      return `Categoria planejada #${item.plannedCategoryId}`;
+      return `Categoria #${item.plannedCategoryId.slice(0, 8)}…`;
     }
 
     return '';

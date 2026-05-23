@@ -32,6 +32,8 @@ export interface ImporterQueueListItem {
   plannedTitle?: string;
   plannedAuthor?: string;
   plannedCategoryId?: string;
+  plannedCategoryName?: string;
+  plannedCategoryParentName?: string;
   attempts: number;
   lastError?: string;
   sharebookBookId?: string;
