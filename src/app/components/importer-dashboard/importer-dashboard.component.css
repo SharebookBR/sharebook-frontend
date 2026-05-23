@@ -641,8 +641,8 @@
 }
 
 .editorial-prompt-dialog__save {
-  background: #302d59;
-  box-shadow: 0 4px 12px rgba(48, 45, 89, 0.24);
+  background: #29abe2;
+  box-shadow: 0 4px 12px rgba(41, 171, 226, 0.28);
   gap: 0.4rem;
 }
 
@@ -653,8 +653,8 @@
 }
 
 .editorial-prompt-dialog__save:hover {
-  background: #3f3b75;
-  box-shadow: 0 8px 20px rgba(48, 45, 89, 0.35);
+  background: #1a96cc;
+  box-shadow: 0 8px 20px rgba(41, 171, 226, 0.4);
 }
 
 .editorial-prompt-dialog__save:disabled {

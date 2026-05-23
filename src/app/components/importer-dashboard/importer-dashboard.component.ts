@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import type EasyMDE from 'easymde';
+import { PlatformService } from '../../core/services/platform/platform.service';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
@@ -71,7 +73,9 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private _operationsService: OperationsService,
     private _seo: SeoService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _platform: PlatformService,
+    @Inject(DOCUMENT) private _document: Document
   ) {}
 
   ngOnInit(): void {
@@ -353,9 +357,10 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   }
 
   private _initEasyMde(content: string): void {
+    if (!this._platform.isBrowser()) return;
     this._destroyEasyMde();
     import('easymde').then(({ default: EasyMDE }) => {
-      const el = document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
+      const el = this._document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
       if (!el) return;
       this._easyMde = new EasyMDE({
         element: el,
