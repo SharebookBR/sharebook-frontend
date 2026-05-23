@@ -1295,6 +1295,17 @@
   .importer-items__page-size select {
     flex: 1;
   }
+
+  .aggregate-breakdown {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .aggregate-breakdown__action {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
 }
 
 .spinner-container {
@@ -1386,5 +1397,16 @@
 
   .importer-items__page-size select {
     flex: 1;
+  }
+
+  .aggregate-breakdown {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .aggregate-breakdown__action {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
   }
 }
