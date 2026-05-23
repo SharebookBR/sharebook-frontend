@@ -25,7 +25,7 @@ export class ImporterDashboardComponent implements OnInit {
   selectedItemMetadata: any = null;
   selectedItemData: any = null;
 
-  selectedSourceId = 'baixelivros_infantil';
+  selectedSourceId = 'baixelivros_quadrinhos';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
   searchTerm = '';
@@ -388,7 +388,7 @@ export class ImporterDashboardComponent implements OnInit {
         this.sources = dashboard.sources || [];
 
         if (!this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) && this.sources.length) {
-          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'baixelivros_infantil')?.sourceName || this.getSourceKey(this.sources[0]);
+          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'baixelivros_quadrinhos')?.sourceName || this.getSourceKey(this.sources[0]);
         }
 
         this.isLoading = false;
