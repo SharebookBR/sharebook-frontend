@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
-import EasyMDE from 'easymde';
+import type EasyMDE from 'easymde';
 
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
@@ -322,20 +322,20 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       maxHeight: '92vh',
     });
 
-    this._operationsService.getImporterEditorialPrompt(source.sourceName).subscribe({
-      next: ({ prompt }) => {
-        this.editorialPromptLoading = false;
-        dialogRef.afterOpened().subscribe(() => {
-          this._initEasyMde(prompt || '');
-        });
-      },
-      error: () => {
-        this.editorialPromptLoading = false;
-        this.editorialPromptError = 'Erro ao carregar o prompt.';
-      },
-    });
-
     dialogRef.afterClosed().subscribe(() => this._destroyEasyMde());
+
+    dialogRef.afterOpened().subscribe(() => {
+      this._operationsService.getImporterEditorialPrompt(source.sourceName).subscribe({
+        next: ({ prompt }) => {
+          this.editorialPromptLoading = false;
+          this._initEasyMde(prompt || '');
+        },
+        error: () => {
+          this.editorialPromptLoading = false;
+          this.editorialPromptError = 'Erro ao carregar o prompt.';
+        },
+      });
+    });
   }
 
   saveEditorialPrompt(): void {
@@ -354,14 +354,16 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   private _initEasyMde(content: string): void {
     this._destroyEasyMde();
-    const el = document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
-    if (!el) return;
-    this._easyMde = new EasyMDE({
-      element: el,
-      initialValue: content,
-      spellChecker: false,
-      autofocus: true,
-      toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'preview', 'side-by-side', 'fullscreen'],
+    import('easymde').then(({ default: EasyMDE }) => {
+      const el = document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
+      if (!el) return;
+      this._easyMde = new EasyMDE({
+        element: el,
+        initialValue: content,
+        spellChecker: false,
+        autofocus: true,
+        toolbar: ['bold', 'italic', 'heading', '|', 'unordered-list', 'ordered-list', '|', 'preview', 'side-by-side', 'fullscreen'],
+      });
     });
   }
 
