@@ -669,6 +669,25 @@
   transform: none;
 }
 
+/* EasyMDE / CodeMirror — quebra de linha dentro do modal.
+   ::ng-deep necessário porque o CodeMirror é gerado dinamicamente
+   e não recebe atributo _ngcontent do encapsulamento Angular. */
+::ng-deep .editorial-prompt-dialog__body .CodeMirror {
+  height: auto;
+  word-wrap: break-word;
+  overflow-x: hidden;
+}
+
+::ng-deep .editorial-prompt-dialog__body .CodeMirror-scroll {
+  overflow-x: hidden !important;
+}
+
+::ng-deep .editorial-prompt-dialog__body .CodeMirror pre.CodeMirror-line,
+::ng-deep .editorial-prompt-dialog__body .CodeMirror pre.CodeMirror-line-like {
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 1024px) {
   .aggregate-grid {
     grid-template-columns: repeat(3, 1fr);
