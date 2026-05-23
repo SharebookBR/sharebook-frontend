@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import type EasyMDE from 'easymde';
 import { PlatformService } from '../../core/services/platform/platform.service';
 
+import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
 import { OperationsService } from '../../core/services/operations/operations.service';
@@ -74,6 +75,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     private _operationsService: OperationsService,
     private _seo: SeoService,
     private _dialog: MatDialog,
+    private _toastr: ToastrService,
     private _platform: PlatformService,
     @Inject(DOCUMENT) private _document: Document
   ) {}
@@ -358,7 +360,10 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     this._operationsService.updateImporterEditorialPrompt(this.editorialPromptSourceName, prompt)
       .pipe(finalize(() => (this.editorialPromptSaving = false)))
       .subscribe({
-        next: () => this._dialog.closeAll(),
+        next: () => {
+          this._dialog.closeAll();
+          this._toastr.success('Prompt editorial salvo com sucesso!');
+        },
         error: () => (this.editorialPromptError = 'Erro ao salvar. Tente novamente.'),
       });
   }
