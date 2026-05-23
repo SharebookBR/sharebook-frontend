@@ -627,9 +627,22 @@
   padding: 1.25rem 1.5rem 1rem;
 }
 
+.editorial-prompt-dialog__footer .importer-item__link:first-child {
+  background: transparent;
+  color: #667085;
+  border: 1.5px solid #d0d5dd;
+  box-shadow: none;
+}
+
+.editorial-prompt-dialog__footer .importer-item__link:first-child:hover {
+  background: #f4f7fb;
+  color: #344054;
+  box-shadow: none;
+}
+
 .editorial-prompt-dialog__save {
-  background: #10b981;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.24);
+  background: #302d59;
+  box-shadow: 0 4px 12px rgba(48, 45, 89, 0.24);
   gap: 0.4rem;
 }
 
@@ -640,8 +653,8 @@
 }
 
 .editorial-prompt-dialog__save:hover {
-  background: #059669;
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+  background: #3f3b75;
+  box-shadow: 0 8px 20px rgba(48, 45, 89, 0.35);
 }
 
 .editorial-prompt-dialog__save:disabled {
