@@ -328,7 +328,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       this._operationsService.getImporterEditorialPrompt(source.sourceName).subscribe({
         next: ({ prompt }) => {
           this.editorialPromptLoading = false;
-          this._initEasyMde(prompt || '');
+          setTimeout(() => this._initEasyMde(prompt || ''), 0);
         },
         error: () => {
           this.editorialPromptLoading = false;
