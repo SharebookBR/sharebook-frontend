@@ -243,23 +243,23 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     return item.plannedAuthor || item.author || '';
   }
 
+  getItemCategoryLabel(item: ImporterQueueListItem): string {
+    if (item.plannedCategoryName) {
+      return item.plannedCategoryParentName
+        ? `${item.plannedCategoryParentName} > ${item.plannedCategoryName}`
+        : item.plannedCategoryName;
+    }
+    if (item.plannedCategoryId) {
+      return `Categoria #${item.plannedCategoryId.slice(0, 8)}…`;
+    }
+    return '';
+  }
+
   getItemSecondaryInfo(item: ImporterQueueListItem): string {
     if (item.sharebookBookId) {
       return `Livro Sharebook #${item.sharebookBookId}`;
     }
-
-    if (item.plannedCategoryName) {
-      const label = item.plannedCategoryParentName
-        ? `${item.plannedCategoryParentName} > ${item.plannedCategoryName}`
-        : item.plannedCategoryName;
-      return label;
-    }
-
-    if (item.plannedCategoryId) {
-      return `Categoria #${item.plannedCategoryId.slice(0, 8)}…`;
-    }
-
-    return '';
+    return this.getItemCategoryLabel(item);
   }
 
   getShortError(item: ImporterQueueListItem): string {

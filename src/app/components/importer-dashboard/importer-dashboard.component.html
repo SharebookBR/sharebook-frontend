@@ -139,7 +139,7 @@
           <div class="importer-item__meta">
             <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && !item.status.includes('triage') && !item.status.includes('editor')">Tentativas: {{ item.attempts || 0 }}</span>
             <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && getItemSecondaryInfo(item)">{{ getItemSecondaryInfo(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && getItemCategoryLabel(item)">{{ getItemCategoryLabel(item) }}</span>
           </div>
 
           <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
