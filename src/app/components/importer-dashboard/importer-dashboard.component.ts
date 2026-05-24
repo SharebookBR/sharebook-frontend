@@ -36,7 +36,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   selectedItemMetadata: any = null;
   selectedItemData: any = null;
 
-  selectedSourceId = 'baixelivros_quadrinhos';
+  selectedSourceId = 'ebook_foundation_subjects';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
   searchTerm = '';
@@ -522,7 +522,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
         this.sources = dashboard.sources || [];
 
         if (!this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) && this.sources.length) {
-          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'baixelivros_quadrinhos')?.sourceName || this.getSourceKey(this.sources[0]);
+          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'ebook_foundation_subjects')?.sourceName || this.getSourceKey(this.sources[0]);
         }
 
         this.isLoading = false;
