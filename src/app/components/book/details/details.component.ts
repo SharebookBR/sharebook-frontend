@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -62,7 +64,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _platform: PlatformService,
     private _ga: GoogleAnalyticsService,
-    @Inject(APP_CONFIG) private config: AppConfig
+    @Inject(APP_CONFIG) private config: AppConfig,
+    @Optional() @Inject(RESPONSE) private response: Response
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -188,12 +191,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
           },
           (err) => {
             console.error(err);
-            this.pageTitle = 'Ops... Não encontramos esse livro :/';
+            this.response?.status(404);
+            this.pageTitle = 'Ops... Não encontramos essa página :/';
             this.state = 'not-found';
           }
         );
     } else {
-      this.pageTitle = 'Ops... Não encontramos esse livro :/';
+      this.response?.status(404);
+      this.pageTitle = 'Ops... Não encontramos essa página :/';
       this.state = 'not-found';
     }
   }
