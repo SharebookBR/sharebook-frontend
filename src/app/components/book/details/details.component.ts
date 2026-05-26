@@ -378,7 +378,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   shareTo(channel: 'linkedin' | 'whatsapp' | 'facebook'): void {
-    const shareUrl = `https://api.sharebook.com.br/share/livros/${this.bookInfo?.slug || ''}`;
+    const shareUrl = `https://www.sharebook.com.br/livros/${this.bookInfo?.slug || ''}`;
     const title = this.bookInfo?.title || 'Livro no ShareBook';
 
     this._ga.sendEvent('social_share', {
