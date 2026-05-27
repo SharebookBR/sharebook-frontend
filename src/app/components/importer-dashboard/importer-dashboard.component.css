@@ -1406,15 +1406,24 @@
   }
 
   .importer-item__meta,
-  .importer-item__error,
-  .importer-item__admin-note,
   .importer-item__actions {
     margin-left: 0;
     padding-left: 0;
   }
 
+  .importer-item__error,
+  .importer-item__admin-note {
+    margin-left: 0;
+  }
+
   .importer-item__actions {
-    justify-content: stretch;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .importer-item__link {
+    flex: 1 1 calc(50% - 0.2rem);
+    min-width: 0;
   }
 
   .importer-item__link {
@@ -1535,15 +1544,24 @@
   }
 
   .importer-item__meta,
-  .importer-item__error,
-  .importer-item__admin-note,
   .importer-item__actions {
     margin-left: 0;
     padding-left: 0;
   }
 
+  .importer-item__error,
+  .importer-item__admin-note {
+    margin-left: 0;
+  }
+
   .importer-item__actions {
-    justify-content: stretch;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .importer-item__link {
+    flex: 1 1 calc(50% - 0.2rem);
+    min-width: 0;
   }
 
   .importer-item__link {
