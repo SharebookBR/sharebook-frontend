@@ -921,6 +921,7 @@
 .importer-items__list {
   display: grid;
   gap: 0.75rem;
+  max-width: 860px;
 }
 
 .importer-item {
