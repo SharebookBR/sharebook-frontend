@@ -45,6 +45,7 @@ export interface ImporterQueueListItem {
   bookSlug?: string;
   bookImageSlug?: string;
   metadataJson?: string;
+  adminNotes?: string;
   createdAt: string;
   updatedAt: string;
 }

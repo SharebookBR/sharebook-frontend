@@ -609,6 +609,68 @@
   box-shadow: 0 4px 12px rgba(48, 45, 89, 0.25);
 }
 
+.admin-note-dialog {
+  display: flex;
+  flex-direction: column;
+  min-width: 460px;
+}
+
+.admin-note-dialog__body {
+  padding: 0.5rem 1.5rem 1rem;
+}
+
+.admin-note-dialog__textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 10px;
+  background: #fafafa;
+  color: #101828;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.admin-note-dialog__textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+.admin-note-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid #f2f4f7;
+}
+
+.admin-note-dialog__save {
+  background: #16a34a;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.28);
+  gap: 0.4rem;
+}
+
+.admin-note-dialog__save mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.admin-note-dialog__save:hover {
+  background: #15803d;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4);
+}
+
+.admin-note-dialog__save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .editorial-prompt-dialog {
   display: flex;
   flex-direction: column;
@@ -1006,6 +1068,29 @@
   color: #b42318;
 }
 
+.importer-item__admin-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.3rem 0 0 3.75rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.importer-item__admin-note mat-icon {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.1rem;
+  opacity: 0.85;
+}
+
 .importer-item__actions {
   display: flex;
   justify-content: flex-end;
@@ -1054,6 +1139,28 @@
   background: #f4f7fb;
   color: #302d59;
   box-shadow: 0 6px 14px rgba(48, 45, 89, 0.1);
+}
+
+.importer-item__link--note {
+  background: transparent;
+  color: #475467;
+  border: 1.5px solid #d0d5dd;
+  box-shadow: none;
+  gap: 0.35rem;
+}
+
+.importer-item__link--note mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.importer-item__link--note:hover {
+  background: #f4f7fb;
+  color: #101828;
+  border-color: #98a2b3;
+  box-shadow: none;
+  transform: none;
 }
 
 .importer-item__link--pdp {
@@ -1299,6 +1406,7 @@
 
   .importer-item__meta,
   .importer-item__error,
+  .importer-item__admin-note,
   .importer-item__actions {
     margin-left: 0;
     padding-left: 0;
@@ -1343,6 +1451,16 @@
   }
 
   .editorial-prompt-dialog__footer .importer-item__link {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .admin-note-dialog {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .admin-note-dialog__footer .importer-item__link {
     flex: 1;
     justify-content: center;
   }
@@ -1417,6 +1535,7 @@
 
   .importer-item__meta,
   .importer-item__error,
+  .importer-item__admin-note,
   .importer-item__actions {
     margin-left: 0;
     padding-left: 0;

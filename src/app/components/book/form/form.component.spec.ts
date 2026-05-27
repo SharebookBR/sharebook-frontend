@@ -66,16 +66,16 @@ const freightOptionsArray = [
 ];
 
 const categoryServiceArray: Category[] = [
-  { id: 1, name: 'Administração' },
-  { id: 2, name: 'Artes' },
-  { id: 3, name: 'Aventura' },
-  { id: 4, name: 'Ciências Biógicas' },
-  { id: 5, name: 'Direito' },
-  { id: 6, name: 'Engenharia' },
-  { id: 7, name: 'Geografia e História' },
-  { id: 8, name: 'Informática' },
-  { id: 9, name: 'Medicina' },
-  { id: 10, name: 'Psicologia' },
+  { id: '1', name: 'Administração' },
+  { id: '2', name: 'Artes' },
+  { id: '3', name: 'Aventura' },
+  { id: '4', name: 'Ciências Biógicas' },
+  { id: '5', name: 'Direito' },
+  { id: '6', name: 'Engenharia' },
+  { id: '7', name: 'Geografia e História' },
+  { id: '8', name: 'Informática' },
+  { id: '9', name: 'Medicina' },
+  { id: '10', name: 'Psicologia' },
 ];
 
 

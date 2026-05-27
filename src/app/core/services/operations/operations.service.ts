@@ -39,4 +39,8 @@ export class OperationsService {
   updateImporterEditorialPrompt(sourceName: string, prompt: string): Observable<void> {
     return this._http.put<void>(`${this.config.apiEndpoint}/Operations/ImporterEditorialPrompt`, { sourceName, prompt });
   }
+
+  updateImporterItemNotes(id: number, notes: string): Observable<void> {
+    return this._http.patch<void>(`${this.config.apiEndpoint}/Operations/ImporterItems/${id}/AdminNotes`, { notes });
+  }
 }

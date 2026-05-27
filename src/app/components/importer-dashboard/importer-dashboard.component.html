@@ -150,7 +150,16 @@
             {{ getShortError(item) }}
           </div>
 
+          <div class="importer-item__admin-note" *ngIf="item.adminNotes">
+            <mat-icon>comment</mat-icon>
+            {{ item.adminNotes }}
+          </div>
+
           <div class="importer-item__actions">
+            <button class="importer-item__link importer-item__link--note" type="button" (click)="openAdminNote(item)" title="Comentário do adm">
+              <mat-icon>comment</mat-icon>
+              {{ item.adminNotes ? 'Editar nota' : 'Comentário do adm' }}
+            </button>
             <button class="importer-item__link importer-item__link--data" type="button" (click)="viewData(item)" title="Ver todos os campos do Postgres">
               Ver dados
             </button>
@@ -218,6 +227,33 @@
       <button class="importer-item__link editorial-prompt-dialog__save" type="button" (click)="saveEditorialPrompt()" [disabled]="editorialPromptSaving">
         <mat-icon>save</mat-icon>
         {{ editorialPromptSaving ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #adminNoteDialog>
+  <div class="admin-note-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>#{{ adminNoteItem?.id }} — Comentário do adm</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="admin-note-dialog__body">
+      <textarea
+        class="admin-note-dialog__textarea"
+        [(ngModel)]="adminNoteText"
+        placeholder="Ex: são capítulos avulsos. não vale a pena torrar tokens nisso. vamos desistir desse item."
+        rows="4"
+        autofocus
+      ></textarea>
+    </div>
+    <div class="admin-note-dialog__footer">
+      <button class="importer-item__link importer-item__link--data" type="button" mat-dialog-close>Cancelar</button>
+      <button class="importer-item__link admin-note-dialog__save" type="button" (click)="saveAdminNote()" [disabled]="adminNoteSaving">
+        <mat-icon>save</mat-icon>
+        {{ adminNoteSaving ? 'Salvando...' : 'Salvar' }}
       </button>
     </div>
   </div>

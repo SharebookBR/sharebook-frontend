@@ -18,6 +18,7 @@ import { OperationsService } from '../../core/services/operations/operations.ser
 export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
   @ViewChild('editorialPromptDialog') editorialPromptDialog: TemplateRef<any>;
+  @ViewChild('adminNoteDialog') adminNoteDialog: TemplateRef<any>;
   @ViewChild('importerItemsSection') importerItemsSection: ElementRef;
 
   editorialPromptSourceName = '';
@@ -25,6 +26,10 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   editorialPromptSaving = false;
   editorialPromptError = '';
   private _easyMde: EasyMDE | null = null;
+
+  adminNoteItem: ImporterQueueListItem | null = null;
+  adminNoteText = '';
+  adminNoteSaving = false;
 
   isLoading = true;
   loadError = false;
@@ -393,6 +398,31 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._destroyEasyMde();
+  }
+
+  openAdminNote(item: ImporterQueueListItem): void {
+    this.adminNoteItem = item;
+    this.adminNoteText = item.adminNotes || '';
+    this._dialog.open(this.adminNoteDialog, {
+      width: '520px',
+      maxWidth: '100vw',
+    });
+  }
+
+  saveAdminNote(): void {
+    if (!this.adminNoteItem) return;
+    this.adminNoteSaving = true;
+    const item = this.adminNoteItem;
+    this._operationsService.updateImporterItemNotes(item.id, this.adminNoteText)
+      .pipe(finalize(() => (this.adminNoteSaving = false)))
+      .subscribe({
+        next: () => {
+          item.adminNotes = this.adminNoteText.trim() || undefined;
+          this._dialog.closeAll();
+          this._toastr.success('Comentário salvo!');
+        },
+        error: () => this._toastr.error('Erro ao salvar comentário.'),
+      });
   }
 
   viewData(item: ImporterQueueListItem): void {
