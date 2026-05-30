@@ -374,6 +374,26 @@
   background: radial-gradient(circle, var(--summary-glow, rgba(152, 162, 179, 0.14)) 0%, rgba(255, 255, 255, 0) 68%);
 }
 
+.aggregate-card__value-b {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  color: #101828;
+  font-size: 2.45rem;
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.delta-inline {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #94a3b8;
+}
+
 .aggregate-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

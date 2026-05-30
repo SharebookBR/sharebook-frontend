@@ -109,11 +109,25 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   get aggregateCards() {
     const source = this.selectedSource;
-    return this.aggregateGroups.map(group => ({
-      ...group,
-      total: group.statuses.reduce((sum, s) => sum + (source ? this.getStatusCount(source, s) : 0), 0),
-      breakdown: group.statuses.map(s => ({ status: s, total: source ? this.getStatusCount(source, s) : 0 })),
-    }));
+    return this.aggregateGroups.map(group => {
+      const total = group.statuses.reduce((sum, s) => sum + (source ? this.getStatusCount(source, s) : 0), 0);
+      const d1Values = source ? group.statuses.map(s => this.getStatusCountD1(source, s)) : [];
+      const hasD1 = d1Values.some(v => v !== null);
+      const totalD1 = hasD1 ? d1Values.reduce((sum, v) => sum + (v ?? 0), 0) : null;
+      return {
+        ...group,
+        total,
+        totalD1,
+        breakdown: group.statuses.map(s => ({ status: s, total: source ? this.getStatusCount(source, s) : 0 })),
+      };
+    });
+  }
+
+  formatDelta(total: number, totalD1: number | null): string | null {
+    if (totalD1 === null) return null;
+    const diff = total - totalD1;
+    if (diff === 0) return '0';
+    return diff > 0 ? `+${diff}` : `−${Math.abs(diff)}`;
   }
 
   get expandedCardBreakdown(): Array<{ status: string; total: number }> {
@@ -523,7 +537,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   }
 
   private getStatusCount(source: ImporterSourceStatus, status: string): number {
-    const counts = {
+    const counts: Record<string, number> = {
       waiting_triage: source.waitingTriage,
       triaging: source.triaging,
       triage_rejected: source.triageRejected,
@@ -538,7 +552,26 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       error: source.error,
     };
 
-    return counts[status] || 0;
+    return counts[status] ?? 0;
+  }
+
+  private getStatusCountD1(source: ImporterSourceStatus, status: string): number | null {
+    const counts: Record<string, number | null | undefined> = {
+      waiting_triage: source.waitingTriageD1,
+      triaging: source.triagingD1,
+      triage_rejected: source.triageRejectedD1,
+      waiting_editor: source.waitingEditorD1,
+      editing: source.editingD1,
+      waiting_process: source.waitingProcessD1,
+      processing: source.processingD1,
+      done: source.doneD1,
+      retry_later: source.retryLaterD1,
+      source_blocked: source.sourceBlockedD1,
+      duplicate: source.duplicateD1,
+      error: source.errorD1,
+    };
+    const val = counts[status];
+    return val === undefined ? null : (val ?? null);
   }
 
   private loadDashboard(): void {

@@ -80,6 +80,19 @@ export interface ImporterSourceStatus {
   lastRunAt?: string;
   lastRunStatus?: string;
   lastRunMessage?: string;
+  // D-1 (null = sem histórico ainda)
+  doneD1?: number | null;
+  waitingTriageD1?: number | null;
+  triagingD1?: number | null;
+  triageRejectedD1?: number | null;
+  waitingEditorD1?: number | null;
+  editingD1?: number | null;
+  waitingProcessD1?: number | null;
+  processingD1?: number | null;
+  retryLaterD1?: number | null;
+  sourceBlockedD1?: number | null;
+  duplicateD1?: number | null;
+  errorD1?: number | null;
 }
 
 export interface ImporterDashboard {

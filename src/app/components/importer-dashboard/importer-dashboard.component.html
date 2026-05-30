@@ -50,7 +50,10 @@
           <mat-icon>{{ card.badge.icon }}</mat-icon>
           <span>{{ card.badge.name }}</span>
         </div>
-        <div class="aggregate-card__value">{{ card.total }}</div>
+        <div class="aggregate-card__value-b">
+          {{ card.total }}
+          <span class="delta-inline" *ngIf="formatDelta(card.total, card.totalD1) !== null">{{ formatDelta(card.total, card.totalD1) }}</span>
+        </div>
         <div class="aggregate-card__label">
           <span class="aggregate-card__dot"></span>
           {{ card.label }}
