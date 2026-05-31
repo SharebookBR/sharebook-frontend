@@ -3,9 +3,9 @@
 }
 
 mat-dialog-content {
-  max-height: min(66vh, 560px);
-  overflow: auto;
-  padding-right: 4px;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .main-users-title {
@@ -16,6 +16,8 @@ mat-dialog-content {
   margin: 0 0 12px;
   font-size: 22px;
   line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
