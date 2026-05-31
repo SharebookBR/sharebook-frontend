@@ -79,25 +79,25 @@ body {
   .cdk-global-overlay-wrapper {
     align-items: center !important;
     justify-content: center !important;
-    padding: 12px !important;
+    padding: 4px !important;
     box-sizing: border-box;
   }
 
   .cdk-overlay-pane {
-    max-width: calc(100vw - 24px) !important;
-    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 8px) !important;
+    width: calc(100vw - 8px) !important;
     margin: 0 !important;
   }
 
   .mat-dialog-container {
-    border-radius: 16px !important;
-    padding: 16px !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
     margin: 0 !important;
     box-sizing: border-box;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    max-height: calc(100vh - 24px) !important;
+    max-height: calc(100vh - 8px) !important;
     overflow-y: auto !important;
   }
 
