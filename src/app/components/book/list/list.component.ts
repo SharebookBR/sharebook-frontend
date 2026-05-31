@@ -139,7 +139,11 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'facilitatorNotes': {
-        const modalRef = this.dialog.open(FacilitatorNotesComponent, { minWidth: 450 });
+        const modalRef = this.dialog.open(FacilitatorNotesComponent, {
+          width: 'min(92vw, 720px)',
+          maxWidth: '92vw',
+          panelClass: 'sharebook-mobile-dialog'
+        });
 
         modalRef.afterClosed().subscribe((result) => {
           if (result) this.reloadData();
