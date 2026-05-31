@@ -1415,7 +1415,7 @@
 }
 
 .history-table tr:nth-child(even) td {
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
 .history-table__date {
