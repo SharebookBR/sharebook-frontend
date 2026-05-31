@@ -126,7 +126,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   formatDelta(total: number, totalD1: number | null): string | null {
     if (totalD1 === null) return null;
     const diff = total - totalD1;
-    if (diff === 0) return '0';
+    if (diff === 0) return null;
     return diff > 0 ? `+${diff}` : `−${Math.abs(diff)}`;
   }
 
