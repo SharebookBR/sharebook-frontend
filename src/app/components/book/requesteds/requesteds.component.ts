@@ -134,7 +134,13 @@ export class RequestedsComponent implements OnInit, OnDestroy {
   private showDonor(param: MyRequestItem) {
     this._messageToModalBody = '';
 
-    const modalRef = this.dialog.open(DonorModalComponent, { minWidth: 450 });
+    const modalRef = this.dialog.open(DonorModalComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
+    });
 
     modalRef.componentInstance.bookId = param.bookId;
     modalRef.componentInstance.bookTitle = param.title;

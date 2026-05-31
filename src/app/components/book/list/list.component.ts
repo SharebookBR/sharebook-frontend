@@ -166,7 +166,13 @@ export class ListComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const modalRef = this.dialog.open(TrackingComponent, { minWidth: 550 });
+        const modalRef = this.dialog.open(TrackingComponent, {
+          width: 'min(92vw, 560px)',
+          maxWidth: '92vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          panelClass: 'sharebook-mobile-dialog'
+        });
 
         modalRef.afterClosed().subscribe((result) => {
           if (result) this.reloadData();
@@ -179,7 +185,13 @@ export class ListComponent implements OnInit, OnDestroy {
         break;
       }
       case 'showUsersInfo': {
-        const modalRef = this.dialog.open(MainUsersComponent);
+        const modalRef = this.dialog.open(MainUsersComponent, {
+          width: 'min(92vw, 760px)',
+          maxWidth: '92vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          panelClass: 'sharebook-mobile-dialog'
+        });
         modalRef.componentInstance.bookId = param.id;
         modalRef.componentInstance.bookTitle = param.title;
         break;

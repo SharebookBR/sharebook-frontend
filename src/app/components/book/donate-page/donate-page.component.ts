@@ -111,7 +111,13 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
       }
 
-      const modalRef = this.dialog.open(DonateComponent, { minWidth: 450 });
+      const modalRef = this.dialog.open(DonateComponent, {
+        width: 'min(92vw, 560px)',
+        maxWidth: '92vw',
+        maxHeight: '90vh',
+        autoFocus: false,
+        panelClass: 'sharebook-mobile-dialog'
+      });
 
       modalRef.componentInstance.bookId = this.book.id;
       modalRef.componentInstance.userId = param.userId;
@@ -208,7 +214,13 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showWinnerInfo(): void {
-    const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
+    const modalRef = this.dialog.open(WinnerUsersComponent, {
+      width: 'min(92vw, 760px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
+    });
     modalRef.componentInstance.bookId = this.book.id;
     modalRef.componentInstance.bookTitle = this.book.title;
     modalRef.componentInstance.bookSlug = this.book.slug;

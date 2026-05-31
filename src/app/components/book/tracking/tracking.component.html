@@ -1,10 +1,10 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<h4 class="modal-title">Marcar como finalizado</h4>
+<h4 mat-dialog-title>Marcar como finalizado</h4>
 
 <mat-dialog-content>
-  <h4>{{ bookTitle }}</h4>
+  <h4 class="tracking-book-title">{{ bookTitle }}</h4>
 
   <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 

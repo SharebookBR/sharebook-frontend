@@ -204,7 +204,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   onRequestBook() {
-    const modalRef = this.dialog.open(RequestComponent, { minWidth: 450 });
+    const modalRef = this.dialog.open(RequestComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
+    });
 
     modalRef.afterClosed().subscribe(result => {
       if (result) {

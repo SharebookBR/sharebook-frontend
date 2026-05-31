@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  max-height: min(56vh, 420px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+p {
+  line-height: 1.5;
+  word-break: break-word;
+}

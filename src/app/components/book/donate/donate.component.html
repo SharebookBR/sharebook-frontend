@@ -1,10 +1,12 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onDonate()">
+<form [formGroup]="formGroup" (ngSubmit)="onDonate()">
+  <h4 mat-dialog-title class="donate-title">Motivo da doação para {{ userNickName }}</h4>
+
   <mat-dialog-content>
-    <h4 class="modal-title">Motivo da Doação para {{ userNickName }}</h4>
     <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+    <p class="donate-help">Explique por que você escolheu essa pessoa. Isso ajuda a registrar a decisão com clareza.</p>
 
     <textarea
       formControlName="myNote"
@@ -21,8 +23,9 @@
       </small>
     </div>
   </mat-dialog-content>
+
   <mat-dialog-actions align="end">
-    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Doar</button>
-    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+    <button mat-flat-button color="primary" [disabled]="!formGroup.valid || isLoading" type="submit">Doar</button>
+    <button mat-stroked-button mat-dialog-close type="button">Cancelar</button>
   </mat-dialog-actions>
 </form>

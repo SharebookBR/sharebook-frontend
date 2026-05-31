@@ -410,7 +410,11 @@ export class FormComponent implements OnInit, OnDestroy {
         imageUrl: !hasBytes ? this.formGroup.value.imageUrl : undefined,
         imageBase64: hasBytes ? 'data:image/jpeg;base64,' + this.formGroup.value.imageBytes : undefined,
       },
-      width: '700px',
+      width: 'min(96vw, 900px)',
+      maxWidth: '96vw',
+      maxHeight: '92vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
     });
 
     dialogRef.afterClosed().subscribe((croppedBase64: string) => {
@@ -427,7 +431,12 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formGroup.controls['freightOption'].setValue(freightOption);
 
     if (freightOption === 'WithoutFreight') {
-      this.dialog.open(FreightIncentiveDialogComponent, { maxWidth: 350 });
+      this.dialog.open(FreightIncentiveDialogComponent, {
+        width: 'min(92vw, 420px)',
+        maxWidth: '92vw',
+        autoFocus: false,
+        panelClass: 'sharebook-mobile-dialog'
+      });
     }
   }
 

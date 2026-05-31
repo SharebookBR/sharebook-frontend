@@ -15,7 +15,13 @@
   color: #ccc;
 }
 
+mat-dialog-content {
+  max-height: min(68vh, 720px);
+  overflow: auto;
+}
+
 image-cropper {
+  display: block;
   max-height: 60vh;
 }
 
@@ -23,7 +29,8 @@ mat-dialog-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  gap: 10px;
+  padding: 12px 0 0;
 }
 
 .actions-rotate {
@@ -35,4 +42,26 @@ mat-dialog-actions {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+@media (max-width: 767px) {
+  mat-dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions-rotate,
+  .actions-confirm {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .actions-confirm {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .actions-confirm button {
+    width: 100%;
+  }
 }

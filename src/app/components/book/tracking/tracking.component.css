@@ -1,6 +1,18 @@
-.close {
-  display: flex;
-  justify-content: flex-end;
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  max-height: min(62vh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.tracking-book-title {
+  margin: 0 0 12px;
+  font-size: 26px;
+  line-height: 1.15;
+  word-break: break-word;
 }
 
 .delivery-options {
@@ -30,4 +42,38 @@
   display: block;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+textarea.form-control {
+  min-height: 130px;
+  resize: vertical;
+}
+
+mat-dialog-actions {
+  gap: 10px;
+  padding-top: 16px;
+}
+
+mat-dialog-actions button {
+  min-width: 120px;
+}
+
+@media (max-width: 600px) {
+  .tracking-book-title {
+    font-size: 22px;
+  }
+
+  mat-dialog-content {
+    max-height: 58vh;
+  }
+
+  mat-dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  mat-dialog-actions button {
+    width: 100%;
+    margin: 0;
+  }
 }

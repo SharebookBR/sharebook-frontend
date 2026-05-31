@@ -1,79 +1,57 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" [mat-dialog-close]="state === 'request-success'"></i>
 </div>
-<h4 class="modal-title">{{ modalTitle }}</h4>
+<h4 mat-dialog-title class="request-title">{{ modalTitle }}</h4>
 
-<div class="text-center" *ngIf="state == 'loading'"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+<mat-dialog-content>
+  <div class="text-center" *ngIf="state == 'loading'"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 
-<div class="text-center" *ngIf="state == 'request-error'">
-  <p>Não foi possível concluir sua solicitação agora.</p>
-  <div class="alert alert-danger" role="alert">
-    {{ lastError }}
-  </div>
-</div>
-
-<div class="text-center" *ngIf="state == 'request-success'">
-  <div class="alert alert-success" role="alert">Sua solicitação foi enviada com sucesso.</div>
-  <p><strong>O endereço de entrega abaixo está correto?</strong></p>
-  <p>{{ addressLine01 }}<br />{{ addressLine02 }}<br />{{ addressLine03 }}</p>
-</div>
-
-<form [formGroup]="formGroup" class="container form-horizontal" (ngSubmit)="onRequest()" *ngIf="state == 'form'">
-  <mat-dialog-content>
-    <div class="modal-body">
-      <div class="text-center" [hidden]="state == 'form'"></div>
-
-      <p>
-        1 - Fale um pouco sobre você.<br />
-        2 - Por que esse livro é importante?<br />
-        3 - Planeja doar novamente?
-      </p>
-      <textarea
-        formControlName="myNote"
-        name="myNote"
-        type="text"
-        id="myNote"
-        class="md-textarea form-control"
-        rows="3"
-        maxlength="2000"
-      ></textarea>
-      <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
-        <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
-          Conte por que este livro é importante para você. Isso ajuda o(a) doador(a) a escolher o(a) ganhador(a).
-        </small>
-      </div>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Quero esse livro</button>
-    <button mat-stroked-button mat-dialog-close>Cancelar</button>
-  </mat-dialog-actions>
-</form>
-
-<div *ngIf="state != 'form'">
-  <div class="modal-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <button *ngIf="state == 'request-success'" mat-flat-button color="primary" [mat-dialog-close]="true">
-            Tudo certo, obrigado.
-          </button>
-        </div>
-        <div class="col-lg-6">
-          <button
-            mat-flat-button
-            style="background-color: #ffc107; width: -webkit-fill-available"
-            *ngIf="state == 'request-success'"
-            mat-dialog-close
-            (click)="updateAddress(); activeModal.dismiss('Success')"
-          >
-            Atualizar endereço
-          </button>
-        </div>
-        <div class="col-lg-6">
-          <button mat-flat-button mat-dialog-close *ngIf="state != 'request-success'">Cancelar</button>
-        </div>
-      </div>
+  <div class="text-center" *ngIf="state == 'request-error'">
+    <p>Não foi possível concluir sua solicitação agora.</p>
+    <div class="alert alert-danger" role="alert">
+      {{ lastError }}
     </div>
   </div>
+
+  <div *ngIf="state == 'request-success'">
+    <div class="alert alert-success" role="alert">Sua solicitação foi enviada com sucesso.</div>
+    <p><strong>O endereço de entrega abaixo está correto?</strong></p>
+    <p class="request-address">{{ addressLine01 }}<br />{{ addressLine02 }}<br />{{ addressLine03 }}</p>
+  </div>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onRequest()" *ngIf="state == 'form'">
+    <p class="request-copy">
+      1. Fale um pouco sobre você.<br />
+      2. Por que esse livro é importante?<br />
+      3. Planeja doar novamente?
+    </p>
+    <textarea
+      formControlName="myNote"
+      name="myNote"
+      type="text"
+      id="myNote"
+      class="md-textarea form-control"
+      rows="3"
+      maxlength="2000"
+    ></textarea>
+    <div *ngIf="formGroup.controls['myNote'].touched && !formGroup.controls['myNote'].valid">
+      <small class="form-text text-danger" *ngIf="formGroup.controls['myNote'].hasError('required')">
+        Conte por que este livro é importante para você. Isso ajuda o(a) doador(a) a escolher o(a) ganhador(a).
+      </small>
+    </div>
+
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="primary" [disabled]="!formGroup.valid || state == 'loading'" type="submit">Quero esse livro</button>
+      <button mat-stroked-button mat-dialog-close type="button">Cancelar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
+
+<div class="request-footer-actions" *ngIf="state == 'request-success'">
+  <button mat-flat-button color="primary" [mat-dialog-close]="true">Tudo certo, obrigado.</button>
+  <button mat-flat-button class="request-warning-button" mat-dialog-close (click)="updateAddress()">Atualizar endereço</button>
+</div>
+
+<div class="request-footer-actions" *ngIf="state == 'request-error'">
+  <button mat-stroked-button mat-dialog-close>Fechar</button>
 </div>

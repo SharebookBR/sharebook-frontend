@@ -1,9 +1,9 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<h4 class="modal-title">Informações do doador do livro:</h4>
+<h4 mat-dialog-title class="donor-title">Informações do doador do livro</h4>
 <mat-dialog-content>
-  <h4>{{ bookTitle }}</h4>
+  <h4 class="donor-book-title">{{ bookTitle }}</h4>
   <section class="card-body">
     <div [hidden]="!loading">
       <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
@@ -15,10 +15,10 @@
 
     <ng-container *ngIf="(userInfo$ | async)?.donor as donor">
       <h5 class="card-title">Doador</h5>
-      <p class="card-text">Nome: {{ donor.name }}</p>
-      <p class="card-text">E-mail: {{ donor.email }}</p>
-      <p class="card-text">LinkedIn: {{ donor.linkedin }}</p>
-      <p class="card-text">Telefone: {{ donor.phone }}</p>
+      <p class="card-text"><strong>Nome:</strong> {{ donor.name }}</p>
+      <p class="card-text"><strong>E-mail:</strong> {{ donor.email }}</p>
+      <p class="card-text"><strong>LinkedIn:</strong> {{ donor.linkedin }}</p>
+      <p class="card-text"><strong>Telefone:</strong> {{ donor.phone }}</p>
       <button
         mat-flat-button
         class="card-whatsapp-btn"
@@ -31,5 +31,5 @@
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-flat-button color="primary" mat-dialog-close>Ok entendi</button>
+  <button mat-flat-button color="primary" mat-dialog-close>Ok, entendi</button>
 </mat-dialog-actions>
