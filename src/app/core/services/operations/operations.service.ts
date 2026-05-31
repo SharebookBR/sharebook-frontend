@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
-import { ImporterDashboard, ImporterQueueItemsPage } from '../../models/importer-dashboard';
+import { ImporterDashboard, ImporterQueueItemHistoryEntry, ImporterQueueItemsPage } from '../../models/importer-dashboard';
 import { JobMonitorDashboard } from '../../models/job-monitor';
 
 @Injectable({ providedIn: 'root' })
@@ -42,5 +42,9 @@ export class OperationsService {
 
   updateImporterItemNotes(id: number, notes: string): Observable<void> {
     return this._http.patch<void>(`${this.config.apiEndpoint}/Operations/ImporterItems/${id}/AdminNotes`, { notes });
+  }
+
+  getImporterItemHistory(id: number): Observable<ImporterQueueItemHistoryEntry[]> {
+    return this._http.get<ImporterQueueItemHistoryEntry[]>(`${this.config.apiEndpoint}/Operations/ImporterItems/${id}/History`);
   }
 }

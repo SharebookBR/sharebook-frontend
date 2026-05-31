@@ -7,7 +7,7 @@ import { PlatformService } from '../../core/services/platform/platform.service';
 
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
-import { ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
+import { ImporterQueueItemHistoryEntry, ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
 import { OperationsService } from '../../core/services/operations/operations.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
   @ViewChild('editorialPromptDialog') editorialPromptDialog: TemplateRef<any>;
   @ViewChild('adminNoteDialog') adminNoteDialog: TemplateRef<any>;
+  @ViewChild('historyDialog') historyDialog: TemplateRef<any>;
   @ViewChild('importerItemsSection') importerItemsSection: ElementRef;
 
   editorialPromptSourceName = '';
@@ -30,6 +31,11 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   adminNoteItem: ImporterQueueListItem | null = null;
   adminNoteText = '';
   adminNoteSaving = false;
+
+  historyItem: ImporterQueueListItem | null = null;
+  historyEntries: ImporterQueueItemHistoryEntry[] = [];
+  historyLoading = false;
+  historyError = '';
 
   isLoading = true;
   loadError = false;
@@ -437,6 +443,32 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
         },
         error: () => this._toastr.error('Erro ao salvar comentário.'),
       });
+  }
+
+  openHistory(item: ImporterQueueListItem): void {
+    this.historyItem = item;
+    this.historyEntries = [];
+    this.historyLoading = true;
+    this.historyError = '';
+
+    const dialogRef = this._dialog.open(this.historyDialog, {
+      width: '540px',
+      maxWidth: '100vw',
+      maxHeight: '80vh',
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+      this._operationsService.getImporterItemHistory(item.id).subscribe({
+        next: entries => {
+          this.historyLoading = false;
+          this.historyEntries = entries;
+        },
+        error: () => {
+          this.historyLoading = false;
+          this.historyError = 'Erro ao carregar histórico.';
+        },
+      });
+    });
   }
 
   viewData(item: ImporterQueueListItem): void {

@@ -175,6 +175,9 @@
             <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
               Abrir fonte
             </a>
+            <button class="importer-item__link importer-item__link--history" type="button" (click)="openHistory(item)" title="Histórico de status">
+              Histórico
+            </button>
           </div>
         </article>
       </div>
@@ -258,6 +261,44 @@
         <mat-icon>save</mat-icon>
         {{ adminNoteSaving ? 'Salvando...' : 'Salvar' }}
       </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #historyDialog>
+  <div class="history-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>#{{ historyItem?.id }} — Histórico de status</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="history-dialog__body">
+      <div class="spinner-container" *ngIf="historyLoading">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+      <div class="alert alert-danger" *ngIf="historyError">{{ historyError }}</div>
+      <div class="history-dialog__empty" *ngIf="!historyLoading && !historyError && historyEntries.length === 0">
+        Nenhum histórico encontrado.
+      </div>
+      <div class="history-dialog__table-wrap" *ngIf="!historyLoading && !historyError && historyEntries.length > 0">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>De</th>
+              <th>Para</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of historyEntries">
+              <td class="history-table__date">{{ entry.changedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="history-table__status history-table__status--from">{{ entry.fromStatus ? getStatusLabel(entry.fromStatus) : '—' }}</td>
+              <td class="history-table__status history-table__status--to">{{ getStatusLabel(entry.toStatus) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </ng-template>

@@ -1358,6 +1358,97 @@
   color: #475569;
 }
 
+.history-dialog {
+  display: flex;
+  flex-direction: column;
+  min-width: 480px;
+}
+
+.history-dialog__body {
+  padding: 0 1.5rem 1.5rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 80px);
+}
+
+.history-dialog__empty {
+  color: #667085;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.history-dialog__table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.history-table th {
+  padding: 0.6rem 1rem;
+  background: #f8fafc;
+  color: #475467;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.history-table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.history-table tr:last-child td {
+  border-bottom: none;
+}
+
+.history-table tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.history-table__date {
+  white-space: nowrap;
+  color: #526784;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.history-table__status--from {
+  color: #667085;
+}
+
+.history-table__status--to {
+  font-weight: 700;
+  color: #101828;
+}
+
+.importer-item__link--history {
+  background: transparent;
+  color: #475467;
+  border: 1.5px solid #d0d5dd;
+  box-shadow: none;
+}
+
+.importer-item__link--history:hover {
+  background: #f4f7fb;
+  color: #101828;
+  border-color: #98a2b3;
+  box-shadow: none;
+  transform: none;
+}
+
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -1493,6 +1584,21 @@
   .admin-note-dialog__footer .importer-item__link {
     flex: 1;
     justify-content: center;
+  }
+
+  .history-dialog {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .history-dialog__body {
+    padding: 0 1rem 1.25rem;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.8rem;
   }
 }
 

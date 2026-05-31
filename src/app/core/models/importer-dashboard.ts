@@ -95,6 +95,12 @@ export interface ImporterSourceStatus {
   errorD1?: number | null;
 }
 
+export interface ImporterQueueItemHistoryEntry {
+  changedAt: string;
+  fromStatus: string | null;
+  toStatus: string;
+}
+
 export interface ImporterDashboard {
   generatedAtUtc: string;
   totalItems: number;
