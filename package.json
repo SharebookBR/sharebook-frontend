@@ -54,6 +54,7 @@
     "base64-img": "^1.0.4",
     "bootstrap": "^4.5.0",
     "canvas-confetti": "^1.9.4",
+    "chart.js": "^4.5.1",
     "core-js": "^2.5.4",
     "easymde": "^2.21.0",
     "express": "^4.22.1",

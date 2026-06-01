@@ -21,6 +21,15 @@
     </div>
 
     <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/analytics" title="Analytics">
+        <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Analytics" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Analytics</h5>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="card">
       <a routerLink="/admin/jobs" title="Acompanhar jobs">
         <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
       </a>

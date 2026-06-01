@@ -1,0 +1,99 @@
+.analytics-container { background: #f4f6f9; min-height: 100vh; padding: 24px; }
+
+.analytics-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.analytics-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #29abe2;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.analytics-title span { color: #555; font-weight: 400; font-size: 14px; }
+
+.header-controls { margin-left: auto; }
+
+.week-select {
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid #d0e8f5;
+  border-radius: 6px;
+  color: #29abe2;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.week-select:focus { border-color: #29abe2; box-shadow: 0 0 0 2px rgba(41,171,226,0.15); }
+
+.analytics-loading, .analytics-error {
+  text-align: center;
+  padding: 48px;
+  color: #888;
+  font-size: 14px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  border: 1px solid #d0d0d0;
+  border-top: 3px solid #29abe2;
+}
+
+.kpi-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.kpi-value { font-size: 32px; font-weight: 700; color: #29abe2; }
+.kpi-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  border: 1px solid #d0d0d0;
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: #29abe2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: -20px -24px 16px -24px;
+  padding: 12px 24px;
+  border-radius: 10px 10px 0 0;
+}
+
+.card canvas { max-height: 220px; }
+
+.books-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.books-table td { padding: 9px 12px; border-bottom: 1px solid #d0d0d0; }
+.books-table tr:last-child td { border-bottom: none; }
+
+.books-table .rank { color: #bbb; font-weight: 600; width: 28px; }
+.books-table .title a { color: #333; text-decoration: none; }
+.books-table .title a:hover { color: #29abe2; text-decoration: underline; }
+.books-table .views { text-align: right; font-weight: 600; color: #29abe2; white-space: nowrap; }

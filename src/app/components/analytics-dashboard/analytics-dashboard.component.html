@@ -1,0 +1,76 @@
+<div class="container-fluid analytics-container">
+
+  <div class="analytics-header">
+    <h1 class="analytics-title">sharebook <span>/ analytics</span></h1>
+    <div class="header-controls">
+      <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">
+        <option value="all">Todas as semanas</option>
+        <option *ngFor="let w of weekOptions" [value]="w">{{ w }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="analytics-loading">Carregando dados...</div>
+  <div *ngIf="error" class="analytics-error">Erro ao carregar dados do GA4.</div>
+
+  <ng-container *ngIf="data && !loading">
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Sessões</div>
+        <div class="kpi-value">{{ kpiSessions | number }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : selectedWeek }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Downloads</div>
+        <div class="kpi-value">{{ kpiDownloads | number }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : selectedWeek }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Logins</div>
+        <div class="kpi-value">{{ data.totalLogins | number }}</div>
+        <div class="kpi-sub">últimas 12 semanas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Cadastros</div>
+        <div class="kpi-value">{{ data.totalSignups | number }}</div>
+        <div class="kpi-sub">últimas 12 semanas</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="card">
+        <h3>Sessões por semana</h3>
+        <canvas #chartSessions></canvas>
+      </div>
+      <div class="card">
+        <h3>Downloads por semana</h3>
+        <canvas #chartDownloads></canvas>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="card">
+        <h3>Top {{ data.topBooksByViews.length }} livros por visualizações</h3>
+        <table class="books-table">
+          <tr *ngFor="let b of data.topBooksByViews; let i = index">
+            <td class="rank">{{ i + 1 }}</td>
+            <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
+            <td class="views">{{ b.count | number }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Top {{ data.topBooksByDownloads.length }} livros por downloads</h3>
+        <table class="books-table">
+          <tr *ngFor="let b of data.topBooksByDownloads; let i = index">
+            <td class="rank">{{ i + 1 }}</td>
+            <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
+            <td class="views">{{ b.count | number }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
