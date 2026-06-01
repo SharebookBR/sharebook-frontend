@@ -34,13 +34,13 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Logins</div>
-        <div class="kpi-value">{{ data.totalLogins | number }}</div>
-        <div class="kpi-sub">últimas 12 semanas</div>
+        <div class="kpi-value">{{ kpiLogins | number }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Cadastros</div>
-        <div class="kpi-value">{{ data.totalSignups | number }}</div>
-        <div class="kpi-sub">últimas 12 semanas</div>
+        <div class="kpi-value">{{ kpiSignups | number }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
       </div>
     </div>
 

@@ -15,6 +15,8 @@ interface DashboardData {
   totalDownloads: number;
   totalLogins: number;
   totalSignups: number;
+  logins: WeeklyPoint[];
+  signups: WeeklyPoint[];
   topBooksByViews: BookMetric[];
   topBooksByDownloads: BookMetric[];
   topBooksByViewsPerWeek: Record<string, BookMetric[]>;
@@ -110,6 +112,24 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
   get kpiDownloads(): number {
     if (!this.selectedWeek || this.selectedWeek === 'all') return this.data?.totalDownloads ?? 0;
     return this.downloadsMap[this.selectedWeek] ?? 0;
+  }
+
+  get loginsMap(): Record<string, number> {
+    return (this.data?.logins ?? []).reduce((acc, x) => { acc[x.label] = x.value; return acc; }, {} as Record<string, number>);
+  }
+
+  get signupsMap(): Record<string, number> {
+    return (this.data?.signups ?? []).reduce((acc, x) => { acc[x.label] = x.value; return acc; }, {} as Record<string, number>);
+  }
+
+  get kpiLogins(): number {
+    if (!this.selectedWeek || this.selectedWeek === 'all') return this.data?.totalLogins ?? 0;
+    return this.loginsMap[this.selectedWeek] ?? 0;
+  }
+
+  get kpiSignups(): number {
+    if (!this.selectedWeek || this.selectedWeek === 'all') return this.data?.totalSignups ?? 0;
+    return this.signupsMap[this.selectedWeek] ?? 0;
   }
 
   get weekOptions(): string[] {
