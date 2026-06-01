@@ -49,7 +49,7 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<DashboardData>(`${environment.apiEndpoint}analytics/dashboard`)
+    this.http.get<DashboardData>(`${environment.apiEndpoint}/analytics/dashboard`)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: data => {
