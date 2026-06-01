@@ -1,20 +1,16 @@
 <div class="container-fluid analytics-container">
 
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Analytics</li>
-    </ol>
-  </nav>
-
   <div class="analytics-header">
-    <h1 class="analytics-title">sharebook <span>/ analytics</span></h1>
-    <div class="header-controls">
-      <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">
-        <option value="all">Todas as semanas</option>
-        <option *ngFor="let w of weekOptions" [value]="w">{{ w }}</option>
-      </select>
-    </div>
+    <nav aria-label="breadcrumb" class="mb-0">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+      </ol>
+    </nav>
+    <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">
+      <option value="all">Todas as semanas</option>
+      <option *ngFor="let w of weekOptions" [value]="w">{{ w }}</option>
+    </select>
   </div>
 
   <div *ngIf="loading" class="analytics-loading">
