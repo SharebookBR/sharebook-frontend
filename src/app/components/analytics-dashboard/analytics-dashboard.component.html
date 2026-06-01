@@ -51,22 +51,28 @@
 
     <div class="charts-grid">
       <div class="card">
-        <h3>Top {{ data.topBooksByViews.length }} livros por visualizações</h3>
+        <h3>Top {{ currentTopViews.length }} livros por visualizações</h3>
         <table class="books-table">
-          <tr *ngFor="let b of data.topBooksByViews; let i = index">
+          <tr *ngFor="let b of currentTopViews; let i = index">
             <td class="rank">{{ i + 1 }}</td>
             <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
             <td class="views">{{ b.count | number }}</td>
           </tr>
+          <tr *ngIf="currentTopViews.length === 0">
+            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
+          </tr>
         </table>
       </div>
       <div class="card">
-        <h3>Top {{ data.topBooksByDownloads.length }} livros por downloads</h3>
+        <h3>Top {{ currentTopDownloads.length }} livros por downloads</h3>
         <table class="books-table">
-          <tr *ngFor="let b of data.topBooksByDownloads; let i = index">
+          <tr *ngFor="let b of currentTopDownloads; let i = index">
             <td class="rank">{{ i + 1 }}</td>
             <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
             <td class="views">{{ b.count | number }}</td>
+          </tr>
+          <tr *ngIf="currentTopDownloads.length === 0">
+            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
           </tr>
         </table>
       </div>

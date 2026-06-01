@@ -17,6 +17,8 @@ interface DashboardData {
   totalSignups: number;
   topBooksByViews: BookMetric[];
   topBooksByDownloads: BookMetric[];
+  topBooksByViewsPerWeek: Record<string, BookMetric[]>;
+  topBooksByDownloadsPerWeek: Record<string, BookMetric[]>;
 }
 
 @Component({
@@ -112,6 +114,18 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
 
   get weekOptions(): string[] {
     return [...this.allLabels].reverse();
+  }
+
+  get currentTopViews(): BookMetric[] {
+    if (!this.data) return [];
+    if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.topBooksByViews;
+    return this.data.topBooksByViewsPerWeek[this.selectedWeek] ?? [];
+  }
+
+  get currentTopDownloads(): BookMetric[] {
+    if (!this.data) return [];
+    if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.topBooksByDownloads;
+    return this.data.topBooksByDownloadsPerWeek[this.selectedWeek] ?? [];
   }
 
   get baseUrl(): string {
