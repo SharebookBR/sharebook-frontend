@@ -9,7 +9,7 @@
     </nav>
     <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">
       <option value="all">Todas as semanas</option>
-      <option *ngFor="let w of weekOptions" [value]="w">{{ w }}</option>
+      <option *ngFor="let w of weekOptions" [value]="w">{{ isoToFriendly(w) }}</option>
     </select>
   </div>
 
@@ -25,12 +25,12 @@
       <div class="kpi-card">
         <div class="kpi-label">Sessões</div>
         <div class="kpi-value">{{ kpiSessions | number }}</div>
-        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : selectedWeek }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Downloads</div>
         <div class="kpi-value">{{ kpiDownloads | number }}</div>
-        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : selectedWeek }}</div>
+        <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Logins</div>

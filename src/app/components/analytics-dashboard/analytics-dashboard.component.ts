@@ -116,6 +116,19 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     return [...this.allLabels].reverse();
   }
 
+  isoToFriendly(label: string): string {
+    const [yearStr, weekStr] = label.split('-W');
+    const year = parseInt(yearStr, 10);
+    const week = parseInt(weekStr, 10);
+    // Monday of ISO week
+    const jan4 = new Date(year, 0, 4);
+    const monday = new Date(jan4);
+    monday.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7) + (week - 1) * 7);
+    const weekInMonth = Math.floor((monday.getDate() - 1) / 7) + 1;
+    const month = String(monday.getMonth() + 1).padStart(2, '0');
+    return `${monday.getFullYear()}-${month}-W${weekInMonth}`;
+  }
+
   get currentTopViews(): BookMetric[] {
     if (!this.data) return [];
     if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.topBooksByViews;
@@ -150,12 +163,13 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
   private buildCharts() {
     if (!this.chartSessionsRef?.nativeElement || !this.chartDownloadsRef?.nativeElement) return;
 
-    const labels = this.allLabels;
+    const isoLabels = this.allLabels;
+    const friendlyLabels = isoLabels.map(l => this.isoToFriendly(l));
     const current = this.selectedWeek;
 
-    const bgS = labels.map(l => l === current ? this.ORANGE : this.BLUE);
-    const bgD = labels.map(l => l === current ? this.ORANGE_DL : this.BLUE_DL);
-    const brS = labels.map(l => l === current ? this.BORDER_OR : this.BORDER);
+    const bgS = isoLabels.map(l => l === current ? this.ORANGE : this.BLUE);
+    const bgD = isoLabels.map(l => l === current ? this.ORANGE_DL : this.BLUE_DL);
+    const brS = isoLabels.map(l => l === current ? this.BORDER_OR : this.BORDER);
 
     const opts: any = {
       responsive: true,
@@ -170,9 +184,9 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     this.chartSessions = new Chart(this.chartSessionsRef.nativeElement, {
       type: 'bar',
       data: {
-        labels,
+        labels: friendlyLabels,
         datasets: [{
-          data: labels.map(l => this.sessionsMap[l] ?? 0),
+          data: isoLabels.map(l => this.sessionsMap[l] ?? 0),
           backgroundColor: bgS,
           borderColor: brS,
           borderWidth: 1,
@@ -185,9 +199,9 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     this.chartDownloads = new Chart(this.chartDownloadsRef.nativeElement, {
       type: 'bar',
       data: {
-        labels,
+        labels: friendlyLabels,
         datasets: [{
-          data: labels.map(l => this.downloadsMap[l] ?? 0),
+          data: isoLabels.map(l => this.downloadsMap[l] ?? 0),
           backgroundColor: bgD,
           borderColor: brS,
           borderWidth: 1,
