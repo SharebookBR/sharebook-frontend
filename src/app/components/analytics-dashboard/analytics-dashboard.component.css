@@ -7,6 +7,13 @@
   margin-bottom: 24px;
 }
 
+.analytics-header .breadcrumb {
+  background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
 .week-select {
   font-size: 13px;
   padding: 6px 10px;
