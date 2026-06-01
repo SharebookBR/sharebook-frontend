@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../core/services/user/user.service';
+import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
 
 import { PasswordValidation } from '../../core/utils/passwordValidation';
 import { AddressService } from '../../core/services/address/address.service';
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _formBuilder: FormBuilder,
     private _AddressService: AddressService,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    private _ga: GoogleAnalyticsService
   ) {
     this.formGroup = _formBuilder.group(
       {
@@ -80,6 +82,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         .subscribe(
           (data) => {
             if (data.success || data.authenticated) {
+              this._ga.sendEvent('sign_up', { method: 'email' });
               const msg = data.successMessage ? data.successMessage : 'Registro realizado com sucesso';
               this._toastr.success(msg);
               this._router.navigate(['/']);

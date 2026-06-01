@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
+import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
 import * as AppConst from '../../core/utils/app.const';
 
 @Component({
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _router: Router,
     private _formBuilder: FormBuilder,
-    private _toastr: ToastrService
+    private _toastr: ToastrService,
+    private _ga: GoogleAnalyticsService
   ) {
     this.formGroup = _formBuilder.group({
       email: ['', [Validators.required]],
@@ -49,6 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.success || data.authenticated) {
+            this._ga.sendEvent('login', { method: 'email' });
             this._router.navigate([this.returnUrl]);
           } else {
             this._toastr.error(data.messages[0]);
