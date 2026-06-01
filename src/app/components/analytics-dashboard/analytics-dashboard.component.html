@@ -10,7 +10,10 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="analytics-loading">Carregando dados...</div>
+  <div *ngIf="loading" class="analytics-loading">
+    <div class="spinner"></div>
+    <p>Carregando dados do GA4...</p>
+  </div>
   <div *ngIf="error" class="analytics-error">Erro ao carregar dados do GA4.</div>
 
   <ng-container *ngIf="data && !loading">

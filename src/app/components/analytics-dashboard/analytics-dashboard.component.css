@@ -31,7 +31,31 @@
 
 .week-select:focus { border-color: #29abe2; box-shadow: 0 0 0 2px rgba(41,171,226,0.15); }
 
-.analytics-loading, .analytics-error {
+.analytics-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  gap: 16px;
+  color: #888;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(41, 171, 226, 0.2);
+  border-top-color: #29abe2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.analytics-error {
   text-align: center;
   padding: 48px;
   color: #888;
