@@ -316,16 +316,14 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   }
 
   getTriageDetail(item: ImporterQueueListItem): string {
-    if (!item.metadataJson) {
-      return '';
-    }
-
     try {
-      const metadata = JSON.parse(item.metadataJson);
-      return metadata?.triage?.detail || '';
-    } catch {
-      return '';
-    }
+      if (item.metadataJson) {
+        const metadata = JSON.parse(item.metadataJson);
+        const detail = metadata?.triage?.detail;
+        if (detail) return detail;
+      }
+    } catch { /* ignora JSON inválido */ }
+    return item.lastError || '';
   }
 
   viewMetadata(item: ImporterQueueListItem): void {
