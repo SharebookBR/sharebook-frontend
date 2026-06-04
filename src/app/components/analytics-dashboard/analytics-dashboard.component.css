@@ -117,3 +117,8 @@
 .books-table .title a { color: #333; text-decoration: none; }
 .books-table .title a:hover { color: #29abe2; text-decoration: underline; }
 .books-table .views { text-align: right; font-weight: 600; color: #29abe2; white-space: nowrap; }
+
+.events-card { margin-bottom: 20px; }
+.events-table thead th { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 2px solid #d0d0d0; }
+.events-table .event-name { font-family: monospace; font-size: 12px; color: #444; }
+.events-table .text-right { text-align: right; font-weight: 600; color: #29abe2; white-space: nowrap; }

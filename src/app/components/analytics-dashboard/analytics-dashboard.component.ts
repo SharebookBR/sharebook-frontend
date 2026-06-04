@@ -9,6 +9,7 @@ Chart.register(...registerables);
 
 interface WeeklyPoint { label: string; value: number; }
 interface BookMetric { path: string; title: string; count: number; }
+interface EventMetric { eventName: string; count: number; users: number; }
 interface DashboardData {
   sessions: WeeklyPoint[];
   downloads: WeeklyPoint[];
@@ -21,6 +22,8 @@ interface DashboardData {
   topBooksByDownloads: BookMetric[];
   topBooksByViewsPerWeek: Record<string, BookMetric[]>;
   topBooksByDownloadsPerWeek: Record<string, BookMetric[]>;
+  eventSummary: EventMetric[];
+  eventSummaryPerWeek: Record<string, EventMetric[]>;
 }
 
 @Component({
@@ -159,6 +162,12 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     if (!this.data) return [];
     if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.topBooksByDownloads;
     return this.data.topBooksByDownloadsPerWeek[this.selectedWeek] ?? [];
+  }
+
+  get currentEventSummary(): EventMetric[] {
+    if (!this.data) return [];
+    if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.eventSummary ?? [];
+    return this.data.eventSummaryPerWeek?.[this.selectedWeek] ?? [];
   }
 
   get baseUrl(): string {

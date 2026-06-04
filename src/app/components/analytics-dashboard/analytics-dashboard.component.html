@@ -84,5 +84,28 @@
       </div>
     </div>
 
+    <div class="card events-card">
+      <h3>Eventos</h3>
+      <table class="books-table events-table">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th class="text-right">Ocorrências</th>
+            <th class="text-right">Usuários</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of currentEventSummary">
+            <td class="event-name">{{ e.eventName }}</td>
+            <td class="text-right">{{ e.count | number }}</td>
+            <td class="text-right">{{ e.users | number }}</td>
+          </tr>
+          <tr *ngIf="currentEventSummary.length === 0">
+            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </ng-container>
 </div>
