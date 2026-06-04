@@ -164,6 +164,22 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     return this.data.topBooksByDownloadsPerWeek[this.selectedWeek] ?? [];
   }
 
+  private eventCount(name: string): number {
+    return this.currentEventSummary.find(e => e.eventName === name)?.count ?? 0;
+  }
+
+  get funnelShare(): { open: number; shared: number; rate: string } {
+    const open = this.eventCount('share_modal_open');
+    const shared = this.eventCount('social_share');
+    return { open, shared, rate: open > 0 ? ((shared / open) * 100).toFixed(0) + '%' : '—' };
+  }
+
+  get funnelRequest(): { open: number; success: number; rate: string } {
+    const open = this.eventCount('book_request_modal_open');
+    const success = this.eventCount('book_request_success');
+    return { open, success, rate: open > 0 ? ((success / open) * 100).toFixed(0) + '%' : '—' };
+  }
+
   get currentEventSummary(): EventMetric[] {
     if (!this.data) return [];
     if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.eventSummary ?? [];

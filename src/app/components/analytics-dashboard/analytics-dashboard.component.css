@@ -120,5 +120,7 @@
 
 .events-card { margin-bottom: 20px; }
 .events-table thead th { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 2px solid #d0d0d0; }
-.events-table .event-name { font-family: monospace; font-size: 12px; color: #444; }
+.events-table .event-name { font-size: 13px; color: #444; }
+.events-table .event-name small { font-family: monospace; font-size: 10px; color: #aaa; display: block; margin-top: 2px; }
 .events-table .text-right { text-align: right; font-weight: 600; color: #29abe2; white-space: nowrap; }
+.funnel-rate { font-size: 15px; font-weight: 700; color: #29abe2; }

@@ -84,6 +84,34 @@
       </div>
     </div>
 
+    <div class="card events-card funnel-card">
+      <h3>Funis de conversão</h3>
+      <table class="books-table events-table">
+        <thead>
+          <tr>
+            <th>Funil</th>
+            <th class="text-right">Entrada</th>
+            <th class="text-right">Conversão</th>
+            <th class="text-right">Taxa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="event-name">Compartilhamento<br><small>share_modal_open → social_share</small></td>
+            <td class="text-right">{{ funnelShare.open | number }}</td>
+            <td class="text-right">{{ funnelShare.shared | number }}</td>
+            <td class="text-right funnel-rate">{{ funnelShare.rate }}</td>
+          </tr>
+          <tr>
+            <td class="event-name">Pedido de livro<br><small>book_request_modal_open → book_request_success</small></td>
+            <td class="text-right">{{ funnelRequest.open | number }}</td>
+            <td class="text-right">{{ funnelRequest.success | number }}</td>
+            <td class="text-right funnel-rate">{{ funnelRequest.rate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="card events-card">
       <h3>Eventos</h3>
       <table class="books-table events-table">
