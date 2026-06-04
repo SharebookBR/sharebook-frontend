@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-input-search',
@@ -17,7 +18,8 @@ export class InputSearchComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _router: Router,
-    private _platform: PlatformService
+    private _platform: PlatformService,
+    private _ga: GoogleAnalyticsService
   ) {}
 
   ngOnInit() {
@@ -33,6 +35,7 @@ export class InputSearchComponent implements OnInit {
     // verifica se há alguma coisa na busca - senão houver exibe um alerta e não direciona pesquisa
     const term = this.searchForm.value.paramSearch?.trim();
     if (term) {
+      this._ga.sendEvent('search', { search_term: term });
       this._router.navigate(['/buscar', term]);
       this.searchAlert = false;
     } else {
