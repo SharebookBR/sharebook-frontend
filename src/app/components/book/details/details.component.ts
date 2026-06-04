@@ -243,7 +243,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   onReportCopyright() {
     const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
-      minWidth: 450,
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog',
       data: {
         title: 'Reportar direitos autorais',
         message: 'Confirma a denúncia de violação de direitos autorais neste livro digital? Nossa equipe será notificada para revisão.',
@@ -419,6 +423,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     this._toastr.info('Não foi possível abrir o compartilhamento.');
+  }
+
+  getAmazonLink(): string {
+    const query = encodeURIComponent(`${this.bookInfo.title || ''} ${this.bookInfo.author || ''}`.trim());
+    return `https://www.amazon.com.br/s?k=${query}&tag=sharebook09-20`;
+  }
+
+  onAmazonClick(): void {
+    this._ga.sendEvent('amazon_click', {
+      book_title: this.bookInfo.title,
+      book_slug: this.bookInfo.slug,
+    });
   }
 
   private copyShareText(text: string): Promise<void> {
