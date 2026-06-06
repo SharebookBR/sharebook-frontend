@@ -60,7 +60,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   readonly pageSizeOptions = [50, 100, 200];
 
   readonly aggregateGroups = [
-    { id: 'triagem',     label: 'Triagem',          statuses: ['waiting_triage', 'triaging'],                               badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'triagem',     label: 'Triagem',          statuses: ['waiting_triage', 'triaging', 'triage_retry'],               badge: { name: 'Python Worker', icon: 'settings' } },
     { id: 'editorial',   label: 'Preparo editorial', statuses: ['waiting_editorial', 'editing'],                              badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
     { id: 'publicacao',  label: 'Publicação',        statuses: ['waiting_publish', 'publishing', 'publish_retry'],           badge: { name: 'Python Worker', icon: 'settings' } },
     { id: 'done',        label: 'Done',              statuses: ['done'],                                                     badge: null as { name: string; icon: string } | null },
@@ -70,6 +70,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   readonly statusSummaryOrder = [
     'waiting_triage',
     'triaging',
+    'triage_retry',
     'waiting_editorial',
     'editing',
     'waiting_publish',
@@ -199,9 +200,9 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
     // Se mudou para um status de "waiting" ou "publish_retry", muda o sort para ID ASC
     // Se saiu de um status de "waiting" ou mudou para outro tipo, volta para última atualização DESC
-    if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'publish_retry') {
+    if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'publish_retry' || this.selectedStatus === 'triage_retry') {
       this.selectedSort = 'id_asc';
-    } else if (previousStatus.startsWith('waiting_') || previousStatus === 'publish_retry' || !this.selectedStatus) {
+    } else if (previousStatus.startsWith('waiting_') || previousStatus === 'publish_retry' || previousStatus === 'triage_retry' || !this.selectedStatus) {
       this.selectedSort = 'updated_at_desc';
     }
 
@@ -221,6 +222,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   getStatusLabel(status: string): string {
     const labels = {
       error: 'Erro',
+      triage_retry: 'Triage retry',
       publish_retry: 'Publish retry',
       triaging: 'Triaging',
       triage_rejected: 'Triage rejected',
@@ -576,6 +578,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_publish: source.waitingPublish,
       publishing: source.publishing,
       done: source.done,
+      triage_retry: source.triageRetry,
       publish_retry: source.publishRetry,
       source_blocked: source.sourceBlocked,
       duplicate: source.duplicate,
@@ -595,6 +598,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_publish: source.waitingPublishD1,
       publishing: source.publishingD1,
       done: source.doneD1,
+      triage_retry: source.triageRetryD1,
       publish_retry: source.publishRetryD1,
       source_blocked: source.sourceBlockedD1,
       duplicate: source.duplicateD1,
