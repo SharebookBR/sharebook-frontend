@@ -61,8 +61,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   readonly aggregateGroups = [
     { id: 'triagem',     label: 'Triagem',          statuses: ['waiting_triage', 'triaging'],                               badge: { name: 'Python Worker', icon: 'settings' } },
-    { id: 'editorial',   label: 'Preparo editorial', statuses: ['waiting_editor', 'editing'],                               badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
-    { id: 'publicacao',  label: 'Publicação',        statuses: ['waiting_process', 'processing', 'retry_later'],            badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'editorial',   label: 'Preparo editorial', statuses: ['waiting_editorial', 'editing'],                              badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
+    { id: 'publicacao',  label: 'Publicação',        statuses: ['waiting_publish', 'publishing', 'publish_retry'],           badge: { name: 'Python Worker', icon: 'settings' } },
     { id: 'done',        label: 'Done',              statuses: ['done'],                                                     badge: null as { name: string; icon: string } | null },
     { id: 'error',       label: 'Error',             statuses: ['triage_rejected', 'source_blocked', 'duplicate', 'error'], badge: null as { name: string; icon: string } | null },
   ];
@@ -70,11 +70,11 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   readonly statusSummaryOrder = [
     'waiting_triage',
     'triaging',
-    'waiting_editor',
+    'waiting_editorial',
     'editing',
-    'waiting_process',
-    'processing',
-    'retry_later',
+    'waiting_publish',
+    'publishing',
+    'publish_retry',
     'triage_rejected',
     'source_blocked',
     'duplicate',
@@ -197,11 +197,11 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.currentPage = 1;
 
-    // Se mudou para um status de "waiting" ou "retry_later", muda o sort para ID ASC
+    // Se mudou para um status de "waiting" ou "publish_retry", muda o sort para ID ASC
     // Se saiu de um status de "waiting" ou mudou para outro tipo, volta para última atualização DESC
-    if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'retry_later') {
+    if (this.selectedStatus.startsWith('waiting_') || this.selectedStatus === 'publish_retry') {
       this.selectedSort = 'id_asc';
-    } else if (previousStatus.startsWith('waiting_') || previousStatus === 'retry_later' || !this.selectedStatus) {
+    } else if (previousStatus.startsWith('waiting_') || previousStatus === 'publish_retry' || !this.selectedStatus) {
       this.selectedSort = 'updated_at_desc';
     }
 
@@ -221,14 +221,14 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   getStatusLabel(status: string): string {
     const labels = {
       error: 'Erro',
-      retry_later: 'Retry later',
+      publish_retry: 'Publish retry',
       triaging: 'Triaging',
       triage_rejected: 'Triage rejected',
       editing: 'Editing',
-      processing: 'Processing',
+      publishing: 'Publishing',
       waiting_triage: 'Waiting triage',
-      waiting_editor: 'Waiting editor',
-      waiting_process: 'Waiting process',
+      waiting_editorial: 'Waiting editorial',
+      waiting_publish: 'Waiting publish',
       done: 'Done',
       source_blocked: 'Source blocked',
       duplicate: 'Duplicate',
@@ -253,11 +253,11 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     const mapping: { [key: string]: { name: string; icon: string } } = {
       waiting_triage: { name: 'Python Worker', icon: 'settings' },
       triaging: { name: 'Python Worker', icon: 'settings' },
-      waiting_editor: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
+      waiting_editorial: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
       editing: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
-      waiting_process: { name: 'Python Worker', icon: 'settings' },
-      processing: { name: 'Python Worker', icon: 'settings' },
-      retry_later: { name: 'Python Worker', icon: 'settings' },
+      waiting_publish: { name: 'Python Worker', icon: 'settings' },
+      publishing: { name: 'Python Worker', icon: 'settings' },
+      publish_retry: { name: 'Python Worker', icon: 'settings' },
     };
     return mapping[status] || null;
   }
@@ -571,12 +571,12 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_triage: source.waitingTriage,
       triaging: source.triaging,
       triage_rejected: source.triageRejected,
-      waiting_editor: source.waitingEditor,
+      waiting_editorial: source.waitingEditor,
       editing: source.editing,
-      waiting_process: source.waitingProcess,
-      processing: source.processing,
+      waiting_publish: source.waitingProcess,
+      publishing: source.processing,
       done: source.done,
-      retry_later: source.retryLater,
+      publish_retry: source.retryLater,
       source_blocked: source.sourceBlocked,
       duplicate: source.duplicate,
       error: source.error,
@@ -590,12 +590,12 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_triage: source.waitingTriageD1,
       triaging: source.triagingD1,
       triage_rejected: source.triageRejectedD1,
-      waiting_editor: source.waitingEditorD1,
+      waiting_editorial: source.waitingEditorD1,
       editing: source.editingD1,
-      waiting_process: source.waitingProcessD1,
-      processing: source.processingD1,
+      waiting_publish: source.waitingProcessD1,
+      publishing: source.processingD1,
       done: source.doneD1,
-      retry_later: source.retryLaterD1,
+      publish_retry: source.retryLaterD1,
       source_blocked: source.sourceBlockedD1,
       duplicate: source.duplicateD1,
       error: source.errorD1,

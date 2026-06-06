@@ -232,15 +232,15 @@
   --summary-glow: rgba(100, 116, 139, 0.18);
 }
 
-.summary-card--waiting-editor,
+.summary-card--waiting-editorial,
 .summary-card--editing {
   --summary-accent: #8b5cf6;
   --summary-glow: rgba(139, 92, 246, 0.18);
 }
 
-.summary-card--waiting-process,
-.summary-card--processing,
-.summary-card--retry-later {
+.summary-card--waiting-publish,
+.summary-card--publishing,
+.summary-card--publish-retry {
   --summary-accent: #f97316;
   --summary-glow: rgba(249, 115, 22, 0.2);
 }
@@ -277,15 +277,15 @@
   --summary-glow: rgba(100, 116, 139, 0.18);
 }
 
-.importer-item--waiting-editor,
+.importer-item--waiting-editorial,
 .importer-item--editing {
   --summary-accent: #8b5cf6;
   --summary-glow: rgba(139, 92, 246, 0.18);
 }
 
-.importer-item--waiting-process,
-.importer-item--processing,
-.importer-item--retry-later {
+.importer-item--waiting-publish,
+.importer-item--publishing,
+.importer-item--publish-retry {
   --summary-accent: #f97316;
   --summary-glow: rgba(249, 115, 22, 0.2);
 }
@@ -322,12 +322,12 @@
 .summary-card--waiting-triage,
 .summary-card--triaging,
 .summary-card--triage-rejected,
-.summary-card--waiting-editor,
+.summary-card--waiting-editorial,
 .summary-card--editing,
-.summary-card--waiting-process,
-.summary-card--processing,
+.summary-card--waiting-publish,
+.summary-card--publishing,
 .summary-card--done,
-.summary-card--retry-later,
+.summary-card--publish-retry,
 .summary-card--source-blocked,
 .summary-card--duplicate,
 .summary-card--error {
@@ -339,12 +339,12 @@
 .summary-card--waiting-triage::before,
 .summary-card--triaging::before,
 .summary-card--triage-rejected::before,
-.summary-card--waiting-editor::before,
+.summary-card--waiting-editorial::before,
 .summary-card--editing::before,
-.summary-card--waiting-process::before,
-.summary-card--processing::before,
+.summary-card--waiting-publish::before,
+.summary-card--publishing::before,
 .summary-card--done::before,
-.summary-card--retry-later::before,
+.summary-card--publish-retry::before,
 .summary-card--source-blocked::before,
 .summary-card--duplicate::before,
 .summary-card--error::before {
@@ -357,12 +357,12 @@
 .summary-card--waiting-triage::after,
 .summary-card--triaging::after,
 .summary-card--triage-rejected::after,
-.summary-card--waiting-editor::after,
+.summary-card--waiting-editorial::after,
 .summary-card--editing::after,
-.summary-card--waiting-process::after,
-.summary-card--processing::after,
+.summary-card--waiting-publish::after,
+.summary-card--publishing::after,
 .summary-card--done::after,
-.summary-card--retry-later::after,
+.summary-card--publish-retry::after,
 .summary-card--source-blocked::after,
 .summary-card--duplicate::after,
 .summary-card--error::after {
