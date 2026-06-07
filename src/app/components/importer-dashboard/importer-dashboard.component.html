@@ -33,6 +33,10 @@
     </div>
 
     <div class="importer-dashboard__progress" *ngIf="selectedSource">
+      <div class="importer-dashboard__progress-copy">
+        <span class="importer-dashboard__progress-label">Encerramento do backlog</span>
+        <span class="importer-dashboard__progress-hint">Publicados e saídas definitivas</span>
+      </div>
       <div class="importer-dashboard__progress-bar">
         <div class="importer-dashboard__progress-fill" [style.width.%]="completionRate"></div>
       </div>
@@ -140,16 +144,21 @@
           </div>
 
           <div class="importer-item__meta">
-            <span class="importer-item__chip" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && !item.status.includes('triage') && !item.status.includes('editor')">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip" *ngIf="shouldShowAttempts(item.status)">Tentativas: {{ item.attempts || 0 }}</span>
             <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-            <span class="importer-item__chip importer-item__chip--muted" *ngIf="item.status !== 'triage_rejected' && getItemCategoryLabel(item)">{{ getItemCategoryLabel(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="shouldShowCategory(item.status) && getItemCategoryLabel(item)">{{ getItemCategoryLabel(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted importer-item__chip--resolution" *ngIf="getResolutionChipLabel(item.status)">{{ getResolutionChipLabel(item.status) }}</span>
           </div>
 
           <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
             {{ getTriageDetail(item) }}
           </div>
 
-          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && item.status !== 'done' && getShortError(item)">
+          <div class="importer-item__error importer-item__error--editorial-rejected" *ngIf="item.status === 'editorial_rejected' && getShortError(item)">
+            {{ getShortError(item) }}
+          </div>
+
+          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && item.status !== 'editorial_rejected' && item.status !== 'done' && getShortError(item)">
             {{ getShortError(item) }}
           </div>
 

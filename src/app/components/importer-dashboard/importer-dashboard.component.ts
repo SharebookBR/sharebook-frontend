@@ -60,11 +60,12 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   readonly pageSizeOptions = [50, 100, 200];
 
   readonly aggregateGroups = [
-    { id: 'triagem',     label: 'Triagem',          statuses: ['waiting_triage', 'triaging', 'triage_retry'],               badge: { name: 'Python Worker', icon: 'settings' } },
-    { id: 'editorial',   label: 'Preparo editorial', statuses: ['waiting_editorial', 'editing'],                              badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
-    { id: 'publicacao',  label: 'Publicação',        statuses: ['waiting_publish', 'publishing', 'publish_retry'],           badge: { name: 'Python Worker', icon: 'settings' } },
-    { id: 'done',        label: 'Done',              statuses: ['done'],                                                     badge: null as { name: string; icon: string } | null },
-    { id: 'error',       label: 'Error',             statuses: ['triage_rejected', 'source_blocked', 'duplicate', 'error'], badge: null as { name: string; icon: string } | null },
+    { id: 'triagem',     label: 'Triagem',                    statuses: ['waiting_triage', 'triaging', 'triage_retry'],                    badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'editorial',   label: 'Preparo editorial',          statuses: ['waiting_editorial', 'editing'],                                  badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
+    { id: 'publicacao',  label: 'Publicação',                 statuses: ['waiting_publish', 'publishing', 'publish_retry'],               badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'published',   label: 'Publicados',                 statuses: ['done'],                                                           badge: null as { name: string; icon: string } | null },
+    { id: 'dismissed',   label: 'Encerrados sem publicação',  statuses: ['editorial_rejected', 'triage_rejected', 'duplicate', 'source_blocked'], badge: null as { name: string; icon: string } | null },
+    { id: 'error',       label: 'Erros operacionais',         statuses: ['error'],                                                          badge: null as { name: string; icon: string } | null },
   ];
 
   readonly statusSummaryOrder = [
@@ -76,6 +77,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     'waiting_publish',
     'publishing',
     'publish_retry',
+    'editorial_rejected',
     'triage_rejected',
     'source_blocked',
     'duplicate',
@@ -165,9 +167,9 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       return 0;
     }
 
-    const resolvedItems = source.done + source.duplicate + source.sourceBlocked + source.triageRejected;
+    const closedItems = source.done + source.editorialRejected + source.duplicate + source.sourceBlocked + source.triageRejected;
 
-    return Math.round((resolvedItems / source.totalItems) * 100);
+    return Math.round((closedItems / source.totalItems) * 100);
   }
 
   trackBySource(index: number, source: ImporterSourceStatus): number {
@@ -221,19 +223,20 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   getStatusLabel(status: string): string {
     const labels = {
-      error: 'Erro',
-      triage_retry: 'Triage retry',
-      publish_retry: 'Publish retry',
-      triaging: 'Triaging',
-      triage_rejected: 'Triage rejected',
-      editing: 'Editing',
-      publishing: 'Publishing',
-      waiting_triage: 'Waiting triage',
-      waiting_editorial: 'Waiting editorial',
-      waiting_publish: 'Waiting publish',
-      done: 'Done',
-      source_blocked: 'Source blocked',
-      duplicate: 'Duplicate',
+      error: 'Erro operacional',
+      triage_retry: 'Retry de triagem',
+      publish_retry: 'Retry de publicação',
+      triaging: 'Triando',
+      triage_rejected: 'Reprovado na triagem',
+      editorial_rejected: 'Rejeitado no editorial',
+      editing: 'Em edição',
+      publishing: 'Publicando',
+      waiting_triage: 'Aguardando triagem',
+      waiting_editorial: 'Aguardando editorial',
+      waiting_publish: 'Aguardando publicação',
+      done: 'Publicado',
+      source_blocked: 'Fonte bloqueada',
+      duplicate: 'Duplicado',
     };
 
     return labels[status] || status || 'Sem status';
@@ -289,6 +292,24 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       return `Livro Sharebook #${item.sharebookBookId}`;
     }
     return this.getItemCategoryLabel(item);
+  }
+
+  shouldShowAttempts(status: string): boolean {
+    return !['triage_rejected', 'editorial_rejected', 'done'].includes(status)
+      && !status.includes('triage')
+      && !status.includes('editor');
+  }
+
+  shouldShowCategory(status: string): boolean {
+    return status !== 'triage_rejected';
+  }
+
+  getResolutionChipLabel(status: string): string | null {
+    if (status === 'editorial_rejected') return 'Sem publicação';
+    if (status === 'triage_rejected') return 'Encerrado na triagem';
+    if (status === 'duplicate') return 'Encerrado como duplicado';
+    if (status === 'source_blocked') return 'Bloqueado na origem';
+    return null;
   }
 
   getShortError(item: ImporterQueueListItem): string {
@@ -577,6 +598,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       editing: source.editing,
       waiting_publish: source.waitingPublish,
       publishing: source.publishing,
+      editorial_rejected: source.editorialRejected,
       done: source.done,
       triage_retry: source.triageRetry,
       publish_retry: source.publishRetry,
@@ -597,6 +619,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       editing: source.editingD1,
       waiting_publish: source.waitingPublishD1,
       publishing: source.publishingD1,
+      editorial_rejected: source.editorialRejectedD1,
       done: source.doneD1,
       triage_retry: source.triageRetryD1,
       publish_retry: source.publishRetryD1,

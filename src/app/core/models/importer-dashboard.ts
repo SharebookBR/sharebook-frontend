@@ -71,6 +71,7 @@ export interface ImporterSourceStatus {
   editing: number;
   waitingPublish: number;
   publishing: number;
+  editorialRejected: number;
   triageRetry: number;
   publishRetry: number;
   sourceBlocked: number;
@@ -90,6 +91,7 @@ export interface ImporterSourceStatus {
   editingD1?: number | null;
   waitingPublishD1?: number | null;
   publishingD1?: number | null;
+  editorialRejectedD1?: number | null;
   triageRetryD1?: number | null;
   publishRetryD1?: number | null;
   sourceBlockedD1?: number | null;
