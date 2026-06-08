@@ -33,10 +33,6 @@
     </div>
 
     <div class="importer-dashboard__progress" *ngIf="selectedSource">
-      <div class="importer-dashboard__progress-copy">
-        <span class="importer-dashboard__progress-label">Encerramento do backlog</span>
-        <span class="importer-dashboard__progress-hint">Publicados e saídas definitivas</span>
-      </div>
       <div class="importer-dashboard__progress-bar">
         <div class="importer-dashboard__progress-fill" [style.width.%]="completionRate"></div>
       </div>
