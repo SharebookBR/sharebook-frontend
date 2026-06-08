@@ -63,9 +63,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     { id: 'triagem',     label: 'Triagem',                    statuses: ['waiting_triage', 'triaging', 'triage_retry'],                    badge: { name: 'Python Worker', icon: 'settings' } },
     { id: 'editorial',   label: 'Preparo editorial',          statuses: ['waiting_editorial', 'editing'],                                  badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
     { id: 'publicacao',  label: 'Publicação',                 statuses: ['waiting_publish', 'publishing', 'publish_retry'],               badge: { name: 'Python Worker', icon: 'settings' } },
-    { id: 'published',   label: 'Publicados',                 statuses: ['done'],                                                           badge: null as { name: string; icon: string } | null },
-    { id: 'dismissed',   label: 'Encerrados sem publicação',  statuses: ['editorial_rejected', 'triage_rejected', 'duplicate', 'source_blocked'], badge: null as { name: string; icon: string } | null },
-    { id: 'error',       label: 'Erros operacionais',         statuses: ['error'],                                                          badge: null as { name: string; icon: string } | null },
+    { id: 'published',   label: 'Publicados',                 statuses: ['done'],                                                                                         badge: null as { name: string; icon: string } | null },
+    { id: 'error',       label: 'Erros',                      statuses: ['editorial_rejected', 'triage_rejected', 'duplicate', 'source_blocked', 'error'],  badge: null as { name: string; icon: string } | null },
   ];
 
   readonly statusSummaryOrder = [

@@ -422,7 +422,7 @@
 
 .aggregate-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -492,11 +492,6 @@
 .aggregate-card--published {
   --summary-accent: #10b981;
   --summary-glow: rgba(16, 185, 129, 0.18);
-}
-
-.aggregate-card--dismissed {
-  --summary-accent: #9a3412;
-  --summary-glow: rgba(154, 52, 18, 0.16);
 }
 
 .aggregate-card--error {
@@ -581,7 +576,6 @@
 .aggregate-breakdown--editorial  { --breakdown-accent: #8b5cf6; --breakdown-glow: rgba(139,92,246,0.18); }
 .aggregate-breakdown--publicacao { --breakdown-accent: #f97316; --breakdown-glow: rgba(249,115,22,0.20); }
 .aggregate-breakdown--published  { --breakdown-accent: #10b981; --breakdown-glow: rgba(16,185,129,0.18); }
-.aggregate-breakdown--dismissed  { --breakdown-accent: #9a3412; --breakdown-glow: rgba(154,52,18,0.16); }
 .aggregate-breakdown--error      { --breakdown-accent: #b42318; --breakdown-glow: rgba(180,35,24,0.18); }
 
 .aggregate-breakdown__bullet {
