@@ -18,6 +18,7 @@ import { MyDonation } from '../../models/MyDonation';
 import { UserDonationsList } from '../../models/userDonationsList';
 import { FullSearch } from '../../models/FullSearch';
 import { IRequestResult } from '../../interfaces/IRequestResult';
+import { CategoryShowcase } from '../../models/home-showcase';
 
 @Injectable({
   providedIn: 'root',
@@ -91,6 +92,12 @@ export class BookService {
   public getRecentEbooksCount(days: number = 7) {
     return this._http.get<{ total: number }>(
       `${this.config.apiEndpoint}/book/RecentEBooksCount?days=${days}`
+    );
+  }
+
+  public getCategoriesShowcase() {
+    return this._http.get<CategoryShowcase[]>(
+      `${this.config.apiEndpoint}/home/categories-showcase`
     );
   }
 

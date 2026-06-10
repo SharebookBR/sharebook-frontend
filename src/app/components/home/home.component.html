@@ -1,7 +1,3 @@
-<!--jumbotron-->
-
-<img src="assets/img/banner3.jpeg" class="img-fluid w-100" alt="Escolha o livro. Leve para casa. Não custa nada." fetchpriority="high" />
-
 <div class="container">
   <h1 class="text-center display-4" *ngIf="!hasBook && ebooks.length === 0">
     Nenhum livro encontrado &#9785; <br />Ajude o Sharebook e
@@ -11,6 +7,21 @@
   <div class="row justify-content-center book-covers" *ngIf="hasBook">
     <app-book-card [book]="book" *ngFor="let book of availableBooks"></app-book-card>
   </div>
+
+  <!-- CATEGORIAS EM DESTAQUE -->
+  <ng-container *ngFor="let category of categoriesShowcase">
+    <div class="showcase-header">
+      <h2 class="display-4">{{ category.name }}</h2>
+      <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]"
+         mat-stroked-button color="primary"
+         class="showcase-more-btn">
+        Ver mais
+      </a>
+    </div>
+    <div class="row justify-content-center book-covers">
+      <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
+    </div>
+  </ng-container>
 
   <!-- LIVROS DIGITAIS -->
   <ng-container *ngIf="ebooks.length > 0">

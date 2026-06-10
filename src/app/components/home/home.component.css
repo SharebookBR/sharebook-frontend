@@ -355,6 +355,27 @@
   margin: 0.3rem;
 }
 
+/* showcase de categorias */
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.showcase-header .display-4 {
+  margin: 0;
+}
+
+.showcase-more-btn {
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 /* book covers */
 
 .book-covers {

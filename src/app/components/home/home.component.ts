@@ -7,6 +7,8 @@ import { Book } from '../../core/models/book';
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
+import { CategoryService } from '../../core/services/category/category.service';
+import { CategoryShowcase } from '../../core/models/home-showcase';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public hasBook: Boolean = true;
   public ebooks: Book[] = [];
   public recentEbooksCount: number = 0;
+  public categoriesShowcase: CategoryShowcase[] = [];
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -30,13 +33,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private _scBook: BookService,
     private _scMeetup: MeetupService,
-    private _seo: SeoService
+    private _seo: SeoService,
+    private _categoryService: CategoryService
   ) {}
 
   ngOnInit() {
     this._seo.generateTags({});
     this.getBooks();
     this.getEbooks();
+    this.getCategoriesShowcase();
     this.getMeetups();
     this.getMeetupsUpcoming();
   }
@@ -48,6 +53,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((books) => {
         this.availableBooks = books.filter((book) => book.type !== 'Eletronic');
         this.hasBook = this.availableBooks.length > 0;
+      });
+  }
+
+  getCategoriesShowcase() {
+    this._scBook
+      .getCategoriesShowcase()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((showcase) => {
+        this.categoriesShowcase = showcase;
       });
   }
 
