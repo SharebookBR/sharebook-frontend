@@ -1,63 +1,80 @@
-<div class="container">
-  <h1 class="text-center display-4" *ngIf="!hasBook && ebooks.length === 0">
-    Nenhum livro encontrado &#9785; <br />Ajude o Sharebook e
-    <strong><a [routerLink]="['/livros/doar']">doe um livro agora</a></strong>
-  </h1>
-  <h1 class="text-center display-4" *ngIf="hasBook">Livros em destaque</h1>
-  <div class="row justify-content-center book-covers" *ngIf="hasBook">
-    <app-book-card [book]="book" *ngFor="let book of availableBooks"></app-book-card>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__body">
+    <h1 class="hero__title">Doe. Ganhe. Leia.</h1>
+    <p class="hero__sub">Livros físicos e digitais esperando um novo lar.</p>
+    <div class="hero__actions">
+      <a mat-flat-button routerLink="/livros" class="hero__btn-primary">Explorar livros</a>
+      <a mat-stroked-button routerLink="/livros/doar" class="hero__btn-secondary">Doe um livro</a>
+    </div>
   </div>
+</section>
+
+<div class="container shelves">
+
+  <!-- NENHUM LIVRO -->
+  <p class="text-center mt-4" *ngIf="!hasBook && ebooks.length === 0">
+    Nenhum livro encontrado &#9785; — Ajude o Sharebook e
+    <strong><a routerLink="/livros/doar">doe um livro agora</a></strong>.
+  </p>
+
+  <!-- LIVROS EM DESTAQUE -->
+  <ng-container *ngIf="hasBook">
+    <div class="shelf-header">
+      <h2 class="shelf-title">Livros em destaque</h2>
+      <a routerLink="/livros" class="shelf-more">Ver tudo ›</a>
+    </div>
+    <div class="shelf-wrapper">
+      <div class="shelf-track">
+        <app-book-card [book]="book" *ngFor="let book of availableBooks"></app-book-card>
+      </div>
+    </div>
+  </ng-container>
 
   <!-- LIVROS DIGITAIS -->
   <ng-container *ngIf="ebooks.length > 0">
-    <h1 class="text-center display-4">Livros digitais</h1>
-    <div class="row justify-content-center book-covers">
-      <app-book-card [book]="ebook" *ngFor="let ebook of ebooks"></app-book-card>
-    </div>
-
-    <div class="digital-library-cta" *ngIf="recentEbooksCount > 0">
-      <p class="digital-library-cta__copy">
-        Gostou da vitrine? Tem mais {{ recentEbooksCount }} livros novos.
-      </p>
-      <a mat-flat-button color="primary" [routerLink]="['/livros-digitais/novidades']" class="digital-library-cta__button">
-        Ver novidades
+    <div class="shelf-header">
+      <h2 class="shelf-title">Novidades digitais</h2>
+      <a routerLink="/livros-digitais/novidades" class="shelf-more">
+        Ver tudo ›
+        <span class="shelf-badge" *ngIf="recentEbooksCount > 0">{{ recentEbooksCount }} novos</span>
       </a>
+    </div>
+    <div class="shelf-wrapper">
+      <div class="shelf-track">
+        <app-book-card [book]="ebook" *ngFor="let ebook of ebooks"></app-book-card>
+      </div>
     </div>
   </ng-container>
 
   <!-- CATEGORIAS EM DESTAQUE -->
   <ng-container *ngFor="let category of categoriesShowcase">
-    <div class="showcase-header">
-      <h2 class="display-4">{{ category.name }}</h2>
-      <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]"
-         mat-stroked-button color="primary"
-         class="showcase-more-btn">
-        Ver mais
-      </a>
+    <div class="shelf-header">
+      <h2 class="shelf-title">{{ category.name }}</h2>
+      <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]" class="shelf-more">Ver tudo ›</a>
     </div>
-    <div class="row justify-content-center book-covers">
-      <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
+    <div class="shelf-wrapper">
+      <div class="shelf-track">
+        <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
+      </div>
     </div>
   </ng-container>
 
   <!-- PRÓXIMOS MEETUPS -->
   <ng-container *ngIf="meetupsUpcoming.length > 0">
-    <h1 class="text-center display-4 meetup">Não perca os próximos Meetups!</h1>
-
+    <h2 class="shelf-title shelf-title--meetup">Próximos Meetups</h2>
     <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetupsUpcoming"></app-card-meetup>
-
-    <div style="clear: both; height: 20px"></div>
+    <div style="clear:both; height:20px"></div>
   </ng-container>
 
   <!-- MEETUPS JÁ REALIZADOS -->
-  <h1 class="text-center display-4 meetup">Meetups já realizados</h1>
-
+  <h2 class="shelf-title shelf-title--meetup">Meetups já realizados</h2>
   <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
   <div class="meetup" *ngIf="showButtonMoreMeetups">
-    <button mat-flat-button color="primary" (click)="showMoreMetups()" style="margin-left: 82px">
+    <button mat-flat-button color="primary" (click)="showMoreMetups()">
       Carregar mais Meetups...
     </button>
   </div>
+  <div style="clear:both; height:20px"></div>
 
-  <div style="clear: both; height: 20px"></div>
 </div>

@@ -1,3 +1,146 @@
+/* ─── HERO ─────────────────────────────────────────────── */
+
+.hero {
+  background: linear-gradient(135deg, #1a3a5c 0%, #29abe2 100%);
+  padding: 72px 24px 80px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 48px;
+}
+
+.hero__title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+.hero__sub {
+  font-size: 1.15rem;
+  opacity: 0.88;
+  margin: 0 0 32px;
+  color: #fff;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero__btn-primary {
+  background: #fff !important;
+  color: #1a3a5c !important;
+  font-weight: 600;
+  border-radius: 999px !important;
+  padding: 0 28px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+}
+
+.hero__btn-secondary {
+  border-color: rgba(255,255,255,0.7) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 0 28px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+}
+
+@media (max-width: 575px) {
+  .hero__title { font-size: 1.9rem; }
+  .hero__actions { flex-direction: column; align-items: center; }
+}
+
+/* ─── SHELVES ───────────────────────────────────────────── */
+
+.shelves {
+  padding-bottom: 48px;
+}
+
+.shelf-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 40px 0 12px;
+}
+
+.shelf-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin: 0;
+}
+
+.shelf-title--meetup {
+  margin-top: 48px;
+  margin-bottom: 16px;
+}
+
+.shelf-more {
+  font-size: 0.85rem;
+  color: #29abe2;
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shelf-more:hover { text-decoration: underline; color: #1a8bbf; }
+
+.shelf-badge {
+  background: #29abe2;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.shelf-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.shelf-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, #fff);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shelf-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 12px;
+}
+
+.shelf-track::-webkit-scrollbar { display: none; }
+
+.shelf-track app-book-card {
+  flex: 0 0 148px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 575px) {
+  .shelf-track app-book-card { flex: 0 0 120px; }
+  .shelf-wrapper::after { width: 48px; }
+}
+
+/* ─── LEGACY (mantido por segurança) ───────────────────── */
+
 /* Categories Section */
 .categories-section {
   margin: 3rem 0;
