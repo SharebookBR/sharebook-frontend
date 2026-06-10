@@ -139,17 +139,15 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 3;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-  font-size: 1.5rem;
-  line-height: 1;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,15 +155,25 @@
   padding: 0;
 }
 
-.shelf-arrow--left  { left: 4px; }
-.shelf-arrow--right { right: 4px; }
+.shelf-arrow--left  { left: 2px; }
+.shelf-arrow--right { right: 2px; }
 
 .shelf-wrapper:hover .shelf-arrow { opacity: 1; }
 
-.shelf-arrow:hover {
-  background: #fff;
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+.shelf-arrow:hover:not(.shelf-arrow--disabled) {
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* Estado bloqueado — nada mais para rolar nessa direção */
+.shelf-arrow--disabled {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.shelf-wrapper:hover .shelf-arrow--disabled {
+  opacity: 0.22 !important;
+  cursor: default;
 }
 
 /* Esconde setas em dispositivos touch — drag resolve */
