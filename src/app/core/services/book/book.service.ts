@@ -11,7 +11,8 @@ import { map, filter } from 'rxjs/operators';
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
@@ -19,6 +20,9 @@ import { UserDonationsList } from '../../models/userDonationsList';
 import { FullSearch } from '../../models/FullSearch';
 import { IRequestResult } from '../../interfaces/IRequestResult';
 import { CategoryShowcase } from '../../models/home-showcase';
+import { SsrCacheService } from '../ssr-cache/ssr-cache.service';
+
+const CACHE_KEY_SHOWCASE = 'home:categories-showcase';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +31,8 @@ export class BookService {
   // TODO TypicodeInterceptor
   constructor(
     private _http: HttpClient,
-    @Inject(APP_CONFIG) private config: AppConfig
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _cache: SsrCacheService
   ) { }
 
   public getAll(): Observable<BookVM> {
@@ -95,9 +100,15 @@ export class BookService {
     );
   }
 
-  public getCategoriesShowcase() {
+  public getCategoriesShowcase(): Observable<CategoryShowcase[]> {
+    const cached = this._cache.get<CategoryShowcase[]>(CACHE_KEY_SHOWCASE);
+    if (cached) {
+      return of(cached);
+    }
     return this._http.get<CategoryShowcase[]>(
       `${this.config.apiEndpoint}/home/categories-showcase`
+    ).pipe(
+      tap(data => this._cache.set(CACHE_KEY_SHOWCASE, data))
     );
   }
 
