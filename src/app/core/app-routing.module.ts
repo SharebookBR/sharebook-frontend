@@ -101,6 +101,10 @@ const routes: Routes = [
     component: SearchResultsComponent,
   },
   {
+    path: 'livros',
+    component: CategoriesListComponent,
+  },
+  {
     path: 'categorias',
     component: CategoriesListComponent,
   },
