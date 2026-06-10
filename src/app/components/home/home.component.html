@@ -8,21 +8,6 @@
     <app-book-card [book]="book" *ngFor="let book of availableBooks"></app-book-card>
   </div>
 
-  <!-- CATEGORIAS EM DESTAQUE -->
-  <ng-container *ngFor="let category of categoriesShowcase">
-    <div class="showcase-header">
-      <h2 class="display-4">{{ category.name }}</h2>
-      <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]"
-         mat-stroked-button color="primary"
-         class="showcase-more-btn">
-        Ver mais
-      </a>
-    </div>
-    <div class="row justify-content-center book-covers">
-      <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
-    </div>
-  </ng-container>
-
   <!-- LIVROS DIGITAIS -->
   <ng-container *ngIf="ebooks.length > 0">
     <h1 class="text-center display-4">Livros digitais</h1>
@@ -37,7 +22,23 @@
       <a mat-flat-button color="primary" [routerLink]="['/livros-digitais/novidades']" class="digital-library-cta__button">
         Ver novidades
       </a>
-    </div>  </ng-container>
+    </div>
+  </ng-container>
+
+  <!-- CATEGORIAS EM DESTAQUE -->
+  <ng-container *ngFor="let category of categoriesShowcase">
+    <div class="showcase-header">
+      <h2 class="display-4">{{ category.name }}</h2>
+      <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]"
+         mat-stroked-button color="primary"
+         class="showcase-more-btn">
+        Ver mais
+      </a>
+    </div>
+    <div class="row justify-content-center book-covers">
+      <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
+    </div>
+  </ng-container>
 
   <!-- PRÓXIMOS MEETUPS -->
   <ng-container *ngIf="meetupsUpcoming.length > 0">
