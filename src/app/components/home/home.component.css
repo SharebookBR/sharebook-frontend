@@ -134,6 +134,45 @@
   scroll-snap-align: start;
 }
 
+.shelf-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a3a5c;
+  padding: 0;
+}
+
+.shelf-arrow--left  { left: 4px; }
+.shelf-arrow--right { right: 4px; }
+
+.shelf-wrapper:hover .shelf-arrow { opacity: 1; }
+
+.shelf-arrow:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+}
+
+/* Esconde setas em dispositivos touch — drag resolve */
+@media (hover: none) {
+  .shelf-arrow { display: none; }
+}
+
 @media (max-width: 575px) {
   .shelf-track app-book-card { flex: 0 0 120px; }
   .shelf-wrapper::after { width: 48px; }

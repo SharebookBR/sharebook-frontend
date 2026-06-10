@@ -24,10 +24,12 @@
       <h2 class="shelf-title">Livros em destaque</h2>
       <a routerLink="/livros" class="shelf-more">Ver tudo ›</a>
     </div>
-    <div class="shelf-wrapper">
+    <div class="shelf-wrapper" #w1>
+      <button class="shelf-arrow shelf-arrow--left"  (click)="scrollShelf(w1, 'left')"  aria-label="Anterior">&#8249;</button>
       <div class="shelf-track">
         <app-book-card [book]="book" *ngFor="let book of availableBooks"></app-book-card>
       </div>
+      <button class="shelf-arrow shelf-arrow--right" (click)="scrollShelf(w1, 'right')" aria-label="Próximo">&#8250;</button>
     </div>
   </ng-container>
 
@@ -40,10 +42,12 @@
         <span class="shelf-badge" *ngIf="recentEbooksCount > 0">{{ recentEbooksCount }} novos</span>
       </a>
     </div>
-    <div class="shelf-wrapper">
+    <div class="shelf-wrapper" #w2>
+      <button class="shelf-arrow shelf-arrow--left"  (click)="scrollShelf(w2, 'left')"  aria-label="Anterior">&#8249;</button>
       <div class="shelf-track">
         <app-book-card [book]="ebook" *ngFor="let ebook of ebooks"></app-book-card>
       </div>
+      <button class="shelf-arrow shelf-arrow--right" (click)="scrollShelf(w2, 'right')" aria-label="Próximo">&#8250;</button>
     </div>
   </ng-container>
 
@@ -53,10 +57,12 @@
       <h2 class="shelf-title">{{ category.name }}</h2>
       <a [routerLink]="['/categorias', _categoryService.generateSlug(category.name)]" class="shelf-more">Ver tudo ›</a>
     </div>
-    <div class="shelf-wrapper">
+    <div class="shelf-wrapper" #wc>
+      <button class="shelf-arrow shelf-arrow--left"  (click)="scrollShelf(wc, 'left')"  aria-label="Anterior">&#8249;</button>
       <div class="shelf-track">
         <app-book-card [book]="book" *ngFor="let book of category.books"></app-book-card>
       </div>
+      <button class="shelf-arrow shelf-arrow--right" (click)="scrollShelf(wc, 'right')" aria-label="Próximo">&#8250;</button>
     </div>
   </ng-container>
 
