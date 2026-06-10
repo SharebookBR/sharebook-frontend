@@ -107,6 +107,7 @@ import { ImporterDashboardComponent } from './components/importer-dashboard/impo
 import { AnalyticsDashboardComponent } from './components/analytics-dashboard/analytics-dashboard.component';
 import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ImporterDashboardComponent,
     AnalyticsDashboardComponent,
     EbookRecentComponent,
+    NotFoundComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'angular' }),

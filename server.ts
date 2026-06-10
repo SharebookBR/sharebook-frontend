@@ -1,6 +1,7 @@
 import 'zone.js/dist/zone-node';
 
 import { ngExpressEngine } from '@nguniversal/express-engine';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import express, { Express, Request, Response } from 'express';
 import { join } from 'path';
 
@@ -29,7 +30,13 @@ export function app(): Express {
 
   // All regular routes use the Universal engine
   server.get('*', (req: Request, res: Response) => {
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+    res.render(indexHtml, {
+      req,
+      providers: [
+        { provide: APP_BASE_HREF, useValue: req.baseUrl },
+        { provide: RESPONSE, useValue: res },
+      ],
+    });
   });
 
   return server;
