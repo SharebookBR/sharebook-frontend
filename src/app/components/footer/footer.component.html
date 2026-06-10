@@ -11,6 +11,18 @@
         <!-- Content -->
         <h5 class="text-uppercase">Sharebook</h5>
         <p>Seu app livre e gratuito para doar e ganhar livros!</p>
+        <div class="social-links">
+          <a *ngFor="let social of socialLinks"
+             [href]="social.url"
+             [attr.aria-label]="social.label"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="social-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18">
+              <path [attr.d]="social.svgPath"/>
+            </svg>
+          </a>
+        </div>
       </div>
       <!-- Grid column -->
 
