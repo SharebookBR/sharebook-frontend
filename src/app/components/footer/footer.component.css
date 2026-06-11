@@ -15,7 +15,14 @@ a {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
   margin-top: 16px;
+}
+
+@media (min-width: 768px) {
+  .social-links {
+    justify-content: flex-start;
+  }
 }
 
 .social-icon {
