@@ -1,6 +1,8 @@
 import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';
@@ -32,7 +34,9 @@ export class BookService {
   constructor(
     private _http: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig,
-    private _cache: SsrCacheService
+    private _cache: SsrCacheService,
+    private _transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: any
   ) { }
 
   public getAll(): Observable<BookVM> {
@@ -101,13 +105,18 @@ export class BookService {
   }
 
   public getCategoriesShowcase(): Observable<CategoryShowcase[]> {
+    const url = `${this.config.apiEndpoint}/home/categories-showcase`;
     const cached = this._cache.get<CategoryShowcase[]>(CACHE_KEY_SHOWCASE);
     if (cached) {
+      // Cache hit bypassa o HttpClient — o TransferStateInterceptor nunca roda.
+      // Sem este set, o browser não acha a chave no estado transferido e
+      // re-fetcha a API, sobrescrevendo a tela com categorias re-sorteadas.
+      if (isPlatformServer(this.platformId)) {
+        this._transferState.set(makeStateKey<CategoryShowcase[]>(url), cached);
+      }
       return of(cached);
     }
-    return this._http.get<CategoryShowcase[]>(
-      `${this.config.apiEndpoint}/home/categories-showcase`
-    ).pipe(
+    return this._http.get<CategoryShowcase[]>(url).pipe(
       tap(data => this._cache.set(CACHE_KEY_SHOWCASE, data))
     );
   }
