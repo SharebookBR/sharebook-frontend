@@ -45,7 +45,6 @@ export class MaisSheetComponent {
   search(term: string) {
     term = term.trim();
     if (term.length >= 3) {
-      this._ga.sendEvent('search', { search_term: term });
       this.dismissAndNavigate(['/buscar', term]);
     }
   }

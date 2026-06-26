@@ -6,12 +6,6 @@
   <h1 class="text-center display-4">
     Seus resultados para <strong>{{ criteria }}</strong>
   </h1>
-  <section class="row">
-    <div class="col-xs-12 col-md-12">
-      <p *ngIf="books.length === 0">Nenhum livro encontrado para sua pesquisa :/</p>
-    </div>
-  </section>
-
   <section class="row" *ngIf="books.length === 0">
     <div class="col-xs-12 col-md-8 offset-md-2">
       <div class="alert alert-info mt-4">

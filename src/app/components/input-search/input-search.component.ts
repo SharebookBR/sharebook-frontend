@@ -35,7 +35,6 @@ export class InputSearchComponent implements OnInit {
     // verifica se há alguma coisa na busca - senão houver exibe um alerta e não direciona pesquisa
     const term = this.searchForm.value.paramSearch?.trim();
     if (term) {
-      this._ga.sendEvent('search', { search_term: term });
       this._router.navigate(['/buscar', term]);
       this.searchAlert = false;
     } else {
