@@ -6,7 +6,6 @@ import { take } from 'rxjs/operators';
 
 import { UserService } from '../../core/services/user/user.service';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
-import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-mais-sheet',
@@ -28,7 +27,6 @@ export class MaisSheetComponent {
     private _viewportScroller: ViewportScroller,
     private _scUser: UserService,
     private _scAuthentication: AuthenticationService,
-    private _ga: GoogleAnalyticsService
   ) {
     const user = this._scUser.getLoggedUserFromLocalStorage();
     if (user) {

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
-import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 @Component({
   selector: 'app-input-search',
@@ -19,7 +18,6 @@ export class InputSearchComponent implements OnInit {
     private fb: FormBuilder,
     private _router: Router,
     private _platform: PlatformService,
-    private _ga: GoogleAnalyticsService
   ) {}
 
   ngOnInit() {
