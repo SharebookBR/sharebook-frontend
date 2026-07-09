@@ -8,7 +8,7 @@ export class ContributorsService {
       {
         image: 'assets/img/top_contributors/raffa.jpg',
         name: 'Raffaello Damgaard',
-        position: 'Product Owner',
+        position: 'Tech Founder',
         links: [
           {
             url: 'https://www.linkedin.com/in/raffacabofrio/',
