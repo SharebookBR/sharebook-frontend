@@ -3,11 +3,29 @@
 /* global __dirname, require */
 
 if (!process.env.CHROME_BIN) {
+  const fs = require('fs');
+  const candidates = [];
+
   try {
-    process.env.CHROME_BIN = require('puppeteer').executablePath();
+    candidates.push(require('puppeteer').executablePath());
   } catch (error) {
+    // Puppeteer é opcional quando existe Chrome instalado no sistema.
+  }
+
+  if (process.platform === 'win32') {
+    candidates.push(
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+      'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+    );
+  }
+
+  process.env.CHROME_BIN = candidates.find(candidate => fs.existsSync(candidate));
+
+  if (!process.env.CHROME_BIN) {
     console.warn(
-      '[karma] puppeteer não encontrado; usando CHROME_BIN do ambiente ou Chrome/Chromium do sistema.'
+      '[karma] Chrome não encontrado no Puppeteer, no ambiente ou nas instalações padrão do sistema.'
     );
   }
 }
