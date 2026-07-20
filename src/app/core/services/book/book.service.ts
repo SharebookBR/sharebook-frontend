@@ -21,7 +21,7 @@ import { MyDonation } from '../../models/MyDonation';
 import { UserDonationsList } from '../../models/userDonationsList';
 import { FullSearch } from '../../models/FullSearch';
 import { IRequestResult } from '../../interfaces/IRequestResult';
-import { CategoryShowcase } from '../../models/home-showcase';
+import { CategoryShowcase, ShowcaseBookItem } from '../../models/home-showcase';
 import { SsrCacheService } from '../ssr-cache/ssr-cache.service';
 
 const CACHE_KEY_SHOWCASE = 'home:categories-showcase';
@@ -74,9 +74,9 @@ export class BookService {
     return this._http.get<AdminBookList>(`${this.config.apiEndpoint}/book/Admin`, { params });
   }
 
-  public getAvailableBooks() {
-    return this._http.get<Book[]>(
-      `${this.config.apiEndpoint}/book/AvailableBooks`
+  public getFeaturedPrintedBooks(): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/featured-printed-books`
     );
   }
 

@@ -8,7 +8,7 @@ import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { CategoryService } from '../../core/services/category/category.service';
-import { CategoryShowcase } from '../../core/models/home-showcase';
+import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,7 @@ import { CategoryShowcase } from '../../core/models/home-showcase';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public availableBooks: Book[] = [];
+  public availableBooks: ShowcaseBookItem[] = [];
   public hasBook: Boolean = true;
   public ebooks: Book[] = [];
   public recentEbooksCount: number = 0;
@@ -48,10 +48,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getBooks() {
     this._scBook
-      .getAvailableBooks()
+      .getFeaturedPrintedBooks()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
-        this.availableBooks = books.filter((book) => book.type !== 'Eletronic');
+        this.availableBooks = books;
         this.hasBook = this.availableBooks.length > 0;
       });
   }
