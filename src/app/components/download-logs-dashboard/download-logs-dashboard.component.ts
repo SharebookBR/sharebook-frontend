@@ -50,6 +50,9 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
   pageSize = 100;
   readonly pageSizeOptions = [100, 250, 500, 1000];
 
+  filterIp = '';
+  filterOutcome = '';
+
   private chart: Chart | null = null;
   private destroy$ = new Subject<void>();
 
@@ -86,6 +89,18 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
 
   onPageSizeChange(size: number): void {
     this.pageSize = Number(size);
+    this.currentPage = 1;
+    this.loadEvents();
+  }
+
+  onEventsFilterChange(): void {
+    this.currentPage = 1;
+    this.loadEvents();
+  }
+
+  onIpClick(ip: string): void {
+    if (!ip) return;
+    this.filterIp = this.filterIp === ip ? '' : ip;
     this.currentPage = 1;
     this.loadEvents();
   }
@@ -180,9 +195,13 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
   }
 
   private loadEvents(): void {
-    this.http.get<PagedDownloadLogEvents>(`${environment.apiEndpoint}/DownloadLogs`, {
-      params: { from: this.from, to: this.to, page: this.currentPage, pageSize: this.pageSize }
-    })
+    const params: Record<string, string | number> = {
+      from: this.from, to: this.to, page: this.currentPage, pageSize: this.pageSize
+    };
+    if (this.filterIp) params['ip'] = this.filterIp;
+    if (this.filterOutcome) params['outcome'] = this.filterOutcome;
+
+    this.http.get<PagedDownloadLogEvents>(`${environment.apiEndpoint}/DownloadLogs`, { params })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: data => { this.paged = data; },
@@ -215,24 +234,24 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
           {
             label: 'Permitido',
             data: allowed,
-            backgroundColor: 'rgba(41,171,226,0.7)',
-            borderColor: '#29abe2',
+            backgroundColor: 'rgba(40,167,69,0.75)',
+            borderColor: '#1e7e34',
             borderWidth: 1,
             borderRadius: 4
           },
           {
             label: 'Bloqueado (throttle 5s)',
             data: blockedThrottle,
-            backgroundColor: 'rgba(255,165,0,0.75)',
-            borderColor: '#f0a000',
+            backgroundColor: 'rgba(220,53,69,0.75)',
+            borderColor: '#b3212f',
             borderWidth: 1,
             borderRadius: 4
           },
           {
             label: 'Bloqueado (limite diário)',
             data: blockedDailyLimit,
-            backgroundColor: 'rgba(220,53,69,0.75)',
-            borderColor: '#dc3545',
+            backgroundColor: 'rgba(122,18,32,0.85)',
+            borderColor: '#7a1220',
             borderWidth: 1,
             borderRadius: 4
           }

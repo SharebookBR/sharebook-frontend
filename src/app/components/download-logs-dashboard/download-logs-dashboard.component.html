@@ -59,6 +59,30 @@
         </label>
       </div>
 
+      <div class="events-filters">
+        <label>
+          IP
+          <input type="text" placeholder="Filtrar por IP" [(ngModel)]="filterIp" (change)="onEventsFilterChange()">
+        </label>
+        <label>
+          Resultado
+          <select [(ngModel)]="filterOutcome" (ngModelChange)="onEventsFilterChange()">
+            <option value="">Todos</option>
+            <option value="Allowed">Permitido</option>
+            <option value="BlockedThrottle">Throttle (5s)</option>
+            <option value="BlockedDailyLimit">Limite diário</option>
+          </select>
+        </label>
+        <button
+          type="button"
+          class="clear-filters-btn"
+          *ngIf="filterIp || filterOutcome"
+          (click)="filterIp = ''; filterOutcome = ''; onEventsFilterChange()"
+        >
+          Limpar filtros
+        </button>
+      </div>
+
       <table class="dl-table">
         <thead>
           <tr>
@@ -71,7 +95,11 @@
         <tbody>
           <tr *ngFor="let e of paged?.items">
             <td class="timestamp">{{ formatTimestamp(e.timestamp) }}</td>
-            <td class="ip">{{ e.ip || '—' }}</td>
+            <td class="ip">
+              <button type="button" class="ip-link" [class.ip-link--active]="filterIp === e.ip" (click)="onIpClick(e.ip)">
+                {{ e.ip || '—' }}
+              </button>
+            </td>
             <td><span class="outcome-badge" [ngClass]="outcomeClass(e.outcome)">{{ outcomeLabel(e.outcome) }}</span></td>
             <td class="title">{{ e.title || e.slug || '—' }}</td>
           </tr>
