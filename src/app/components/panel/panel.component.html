@@ -38,6 +38,15 @@
       </div>
     </div>
 
+    <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/download-logs" title="Logs de download">
+        <img class="card-img-top panel-item" src="../../../assets/img/padlock.svg" alt="Logs de Download" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Logs de Download</h5>
+      </div>
+    </div>
+
     <div class="card">
       <a routerLink="/myaccount" title="Editar perfil">
         <img class="card-img-top panel-item" src="../../../assets/img/learning.svg" alt="Card image" />
