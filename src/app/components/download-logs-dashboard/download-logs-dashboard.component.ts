@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -34,7 +34,7 @@ interface PagedDownloadLogEvents {
   templateUrl: './download-logs-dashboard.component.html',
   styleUrls: ['./download-logs-dashboard.component.css']
 })
-export class DownloadLogsDashboardComponent implements OnInit, OnDestroy {
+export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('chartDownloads') chartRef: ElementRef<HTMLCanvasElement>;
 
   from = '';
@@ -62,6 +62,15 @@ export class DownloadLogsDashboardComponent implements OnInit, OnDestroy {
     this.to = this.toIsoDate(today);
     this.from = this.toIsoDate(weekAgo);
     this.loadAll();
+  }
+
+  ngAfterViewChecked(): void {
+    // O card do gráfico fica atrás de *ngIf="!loading && !error", então a <canvas>
+    // só existe no DOM depois que a view é atualizada — não dá pra montar o Chart.js
+    // direto no callback do HTTP (corrida confirmada: card aparecia vazio).
+    if (!this.loading && !this.error && this.summary.length && !this.chart) {
+      this.renderChart();
+    }
   }
 
   ngOnDestroy(): void {
@@ -146,6 +155,10 @@ export class DownloadLogsDashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadAll(): void {
+    // A <canvas> some do DOM enquanto loading=true (*ngIf) e volta como elemento novo —
+    // o Chart.js antigo ficaria preso a um canvas morto se não for destruído aqui.
+    this.chart?.destroy();
+    this.chart = null;
     this.loading = true;
     this.error = false;
     this.loadSummary();
@@ -161,7 +174,6 @@ export class DownloadLogsDashboardComponent implements OnInit, OnDestroy {
         next: data => {
           this.summary = data;
           this.loading = false;
-          this.renderChart();
         },
         error: () => { this.loading = false; this.error = true; }
       });
