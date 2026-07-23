@@ -1,0 +1,108 @@
+<div class="container dl-container">
+
+  <div class="dl-header">
+    <nav aria-label="breadcrumb" class="mb-0">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Logs de Download</li>
+      </ol>
+    </nav>
+
+    <div class="dl-filters">
+      <label>
+        De
+        <input type="date" [(ngModel)]="from" [max]="to" (change)="onFilterChange()">
+      </label>
+      <label>
+        Até
+        <input type="date" [(ngModel)]="to" [min]="from" (change)="onFilterChange()">
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="dl-loading">
+    <div class="spinner"></div>
+    <p>Carregando logs de download...</p>
+  </div>
+  <div *ngIf="error" class="dl-error">Erro ao carregar os logs de download.</div>
+
+  <ng-container *ngIf="!loading && !error">
+
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-allowed">
+        <div class="kpi-label">Permitidos</div>
+        <div class="kpi-value">{{ totalAllowed | number }}</div>
+      </div>
+      <div class="kpi-card kpi-throttle">
+        <div class="kpi-label">Bloqueados (throttle 5s)</div>
+        <div class="kpi-value">{{ totalBlockedThrottle | number }}</div>
+      </div>
+      <div class="kpi-card kpi-daily">
+        <div class="kpi-label">Bloqueados (limite diário)</div>
+        <div class="kpi-value">{{ totalBlockedDailyLimit | number }}</div>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Downloads por dia</h3>
+      <canvas #chartDownloads></canvas>
+    </div>
+
+    <div class="card table-card">
+      <div class="table-card-header">
+        <h3>Eventos</h3>
+        <label class="page-size-label">
+          Itens por página
+          <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+          </select>
+        </label>
+      </div>
+
+      <table class="dl-table">
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>IP</th>
+            <th>Resultado</th>
+            <th>Livro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of paged?.items">
+            <td class="timestamp">{{ formatTimestamp(e.timestamp) }}</td>
+            <td class="ip">{{ e.ip || '—' }}</td>
+            <td><span class="outcome-badge" [ngClass]="outcomeClass(e.outcome)">{{ outcomeLabel(e.outcome) }}</span></td>
+            <td class="title">{{ e.title || e.slug || '—' }}</td>
+          </tr>
+          <tr *ngIf="(paged?.items?.length ?? 0) === 0">
+            <td colspan="4" class="dl-empty">Nenhum evento no período selecionado.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-bar" *ngIf="totalItems > pageSize">
+        <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          Anterior
+        </button>
+        <button
+          class="pagination-btn pagination-btn--page"
+          type="button"
+          *ngFor="let page of visiblePages"
+          [class.pagination-btn--active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          Próxima
+        </button>
+      </div>
+
+      <div class="pagination-caption" *ngIf="totalItems > 0">
+        Página {{ currentPage }} de {{ totalPages }} — {{ totalItems | number }} evento(s) no período
+      </div>
+    </div>
+
+  </ng-container>
+</div>

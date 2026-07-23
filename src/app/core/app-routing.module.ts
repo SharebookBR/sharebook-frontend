@@ -34,6 +34,7 @@ import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.comp
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
 import { ImporterDashboardComponent } from '../components/importer-dashboard/importer-dashboard.component';
 import { AnalyticsDashboardComponent } from '../components/analytics-dashboard/analytics-dashboard.component';
+import { DownloadLogsDashboardComponent } from '../components/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
 import { NotFoundComponent } from '../components/not-found/not-found.component';
 
@@ -75,6 +76,11 @@ const routes: Routes = [
   {
     path: 'admin/analytics',
     component: AnalyticsDashboardComponent,
+    canActivate: [AuthGuardAdmin],
+  },
+  {
+    path: 'admin/download-logs',
+    component: DownloadLogsDashboardComponent,
     canActivate: [AuthGuardAdmin],
   },
   {
