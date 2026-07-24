@@ -99,9 +99,13 @@
               <button type="button" class="ip-link" [class.ip-link--active]="filterIp === e.ip" (click)="onIpClick(e.ip)">
                 {{ e.ip || '—' }}
               </button>
+              <span class="ip-count" *ngIf="ipCount(e.ip) > 1" title="Ocorrências dessa IP na amostra atual">{{ ipCount(e.ip) }}</span>
             </td>
             <td><span class="outcome-badge" [ngClass]="outcomeClass(e.outcome)">{{ outcomeLabel(e.outcome) }}</span></td>
-            <td class="title">{{ e.title || e.slug || '—' }}</td>
+            <td class="title">
+              <a *ngIf="e.slug" [href]="pdpUrl(e.slug)" target="_blank" rel="noopener">{{ e.title || e.slug }}</a>
+              <span *ngIf="!e.slug">—</span>
+            </td>
           </tr>
           <tr *ngIf="(paged?.items?.length ?? 0) === 0">
             <td colspan="4" class="dl-empty">Nenhum evento no período selecionado.</td>

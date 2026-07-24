@@ -116,6 +116,11 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
     return this.paged?.totalItems ?? 0;
   }
 
+  ipCount(ip: string): number {
+    if (!ip || !this.paged?.items) return 0;
+    return this.paged.items.filter(e => e.ip === ip).length;
+  }
+
   get totalPages(): number {
     return Math.max(Math.ceil(this.totalItems / this.pageSize), 1);
   }
@@ -138,6 +143,10 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
 
   get totalBlockedDailyLimit(): number {
     return this.summary.reduce((s, x) => s + x.blockedDailyLimit, 0);
+  }
+
+  pdpUrl(slug: string): string {
+    return `https://sharebook.com.br/livros/${slug}`;
   }
 
   formatTimestamp(iso: string): string {
@@ -272,7 +281,10 @@ export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked,
   }
 
   private formatDayLabel(iso: string): string {
-    const d = new Date(iso + 'T00:00:00');
+    // A API manda "Day" como datetime completo (ex.: "2026-07-22T00:00:00"), não data pura.
+    // Concatenar mais um "T00:00:00" em cima duplicava o T e virava Invalid Date.
+    const datePart = iso.slice(0, 10);
+    const d = new Date(datePart + 'T00:00:00');
     return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
   }
 }

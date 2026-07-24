@@ -120,18 +120,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: -16px;
-  margin-bottom: 12px;
+  background: #29abe2;
+  margin: -20px -24px 16px -24px;
+  padding: 12px 24px;
+  border-radius: 10px 10px 0 0;
 }
 
-.table-card-header h3 { margin: -20px -24px 0 -24px; }
+.table-card-header h3 {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
 
 .page-size-label {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #60738e;
+  color: #fff;
   font-weight: 600;
 }
 
@@ -200,6 +207,8 @@
 .dl-table .timestamp { white-space: nowrap; color: #444; font-variant-numeric: tabular-nums; }
 .dl-table .ip { font-family: monospace; color: #555; }
 .dl-table .title { color: #333; }
+.dl-table .title a { color: #333; text-decoration: none; }
+.dl-table .title a:hover { color: #29abe2; text-decoration: underline; }
 .dl-empty { text-align: center; color: #aaa; padding: 24px; }
 
 .ip-link {
@@ -221,6 +230,23 @@
   font-weight: 700;
 }
 
+.ip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  margin-left: 4px;
+  border-radius: 8px;
+  background: #7a1220;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  vertical-align: middle;
+}
+
 .outcome-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -239,42 +265,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   flex-wrap: wrap;
-  margin-top: 1.2rem;
+  margin-top: 0.9rem;
 }
 
 .pagination-btn {
-  min-width: 42px;
-  min-height: 40px;
-  padding: 0 0.9rem;
-  border: 1px solid #c5d2e6;
-  border-radius: 10px;
+  min-width: 28px;
+  min-height: 26px;
+  padding: 0 0.5rem;
+  border: 1px solid #e4e9f0;
+  border-radius: 6px;
   background: #ffffff;
-  color: #1f3352;
-  font-weight: 800;
+  color: #9aa5b3;
+  font-weight: 600;
+  font-size: 12px;
   cursor: pointer;
 }
 
 .pagination-btn:not(:disabled):hover {
-  border-color: #302d59;
-  color: #302d59;
-  box-shadow: 0 6px 14px rgba(48, 45, 89, 0.12);
+  border-color: #29abe2;
+  color: #29abe2;
 }
 
-.pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.pagination-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .pagination-btn--active {
-  background: #302d59;
-  border-color: #302d59;
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(48, 45, 89, 0.22);
+  background: rgba(41,171,226,0.1);
+  border-color: #29abe2;
+  color: #1a7fab;
+  font-weight: 700;
 }
 
 .pagination-caption {
-  margin-top: 0.65rem;
+  margin-top: 0.4rem;
   text-align: center;
-  color: #60738e;
-  font-size: 0.85rem;
-  font-weight: 700;
+  color: #aab2bd;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
