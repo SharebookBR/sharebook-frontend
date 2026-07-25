@@ -1,14 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Link } from '../../core/models/link';
 import { RepositoriesUrls } from '../../core/models/RepositoriesUrls';
+import { Category } from '../../core/models/category';
+import { CategoryService } from '../../core/services/category/category.service';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit, OnDestroy {
+  categories: Category[] = [];
   repositoriesLinks: Link[] = [
     { url: RepositoriesUrls.BACKEND, content: 'Backend' },
     { url: RepositoriesUrls.FRONTEND, content: 'Frontend' },
@@ -34,7 +39,24 @@ export class FooterComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  private _destroySubscribes$ = new Subject<void>();
 
-  ngOnInit() { }
+  constructor(private _categoryService: CategoryService) { }
+
+  ngOnInit() {
+    this._categoryService
+      .getAllWithCounts()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((categories) => {
+        this.categories = this._categoryService
+          .getRootCategories(categories)
+          .filter((category) => (category.totalBooks || 0) > 0)
+          .sort((left, right) => left.name.localeCompare(right.name, 'pt-BR'));
+      });
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
 }

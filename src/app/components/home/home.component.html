@@ -1,8 +1,16 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero__body">
-    <h1 class="hero__title">Doe. Ganhe. Leia.</h1>
-    <p class="hero__sub">Livros físicos e digitais esperando um novo lar.</p>
+    <p class="hero__eyebrow">Doe. Ganhe. Leia.</p>
+    <h1 class="hero__title">Encontre livros gratuitos para ler e compartilhar</h1>
+    <p class="hero__sub">
+      Explore
+      <strong *ngIf="availableEbooksCount > 0">
+        {{ availableEbooksCount | number:'1.0-0':'pt-BR' }} livros digitais gratuitos
+      </strong>
+      <strong *ngIf="availableEbooksCount === 0">milhares de livros digitais gratuitos</strong>
+      e encontre livros físicos disponíveis para doação.
+    </p>
     <div class="hero__actions">
       <a mat-flat-button routerLink="/livros" class="hero__btn-primary">Explorar livros</a>
       <a mat-stroked-button routerLink="/livros/doar" class="hero__btn-secondary">Doe um livro</a>

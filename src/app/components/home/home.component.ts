@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public hasBook: Boolean = true;
   public ebooks: Book[] = [];
   public recentEbooksCount: number = 0;
+  public availableEbooksCount: number = 0;
   public categoriesShowcase: CategoryShowcase[] = [];
 
   public meetups: Meetup[] = [];
@@ -38,7 +39,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this._seo.generateTags({});
+    this._seo.generateTags({
+      title: 'Livros grátis, digitais e físicos',
+      description:
+        'Encontre livros gratuitos para ler e compartilhar. Explore livros digitais e encontre livros físicos disponíveis para doação no Sharebook.'
+    });
+    this._seo.addStructuredData({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': 'https://www.sharebook.com.br/#organization',
+          name: 'ShareBook',
+          url: 'https://www.sharebook.com.br/'
+        },
+        {
+          '@type': 'WebSite',
+          '@id': 'https://www.sharebook.com.br/#website',
+          url: 'https://www.sharebook.com.br/',
+          name: 'ShareBook',
+          publisher: {
+            '@id': 'https://www.sharebook.com.br/#organization'
+          },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://www.sharebook.com.br/buscar/{search_term_string}',
+            'query-input': 'required name=search_term_string'
+          }
+        }
+      ]
+    });
     this.getBooks();
     this.getEbooks();
     this.getCategoriesShowcase();
@@ -78,6 +108,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((response) => {
         this.recentEbooksCount = response?.total || 0;
+      });
+
+    this._scBook
+      .getAvailableEbooksCount()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((response) => {
+        this.availableEbooksCount = response?.total || 0;
       });
   }
 

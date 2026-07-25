@@ -9,11 +9,20 @@
 }
 
 .hero__title {
-  font-size: 2.75rem;
+  font-size: 2.65rem;
   font-weight: 700;
   letter-spacing: -0.5px;
   margin: 0 0 12px;
   color: #fff;
+}
+
+.hero__eyebrow {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .hero__sub {
@@ -21,6 +30,11 @@
   opacity: 0.88;
   margin: 0 0 32px;
   color: #fff;
+}
+
+.hero__sub strong {
+  color: #fff;
+  font-weight: 700;
 }
 
 .hero__actions {

@@ -7,7 +7,7 @@
     <!-- Grid row -->
     <div class="row">
       <!-- Grid column -->
-      <div class="col-md-6 mt-md-0 mt-3">
+      <div class="col-md-4 mt-md-0 mt-3">
         <!-- Content -->
         <h5 class="text-uppercase">Sharebook</h5>
         <p>Seu app livre e gratuito para doar e ganhar livros!</p>
@@ -30,6 +30,18 @@
 
       <!-- Grid column -->
       <div class="col-md-3 mb-md-0 mb-3">
+        <h5 class="text-uppercase">Categorias</h5>
+
+        <ul class="list-unstyled">
+          <li *ngFor="let category of categories">
+            <a [routerLink]="['/categorias', category.slug]">{{ category.name }}</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
         <!-- Links -->
         <h5 class="text-uppercase">Páginas</h5>
 
@@ -39,9 +51,6 @@
           </li>
           <li>
             <a routerLink="/apoie-projeto">Apoie o projeto</a>
-          </li>
-          <li>
-            <a routerLink="/categorias">Categorias</a>
           </li>
           <li>
             <a routerLink="/livros/doar">Doe um livro</a>
@@ -60,7 +69,7 @@
       <!-- Grid column -->
 
       <!-- Grid column -->
-      <div class="col-md-3 mb-md-0 mb-3">
+      <div class="col-md-2 mb-md-0 mb-3">
         <!-- Links -->
         <h5 class="text-uppercase">Github</h5>
 
