@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, forkJoin, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { BookService } from '../../core/services/book/book.service';
 import { Book } from '../../core/models/book';
@@ -22,6 +22,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   public recentEbooksCount: number = 0;
   public availableEbooksCount: number = 0;
   public categoriesShowcase: CategoryShowcase[] = [];
+
+  // Vitrine editorial fixa — Odisseia em alta, clássicos da mitologia grega.
+  // Remover ou trocar os slugs quando o gancho editorial passar.
+  private readonly MYTHOLOGY_SHOWCASE_SLUGS = [
+    'odisseia',
+    'iliada',
+    'eneida',
+    'a-caixa-de-pandora',
+    'faetonte-filho-de-apolo',
+    'o-minotauro',
+    'o-veu-de-penelope',
+  ];
+  public mythologyShowcase: Book[] = [];
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -71,9 +84,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this.getBooks();
     this.getEbooks();
+    this.getMythologyShowcase();
     this.getCategoriesShowcase();
     this.getMeetups();
     this.getMeetupsUpcoming();
+  }
+
+  getMythologyShowcase() {
+    forkJoin(
+      this.MYTHOLOGY_SHOWCASE_SLUGS.map((slug) =>
+        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+      )
+    )
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((books) => {
+        this.mythologyShowcase = books.filter((book) => !!book);
+      });
   }
 
   getBooks() {

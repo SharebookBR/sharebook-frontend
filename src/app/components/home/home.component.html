@@ -45,6 +45,24 @@
     </div>
   </ng-container>
 
+  <!-- VITRINE EDITORIAL FIXA — MITOLOGIA GREGA -->
+  <ng-container *ngIf="mythologyShowcase.length > 0">
+    <div class="shelf-header">
+      <h2 class="shelf-title">Mitologia grega</h2>
+    </div>
+    <div class="shelf-wrapper" #wm>
+      <button class="shelf-arrow shelf-arrow--left shelf-arrow--disabled" (click)="scrollShelf(wm, 'left')" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="shelf-track" (scroll)="updateArrows(wm)">
+        <app-book-card [book]="book" *ngFor="let book of mythologyShowcase"></app-book-card>
+      </div>
+      <button class="shelf-arrow shelf-arrow--right" (click)="scrollShelf(wm, 'right')" aria-label="Próximo">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </ng-container>
+
   <!-- LIVROS DIGITAIS -->
   <ng-container *ngIf="ebooks.length > 0">
     <div class="shelf-header">
