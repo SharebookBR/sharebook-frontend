@@ -2,7 +2,7 @@ import 'zone.js/dist/zone-node';
 
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import http from 'http';
 import https from 'https';
 import { join } from 'path';
@@ -13,6 +13,20 @@ import { existsSync } from 'fs';
 
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
+const HOME_CACHE_TTL_MS = 30 * 60 * 1000;
+
+interface HomeCacheEntry {
+  html: string;
+  expiresAt: number;
+}
+
+interface SsrRenderResult {
+  html: string;
+  statusCode: number;
+}
+
+let homeCache: HomeCacheEntry | null = null;
+let homeRenderInFlight: Promise<SsrRenderResult> | null = null;
 
 interface SitemapBook {
   slug: string;
@@ -109,6 +123,80 @@ export const buildSitemap = (books: SitemapBook[], categories: SitemapCategory[]
   ].join('\n');
 };
 
+const renderSsr = (
+  indexHtml: string,
+  req: Request,
+  res: Response
+): Promise<SsrRenderResult> =>
+  new Promise((resolve, reject) => {
+    res.render(indexHtml, {
+      req,
+      providers: [
+        { provide: APP_BASE_HREF, useValue: req.baseUrl },
+        { provide: RESPONSE, useValue: res },
+      ],
+    }, (error, html) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve({ html, statusCode: res.statusCode });
+    });
+  });
+
+const setHomeCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'): void => {
+  res.set('Cache-Control', 'public, max-age=1800');
+  res.set('X-SSR-Cache', status);
+};
+
+const serveCachedHome = async (
+  indexHtml: string,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const now = Date.now();
+  if (homeCache && homeCache.expiresAt > now) {
+    setHomeCacheHeaders(res, 'HIT');
+    res.status(200).send(homeCache.html);
+    return;
+  }
+
+  homeCache = null;
+  const isLeader = homeRenderInFlight === null;
+
+  if (isLeader) {
+    setHomeCacheHeaders(res, 'MISS');
+    homeRenderInFlight = renderSsr(indexHtml, req, res).then(result => {
+      if (result.statusCode === 200) {
+        homeCache = {
+          html: result.html,
+          expiresAt: Date.now() + HOME_CACHE_TTL_MS,
+        };
+      }
+      return result;
+    });
+  } else {
+    setHomeCacheHeaders(res, 'COALESCED');
+  }
+
+  try {
+    const result = await homeRenderInFlight!;
+    if (result.statusCode !== 200) {
+      res.set('Cache-Control', 'no-store');
+    }
+    res.status(result.statusCode).send(result.html);
+  } catch (error) {
+    res.set('Cache-Control', 'no-store');
+    next(error);
+  } finally {
+    if (isLeader) {
+      homeRenderInFlight = null;
+    }
+  }
+};
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): Express {
   const server = express();
@@ -145,15 +233,17 @@ export function app(): Express {
     maxAge: '1y'
   }));
 
+  // Cache the complete public home SSR output. Cache hits do not bootstrap Angular,
+  // so neither the Node renderer nor browser hydration repeats the initial API calls.
+  server.get('/', (req: Request, res: Response, next: NextFunction) => {
+    void serveCachedHome(indexHtml, req, res, next);
+  });
+
   // All regular routes use the Universal engine
-  server.get('*', (req: Request, res: Response) => {
-    res.render(indexHtml, {
-      req,
-      providers: [
-        { provide: APP_BASE_HREF, useValue: req.baseUrl },
-        { provide: RESPONSE, useValue: res },
-      ],
-    });
+  server.get('*', (req: Request, res: Response, next: NextFunction) => {
+    void renderSsr(indexHtml, req, res)
+      .then(result => res.status(result.statusCode).send(result.html))
+      .catch(next);
   });
 
   return server;
