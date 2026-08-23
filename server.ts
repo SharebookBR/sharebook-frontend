@@ -14,6 +14,9 @@ import { existsSync } from 'fs';
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
 const HOME_CACHE_TTL_MS = 30 * 60 * 1000;
+const PERMANENT_REDIRECTS: Record<string, string> = {
+  '/livros/eu-e-outras-poesias_copy1': '/livros/eu-e-outras-poesias',
+};
 
 interface HomeCacheEntry {
   html: string;
@@ -226,6 +229,12 @@ export function app(): Express {
       console.error('Unable to generate sitemap', error);
       res.status(503).send('Sitemap temporarily unavailable');
     }
+  });
+
+  Object.entries(PERMANENT_REDIRECTS).forEach(([source, destination]) => {
+    server.get(source, (_req: Request, res: Response) => {
+      res.redirect(301, destination);
+    });
   });
 
   // Serve static files from /browser
