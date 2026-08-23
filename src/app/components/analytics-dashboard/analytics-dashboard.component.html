@@ -44,6 +44,77 @@
       </div>
     </div>
 
+    <div class="card search-card">
+      <h3>Busca nos últimos 30 dias</h3>
+
+      <div class="search-kpi-grid">
+        <div class="search-kpi">
+          <span class="search-kpi-label">Buscas</span>
+          <strong>{{ searchAnalytics.totalSearches | number }}</strong>
+          <small>{{ searchesPerDay | number:'1.1-1' }} por dia</small>
+        </div>
+        <div class="search-kpi">
+          <span class="search-kpi-label">Usuários</span>
+          <strong>{{ searchAnalytics.users | number }}</strong>
+          <small>{{ searchesPerUser | number:'1.1-1' }} buscas por usuário</small>
+        </div>
+        <div class="search-kpi">
+          <span class="search-kpi-label">Termos distintos</span>
+          <strong>{{ searchAnalytics.distinctTerms | number }}</strong>
+          <small>como foram digitados</small>
+        </div>
+        <div class="search-kpi">
+          <span class="search-kpi-label">No computador</span>
+          <strong>{{ desktopSearches ? (deviceShare(desktopSearches) | number:'1.0-0') : 0 }}%</strong>
+          <small>{{ desktopSearches?.count ?? 0 | number }} buscas</small>
+        </div>
+      </div>
+
+      <div class="search-details-grid">
+        <div>
+          <h4>Termos mais buscados</h4>
+          <table class="books-table events-table search-terms-table">
+            <thead>
+              <tr>
+                <th>Termo</th>
+                <th class="text-right">Buscas</th>
+                <th class="text-right">Usuários</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let term of searchAnalytics.topTerms">
+                <td class="event-name">{{ term.term }}</td>
+                <td class="text-right">{{ term.count | number }}</td>
+                <td class="text-right">{{ term.users | number }}</td>
+              </tr>
+              <tr *ngIf="searchAnalytics.topTerms.length === 0">
+                <td colspan="3" class="empty-row">Sem buscas no período</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h4>Dispositivos</h4>
+          <div class="device-list">
+            <div class="device-row" *ngFor="let device of searchAnalytics.devices">
+              <div class="device-summary">
+                <span>{{ deviceLabel(device.device) }}</span>
+                <strong>{{ deviceShare(device) | number:'1.0-0' }}%</strong>
+              </div>
+              <div class="device-track" aria-hidden="true">
+                <div class="device-bar" [style.width.%]="deviceShare(device)"></div>
+              </div>
+              <small>{{ device.count | number }} buscas · {{ device.users | number }} usuários</small>
+            </div>
+          </div>
+          <p class="measurement-note">
+            Ainda não é possível separar buscas sem resultado: essa métrica não está disponível no GA4.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <div class="charts-grid">
       <div class="card">
         <h3>Sessões por semana</h3>

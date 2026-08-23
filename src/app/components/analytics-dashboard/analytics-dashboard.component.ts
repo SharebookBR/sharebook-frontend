@@ -10,6 +10,15 @@ Chart.register(...registerables);
 interface WeeklyPoint { label: string; value: number; }
 interface BookMetric { path: string; title: string; count: number; }
 interface EventMetric { eventName: string; count: number; users: number; }
+interface SearchTermMetric { term: string; count: number; users: number; }
+interface SearchDeviceMetric { device: string; count: number; users: number; }
+interface SearchAnalytics {
+  totalSearches: number;
+  users: number;
+  distinctTerms: number;
+  topTerms: SearchTermMetric[];
+  devices: SearchDeviceMetric[];
+}
 interface DashboardData {
   sessions: WeeklyPoint[];
   downloads: WeeklyPoint[];
@@ -24,6 +33,7 @@ interface DashboardData {
   topBooksByDownloadsPerWeek: Record<string, BookMetric[]>;
   eventSummary: EventMetric[];
   eventSummaryPerWeek: Record<string, EventMetric[]>;
+  searchAnalytics: SearchAnalytics;
 }
 
 @Component({
@@ -184,6 +194,45 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     if (!this.data) return [];
     if (!this.selectedWeek || this.selectedWeek === 'all') return this.data.eventSummary ?? [];
     return this.data.eventSummaryPerWeek?.[this.selectedWeek] ?? [];
+  }
+
+  get searchAnalytics(): SearchAnalytics {
+    return this.data?.searchAnalytics ?? {
+      totalSearches: 0,
+      users: 0,
+      distinctTerms: 0,
+      topTerms: [],
+      devices: []
+    };
+  }
+
+  get searchesPerDay(): number {
+    return this.searchAnalytics.totalSearches / 30;
+  }
+
+  get searchesPerUser(): number {
+    return this.searchAnalytics.users > 0
+      ? this.searchAnalytics.totalSearches / this.searchAnalytics.users
+      : 0;
+  }
+
+  get desktopSearches(): SearchDeviceMetric | undefined {
+    return this.searchAnalytics.devices.find(device => device.device === 'desktop');
+  }
+
+  deviceShare(device: SearchDeviceMetric): number {
+    return this.searchAnalytics.totalSearches > 0
+      ? (device.count / this.searchAnalytics.totalSearches) * 100
+      : 0;
+  }
+
+  deviceLabel(device: string): string {
+    const labels: Record<string, string> = {
+      desktop: 'Computador',
+      mobile: 'Celular',
+      tablet: 'Tablet'
+    };
+    return labels[device] ?? device;
   }
 
   get baseUrl(): string {
