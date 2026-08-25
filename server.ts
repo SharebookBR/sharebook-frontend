@@ -16,6 +16,8 @@ const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
 const HOME_CACHE_TTL_MS = 30 * 60 * 1000;
 const PERMANENT_REDIRECTS: Record<string, string> = {
   '/livros/eu-e-outras-poesias_copy1': '/livros/eu-e-outras-poesias',
+  '/livros/the-art-of-high-performance-computing---volum':
+    '/livros/the-art-of-high-performance-computing-volume-1',
 };
 
 interface HomeCacheEntry {
