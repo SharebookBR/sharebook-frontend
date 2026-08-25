@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Meta, Title } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Book } from '../../../core/models/book';
 import { Category } from '../../../core/models/category';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-category-books',
@@ -34,8 +34,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private bookService: BookService,
     private categoryService: CategoryService,
-    private titleService: Title,
-    private metaService: Meta
+    private seoService: SeoService
   ) {}
 
   ngOnInit() {
@@ -122,13 +121,23 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     const categoryPath = this.parentCategory
       ? `${this.parentCategory.name} > ${this.category.name}`
       : this.category.name;
-    const title = `${categoryPath} - Livros | ShareBook`;
-    const description = `Encontre livros de ${categoryPath} disponíveis para doação no ShareBook. Peça seu livro gratuitamente.`;
+    const categorySlug = this.category.slug
+      || this.categoryService.generateSlug(this.category.name);
+    const parentSlug = this.parentCategory
+      ? (this.parentCategory.slug || this.categoryService.generateSlug(this.parentCategory.name))
+      : '';
+    const path = this.parentCategory
+      ? `/categorias/${parentSlug}/${categorySlug}`
+      : `/categorias/${categorySlug}`;
+    const description =
+      `Encontre livros de ${categoryPath} disponíveis para doação no ShareBook. Solicite seu livro gratuitamente.`;
 
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'description', content: description });
-    this.metaService.updateTag({ property: 'og:title', content: title });
-    this.metaService.updateTag({ property: 'og:description', content: description });
+    this.seoService.generateTags({
+      title: `${categoryPath} - Livros`,
+      description,
+      path,
+      ogType: 'website',
+    });
   }
 
   public getSubcategoryRoute(subcategory: Category): string[] {

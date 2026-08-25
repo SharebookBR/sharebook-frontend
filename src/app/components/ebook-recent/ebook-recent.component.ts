@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Book } from '../../core/models/book';
 import { BookService } from '../../core/services/book/book.service';
+import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-ebook-recent',
@@ -20,16 +20,16 @@ export class EbookRecentComponent implements OnInit, OnDestroy {
 
   constructor(
     private _bookService: BookService,
-    private _titleService: Title,
-    private _metaService: Meta
+    private _seo: SeoService
   ) {}
 
   ngOnInit() {
-    this._titleService.setTitle('Novos livros digitais da semana | ShareBook');
-    this._metaService.updateTag({
-      name: 'description',
-      content:
+    this._seo.generateTags({
+      title: 'Novos livros digitais da semana',
+      description:
         'Veja os livros digitais aprovados nesta semana no ShareBook e escolha sua próxima leitura gratuita.',
+      path: '/livros-digitais/novidades',
+      ogType: 'website',
     });
 
     this.loadBooks();

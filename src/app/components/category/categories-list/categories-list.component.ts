@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Title, Meta } from '@angular/platform-browser';
 
-import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
-import { Book } from '../../../core/models/book';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -22,15 +20,15 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private _scCategory: CategoryService,
-    private titleService: Title,
-    private metaService: Meta
+    private seoService: SeoService
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('Categorias | ShareBook');
-    this.metaService.updateTag({
-      name: 'description',
-      content: 'Navegue por todas as categorias de livros disponíveis para doação no ShareBook.',
+    this.seoService.generateTags({
+      title: 'Categorias',
+      description: 'Navegue por todas as categorias de livros disponíveis para doação no ShareBook.',
+      path: '/categorias',
+      ogType: 'website',
     });
 
     this.loadCategoriesWithCounts();
