@@ -29,6 +29,10 @@ describe('SeoService', () => {
     expect(title.getTitle()).toBe('Tecnologia > IA - Livros | ShareBook');
     expect(meta.getTag("name='description'")?.content)
       .toBe('Livros de inteligência artificial disponíveis no ShareBook.');
+    expect(meta.getTag("name='twitter:description'")?.content)
+      .toBe('Livros de inteligência artificial disponíveis no ShareBook.');
+    expect(meta.getTag("property='og:description'")?.content)
+      .toBe('Livros de inteligência artificial disponíveis no ShareBook.');
     expect(meta.getTag("name='twitter:title'")?.content)
       .toBe('Tecnologia > IA - Livros | ShareBook');
     expect(meta.getTag("property='og:type'")?.content).toBe('website');

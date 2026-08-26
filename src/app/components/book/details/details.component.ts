@@ -23,6 +23,7 @@ import { ConfirmationDialogComponent } from '../../../core/directives/confirmati
 import { ToastrService } from 'ngx-toastr';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
+import { buildBookMetaDescription } from '../../../core/services/seo/book-meta-description';
 
 @Component({
   selector: 'app-details',
@@ -168,9 +169,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   this.state = 'ready';
                 }
 
+                const metaDescription = buildBookMetaDescription({
+                  title: this.bookInfo.title,
+                  author: this.bookInfo.author,
+                  type: this.bookInfo.type,
+                  synopsis: this.bookInfo.synopsis,
+                });
+
                 this._seo.generateTags({
                   title: this.bookInfo.title,
-                  description: this.bookInfo.synopsis,
+                  description: metaDescription,
                   image: this.bookInfo.imageUrl,
                   slug: slug,
                 });
