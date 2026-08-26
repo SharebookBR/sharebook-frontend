@@ -15,9 +15,9 @@
 
   <div *ngIf="loading" class="analytics-loading">
     <div class="spinner"></div>
-    <p>Carregando dados do GA4...</p>
+    <p>Carregando analytics...</p>
   </div>
-  <div *ngIf="error" class="analytics-error">Erro ao carregar dados do GA4.</div>
+  <div *ngIf="error" class="analytics-error">Erro ao carregar analytics.</div>
 
   <ng-container *ngIf="data && !loading">
 
@@ -41,6 +41,65 @@
         <div class="kpi-label">Cadastros</div>
         <div class="kpi-value">{{ kpiSignups | number }}</div>
         <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
+      </div>
+    </div>
+
+    <div class="card organic-card" *ngIf="searchConsole.available">
+      <h3>Google orgânico · últimos 28 dias</h3>
+
+      <div class="organic-period">
+        <span>Dados fechados de {{ formatIsoDate(searchConsole.startDate) }} a {{ formatIsoDate(searchConsole.endDate) }}</span>
+        <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Asharebook.com.br"
+           target="_blank" rel="noopener noreferrer">Abrir Search Console</a>
+      </div>
+
+      <div class="search-kpi-grid">
+        <div class="search-kpi organic-kpi">
+          <span class="search-kpi-label">Cliques</span>
+          <strong>{{ searchConsole.current.clicks | number:'1.0-0' }}</strong>
+          <small>{{ metricChange(searchConsole.current.clicks, searchConsole.previous.clicks) }}</small>
+        </div>
+        <div class="search-kpi organic-kpi">
+          <span class="search-kpi-label">Impressões</span>
+          <strong>{{ searchConsole.current.impressions | number:'1.0-0' }}</strong>
+          <small>{{ metricChange(searchConsole.current.impressions, searchConsole.previous.impressions) }}</small>
+        </div>
+        <div class="search-kpi organic-kpi">
+          <span class="search-kpi-label">CTR</span>
+          <strong>{{ searchConsole.current.ctr | percent:'1.2-2' }}</strong>
+          <small>{{ ctrChange() }}</small>
+        </div>
+        <div class="search-kpi organic-kpi">
+          <span class="search-kpi-label">Posição média</span>
+          <strong>{{ searchConsole.current.position | number:'1.2-2' }}</strong>
+          <small>{{ positionChange() }}</small>
+        </div>
+      </div>
+
+      <div class="organic-details-grid">
+        <div class="organic-chart">
+          <h4>Evolução diária</h4>
+          <canvas #chartOrganic></canvas>
+        </div>
+
+        <div class="organic-opportunities">
+          <h4>Oportunidades</h4>
+          <p class="organic-opportunities-intro">Boas impressões, CTR abaixo de 5% e posição até 20.</p>
+          <ol *ngIf="searchConsole.opportunities.length > 0">
+            <li *ngFor="let opportunity of searchConsole.opportunities">
+              <a [href]="opportunity.page" target="_blank" rel="noopener noreferrer">{{ opportunity.query }}</a>
+              <span>{{ opportunityPageLabel(opportunity.page) }}</span>
+              <small>
+                {{ opportunity.impressions | number:'1.0-0' }} impressões ·
+                {{ opportunity.ctr | percent:'1.1-1' }} CTR ·
+                posição {{ opportunity.position | number:'1.1-1' }}
+              </small>
+            </li>
+          </ol>
+          <p *ngIf="searchConsole.opportunities.length === 0" class="empty-row">
+            Nenhuma oportunidade clara neste período.
+          </p>
+        </div>
       </div>
     </div>
 

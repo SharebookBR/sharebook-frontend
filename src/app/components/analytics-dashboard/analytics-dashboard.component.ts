@@ -19,6 +19,30 @@ interface SearchAnalytics {
   topTerms: SearchTermMetric[];
   devices: SearchDeviceMetric[];
 }
+interface SearchConsoleMetricSummary {
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+interface SearchConsoleDailyMetric {
+  date: string;
+  clicks: number;
+  impressions: number;
+}
+interface SearchConsoleOpportunity extends SearchConsoleMetricSummary {
+  query: string;
+  page: string;
+}
+interface SearchConsoleAnalytics {
+  available: boolean;
+  startDate: string;
+  endDate: string;
+  current: SearchConsoleMetricSummary;
+  previous: SearchConsoleMetricSummary;
+  daily: SearchConsoleDailyMetric[];
+  opportunities: SearchConsoleOpportunity[];
+}
 interface DashboardData {
   sessions: WeeklyPoint[];
   downloads: WeeklyPoint[];
@@ -34,6 +58,7 @@ interface DashboardData {
   eventSummary: EventMetric[];
   eventSummaryPerWeek: Record<string, EventMetric[]>;
   searchAnalytics: SearchAnalytics;
+  searchConsole?: SearchConsoleAnalytics;
 }
 
 @Component({
@@ -44,6 +69,7 @@ interface DashboardData {
 export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chartSessions') chartSessionsRef: ElementRef<HTMLCanvasElement>;
   @ViewChild('chartDownloads') chartDownloadsRef: ElementRef<HTMLCanvasElement>;
+  @ViewChild('chartOrganic') chartOrganicRef: ElementRef<HTMLCanvasElement>;
 
   data: DashboardData | null = null;
   loading = true;
@@ -52,6 +78,7 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
 
   private chartSessions: Chart | null = null;
   private chartDownloads: Chart | null = null;
+  private chartOrganic: Chart | null = null;
   private destroy$ = new Subject<void>();
 
   readonly BLUE = 'rgba(41,171,226,0.7)';
@@ -87,6 +114,9 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     if (this.data && !this.chartSessions) {
       this.buildCharts();
     }
+    if (this.searchConsole.available && !this.chartOrganic) {
+      this.buildOrganicChart();
+    }
   }
 
   ngOnDestroy() {
@@ -94,6 +124,7 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     this.destroy$.complete();
     this.chartSessions?.destroy();
     this.chartDownloads?.destroy();
+    this.chartOrganic?.destroy();
   }
 
   get allLabels(): string[] {
@@ -206,6 +237,57 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     };
   }
 
+  get searchConsole(): SearchConsoleAnalytics {
+    return this.data?.searchConsole ?? {
+      available: false,
+      startDate: '',
+      endDate: '',
+      current: { clicks: 0, impressions: 0, ctr: 0, position: 0 },
+      previous: { clicks: 0, impressions: 0, ctr: 0, position: 0 },
+      daily: [],
+      opportunities: []
+    };
+  }
+
+  metricChange(current: number, previous: number): string {
+    if (previous === 0) return current === 0 ? 'sem variação' : 'novo no período';
+    const change = ((current - previous) / previous) * 100;
+    const prefix = change > 0 ? '+' : '';
+    return `${prefix}${change.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}% vs período anterior`;
+  }
+
+  ctrChange(): string {
+    const change = (this.searchConsole.current.ctr - this.searchConsole.previous.ctr) * 100;
+    const prefix = change > 0 ? '+' : '';
+    return `${prefix}${change.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} p.p. vs período anterior`;
+  }
+
+  positionChange(): string {
+    const current = this.searchConsole.current.position;
+    const previous = this.searchConsole.previous.position;
+    if (previous === 0 || current === previous) return 'sem variação relevante';
+    const difference = Math.abs(current - previous).toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    return current < previous
+      ? `${difference} posições acima`
+      : `${difference} posições abaixo`;
+  }
+
+  formatIsoDate(value: string): string {
+    if (!value) return '';
+    const [year, month, day] = value.split('-');
+    return `${day}/${month}/${year}`;
+  }
+
+  opportunityPageLabel(page: string): string {
+    const path = page.replace(/^https?:\/\/[^/]+/i, '').replace(/\/$/, '');
+    const slug = path.split('/').filter(Boolean).pop();
+    if (!slug) return page;
+    return decodeURIComponent(slug).replace(/-/g, ' ');
+  }
+
   get searchesPerDay(): number {
     return this.searchAnalytics.totalSearches / 30;
   }
@@ -303,6 +385,70 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
         }]
       },
       options: opts
+    });
+  }
+
+  private buildOrganicChart() {
+    if (!this.chartOrganicRef?.nativeElement || this.searchConsole.daily.length === 0) return;
+
+    const labels = this.searchConsole.daily.map(point => {
+      const [, month, day] = point.date.split('-');
+      return `${day}/${month}`;
+    });
+
+    this.chartOrganic = new Chart(this.chartOrganicRef.nativeElement, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Cliques',
+            data: this.searchConsole.daily.map(point => point.clicks),
+            borderColor: this.BORDER,
+            backgroundColor: this.BLUE_DIM,
+            borderWidth: 2,
+            pointRadius: 2,
+            tension: 0.25,
+            yAxisID: 'clicks'
+          },
+          {
+            label: 'Impressões',
+            data: this.searchConsole.daily.map(point => point.impressions),
+            borderColor: this.BORDER_OR,
+            backgroundColor: this.ORANGE_DL,
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.25,
+            yAxisID: 'impressions'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { boxWidth: 10, usePointStyle: true }
+          }
+        },
+        scales: {
+          x: { ticks: { maxTicksLimit: 7, font: { size: 10 } }, grid: { display: false } },
+          clicks: {
+            beginAtZero: true,
+            position: 'left',
+            ticks: { precision: 0, font: { size: 10 } },
+            grid: { color: '#f0f0f0' }
+          },
+          impressions: {
+            beginAtZero: true,
+            position: 'right',
+            ticks: { precision: 0, font: { size: 10 } },
+            grid: { drawOnChartArea: false }
+          }
+        }
+      }
     });
   }
 

@@ -78,6 +78,69 @@
 .kpi-value { font-size: 32px; font-weight: 700; color: #29abe2; }
 .kpi-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
 
+.organic-card { margin-bottom: 20px; }
+
+.organic-period {
+  align-items: center;
+  color: #888;
+  display: flex;
+  font-size: 11px;
+  justify-content: space-between;
+  margin: -4px 0 18px;
+}
+
+.organic-period a { color: #29abe2; font-weight: 600; text-decoration: none; }
+.organic-period a:hover { text-decoration: underline; }
+
+.organic-kpi small { color: #777; font-size: 11px; line-height: 1.35; }
+
+.organic-details-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+}
+
+.organic-details-grid h4 {
+  color: #555;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.organic-chart { height: 260px; min-width: 0; }
+.organic-chart canvas { max-height: none; }
+
+.organic-opportunities-intro {
+  color: #888;
+  font-size: 11px;
+  line-height: 1.4;
+  margin: -4px 0 10px;
+}
+
+.organic-opportunities ol { margin: 0; padding-left: 22px; }
+
+.organic-opportunities li {
+  border-bottom: 1px solid #eee;
+  padding: 8px 0 9px 4px;
+}
+
+.organic-opportunities li:last-child { border-bottom: 0; }
+
+.organic-opportunities a {
+  color: #333;
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.organic-opportunities a:hover { color: #29abe2; text-decoration: underline; }
+.organic-opportunities li > span { color: #777; display: block; font-size: 11px; text-transform: capitalize; }
+.organic-opportunities small { color: #999; display: block; font-size: 10px; margin-top: 2px; }
+
 .search-card { margin-bottom: 20px; }
 
 .search-kpi-grid {
@@ -177,7 +240,8 @@
 @media (max-width: 768px) {
   .analytics-container { padding: 16px; }
   .analytics-header { align-items: flex-start; flex-direction: column; gap: 12px; }
-  .charts-grid, .search-details-grid { grid-template-columns: 1fr; }
+  .charts-grid, .organic-details-grid, .search-details-grid { grid-template-columns: 1fr; }
+  .organic-period { align-items: flex-start; flex-direction: column; gap: 5px; }
   .search-kpi-grid { grid-template-columns: 1fr 1fr; }
 }
 
