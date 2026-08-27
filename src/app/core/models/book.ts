@@ -29,6 +29,7 @@ export class Book {
   category: Category | string;
   categoryInfo?: BookCategoryInfo;
   imageUrl: string;
+  thumbnailUrl?: string;
   imageName: string;
   chooseDate: Date;
   synopsis: string;

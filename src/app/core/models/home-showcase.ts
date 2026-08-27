@@ -4,6 +4,7 @@ export interface ShowcaseBookItem {
   author: string;
   slug: string;
   imageUrl: string;
+  thumbnailUrl?: string;
   type: string;
 }
 

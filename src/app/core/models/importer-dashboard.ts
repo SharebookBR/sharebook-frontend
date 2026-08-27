@@ -44,6 +44,7 @@ export interface ImporterQueueListItem {
   plannedAt?: string;
   bookSlug?: string;
   bookImageSlug?: string;
+  bookThumbnailUrl?: string;
   metadataJson?: string;
   adminNotes?: string;
   createdAt: string;

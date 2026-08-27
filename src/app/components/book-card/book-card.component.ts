@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 export interface BookCardInput {
   slug: string;
   imageUrl: string;
+  thumbnailUrl?: string;
   title: string;
   type: string;
 }
@@ -17,5 +18,15 @@ export class BookCardComponent {
 
   get isEbook(): boolean {
     return this.book?.type === 'Eletronic';
+  }
+
+  useOriginalCover(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    const originalUrl = this.book?.imageUrl;
+
+    if (originalUrl && image.dataset.originalFallbackApplied !== 'true') {
+      image.dataset.originalFallbackApplied = 'true';
+      image.src = originalUrl;
+    }
   }
 }

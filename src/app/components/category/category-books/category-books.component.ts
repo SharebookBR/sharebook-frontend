@@ -26,7 +26,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   public ebooksCount = 0;
   public totalItems = 0;
   public page = 1;
-  public pageSize = 24;
+  public pageSize = 100;
 
   private _destroySubscribes$ = new Subject<void>();
 

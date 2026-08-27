@@ -10,6 +10,7 @@ export class FullSearchItem {
   category: string;
   imageSlug: string;
   imageUrl: string;
+  thumbnailUrl?: string;
   city: string;
   state: string;
   synopsis: string;

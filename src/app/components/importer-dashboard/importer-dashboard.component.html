@@ -125,7 +125,11 @@
               <div class="importer-item__position">#{{ item.id }}</div>
               
               <div class="importer-item__thumbnail" *ngIf="item.status === 'done' && item.bookSlug">
-                <img [src]="getBookImageUrl(item)" [alt]="item.title" loading="lazy">
+                <img
+                  [src]="getBookImageUrl(item)"
+                  [alt]="item.title"
+                  loading="lazy"
+                  (error)="useOriginalBookImage($event, item)">
               </div>
 
               <div class="importer-item__content">

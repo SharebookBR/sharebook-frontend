@@ -328,6 +328,24 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   }
 
   getBookImageUrl(item: ImporterQueueListItem): string {
+    if (item.bookThumbnailUrl) {
+      return item.bookThumbnailUrl;
+    }
+
+    return this.getBookOriginalImageUrl(item);
+  }
+
+  useOriginalBookImage(event: Event, item: ImporterQueueListItem): void {
+    const image = event.target as HTMLImageElement;
+    const originalUrl = this.getBookOriginalImageUrl(item);
+
+    if (originalUrl && image.dataset.originalFallbackApplied !== 'true') {
+      image.dataset.originalFallbackApplied = 'true';
+      image.src = originalUrl;
+    }
+  }
+
+  private getBookOriginalImageUrl(item: ImporterQueueListItem): string {
     const imageName = item.bookImageSlug || (item.bookSlug ? `${item.bookSlug}.jpg` : '');
 
     if (!imageName) {

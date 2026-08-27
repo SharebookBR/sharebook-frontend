@@ -16,7 +16,8 @@ describe('BookCardComponent', () => {
     fixture = TestBed.createComponent(BookCardComponent);
     fixture.componentInstance.book = {
       slug: 'clean-code',
-      imageUrl: 'https://img.sharebook.com.br/clean-code.webp',
+      imageUrl: 'https://api.sharebook.com.br/Images/Books/clean-code.png',
+      thumbnailUrl: 'https://api.sharebook.com.br/Images/Books/Thumbs/clean-code.webp',
       title: 'Clean Code',
       type: 'Eletronic',
     };
@@ -30,5 +31,15 @@ describe('BookCardComponent', () => {
     expect(image.getAttribute('decoding')).toBe('async');
     expect(image.getAttribute('width')).toBe('170');
     expect(image.getAttribute('height')).toBe('230');
+    expect(image.src).toContain('/Images/Books/Thumbs/clean-code.webp');
+  });
+
+  it('falls back to the original cover when the thumbnail fails', () => {
+    const image = fixture.debugElement.query(By.css('img')).nativeElement as HTMLImageElement;
+
+    image.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    expect(image.src).toContain('/Images/Books/clean-code.png');
   });
 });
