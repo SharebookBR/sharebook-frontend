@@ -164,6 +164,12 @@ export class BookService {
     );
   }
 
+  public getRecommendations(bookId: string, limit: number = 6): Observable<Book[]> {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/Recommendations/${bookId}?limit=${limit}`
+    );
+  }
+
   public update(book: Book) {
     return this._http.put<any>(
       `${this.config.apiEndpoint}/book/${book.id}`,

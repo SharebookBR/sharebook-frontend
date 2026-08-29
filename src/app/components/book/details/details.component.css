@@ -129,6 +129,48 @@
   height: 18px;
 }
 
+.recommendations {
+  margin: 44px 0 24px;
+  padding-top: 28px;
+  border-top: 1px solid #e3eaf3;
+}
+
+.recommendations-heading {
+  margin-bottom: 8px;
+}
+
+.recommendations-heading h2 {
+  margin: 0 0 4px;
+  color: #143466;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.recommendations-heading p {
+  margin: 0;
+  color: #5c6f89;
+}
+
+.recommendations-track {
+  display: grid;
+  grid-template-columns: repeat(6, 170px);
+  gap: 20px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 8px 2px 14px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.recommendation-card {
+  width: 170px;
+  scroll-snap-align: start;
+}
+
+:host ::ng-deep .recommendation-card .figure {
+  margin: 1rem 0;
+}
+
 @media (max-width: 767px) {
   .details-actions {
     justify-content: center;
@@ -141,6 +183,20 @@
     width: min(100%, 280px);
     justify-content: center;
     margin: 0;
+  }
+
+  .recommendations {
+    margin-top: 32px;
+  }
+
+  .recommendations-heading h2 {
+    font-size: 1.35rem;
+  }
+
+  .recommendations-track {
+    justify-content: start;
+    margin-right: -15px;
+    padding-right: 15px;
   }
 }
 

@@ -194,6 +194,23 @@
         </div>
       </div>
     </div>
+
+    <section class="recommendations" *ngIf="recommendations.length" aria-labelledby="recommendations-title">
+      <div class="recommendations-heading">
+        <h2 id="recommendations-title">Continue explorando</h2>
+        <p>Livros disponíveis que combinam com esta leitura.</p>
+      </div>
+
+      <div class="recommendations-track" aria-label="Livros recomendados">
+        <div
+          class="recommendation-card"
+          *ngFor="let book of recommendations; let position = index; trackBy: trackRecommendation"
+          (click)="onRecommendationClick(book, position)"
+        >
+          <app-book-card [book]="book"></app-book-card>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="share-modal-backdrop" *ngIf="showShareModal" (click)="closeShareModal()">

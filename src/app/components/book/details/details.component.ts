@@ -44,6 +44,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
+  recommendations: Book[] = [];
   categoryName: string;
   freightName: string;
   isFreeFreight: Boolean = true;
@@ -113,6 +114,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.freightName = book.freightOption;
 
                 this.bookInfo = book;
+                this.loadRecommendations(book.id);
                 this.pageTitle = this.bookInfo.title;
                 this.available =
                   this.bookInfo.status === BookDonationStatus.AVAILABLE;
@@ -443,6 +445,41 @@ export class DetailsComponent implements OnInit, OnDestroy {
       book_title: this.bookInfo.title,
       book_slug: this.bookInfo.slug,
     });
+  }
+
+  onRecommendationClick(book: Book, position: number): void {
+    this._ga.sendEvent('recommendation_click', {
+      source_book_slug: this.bookInfo.slug,
+      recommended_book_slug: book.slug,
+      recommended_book_type: book.type,
+      position: position + 1,
+    });
+  }
+
+  trackRecommendation(_index: number, book: Book): string {
+    return book.id;
+  }
+
+  private loadRecommendations(bookId: string): void {
+    this._scBook
+      .getRecommendations(bookId, 6)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        books => {
+          this.recommendations = books;
+          if (books.length > 0) {
+            this._ga.sendEvent('recommendation_impression', {
+              source_book_slug: this.bookInfo.slug,
+              first_recommended_book_slug: books[0].slug,
+              recommendation_count: books.length,
+            });
+          }
+        },
+        error => {
+          console.error('Erro ao carregar recomendações:', error);
+          this.recommendations = [];
+        }
+      );
   }
 
   private copyShareText(text: string): Promise<void> {
