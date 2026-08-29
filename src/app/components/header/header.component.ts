@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { User } from '../../core/models/user';
 import { UserService } from '../../core/services/user/user.service';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 import { EnvironmentSwitcherService } from '../../core/services/environment-switcher/environment-switcher.service';
+import { InputSearchComponent } from '../input-search/input-search.component';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   shareBookUser = new User();
   logoUrl = 'assets/img/logo.png';
   showUserMenu = false;
+  mobileSearchOpen = false;
   isDevMode = false;
+
+  @ViewChild('mobileSearch') mobileSearch: InputSearchComponent;
+  @ViewChild('mobileSearchToggle') mobileSearchToggle: ElementRef<HTMLButtonElement>;
 
   get firstName(): string {
     if (!this.shareBookUser?.name) return '';
@@ -61,6 +66,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleUserMenu(event: Event) {
     event.stopPropagation();
     this.showUserMenu = !this.showUserMenu;
+  }
+
+  toggleMobileSearch(): void {
+    if (this.mobileSearchOpen) {
+      this.closeMobileSearch();
+      return;
+    }
+
+    this.mobileSearchOpen = true;
+    setTimeout(() => this.mobileSearch?.focus());
+  }
+
+  closeMobileSearch(restoreFocus = true): void {
+    if (!this.mobileSearchOpen) return;
+
+    this.mobileSearchOpen = false;
+    if (restoreFocus) {
+      setTimeout(() => this.mobileSearchToggle?.nativeElement.focus());
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  handleEscape(): void {
+    this.closeMobileSearch();
   }
 
   @HostListener('document:click')

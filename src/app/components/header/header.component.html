@@ -1,10 +1,32 @@
 <!-- ============================================================ -->
-<!-- Mobile top bar (< 768px) — só o logo                       -->
+<!-- Mobile top bar (< 768px)                                   -->
 <!-- ============================================================ -->
-<div class="mobile-top-bar d-flex d-md-none">
-  <a routerLink="/">
+<div class="mobile-top-bar d-md-none">
+  <span class="mobile-top-bar__balance" aria-hidden="true"></span>
+  <a routerLink="/" class="mobile-top-bar__logo-link">
     <img src="{{ logoUrl }}" alt="logotipo" class="mobile-top-bar__logo" />
   </a>
+  <button
+    #mobileSearchToggle
+    type="button"
+    class="mobile-top-bar__search-toggle"
+    [attr.aria-expanded]="mobileSearchOpen"
+    aria-controls="mobile-search-panel"
+    [attr.aria-label]="mobileSearchOpen ? 'Fechar busca' : 'Abrir busca'"
+    (click)="toggleMobileSearch()"
+  >
+    <mat-icon aria-hidden="true">{{ mobileSearchOpen ? 'close' : 'search' }}</mat-icon>
+  </button>
+</div>
+<div
+  *ngIf="mobileSearchOpen"
+  id="mobile-search-panel"
+  class="mobile-search-panel d-md-none"
+>
+  <app-input-search
+    #mobileSearch
+    (searchSubmitted)="closeMobileSearch(false)"
+  ></app-input-search>
 </div>
 <div class="mobile-top-bar-spacer d-block d-md-none"></div>
 

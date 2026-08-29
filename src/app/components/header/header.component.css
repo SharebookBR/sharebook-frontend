@@ -131,16 +131,62 @@
 /* ============================================================ */
 
 .mobile-top-bar {
-  display: flex;
-  justify-content: center;
-  padding: 6px 0;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  padding: 6px 12px;
   background: #fff;
   border-bottom: 3px solid rgba(41, 171, 226, 0.2);
+}
+
+.mobile-top-bar__balance {
+  width: 44px;
+  height: 44px;
+}
+
+.mobile-top-bar__logo-link {
+  justify-self: center;
 }
 
 .mobile-top-bar__logo {
   height: 80px;
   width: auto;
+}
+
+.mobile-top-bar__search-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #29abe2;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mobile-top-bar__search-toggle:hover {
+  background: rgba(41, 171, 226, 0.1);
+}
+
+.mobile-top-bar__search-toggle:focus-visible {
+  outline: 2px solid #29abe2;
+  outline-offset: 2px;
+}
+
+.mobile-search-panel {
+  padding: 10px 16px 14px;
+  background: #fff;
+  border-bottom: 1px solid rgba(41, 171, 226, 0.2);
+}
+
+.mobile-search-panel app-input-search {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .mobile-top-bar-spacer {

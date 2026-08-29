@@ -1,6 +1,7 @@
 <form [formGroup]="searchForm" (ngSubmit)="search()">
   <div class="input-group">
     <input
+      #searchInput
       type="text"
       class="form-control"
       formControlName="paramSearch"

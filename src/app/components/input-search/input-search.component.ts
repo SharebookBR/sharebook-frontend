@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
@@ -13,6 +13,8 @@ export class InputSearchComponent implements OnInit {
   public searchAlert = false;
 
   @ViewChild('alert') alert: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
+  @Output() searchSubmitted = new EventEmitter<string>();
 
   constructor(
     private fb: FormBuilder,
@@ -35,9 +37,14 @@ export class InputSearchComponent implements OnInit {
     if (term) {
       this._router.navigate(['/buscar', term]);
       this.searchAlert = false;
+      this.searchSubmitted.emit(term);
     } else {
       this.searchAlert = true;
     }
+  }
+
+  focus(): void {
+    this.searchInput?.nativeElement.focus();
   }
 
   // remove o alerta, e joga para a home do site ajustando o menu novamente sem o alerta
