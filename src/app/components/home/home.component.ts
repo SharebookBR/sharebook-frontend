@@ -169,24 +169,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  scrollShelf(wrapper: HTMLElement, direction: 'left' | 'right') {
-    const track = wrapper.querySelector('.shelf-track') as HTMLElement;
-    if (!track) return;
-    track.scrollBy({ left: direction === 'right' ? 620 : -620, behavior: 'smooth' });
-    // smooth scroll is async — update arrows after animation settles
-    setTimeout(() => this.updateArrows(wrapper), 400);
-  }
-
-  updateArrows(wrapper: HTMLElement) {
-    const track = wrapper.querySelector('.shelf-track') as HTMLElement;
-    const left = wrapper.querySelector('.shelf-arrow--left') as HTMLElement;
-    const right = wrapper.querySelector('.shelf-arrow--right') as HTMLElement;
-    if (!track || !left || !right) return;
-    left.classList.toggle('shelf-arrow--disabled', track.scrollLeft <= 0);
-    right.classList.toggle('shelf-arrow--disabled',
-      track.scrollLeft + track.clientWidth >= track.scrollWidth - 2);
-  }
-
   showMoreMetups() {
     this.meetupsCurrentPage++;
     this.getMeetups();

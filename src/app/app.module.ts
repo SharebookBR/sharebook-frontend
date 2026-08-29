@@ -53,6 +53,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
 import { BookCardModule } from './components/book-card/book-card.module';
+import { BookShelfModule } from './components/book-shelf/book-shelf.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -199,6 +200,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     MatListModule,
     MatDividerModule,
     BookCardModule,
+    BookShelfModule,
   ],
   providers: [
     AuthGuardUser,

@@ -15,6 +15,7 @@ export interface BookCardInput {
 })
 export class BookCardComponent {
   @Input() book: BookCardInput;
+  @Input() layout: 'default' | 'shelf' = 'default';
 
   get isEbook(): boolean {
     return this.book?.type === 'Eletronic';

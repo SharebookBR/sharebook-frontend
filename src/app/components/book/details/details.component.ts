@@ -24,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 import { buildBookMetaDescription } from '../../../core/services/seo/book-meta-description';
+import { BookCardInput } from '../../book-card/book-card.component';
 
 @Component({
   selector: 'app-details',
@@ -447,17 +448,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRecommendationClick(book: Book, position: number): void {
+  onRecommendationClick(book: BookCardInput, position: number): void {
     this._ga.sendEvent('recommendation_click', {
       source_book_slug: this.bookInfo.slug,
       recommended_book_slug: book.slug,
       recommended_book_type: book.type,
-      position: position + 1,
+      position,
     });
-  }
-
-  trackRecommendation(_index: number, book: Book): string {
-    return book.id;
   }
 
   private loadRecommendations(bookId: string): void {
