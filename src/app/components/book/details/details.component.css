@@ -155,7 +155,7 @@
   display: grid;
   grid-template-columns: repeat(6, 170px);
   gap: 20px;
-  justify-content: center;
+  justify-content: start;
   overflow-x: auto;
   padding: 8px 2px 14px;
   scroll-snap-type: x proximity;
@@ -169,6 +169,12 @@
 
 :host ::ng-deep .recommendation-card .figure {
   margin: 1rem 0;
+}
+
+@media (min-width: 1200px) {
+  .recommendations-track {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 767px) {
