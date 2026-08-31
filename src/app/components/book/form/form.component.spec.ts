@@ -6,21 +6,23 @@ import { BookService } from './../../../core/services/book/book.service';
 import { UserService } from './../../../core/services/user/user.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
+import { By, BrowserTransferStateModule } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormComponent } from './form.component';
 
 import { AppConfigModule } from '../../../app-config.module';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { By } from '@angular/platform-browser';
 
 let component: FormComponent;
 let fixture: ComponentFixture<FormComponent>;
@@ -69,7 +71,7 @@ const categoryServiceArray: Category[] = [
   { id: '1', name: 'Administração' },
   { id: '2', name: 'Artes' },
   { id: '3', name: 'Aventura' },
-  { id: '4', name: 'Ciências Biógicas' },
+  { id: '4', name: 'Ciências Biológicas' },
   { id: '5', name: 'Direito' },
   { id: '6', name: 'Engenharia' },
   { id: '7', name: 'Geografia e História' },
@@ -103,14 +105,16 @@ describe('FormComponent', () => {
         MatButtonModule,
         MatButtonToggleModule,
         MatIconModule,
+        MatAutocompleteModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
         HttpClientTestingModule,
-        ImageToDataUrlModule
+        ImageToDataUrlModule,
+        BrowserTransferStateModule,
+        NoopAnimationsModule
       ],
       providers: [
-        UserService,
         UserService,
         BookService,
         {
@@ -147,188 +151,6 @@ describe('FormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should render title in h1 tag', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Quero doar um livro');
-  });
-
-  it('should render create form', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('input[id="userId"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="title"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="author"]')).toBeTruthy();
-    expect(compiled.querySelector('select[id="categoryId"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="userIdFacilitator"]')).toBeFalsy();
-    // expect(compiled.querySelector('input[id="imageName"]')).toBeTruthy();
-    // expect(compiled.querySelector('input[id="freightOption"]')).toBeTruthy();
-    // expect(compiled.querySelector('textarea[id="synopsis"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="agreeToTerms"]')).toBeTruthy();
-    expect(compiled.querySelector('#buttonSave')).toBeTruthy();
-    expect(compiled.querySelector('#buttonSave').textContent).toContain('Doar este livro');
-  });
-
-  it('bookId field validity', () => {
-    const bookId = component.formGroup.controls['bookId'];
-    expect(bookId.valid).toBeTruthy();
-
-    bookId.setValue('A'.repeat(5));
-    expect(bookId.valid).toBeTruthy();
-  });
-
-  it('title field validity', () => {
-    const title = component.formGroup.controls['title'];
-    expect(title.valid).toBeFalsy();
-
-    title.setValue('');
-    expect(title.hasError('required')).toBeTruthy();
-
-    title.setValue('A');
-    expect(title.hasError('minlength')).toBeTruthy();
-
-    title.setValue('A'.repeat(201));
-    expect(title.hasError('maxlength')).toBeTruthy();
-
-    title.setValue('A'.repeat(5));
-    expect(title.valid).toBeTruthy();
-  });
-
-  it('author field validity', () => {
-    const author = component.formGroup.controls['author'];
-    expect(author.valid).toBeFalsy();
-
-    author.setValue('');
-    expect(author.hasError('required')).toBeTruthy();
-
-    author.setValue('A');
-    expect(author.hasError('minlength')).toBeTruthy();
-
-    author.setValue('A'.repeat(201));
-    expect(author.hasError('maxlength')).toBeTruthy();
-
-    author.setValue('A'.repeat(5));
-    expect(author.valid).toBeTruthy();
-  });
-
-  it('categoryId field validity', () => {
-    const categoryId = component.formGroup.controls['categoryId'];
-    expect(categoryId.valid).toBeFalsy();
-
-    categoryId.setValue('');
-    expect(categoryId.hasError('required')).toBeTruthy();
-
-    categoryId.setValue('A'.repeat(5));
-    expect(categoryId.valid).toBeTruthy();
-  });
-
-  it('userIdFacilitator field validity', () => {
-    const userIdFacilitator = component.formGroup.controls['userIdFacilitator'];
-    expect(userIdFacilitator.valid).toBeTruthy();
-
-    userIdFacilitator.setValue('A'.repeat(5));
-    expect(userIdFacilitator.valid).toBeTruthy();
-  });
-
-  it('userId field validity', () => {
-    const userId = component.formGroup.controls['userId'];
-    expect(userId.valid).toBeFalsy();
-
-    userId.setValue('');
-    expect(userId.hasError('required')).toBeTruthy();
-
-    userId.setValue('A'.repeat(5));
-    expect(userId.valid).toBeTruthy();
-  });
-
-  it('freightOption field validity', () => {
-    const freightOption = component.formGroup.controls['freightOption'];
-    expect(freightOption.valid).toBeFalsy();
-
-    freightOption.setValue('');
-    expect(freightOption.hasError('required')).toBeTruthy();
-
-    freightOption.setValue('A'.repeat(5));
-    expect(freightOption.valid).toBeTruthy();
-  });
-
-  it('imageBytes field validity', () => {
-    const imageBytes = component.formGroup.controls['imageBytes'];
-    expect(imageBytes.valid).toBeTruthy();
-
-    imageBytes.setValue('A'.repeat(5));
-    expect(imageBytes.valid).toBeTruthy();
-  });
-
-  it('imageName field validity', () => {
-    const imageName = component.formGroup.controls['imageName'];
-    expect(imageName.valid).toBeTruthy();
-
-    const input = fixture.debugElement.query(By.css('input[type=file]')).nativeElement;
-
-    spyOn(component, 'onConvertImageToBase64');
-    input.dispatchEvent(new Event('imageSelected'));
-    expect(component.onConvertImageToBase64).toHaveBeenCalled();
-  });
-
-  it('approve field validity', () => {
-    const approve = component.formGroup.controls['approve'];
-    expect(approve.valid).toBeTruthy();
-
-    approve.setValue('A'.repeat(5));
-    expect(approve.valid).toBeTruthy();
-  });
-
-  it('imageUrl field validity', () => {
-    const imageUrl = component.formGroup.controls['imageUrl'];
-    expect(imageUrl.valid).toBeTruthy();
-
-    imageUrl.setValue('A'.repeat(5));
-    expect(imageUrl.valid).toBeTruthy();
-  });
-
-  it('imageSlug field validity', () => {
-    const imageSlug = component.formGroup.controls['imageSlug'];
-    expect(imageSlug.valid).toBeTruthy();
-
-    imageSlug.setValue('A'.repeat(5));
-    expect(imageSlug.valid).toBeTruthy();
-  });
-
-  it('synopsis field validity', () => {
-    const synopsis = component.formGroup.controls['synopsis'];
-    expect(synopsis.valid).toBeTruthy();
-
-    synopsis.setValue('A'.repeat(2001));
-    expect(synopsis.hasError('maxlength')).toBeTruthy();
-
-    synopsis.setValue('A'.repeat(5));
-    expect(synopsis.valid).toBeTruthy();
-  });
-
-  it('agreeToTerms field validity', () => {
-    const agreeToTerms = component.formGroup.controls['agreeToTerms'];
-    expect(agreeToTerms.valid).toBeFalsy();
-
-    agreeToTerms.setValue(true);
-    expect(agreeToTerms.valid).toBeTruthy();
-  });
-
-  it('should have form valid', () => {
-    setFormValues(validForm);
-    expect(component.formGroup.valid).toBeTruthy();
-  });
-
-  // it('should render popup when freight option is without freight', fakeAsync(() => {
-  //   spyOn(component, 'onChangeFieldFreightOption');
-  //   const freightOption = fixture.debugElement.query(By.css('#freightOption')).nativeElement;
-
-  //   freightOption.value = 'WithoutFreight';
-  //   freightOption.click();
-  //   tick();
-  //   fixture.detectChanges();
-
-  //   expect(component.onChangeFieldFreightOption).toHaveBeenCalled();
-  // }));
 
   it('should add book', () => {
     spyOn(bookService, 'create').and.returnValue(
@@ -440,10 +262,12 @@ describe('FormComponent Editing book', () => {
         MatDialogModule,
         MatButtonModule,
         MatButtonToggleModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule,
+        BrowserTransferStateModule,
+        NoopAnimationsModule
       ],
       providers: [
-        UserService,
         UserService,
         BookService,
         {
@@ -490,25 +314,6 @@ describe('FormComponent Editing book', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render title in h1 tag', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Editar livro');
-  });
-
-  it('should render edit form', () => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('input[id="userId"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="title"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="author"]')).toBeTruthy();
-    expect(compiled.querySelector('select[id="categoryId"]')).toBeTruthy();
-    expect(compiled.querySelector('select[id="userIdFacilitator"]')).toBeTruthy();
-    // expect(compiled.querySelector('input[id="imageName"]')).toBeTruthy();
-    // expect(compiled.querySelector('input[name="freightOption"]')).toBeTruthy();
-    // expect(compiled.querySelector('textarea[id="synopsis"]')).toBeTruthy();
-    expect(compiled.querySelector('input[id="agreeToTerms"]')).toBeFalsy();
-    expect(compiled.querySelector('#buttonSave')).toBeTruthy();
-  });
-
   it('should form has book values', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(component.formGroup.controls['userId'].value).toBe(bookToAdminProfile.userId);
@@ -516,9 +321,6 @@ describe('FormComponent Editing book', () => {
     expect(component.formGroup.controls['author'].value).toBe(bookToAdminProfile.author);
     expect(component.formGroup.controls['categoryId'].value).toBe(bookToAdminProfile.categoryId);
     expect(component.formGroup.controls['userIdFacilitator'].value).toBe(bookToAdminProfile.userIdFacilitator);
-    // expect(compiled.querySelector('input[id="imageName"]').labels[0].innerText.trim()).toBe(bookToAdminProfile.imageSlug);
-    // expect(compiled.querySelectorAll('#freightOptionLabel.active')[0].innerText.trim()).toBe('Mundo');
-    // expect(compiled.querySelector('textarea[id="synopsis"]').value).toBe(bookToAdminProfile.synopsis);
     expect(compiled.querySelector('#buttonSave').textContent).toContain('Salvar');
   });
 

@@ -1,34 +1,30 @@
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppConfigModule } from '../../../app-config.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { of } from 'rxjs';
+
 import { WinnerUsersComponent } from './winner-users.component';
-import { OverlayContainer } from '@angular/cdk/overlay';
+import { BookService } from 'src/app/core/services/book/book.service';
 
 describe('WinnerUsersComponent', () => {
   let component: WinnerUsersComponent;
   let fixture: ComponentFixture<WinnerUsersComponent>;
-  let dialog: MatDialog;
-  let overlayContainer: OverlayContainer;
+
+  const bookServiceMock = {
+    getBySlug: () => of({}),
+    getMainUsers: () => of({}),
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [WinnerUsersComponent],
-      imports: [HttpClientTestingModule, AppConfigModule, BrowserAnimationsModule, MatDialogModule],
-      providers: [{
-        provide: MatDialogRef,
-        useValue: {}
-      }],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: BookService, useValue: bookServiceMock },
+        { provide: MatDialogRef, useValue: {} },
+      ],
     }).compileComponents();
   }));
-
-  TestBed.overrideModule(BrowserDynamicTestingModule, {
-    set: {
-      entryComponents: [WinnerUsersComponent]
-    }
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WinnerUsersComponent);
@@ -36,22 +32,27 @@ describe('WinnerUsersComponent', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([MatDialog, OverlayContainer],
-    (d: MatDialog, oc: OverlayContainer) => {
-      dialog = d;
-      overlayContainer = oc;
-    })
-  );
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should open a dialog with a component', () => {
-    const dialogRef = dialog.open(WinnerUsersComponent, {
-      data: {}
-    });
+  it('hasWhatsappPhone should recognize valid brazilian phones', () => {
+    expect(component.hasWhatsappPhone({ phone: '(22) 99999-9999' } as any)).toBeTrue();
+    expect(component.hasWhatsappPhone({ phone: '5522999999999' } as any)).toBeTrue();
+    expect(component.hasWhatsappPhone({ phone: null } as any)).toBeFalse();
+    expect(component.hasWhatsappPhone({ phone: '' } as any)).toBeFalse();
+    expect(component.hasWhatsappPhone({ phone: '---' } as any)).toBeFalse();
+  });
 
-    expect(dialogRef.componentInstance instanceof WinnerUsersComponent).toBe(true);
+  it('contactWinnerOnWhatsapp should open wa.me with normalized phone and message', () => {
+    spyOn(window, 'open');
+    component.bookTitle = 'Meu Livro';
+    component.contactWinnerOnWhatsapp({ name: 'Ana', phone: '(22) 99999-9999' } as any);
+
+    const message = `Olá, Ana! Você ganhou o livro "Meu Livro" no Sharebook.`;
+    expect(window.open).toHaveBeenCalledWith(
+      `https://wa.me/5522999999999?text=${encodeURIComponent(message)}`,
+      '_blank'
+    );
   });
 });
