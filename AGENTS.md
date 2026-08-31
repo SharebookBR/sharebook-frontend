@@ -2,7 +2,7 @@
 
 ## Projeto e stack
 - Frontend Angular 13.
-- Recomenda-se Node.js 14.x para evitar incompatibilidades com dependências legadas.
+- Node.js 20.x para build e testes em container/CI (o `Dockerfile` usa `node:20`; setup validado em "Ambiente de testes").
 
 ## Comandos principais
 - Build: `npm run build-dev`
@@ -79,6 +79,13 @@ curl --location 'https://api-dev.sharebook.com.br/api/Account/Login' \
   - `error while loading shared libraries` -> instalar libs nativas (passo 2).
   - Falha com `--no-sandbox` ausente -> garantir uso do launcher `ChromeHeadlessCI` via `npm test`.
 
+
+## Ambiente de testes (container OpenClaw / VPS / CI) — validado 2026-08-31
+Receita que roda a suíte 44/44 no container (não confiar em setup antigo):
+1. Node 20 via nvm: `nvm install 20 && nvm use 20` (o container pode ter Node 22).
+2. **Gotcha:** o container define `NODE_ENV=production`, o que faz o `npm ci` omitir devDependencies (sintoma: `ng: not found`). Rodar `unset NODE_ENV` antes, ou usar `npm ci --legacy-peer-deps --include=dev`.
+3. Chromium de sistema: `apt-get install -y chromium` + `export CHROME_BIN=/usr/bin/chromium`.
+4. `npm ci --legacy-peer-deps --include=dev` e depois `npm test` (launcher `ChromeHeadlessCI` + `--no-sandbox`).
 
 ## Qualidade
 - Sempre rodar ao menos build e testes antes de concluir alterações.
