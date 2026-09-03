@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
@@ -27,7 +27,7 @@ export class InputSearchComponent implements OnInit {
     const pathParts = pathname.split('/buscar/');
     const currentSearch = pathParts.length > 1 ? decodeURIComponent(pathParts[1]) : '';
     this.searchForm = this.fb.group({
-      paramSearch: [currentSearch, [Validators.minLength(3)]],
+      paramSearch: [currentSearch],
     });
   }
 
