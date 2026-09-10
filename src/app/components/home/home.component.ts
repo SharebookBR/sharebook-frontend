@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public recentEbooksCount: number = 0;
   public availableEbooksCount: number = 0;
   public categoriesShowcase: CategoryShowcase[] = [];
+  public topDownloadedEbooks: ShowcaseBookItem[] = [];
 
   // Vitrine editorial fixa — Odisseia em alta, clássicos da mitologia grega.
   // Remover ou trocar os slugs quando o gancho editorial passar.
@@ -85,6 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getBooks();
     this.getEbooks();
     this.getMythologyShowcase();
+    this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
     this.getMeetups();
     this.getMeetupsUpcoming();
@@ -118,6 +120,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((showcase) => {
         this.categoriesShowcase = showcase;
+      });
+  }
+
+  getTopDownloadedEbooks() {
+    this._scBook
+      .getTopDownloadedEbooks(30)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((books) => {
+        this.topDownloadedEbooks = books;
       });
   }
 

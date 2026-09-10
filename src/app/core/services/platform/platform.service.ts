@@ -42,12 +42,25 @@ export class PlatformService {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 
-  open(url: string, target: string = '_blank'): void {
+  open(url: string, target: string = '_blank'): Window | null {
+    if (!this.browser) {
+      return null;
+    }
+
+    return window.open(url, target);
+  }
+
+  navigateOpenedWindow(openedWindow: Window | null, url: string): void {
     if (!this.browser) {
       return;
     }
 
-    window.open(url, target);
+    if (openedWindow) {
+      openedWindow.location.href = url;
+      return;
+    }
+
+    window.open(url, '_blank');
   }
 
   writeClipboardText(text: string): Promise<void> {

@@ -26,6 +26,11 @@ import { SsrCacheService } from '../ssr-cache/ssr-cache.service';
 
 const CACHE_KEY_SHOWCASE = 'home:categories-showcase';
 
+interface DownloadEBookUrlResult {
+  url: string;
+  tracked: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -118,6 +123,19 @@ export class BookService {
     }
     return this._http.get<CategoryShowcase[]>(url).pipe(
       tap(data => this._cache.set(CACHE_KEY_SHOWCASE, data))
+    );
+  }
+
+  public getTopDownloadedEbooks(days: number = 30): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/top-downloaded-ebooks?days=${days}`
+    );
+  }
+
+  public createDownloadEbookUrl(slug: string): Observable<DownloadEBookUrlResult> {
+    return this._http.post<DownloadEBookUrlResult>(
+      `${this.config.apiEndpoint}/book/DownloadEBookUrl/${slug}`,
+      null
     );
   }
 

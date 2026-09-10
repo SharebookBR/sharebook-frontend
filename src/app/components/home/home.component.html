@@ -43,6 +43,14 @@
     ariaLabel="Livros de mitologia grega"
   ></app-book-shelf>
 
+  <!-- MAIS BAIXADOS -->
+  <app-book-shelf
+    *ngIf="topDownloadedEbooks.length > 0"
+    title="Mais baixados"
+    [books]="topDownloadedEbooks"
+    ariaLabel="Livros digitais mais baixados nos últimos 30 dias"
+  ></app-book-shelf>
+
   <!-- LIVROS DIGITAIS -->
   <app-book-shelf
     *ngIf="ebooks.length > 0"

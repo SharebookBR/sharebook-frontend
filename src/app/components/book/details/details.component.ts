@@ -361,12 +361,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   onDownloadEbook() {
     if (this.bookInfo.slug) {
+      const pendingWindow = this._platform.open('about:blank', '_blank');
       this._ga.sendEvent('ebook_download', {
         book_title: this.bookInfo.title,
         book_slug: this.bookInfo.slug,
       });
-      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
-      this._platform.open(downloadUrl, '_blank');
+      this._scBook
+        .createDownloadEbookUrl(this.bookInfo.slug)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe({
+          next: (response) => {
+            this._platform.navigateOpenedWindow(pendingWindow, response.url);
+          },
+          error: () => {
+            const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
+            this._platform.navigateOpenedWindow(pendingWindow, downloadUrl);
+          }
+        });
     }
   }
 
