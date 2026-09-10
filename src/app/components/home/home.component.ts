@@ -48,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     'historias-da-meia-noite',
     'eu-e-outras-poesias',
     'ilha-da-caveira',
-    'hamlet',
   ];
   public horrorShowcase: Book[] = [];
 
