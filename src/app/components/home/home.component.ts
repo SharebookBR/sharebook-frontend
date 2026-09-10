@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     'a-ilha-do-dr-moreau',
     'a-metamorfose_copy2',
     'historias-da-meia-noite',
-    'eu-e-outras-poesias',
     'ilha-da-caveira',
   ];
   public horrorShowcase: Book[] = [];
