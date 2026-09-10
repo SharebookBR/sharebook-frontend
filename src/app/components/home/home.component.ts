@@ -37,6 +37,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
   public mythologyShowcase: Book[] = [];
 
+  // Vitrine editorial fixa — clássicos e horror literário, sem títulos infantis.
+  private readonly HORROR_SHOWCASE_SLUGS = [
+    'dracula',
+    'o-sinaleiro',
+    'noite-na-taverna',
+    'frankenstein_copy1',
+    'a-ilha-do-dr-moreau',
+    'a-metamorfose_copy2',
+    'historias-da-meia-noite',
+    'eu-e-outras-poesias',
+    'ilha-da-caveira',
+    'hamlet',
+  ];
+  public horrorShowcase: Book[] = [];
+
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
   public meetupsCurrentPage: number = 1;
@@ -86,6 +101,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getBooks();
     this.getEbooks();
     this.getMythologyShowcase();
+    this.getHorrorShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
     this.getMeetups();
@@ -101,6 +117,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
         this.mythologyShowcase = books.filter((book) => !!book);
+      });
+  }
+
+  getHorrorShowcase() {
+    forkJoin(
+      this.HORROR_SHOWCASE_SLUGS.map((slug) =>
+        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+      )
+    )
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((books) => {
+        this.horrorShowcase = books.filter((book) => !!book);
       });
   }
 

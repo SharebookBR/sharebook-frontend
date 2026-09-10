@@ -43,6 +43,14 @@
     ariaLabel="Livros de mitologia grega"
   ></app-book-shelf>
 
+  <!-- VITRINE EDITORIAL FIXA — LITERATURA DE TERROR -->
+  <app-book-shelf
+    *ngIf="horrorShowcase.length > 0"
+    title="Literatura de Terror"
+    [books]="horrorShowcase"
+    ariaLabel="Livros de literatura de terror"
+  ></app-book-shelf>
+
   <!-- MAIS BAIXADOS -->
   <app-book-shelf
     *ngIf="topDownloadedEbooks.length > 0"
