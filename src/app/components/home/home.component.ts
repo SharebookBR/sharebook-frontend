@@ -40,10 +40,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Vitrine editorial fixa — clássicos e horror literário, sem títulos infantis.
   private readonly HORROR_SHOWCASE_SLUGS = [
     'dracula',
+    'frankenstein_copy1',
+    'o-medico-e-o-monstro',
+    'carmilla',
+    'o-gato-preto',
+    'a-volta-do-parafuso',
     'o-sinaleiro',
     'noite-na-taverna',
-    'frankenstein_copy1',
     'a-ilha-do-dr-moreau',
+    'o-vampiro',
+    'o-horla',
+    'o-castelo-de-otranto',
     'a-metamorfose_copy2',
     'historias-da-meia-noite',
     'ilha-da-caveira',
