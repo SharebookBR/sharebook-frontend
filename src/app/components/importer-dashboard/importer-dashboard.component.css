@@ -250,6 +250,12 @@
   --summary-glow: rgba(100, 116, 139, 0.18);
 }
 
+.summary-card--waiting-translation,
+.summary-card--translating {
+  --summary-accent: #29abe2;
+  --summary-glow: rgba(41, 171, 226, 0.2);
+}
+
 .summary-card--waiting-editorial,
 .summary-card--editing {
   --summary-accent: #8b5cf6;
@@ -293,6 +299,12 @@
 .importer-item--triage-rejected {
   --summary-accent: #64748b;
   --summary-glow: rgba(100, 116, 139, 0.18);
+}
+
+.importer-item--waiting-translation,
+.importer-item--translating {
+  --summary-accent: #29abe2;
+  --summary-glow: rgba(41, 171, 226, 0.2);
 }
 
 .importer-item--waiting-editorial,
@@ -348,6 +360,8 @@
 .summary-card--waiting-triage,
 .summary-card--triaging,
 .summary-card--triage-rejected,
+.summary-card--waiting-translation,
+.summary-card--translating,
 .summary-card--waiting-editorial,
 .summary-card--editing,
 .summary-card--waiting-publish,
@@ -365,6 +379,8 @@
 .summary-card--waiting-triage::before,
 .summary-card--triaging::before,
 .summary-card--triage-rejected::before,
+.summary-card--waiting-translation::before,
+.summary-card--translating::before,
 .summary-card--waiting-editorial::before,
 .summary-card--editing::before,
 .summary-card--waiting-publish::before,
@@ -383,6 +399,8 @@
 .summary-card--waiting-triage::after,
 .summary-card--triaging::after,
 .summary-card--triage-rejected::after,
+.summary-card--waiting-translation::after,
+.summary-card--translating::after,
 .summary-card--waiting-editorial::after,
 .summary-card--editing::after,
 .summary-card--waiting-publish::after,
@@ -479,6 +497,11 @@
   --summary-glow: rgba(59, 130, 246, 0.18);
 }
 
+.aggregate-card--traducao {
+  --summary-accent: #29abe2;
+  --summary-glow: rgba(41, 171, 226, 0.2);
+}
+
 .aggregate-card--editorial {
   --summary-accent: #8b5cf6;
   --summary-glow: rgba(139, 92, 246, 0.18);
@@ -573,6 +596,7 @@
 }
 
 .aggregate-breakdown--triagem    { --breakdown-accent: #3b82f6; --breakdown-glow: rgba(59,130,246,0.18); }
+.aggregate-breakdown--traducao   { --breakdown-accent: #29abe2; --breakdown-glow: rgba(41,171,226,0.20); }
 .aggregate-breakdown--editorial  { --breakdown-accent: #8b5cf6; --breakdown-glow: rgba(139,92,246,0.18); }
 .aggregate-breakdown--publicacao { --breakdown-accent: #f97316; --breakdown-glow: rgba(249,115,22,0.20); }
 .aggregate-breakdown--published  { --breakdown-accent: #10b981; --breakdown-glow: rgba(16,185,129,0.18); }

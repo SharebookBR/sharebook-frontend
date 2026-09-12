@@ -68,6 +68,8 @@ export interface ImporterSourceStatus {
   waitingTriage: number;
   triaging: number;
   triageRejected: number;
+  waitingTranslation: number;
+  translating: number;
   waitingEditorial: number;
   editing: number;
   waitingPublish: number;
@@ -88,6 +90,8 @@ export interface ImporterSourceStatus {
   waitingTriageD1?: number | null;
   triagingD1?: number | null;
   triageRejectedD1?: number | null;
+  waitingTranslationD1?: number | null;
+  translatingD1?: number | null;
   waitingEditorialD1?: number | null;
   editingD1?: number | null;
   waitingPublishD1?: number | null;

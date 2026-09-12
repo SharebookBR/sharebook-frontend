@@ -47,7 +47,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   selectedItemMetadata: any = null;
   selectedItemData: any = null;
 
-  selectedSourceId = 'ebook_foundation_subjects';
+  selectedSourceId = '';
   selectedStatus = '';
   selectedSort = 'updated_at_desc';
   searchTerm = '';
@@ -58,9 +58,11 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   totalQueueItems = 0;
   expandedCard: string | null = null;
   readonly pageSizeOptions = [50, 100, 200];
+  private readonly preferredSourceIds = ['project_gutenberg_witches_magic', 'ebook_foundation_subjects'];
 
   readonly aggregateGroups = [
     { id: 'triagem',     label: 'Triagem',                    statuses: ['waiting_triage', 'triaging', 'triage_retry'],                    badge: { name: 'Python Worker', icon: 'settings' } },
+    { id: 'traducao',    label: 'Tradução',                   statuses: ['waiting_translation', 'translating'],                            badge: { name: 'Agente tradutor', icon: 'translate' } },
     { id: 'editorial',   label: 'Preparo editorial',          statuses: ['waiting_editorial', 'editing'],                                  badge: { name: 'GPT-5.4 Mini',  icon: 'auto_awesome' } },
     { id: 'publicacao',  label: 'Publicação',                 statuses: ['waiting_publish', 'publishing', 'publish_retry'],               badge: { name: 'Python Worker', icon: 'settings' } },
     { id: 'published',   label: 'Publicados',                 statuses: ['done'],                                                                                         badge: null as { name: string; icon: string } | null },
@@ -71,6 +73,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     'waiting_triage',
     'triaging',
     'triage_retry',
+    'waiting_translation',
+    'translating',
     'waiting_editorial',
     'editing',
     'waiting_publish',
@@ -227,6 +231,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       publish_retry: 'Retry de publicação',
       triaging: 'Triando',
       triage_rejected: 'Reprovado na triagem',
+      waiting_translation: 'Aguardando tradução',
+      translating: 'Traduzindo',
       editorial_rejected: 'Rejeitado no editorial',
       editing: 'Em edição',
       publishing: 'Publicando',
@@ -257,6 +263,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     const mapping: { [key: string]: { name: string; icon: string } } = {
       waiting_triage: { name: 'Python Worker', icon: 'settings' },
       triaging: { name: 'Python Worker', icon: 'settings' },
+      waiting_translation: { name: 'Agente tradutor', icon: 'translate' },
+      translating: { name: 'Agente tradutor', icon: 'translate' },
       waiting_editorial: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
       editing: { name: 'GPT-5.4 Mini', icon: 'auto_awesome' },
       waiting_publish: { name: 'Python Worker', icon: 'settings' },
@@ -611,6 +619,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_triage: source.waitingTriage,
       triaging: source.triaging,
       triage_rejected: source.triageRejected,
+      waiting_translation: source.waitingTranslation,
+      translating: source.translating,
       waiting_editorial: source.waitingEditorial,
       editing: source.editing,
       waiting_publish: source.waitingPublish,
@@ -632,6 +642,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       waiting_triage: source.waitingTriageD1,
       triaging: source.triagingD1,
       triage_rejected: source.triageRejectedD1,
+      waiting_translation: source.waitingTranslationD1,
+      translating: source.translatingD1,
       waiting_editorial: source.waitingEditorialD1,
       editing: source.editingD1,
       waiting_publish: source.waitingPublishD1,
@@ -659,7 +671,10 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
         this.sources = dashboard.sources || [];
 
         if (!this.sources.find(source => this.getSourceKey(source) === this.selectedSourceId) && this.sources.length) {
-          this.selectedSourceId = this.sources.find(source => this.getSourceKey(source) === 'ebook_foundation_subjects')?.sourceName || this.getSourceKey(this.sources[0]);
+          const preferredSource = this.preferredSourceIds
+            .map(sourceId => this.sources.find(source => this.getSourceKey(source) === sourceId))
+            .find(Boolean);
+          this.selectedSourceId = preferredSource?.sourceName || this.getSourceKey(this.sources[0]);
         }
 
         this.isLoading = false;
