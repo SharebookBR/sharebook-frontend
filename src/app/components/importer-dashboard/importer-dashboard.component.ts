@@ -121,7 +121,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
   get aggregateCards() {
     const source = this.selectedSource;
-    return this.aggregateGroups.map(group => {
+    return this.aggregateGroups.filter(group => this.shouldShowAggregateGroup(group.id, source)).map(group => {
       const total = group.statuses.reduce((sum, s) => sum + (source ? this.getStatusCount(source, s) : 0), 0);
       const d1Values = source ? group.statuses.map(s => this.getStatusCountD1(source, s)) : [];
       const hasD1 = d1Values.some(v => v !== null);
@@ -133,6 +133,20 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
         breakdown: group.statuses.map(s => ({ status: s, total: source ? this.getStatusCount(source, s) : 0 })),
       };
     });
+  }
+
+  shouldShowAggregateGroup(groupId: string, source: ImporterSourceStatus | null): boolean {
+    if (groupId !== 'traducao') {
+      return true;
+    }
+
+    if (!source) {
+      return false;
+    }
+
+    return source.requiresTranslation
+      || this.getStatusCount(source, 'waiting_translation') > 0
+      || this.getStatusCount(source, 'translating') > 0;
   }
 
   formatDelta(total: number, totalD1: number | null): string | null {

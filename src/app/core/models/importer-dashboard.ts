@@ -63,6 +63,7 @@ export interface ImporterSourceStatus {
   sourceName: string;
   sourceUrl: string;
   enabled: boolean;
+  requiresTranslation: boolean;
   totalItems: number;
   done: number;
   waitingTriage: number;
