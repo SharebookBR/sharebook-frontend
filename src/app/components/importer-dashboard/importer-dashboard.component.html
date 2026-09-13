@@ -78,6 +78,11 @@
         <mat-icon>edit_note</mat-icon>
         Prompt editorial
       </button>
+
+      <button class="aggregate-breakdown__action" type="button" *ngIf="expandedCard === 'traducao'" (click)="openTranslationPrompt()">
+        <mat-icon>translate</mat-icon>
+        Prompt tradução
+      </button>
     </div>
 
     <section class="importer-items" #importerItemsSection>
@@ -222,26 +227,26 @@
   </ng-container>
 </div>
 
-<ng-template #editorialPromptDialog>
+<ng-template #sourcePromptDialog>
   <div class="editorial-prompt-dialog">
     <div class="metadata-dialog__header">
-      <h2 mat-dialog-title>Prompt editorial — {{ editorialPromptSourceName }}</h2>
+      <h2 mat-dialog-title>{{ sourcePromptTitle }} — {{ sourcePromptSourceName }}</h2>
       <button mat-icon-button mat-dialog-close aria-label="Fechar">
         <mat-icon>close</mat-icon>
       </button>
     </div>
     <div class="editorial-prompt-dialog__body">
-      <div class="spinner-container" *ngIf="editorialPromptLoading">
+      <div class="spinner-container" *ngIf="sourcePromptLoading">
         <mat-spinner diameter="36"></mat-spinner>
       </div>
-      <div class="alert alert-danger" *ngIf="editorialPromptError">{{ editorialPromptError }}</div>
-      <textarea id="editorial-prompt-editor" *ngIf="!editorialPromptLoading"></textarea>
+      <div class="alert alert-danger" *ngIf="sourcePromptError">{{ sourcePromptError }}</div>
+      <textarea id="source-prompt-editor" *ngIf="!sourcePromptLoading"></textarea>
     </div>
     <div class="editorial-prompt-dialog__footer">
       <button class="importer-item__link" type="button" mat-dialog-close>Cancelar</button>
-      <button class="importer-item__link editorial-prompt-dialog__save" type="button" (click)="saveEditorialPrompt()" [disabled]="editorialPromptSaving">
+      <button class="importer-item__link editorial-prompt-dialog__save" type="button" (click)="saveSourcePrompt()" [disabled]="sourcePromptSaving">
         <mat-icon>save</mat-icon>
-        {{ editorialPromptSaving ? 'Salvando...' : 'Salvar' }}
+        {{ sourcePromptSaving ? 'Salvando...' : 'Salvar' }}
       </button>
     </div>
   </div>

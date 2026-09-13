@@ -17,15 +17,16 @@ import { OperationsService } from '../../core/services/operations/operations.ser
 })
 export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
-  @ViewChild('editorialPromptDialog') editorialPromptDialog: TemplateRef<any>;
+  @ViewChild('sourcePromptDialog') sourcePromptDialog: TemplateRef<any>;
   @ViewChild('adminNoteDialog') adminNoteDialog: TemplateRef<any>;
   @ViewChild('historyDialog') historyDialog: TemplateRef<any>;
   @ViewChild('importerItemsSection') importerItemsSection: ElementRef;
 
-  editorialPromptSourceName = '';
-  editorialPromptLoading = false;
-  editorialPromptSaving = false;
-  editorialPromptError = '';
+  sourcePromptSourceName = '';
+  sourcePromptKind: 'editorial' | 'translation' = 'editorial';
+  sourcePromptLoading = false;
+  sourcePromptSaving = false;
+  sourcePromptError = '';
   private _easyMde: EasyMDE | null = null;
 
   adminNoteItem: ImporterQueueListItem | null = null;
@@ -407,14 +408,23 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   }
 
   openEditorialPrompt(): void {
+    this.openSourcePrompt('editorial');
+  }
+
+  openTranslationPrompt(): void {
+    this.openSourcePrompt('translation');
+  }
+
+  openSourcePrompt(kind: 'editorial' | 'translation'): void {
     const source = this.selectedSource;
     if (!source) return;
 
-    this.editorialPromptSourceName = source.sourceName;
-    this.editorialPromptLoading = true;
-    this.editorialPromptError = '';
+    this.sourcePromptSourceName = source.sourceName;
+    this.sourcePromptKind = kind;
+    this.sourcePromptLoading = true;
+    this.sourcePromptError = '';
 
-    const dialogRef = this._dialog.open(this.editorialPromptDialog, {
+    const dialogRef = this._dialog.open(this.sourcePromptDialog, {
       width: '860px',
       maxWidth: '98vw',
       maxHeight: '92vh',
@@ -423,41 +433,55 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => this._destroyEasyMde());
 
     dialogRef.afterOpened().subscribe(() => {
-      this._operationsService.getImporterEditorialPrompt(source.sourceName).subscribe({
+      const request = kind === 'translation'
+        ? this._operationsService.getImporterTranslationPrompt(source.sourceName)
+        : this._operationsService.getImporterEditorialPrompt(source.sourceName);
+
+      request.subscribe({
         next: ({ prompt }) => {
-          this.editorialPromptLoading = false;
+          this.sourcePromptLoading = false;
           setTimeout(() => this._initEasyMde(prompt || ''), 0);
         },
         error: () => {
-          this.editorialPromptLoading = false;
-          this.editorialPromptError = 'Erro ao carregar o prompt.';
+          this.sourcePromptLoading = false;
+          this.sourcePromptError = 'Erro ao carregar o prompt.';
         },
       });
     });
   }
 
-  saveEditorialPrompt(): void {
+  saveSourcePrompt(): void {
     if (!this._easyMde) return;
     const prompt = this._easyMde.value();
-    this.editorialPromptSaving = true;
-    this.editorialPromptError = '';
+    this.sourcePromptSaving = true;
+    this.sourcePromptError = '';
 
-    this._operationsService.updateImporterEditorialPrompt(this.editorialPromptSourceName, prompt)
-      .pipe(finalize(() => (this.editorialPromptSaving = false)))
+    const request = this.sourcePromptKind === 'translation'
+      ? this._operationsService.updateImporterTranslationPrompt(this.sourcePromptSourceName, prompt)
+      : this._operationsService.updateImporterEditorialPrompt(this.sourcePromptSourceName, prompt);
+
+    request
+      .pipe(finalize(() => (this.sourcePromptSaving = false)))
       .subscribe({
         next: () => {
           this._dialog.closeAll();
-          this._toastr.success('Prompt editorial salvo com sucesso!');
+          this._toastr.success('Prompt salvo com sucesso!');
         },
-        error: () => (this.editorialPromptError = 'Erro ao salvar. Tente novamente.'),
+        error: () => (this.sourcePromptError = 'Erro ao salvar. Tente novamente.'),
       });
+  }
+
+  get sourcePromptTitle(): string {
+    return this.sourcePromptKind === 'translation'
+      ? 'Prompt de tradução'
+      : 'Prompt editorial';
   }
 
   private _initEasyMde(content: string): void {
     if (!this._platform.isBrowser()) return;
     this._destroyEasyMde();
     import('easymde').then(({ default: EasyMDE }) => {
-      const el = this._document.getElementById('editorial-prompt-editor') as HTMLTextAreaElement;
+      const el = this._document.getElementById('source-prompt-editor') as HTMLTextAreaElement;
       if (!el) return;
       this._easyMde = new EasyMDE({
         element: el,
