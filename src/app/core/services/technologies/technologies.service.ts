@@ -10,13 +10,13 @@ export class TechnologiesService {
       {
         image: 'assets/img/contribute-project/dotnet.jpg',
         title: 'Backend',
-        text: '.NET 10, C#, SQL Server, AWS SQS',
+        text: '.NET 10, C#, PostgreSQL, AWS SQS',
         links: [{ url: RepositoriesUrls.BACKEND, content: 'Github' }, { url: TrelloUrls.SHAREBOOK, content: 'Trello' }]
       },
       {
         image: 'assets/img/contribute-project/angular.jpg',
         title: 'Frontend',
-        text: 'Angular 13+, Typescript 4, Material Design, HTML 5',
+        text: 'Angular 19, TypeScript 5, Material Design, HTML 5',
         links: [{ url: RepositoriesUrls.FRONTEND, content: 'Github' }, { url: TrelloUrls.FRONTEND, content: 'Trello' }]
       },
       {
