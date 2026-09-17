@@ -72,7 +72,7 @@ body {
 //body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 /* Global Material Modal Responsive Fix */
 @media (max-width: 767px) {
