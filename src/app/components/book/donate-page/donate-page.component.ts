@@ -8,9 +8,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from 'src/app/core/services/book/book.service';
 import { ConfettiService } from 'src/app/core/services/confetti/confetti.service';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DonateComponent } from '../donate/donate.component';
 import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { Book } from 'src/app/core/models/book';

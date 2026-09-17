@@ -4,13 +4,13 @@
   padding-top: 100px;
 
 }
-::ng-deep.mat-dialog-container,::ng-deep.mat-dialog-content{
+::ng-deep.mat-mdc-dialog-container,::ng-deep.mat-mdc-dialog-content{
   display:flex;
   justify-content: center;
   width:100%;
   padding:20px;
 }
-::ng-deep.mat-table{
+::ng-deep.mat-mdc-table{
   width:100%;
 }
 ::ng-deep .container{
@@ -18,10 +18,10 @@
 
 }
 
-::ng-deep.mat-dialog-actions{
+::ng-deep.mat-mdc-dialog-actions{
   min-height: 30px;
 }
-::ng-deep.mat-dialog-title{
+::ng-deep.mat-mdc-dialog-title{
   margin:0;
 }
 .button-close{

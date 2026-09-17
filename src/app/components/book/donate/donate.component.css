@@ -2,6 +2,7 @@
   display: block;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-content {
   max-height: min(62vh, 520px);
   overflow: auto;
@@ -25,11 +26,13 @@ textarea.form-control {
   resize: vertical;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-actions {
   gap: 10px;
   padding-top: 16px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-actions button {
   min-width: 120px;
 }
@@ -38,16 +41,16 @@ mat-dialog-actions button {
   .donate-title {
     font-size: 21px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-content {
     max-height: 58vh;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-actions {
     flex-direction: column-reverse;
     align-items: stretch;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-actions button {
     width: 100%;
     margin: 0;

@@ -1,7 +1,7 @@
 table {
   width: 100%;
 }
-th.mat-header-cell {
+th.mat-mdc-header-cell {
   text-align: left;
   max-width: 300px;
 }
@@ -28,7 +28,7 @@ th.mat-header-cell {
   white-space: nowrap;
 }
 
-.mat-flat-button {
+.mat-mdc-unelevated-button {
   min-width: 34px;
   padding: 0px;
   height: 34px;

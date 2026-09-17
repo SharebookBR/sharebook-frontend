@@ -10,7 +10,7 @@ table {
     min-width: unset;
   }
 }
-th.mat-header-cell {
+th.mat-mdc-header-cell {
   text-align: left;
   max-width: 300px;
 }

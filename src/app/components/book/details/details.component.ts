@@ -12,7 +12,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { Book } from '../../../core/models/book';
 import { CategoryService } from '../../../core/services/category/category.service';
 
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserInfo } from 'src/app/core/models/userInfo';

@@ -15,6 +15,7 @@
   color: #ccc;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-content {
   max-height: min(68vh, 720px);
   overflow: auto;
@@ -25,6 +26,7 @@ image-cropper {
   max-height: 60vh;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-actions {
   display: flex;
   justify-content: space-between;
@@ -45,6 +47,7 @@ mat-dialog-actions {
 }
 
 @media (max-width: 767px) {
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-actions {
     flex-direction: column;
     align-items: stretch;

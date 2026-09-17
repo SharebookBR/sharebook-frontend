@@ -14,9 +14,9 @@
 //  If you specify typography styles for the components you use elsewhere, you should delete this line.
 //  If you don't need the default component typographies but still want the hierarchy styles,
 //  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
-@include mat.all-legacy-component-typographies();
-@include mat.legacy-core();
+//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
+@include mat.all-component-typographies();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -66,7 +66,7 @@ $angular-theme: mat.define-light-theme($angular-primary, $angular-accent, $angul
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-legacy-component-themes($angular-theme);
+@include mat.all-component-themes($angular-theme);
 
 html,
 body {
@@ -99,7 +99,7 @@ body {
     margin: 0 !important;
   }
 
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     border-radius: 0 !important;
     padding: 16px !important;
     margin: 0 !important;
@@ -112,7 +112,7 @@ body {
     overflow-y: auto !important;
   }
 
-  .mat-dialog-title,
+  .mat-mdc-dialog-title,
   .modal-title,
   [mat-dialog-title] {
     margin: 0 36px 12px 0 !important;
@@ -121,7 +121,7 @@ body {
     word-break: break-word;
   }
 
-  .mat-dialog-content {
+  .mat-mdc-dialog-content {
     display: block !important;
     max-height: calc(100vh - 190px) !important;
     overflow: auto !important;
@@ -129,16 +129,16 @@ body {
     margin: 0 !important;
   }
 
-  .mat-dialog-actions {
+  .mat-mdc-dialog-actions {
     flex-wrap: wrap !important;
     gap: 10px !important;
     margin: 0 !important;
     padding: 16px 0 0 !important;
   }
 
-  .mat-dialog-actions button,
-  .mat-dialog-actions .btn,
-  .mat-dialog-actions input[type='submit'] {
+  .mat-mdc-dialog-actions button,
+  .mat-mdc-dialog-actions .btn,
+  .mat-mdc-dialog-actions input[type='submit'] {
     width: 100%;
     margin: 0 !important;
   }
