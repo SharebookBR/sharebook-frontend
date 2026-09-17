@@ -12,7 +12,40 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$angular-primary: mat.define-palette(mat.$indigo-palette);
+$sharebook-blue: (
+  50: #e5f5fc,
+  100: #bee6f8,
+  200: #93d5f3,
+  300: #68c4ee,
+  400: #47b7eb,
+  500: #29abe2,
+  600: #24a4df,
+  700: #1d9ada,
+  800: #1791d6,
+  900: #0e80cf,
+  A100: #f7fbff,
+  A200: #c4e4ff,
+  A400: #91ceff,
+  A700: #77c3ff,
+  contrast: (
+    50: rgba(0,0,0,0.87),
+    100: rgba(0,0,0,0.87),
+    200: rgba(0,0,0,0.87),
+    300: rgba(0,0,0,0.87),
+    400: rgba(0,0,0,0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(0,0,0,0.87),
+    A200: rgba(0,0,0,0.87),
+    A400: rgba(0,0,0,0.87),
+    A700: rgba(0,0,0,0.87),
+  )
+);
+
+$angular-primary: mat.define-palette($sharebook-blue, 500);
 $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -40,3 +73,85 @@ body {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+/* Global Material Modal Responsive Fix */
+@media (max-width: 767px) {
+  .cdk-global-overlay-wrapper {
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .cdk-overlay-pane {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+  }
+
+  .mat-dialog-container {
+    border-radius: 0 !important;
+    padding: 16px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+  }
+
+  .mat-dialog-title,
+  .modal-title,
+  [mat-dialog-title] {
+    margin: 0 36px 12px 0 !important;
+    font-size: 22px !important;
+    line-height: 1.2 !important;
+    word-break: break-word;
+  }
+
+  .mat-dialog-content {
+    display: block !important;
+    max-height: calc(100vh - 190px) !important;
+    overflow: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-dialog-actions {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 16px 0 0 !important;
+  }
+
+  .mat-dialog-actions button,
+  .mat-dialog-actions .btn,
+  .mat-dialog-actions input[type='submit'] {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  .close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  .close i,
+  .close em,
+  .close span {
+    font-size: 24px;
+    color: #666;
+  }
+}
+
+/* Garante que os modais do Material apareçam acima do header (z-index: 1040) */
+.cdk-overlay-container {
+  z-index: 1100;
+}

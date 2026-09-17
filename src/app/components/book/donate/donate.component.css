@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  max-height: min(62vh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.donate-title {
+  margin: 0 0 12px;
+  font-size: 24px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.donate-help {
+  margin-bottom: 12px;
+  color: #5f6b7a;
+}
+
+textarea.form-control {
+  min-height: 150px;
+  resize: vertical;
+}
+
+mat-dialog-actions {
+  gap: 10px;
+  padding-top: 16px;
+}
+
+mat-dialog-actions button {
+  min-width: 120px;
+}
+
+@media (max-width: 600px) {
+  .donate-title {
+    font-size: 21px;
+  }
+
+  mat-dialog-content {
+    max-height: 58vh;
+  }
+
+  mat-dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  mat-dialog-actions button {
+    width: 100%;
+    margin: 0;
+  }
+}

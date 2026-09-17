@@ -56,7 +56,7 @@ describe('RequestedsComponent', () => {
       title: 'Livro X',
     } as any);
 
-    expect(dialog.open).toHaveBeenCalledWith(DonorModalComponent, { minWidth: 450 });
+    expect(dialog.open).toHaveBeenCalledWith(DonorModalComponent, jasmine.objectContaining({ panelClass: 'sharebook-mobile-dialog' }));
   });
 
   it('should return tracking number only when status is Donated', () => {

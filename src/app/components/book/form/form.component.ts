@@ -180,6 +180,7 @@ export class FormComponent implements OnInit, OnDestroy {
     const pdfControl = this.formGroup.get('pdfBytes');
     const antiPiracyControl = this.formGroup.get('agreeToAntiPiracy');
     const agreeToTermsControl = this.formGroup.get('agreeToTerms');
+    const facilitatorControl = this.formGroup.get('userIdFacilitator');
 
     if (this.selectedBookType === 'Printed') {
       freightControl.setValidators([Validators.required]);
@@ -197,10 +198,23 @@ export class FormComponent implements OnInit, OnDestroy {
       antiPiracyControl.setValidators([Validators.requiredTrue]);
     }
 
+    const facilitatorRequired =
+      this.userProfile?.profile === 'Administrator' &&
+      this.itsEditMode &&
+      this.selectedBookType === 'Printed';
+
+    if (facilitatorRequired) {
+      facilitatorControl.setValidators([Validators.required]);
+    } else {
+      facilitatorControl.clearValidators();
+      facilitatorControl.setValue(null, { emitEvent: false });
+    }
+
     freightControl.updateValueAndValidity();
     pdfControl.updateValueAndValidity();
     antiPiracyControl.updateValueAndValidity();
     agreeToTermsControl.updateValueAndValidity();
+    facilitatorControl.updateValueAndValidity();
   }
 
   findProfile() {
@@ -276,9 +290,6 @@ export class FormComponent implements OnInit, OnDestroy {
           if (freightOption) {
             this.freightStartSubject.next(freightOption.text);
           }
-          this.formGroup
-            .get('userIdFacilitator')
-            .setValidators([Validators.required]); // Facilitador obrigatório para edição do admin
           this.formGroup.setValue(bookForUpdate);
           this.syncCategorySearchControl();
           this.getAllFacilitators();
@@ -360,7 +371,7 @@ export class FormComponent implements OnInit, OnDestroy {
           });
       }
     } else {
-      const book = this.formGroup.value;
+      const book = this.prepareBookPayload();
       book.id = this.formGroup.value.bookId;
       if (book.imageBytes && !book.imageName) {
         book.imageName = 'capa-atualizada.jpg';
@@ -399,7 +410,11 @@ export class FormComponent implements OnInit, OnDestroy {
         imageUrl: !hasBytes ? this.formGroup.value.imageUrl : undefined,
         imageBase64: hasBytes ? 'data:image/jpeg;base64,' + this.formGroup.value.imageBytes : undefined,
       },
-      width: '700px',
+      width: 'min(96vw, 900px)',
+      maxWidth: '96vw',
+      maxHeight: '92vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
     });
 
     dialogRef.afterClosed().subscribe((croppedBase64: string) => {
@@ -416,7 +431,12 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formGroup.controls['freightOption'].setValue(freightOption);
 
     if (freightOption === 'WithoutFreight') {
-      this.dialog.open(FreightIncentiveDialogComponent, { maxWidth: 350 });
+      this.dialog.open(FreightIncentiveDialogComponent, {
+        width: 'min(92vw, 420px)',
+        maxWidth: '92vw',
+        autoFocus: false,
+        panelClass: 'sharebook-mobile-dialog'
+      });
     }
   }
 

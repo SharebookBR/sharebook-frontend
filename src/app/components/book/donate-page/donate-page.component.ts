@@ -48,6 +48,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   winnerSelected = false;
   selectedWinnerNickname = '';
   selectedWinner: UserInfo | null = null;
+  donorFirstName = '';
   confettiActive = false;
 
   private _destroySubscribes$ = new Subject<void>();
@@ -111,7 +112,13 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
       }
 
-      const modalRef = this.dialog.open(DonateComponent, { minWidth: 450 });
+      const modalRef = this.dialog.open(DonateComponent, {
+        width: 'min(92vw, 560px)',
+        maxWidth: '92vw',
+        maxHeight: '90vh',
+        autoFocus: false,
+        panelClass: 'sharebook-mobile-dialog'
+      });
 
       modalRef.componentInstance.bookId = this.book.id;
       modalRef.componentInstance.userId = param.userId;
@@ -186,6 +193,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this._scBook.getMainUsers(this.book.id)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(resp => {
+        this.donorFirstName = this.getFirstName(resp.donor?.name || this.book.donor?.displayName);
         this.selectedWinner = resp.winner;
       });
   }
@@ -208,7 +216,13 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showWinnerInfo(): void {
-    const modalRef = this.dialog.open(WinnerUsersComponent, { minWidth: 500 });
+    const modalRef = this.dialog.open(WinnerUsersComponent, {
+      width: 'min(92vw, 760px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
+    });
     modalRef.componentInstance.bookId = this.book.id;
     modalRef.componentInstance.bookTitle = this.book.title;
     modalRef.componentInstance.bookSlug = this.book.slug;
@@ -218,8 +232,12 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!phone) return null;
     const digits = phone.replace(/\D/g, '');
     const number = digits.startsWith('55') ? digits : `55${digits}`;
-    const message = encodeURIComponent(`Olá! Sou o doador do livro "${this.book.title}" no Sharebook. Você foi o(a) ganhador(a)! Vamos combinar a entrega? 📚`);
-    return `https://wa.me/${number}?text=${message}`;
+    const message = [
+      `Olá! Meu nome é ${this.donorFirstName} e sou o doador do livro "${this.book.title}" no Sharebook.`,
+      'Dentre muitos pedidos, vc foi escolhida como ganhadora do livro. Parabéns!',
+      'Estarei enviando ainda essa semana.'
+    ].join('\n\n');
+    return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
   }
 
   public doFilter = (value: string) => {
@@ -235,5 +253,9 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   private scrollToTop(): void {
     this._viewportScroller.scrollToPosition([0, 0]);
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+
+  private getFirstName(name: string): string {
+    return (name || '').trim().split(/\s+/)[0] || '';
   }
 }

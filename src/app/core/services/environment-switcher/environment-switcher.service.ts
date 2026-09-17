@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BrowserStorageService } from '../platform/browser-storage.service';
+import { PlatformService } from '../platform/platform.service';
 
 export type EnvironmentType = 'local' | 'dev' | 'prod';
 
@@ -32,7 +34,10 @@ export class EnvironmentSwitcherService {
     }
   };
 
-  constructor() { }
+  constructor(
+    private _storage: BrowserStorageService,
+    private _platform: PlatformService
+  ) { }
 
   /**
    * Retorna o endpoint da API baseado no ambiente selecionado
@@ -46,7 +51,7 @@ export class EnvironmentSwitcherService {
    * Retorna o ambiente atual (lê do localStorage ou retorna prod como default)
    */
   getCurrentEnvironment(): EnvironmentType {
-    const stored = localStorage.getItem(this.STORAGE_KEY) as EnvironmentType;
+    const stored = this._storage.getItem(this.STORAGE_KEY) as EnvironmentType;
 
     if (stored && this.environments[stored]) {
       return stored;
@@ -79,8 +84,8 @@ export class EnvironmentSwitcherService {
       return;
     }
 
-    localStorage.setItem(this.STORAGE_KEY, env);
-    window.location.reload();
+    this._storage.setItem(this.STORAGE_KEY, env);
+    this._platform.reload();
   }
 
   /**
@@ -94,7 +99,7 @@ export class EnvironmentSwitcherService {
    * Remove a configuração customizada e volta pro default (prod)
    */
   reset(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    window.location.reload();
+    this._storage.removeItem(this.STORAGE_KEY);
+    this._platform.reload();
   }
 }

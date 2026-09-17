@@ -1,3 +1,93 @@
+/* ─── HERO ─────────────────────────────────────────────── */
+
+.hero {
+  background: linear-gradient(135deg, #1a3a5c 0%, #29abe2 100%);
+  padding: 72px 24px 80px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 48px;
+}
+
+.hero__title {
+  font-size: 2.65rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+.hero__eyebrow {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero__sub {
+  font-size: 1.15rem;
+  opacity: 0.88;
+  margin: 0 0 32px;
+  color: #fff;
+}
+
+.hero__sub strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero__btn-primary {
+  background: #fff !important;
+  color: #1a3a5c !important;
+  font-weight: 600;
+  border-radius: 999px !important;
+  padding: 0 28px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+}
+
+.hero__btn-secondary {
+  border-color: rgba(255,255,255,0.7) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 0 28px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+}
+
+@media (max-width: 575px) {
+  .hero__title { font-size: 1.9rem; }
+  .hero__actions { flex-direction: column; align-items: center; }
+}
+
+/* ─── SHELVES ───────────────────────────────────────────── */
+
+.shelves {
+  padding-bottom: 48px;
+}
+
+.shelf-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin: 0;
+}
+
+.shelf-title--meetup {
+  margin-top: 48px;
+  margin-bottom: 16px;
+}
+
+/* ─── LEGACY (mantido por segurança) ───────────────────── */
+
 /* Categories Section */
 .categories-section {
   margin: 3rem 0;
@@ -353,6 +443,27 @@
   position: relative;
   border-radius: 15px 15px 15px 15px;
   margin: 0.3rem;
+}
+
+/* showcase de categorias */
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.showcase-header .display-4 {
+  margin: 0;
+}
+
+.showcase-more-btn {
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 /* book covers */

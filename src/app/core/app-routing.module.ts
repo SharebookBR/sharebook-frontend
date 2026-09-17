@@ -32,7 +32,11 @@ import { CategoriesListComponent } from '../components/category/categories-list/
 import { SettingsComponent } from '../components/settings/settings.component';
 import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
+import { ImporterDashboardComponent } from '../components/importer-dashboard/importer-dashboard.component';
+import { AnalyticsDashboardComponent } from '../components/analytics-dashboard/analytics-dashboard.component';
+import { DownloadLogsDashboardComponent } from '../components/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -65,6 +69,21 @@ const routes: Routes = [
     canActivate: [AuthGuardAdmin],
   },
   {
+    path: 'admin/importer',
+    component: ImporterDashboardComponent,
+    canActivate: [AuthGuardAdmin],
+  },
+  {
+    path: 'admin/analytics',
+    component: AnalyticsDashboardComponent,
+    canActivate: [AuthGuardAdmin],
+  },
+  {
+    path: 'admin/download-logs',
+    component: DownloadLogsDashboardComponent,
+    canActivate: [AuthGuardAdmin],
+  },
+  {
     path: 'book/requesteds',
     component: RequestedsComponent,
     canActivate: [AuthGuardUser],
@@ -86,6 +105,10 @@ const routes: Routes = [
   {
     path: 'buscar/:criteria',
     component: SearchResultsComponent,
+  },
+  {
+    path: 'livros',
+    component: CategoriesListComponent,
   },
   {
     path: 'categorias',
@@ -175,10 +198,10 @@ const routes: Routes = [
     path: 'descadastrar',
     component: UnsubscribeComponent,
   },
-  // otherwise redirect to home
+  // otherwise show 404 page
   {
     path: '**',
-    redirectTo: '',
+    component: NotFoundComponent,
   },
 ];
 

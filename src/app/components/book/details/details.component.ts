@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -19,6 +21,10 @@ import { SeoService } from '../../../core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { ConfirmationDialogComponent } from '../../../core/directives/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
+import { buildBookMetaDescription } from '../../../core/services/seo/book-meta-description';
+import { BookCardInput } from '../../book-card/book-card.component';
 
 @Component({
   selector: 'app-details',
@@ -30,6 +36,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
 
   userProfile: string;
+  isAdminLogged = false;
   pageTitle: string;
   state = 'loading';
   authenticated: Boolean = false;
@@ -38,6 +45,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
+  recommendations: Book[] = [];
   categoryName: string;
   freightName: string;
   isFreeFreight: Boolean = true;
@@ -57,7 +65,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _scCategory: CategoryService,
     private _seo: SeoService,
     private _toastr: ToastrService,
-    @Inject(APP_CONFIG) private config: AppConfig
+    private _platform: PlatformService,
+    private _ga: GoogleAnalyticsService,
+    @Inject(APP_CONFIG) private config: AppConfig,
+    @Optional() @Inject(RESPONSE) private response: Response
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -66,6 +77,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.state = 'loading';
     if (this._scUser.getLoggedUserFromLocalStorage()) {
       this.userProfile = this._scUser.getLoggedUserFromLocalStorage().profile;
+      this.isAdminLogged = this.userProfile === 'Administrator';
       this.getMyUser();
     } else {
       this.getBook();
@@ -103,6 +115,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.freightName = book.freightOption;
 
                 this.bookInfo = book;
+                this.loadRecommendations(book.id);
                 this.pageTitle = this.bookInfo.title;
                 this.available =
                   this.bookInfo.status === BookDonationStatus.AVAILABLE;
@@ -159,9 +172,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   this.state = 'ready';
                 }
 
+                const metaDescription = buildBookMetaDescription({
+                  title: this.bookInfo.title,
+                  author: this.bookInfo.author,
+                  type: this.bookInfo.type,
+                  synopsis: this.bookInfo.synopsis,
+                });
+
                 this._seo.generateTags({
                   title: this.bookInfo.title,
-                  description: this.bookInfo.synopsis,
+                  description: metaDescription,
                   image: this.bookInfo.imageUrl,
                   slug: slug,
                 });
@@ -182,18 +202,26 @@ export class DetailsComponent implements OnInit, OnDestroy {
           },
           (err) => {
             console.error(err);
-            this.pageTitle = 'Ops... Não encontramos esse livro :/';
+            this.response?.status(404);
+            this.pageTitle = 'Ops... Não encontramos essa página :/';
             this.state = 'not-found';
           }
         );
     } else {
-      this.pageTitle = 'Ops... Não encontramos esse livro :/';
+      this.response?.status(404);
+      this.pageTitle = 'Ops... Não encontramos essa página :/';
       this.state = 'not-found';
     }
   }
 
   onRequestBook() {
-    const modalRef = this.dialog.open(RequestComponent, { minWidth: 450 });
+    const modalRef = this.dialog.open(RequestComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog'
+    });
 
     modalRef.afterClosed().subscribe(result => {
       if (result) {
@@ -202,6 +230,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     modalRef.componentInstance.bookId = this.bookInfo.id;
+    modalRef.componentInstance.bookTitle = this.bookInfo.title;
+    modalRef.componentInstance.bookSlug = this.bookInfo.slug;
   }
 
   onLoginBook() {
@@ -224,7 +254,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   onReportCopyright() {
     const confirmRef = this.dialog.open(ConfirmationDialogComponent, {
-      minWidth: 450,
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog',
       data: {
         title: 'Reportar direitos autorais',
         message: 'Confirma a denúncia de violação de direitos autorais neste livro digital? Nossa equipe será notificada para revisão.',
@@ -266,8 +300,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return this.isEbook() ? 'Livro digital' : 'Livro físico';
   }
 
-  getAuthorSearchLink(): string[] {
-    return ['/buscar', this.bookInfo.author || ''];
+  getAuthorSearchLink(author?: string): string[] {
+    return ['/buscar', (author || this.bookInfo.author || '').trim()];
+  }
+
+  getAuthorList(): string[] {
+    const rawAuthor = (this.bookInfo?.author || '').trim();
+    if (!rawAuthor) {
+      return [];
+    }
+
+    return rawAuthor
+      .split(/\s*(?:,|;|\s+e\s+|\s+&\s+|\s+and\s+)\s*/i)
+      .map(author => author.trim())
+      .filter(Boolean);
   }
 
   getCategoryLink(): string[] | null {
@@ -315,8 +361,136 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   onDownloadEbook() {
     if (this.bookInfo.slug) {
-      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
-      window.open(downloadUrl, '_blank');
+      const pendingWindow = this._platform.open('about:blank', '_blank');
+      this._ga.sendEvent('ebook_download', {
+        book_title: this.bookInfo.title,
+        book_slug: this.bookInfo.slug,
+      });
+      this._scBook
+        .createDownloadEbookUrl(this.bookInfo.slug)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .subscribe({
+          next: (response) => {
+            this._platform.navigateOpenedWindow(pendingWindow, response.url);
+          },
+          error: () => {
+            const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
+            this._platform.navigateOpenedWindow(pendingWindow, downloadUrl);
+          }
+        });
     }
+  }
+
+  getEbookSocialProofLabel(): string {
+    const totalReceived = this.bookInfo?.downloadCount || 0;
+
+    if (totalReceived <= 0) {
+      return 'Seja o primeiro a receber este livro';
+    }
+
+    if (totalReceived === 1) {
+      return '1 pessoa já recebeu este livro';
+    }
+
+    return `${totalReceived} pessoas já receberam este livro`;
+  }
+
+  showShareModal = false;
+
+  onShareWithFriends(): void {
+    this._ga.sendEvent('share_modal_open', {
+      book_title: this.bookInfo.title,
+      book_slug: this.bookInfo.slug,
+    });
+    this.showShareModal = true;
+  }
+
+  closeShareModal(): void {
+    this.showShareModal = false;
+  }
+
+  shareTo(channel: 'linkedin' | 'whatsapp' | 'facebook'): void {
+    const shareUrl = `https://www.sharebook.com.br/livros/${this.bookInfo?.slug || ''}`;
+    const title = this.bookInfo?.title || 'Livro no ShareBook';
+
+    this._ga.sendEvent('social_share', {
+      book_title: title,
+      book_slug: this.bookInfo?.slug,
+      method: channel,
+    });
+
+    const viralText = `Encontrei este livro grátis no ShareBook 📚 ${title}. Bora ler também?`;
+    const shareTextWithLink = `${viralText} ${shareUrl}`;
+
+    let targetUrl = '';
+    if (channel === 'linkedin') {
+      targetUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(viralText)}`;
+    }
+
+    if (channel === 'whatsapp') {
+      targetUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareTextWithLink)}`;
+    }
+
+    if (channel === 'facebook') {
+      targetUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      this.copyShareText(shareTextWithLink)
+        .then(() => this._toastr.success('Texto copiado! Cole no post do Facebook.'))
+        .catch(() => this._toastr.info('Copie o texto manualmente após abrir o Facebook.'));
+    }
+
+    if (targetUrl) {
+      this._platform.open(targetUrl, '_blank');
+      this.closeShareModal();
+      return;
+    }
+
+    this._toastr.info('Não foi possível abrir o compartilhamento.');
+  }
+
+  getAmazonLink(): string {
+    const query = encodeURIComponent(`${this.bookInfo.title || ''} ${this.bookInfo.author || ''}`.trim());
+    return `https://www.amazon.com.br/s?k=${query}&tag=sharebook09-20`;
+  }
+
+  onAmazonClick(): void {
+    this._ga.sendEvent('amazon_click', {
+      book_title: this.bookInfo.title,
+      book_slug: this.bookInfo.slug,
+    });
+  }
+
+  onRecommendationClick(book: BookCardInput, position: number): void {
+    this._ga.sendEvent('recommendation_click', {
+      source_book_slug: this.bookInfo.slug,
+      recommended_book_slug: book.slug,
+      recommended_book_type: book.type,
+      position,
+    });
+  }
+
+  private loadRecommendations(bookId: string): void {
+    this._scBook
+      .getRecommendations(bookId, 6)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        books => {
+          this.recommendations = books;
+          if (books.length > 0) {
+            this._ga.sendEvent('recommendation_impression', {
+              source_book_slug: this.bookInfo.slug,
+              first_recommended_book_slug: books[0].slug,
+              recommendation_count: books.length,
+            });
+          }
+        },
+        error => {
+          console.error('Erro ao carregar recomendações:', error);
+          this.recommendations = [];
+        }
+      );
+  }
+
+  private copyShareText(text: string): Promise<void> {
+    return this._platform.writeClipboardText(text);
   }
 }

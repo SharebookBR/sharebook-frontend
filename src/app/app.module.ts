@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
@@ -53,11 +53,12 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
 import { BookCardModule } from './components/book-card/book-card.module';
+import { BookShelfModule } from './components/book-shelf/book-shelf.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
-import { JwtInterceptor, ErrorInterceptor } from './core/helpers';
+import { JwtInterceptor, ErrorInterceptor, TransferStateInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
 import { CategoryService } from './core/services/category/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
@@ -103,7 +104,12 @@ import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component
 import { MaisSheetComponent } from './components/mais-sheet/mais-sheet.component';
 import { UnsubscribeComponent } from './components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from './components/jobs-dashboard/jobs-dashboard.component';
+import { ImporterDashboardComponent } from './components/importer-dashboard/importer-dashboard.component';
+import { AnalyticsDashboardComponent } from './components/analytics-dashboard/analytics-dashboard.component';
+import { DownloadLogsDashboardComponent } from './components/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -156,10 +162,16 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MaisSheetComponent,
     UnsubscribeComponent,
     JobsDashboardComponent,
+    ImporterDashboardComponent,
+    AnalyticsDashboardComponent,
+    DownloadLogsDashboardComponent,
     EbookRecentComponent,
+    NotFoundComponent,
+    NotFoundPageComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'angular' }),
+    BrowserTransferStateModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -188,6 +200,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MatListModule,
     MatDividerModule,
     BookCardModule,
+    BookShelfModule,
   ],
   providers: [
     AuthGuardUser,
@@ -201,6 +214,7 @@ import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.com
     MeetupService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TransferStateInterceptor, multi: true },
     {
       provide: RECAPTCHA_SETTINGS,
       useValue: {

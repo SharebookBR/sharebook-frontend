@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { BookService } from '../../core/services/book/book.service';
+import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
 import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
-import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 
 @Component({
   selector: 'app-search-results',
@@ -20,7 +20,12 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _route: ActivatedRoute, private _toastr: ToastrService, private _scBook: BookService) {}
+  constructor(
+    private _route: ActivatedRoute,
+    private _toastr: ToastrService,
+    private _scBook: BookService,
+    private _ga: GoogleAnalyticsService
+  ) {}
 
   ngOnInit() {
     this.getParamByUri();
@@ -32,9 +37,25 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       .getFullSearch(this.criteria, 1, 100)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((result) => {
-        this.books = (result?.items || []).filter(b => b.status === BookDonationStatus.AVAILABLE);
+        this.books = result?.items || [];
         this.isLoading = false;
+        this._ga.sendEvent('search', {
+          search_term: this.criteria,
+          results_count: this.books.length,
+        });
       });
+  }
+
+  getAmazonLink(): string {
+    const query = encodeURIComponent(this.criteria.trim());
+    return `https://www.amazon.com.br/s?k=${query}&tag=sharebook09-20`;
+  }
+
+  onAmazonClick(): void {
+    this._ga.sendEvent('amazon_click', {
+      book_title: this.criteria,
+      book_slug: null,
+    });
   }
 
   private getParamByUri(): void {

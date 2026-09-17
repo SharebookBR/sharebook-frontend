@@ -1,21 +1,35 @@
 import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
+import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';
+import { AdminBookList } from '../../models/adminBookList';
 import { DonateBookUser } from '../../models/donateBookUser';
 import { map, filter } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 import { TrackingNumberBookVM } from '../../models/trackingNumberBookVM';
 import { FacilitatorNotes } from '../../models/facilitatorNotes';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Requesters } from '../../models/requesters';
 import { MyRequest } from '../../models/MyRequest';
 import { MyDonation } from '../../models/MyDonation';
+import { UserDonationsList } from '../../models/userDonationsList';
 import { FullSearch } from '../../models/FullSearch';
 import { IRequestResult } from '../../interfaces/IRequestResult';
+import { CategoryShowcase, ShowcaseBookItem } from '../../models/home-showcase';
+import { SsrCacheService } from '../ssr-cache/ssr-cache.service';
+
+const CACHE_KEY_SHOWCASE = 'home:categories-showcase';
+
+interface DownloadEBookUrlResult {
+  url: string;
+  tracked: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -24,16 +38,50 @@ export class BookService {
   // TODO TypicodeInterceptor
   constructor(
     private _http: HttpClient,
-    @Inject(APP_CONFIG) private config: AppConfig
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _cache: SsrCacheService,
+    private _transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: any
   ) { }
 
   public getAll(): Observable<BookVM> {
     return this._http.get<BookVM>(`${this.config.apiEndpoint}/book/1/9999`);
   }
 
-  public getAvailableBooks() {
-    return this._http.get<Book[]>(
-      `${this.config.apiEndpoint}/book/AvailableBooks`
+  public getAdminBooks(
+    page: number,
+    pageSize: number,
+    search?: string,
+    status?: string,
+    bucket?: string,
+    type?: string
+  ): Observable<AdminBookList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    return this._http.get<AdminBookList>(`${this.config.apiEndpoint}/book/Admin`, { params });
+  }
+
+  public getFeaturedPrintedBooks(): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/featured-printed-books`
     );
   }
 
@@ -52,6 +100,42 @@ export class BookService {
   public getAvailableEbooksCount() {
     return this._http.get<{ total: number }>(
       `${this.config.apiEndpoint}/book/AvailableEBooksCount`
+    );
+  }
+
+  public getRecentEbooksCount(days: number = 7) {
+    return this._http.get<{ total: number }>(
+      `${this.config.apiEndpoint}/book/RecentEBooksCount?days=${days}`
+    );
+  }
+
+  public getCategoriesShowcase(): Observable<CategoryShowcase[]> {
+    const url = `${this.config.apiEndpoint}/home/categories-showcase`;
+    const cached = this._cache.get<CategoryShowcase[]>(CACHE_KEY_SHOWCASE);
+    if (cached) {
+      // Cache hit bypassa o HttpClient — o TransferStateInterceptor nunca roda.
+      // Sem este set, o browser não acha a chave no estado transferido e
+      // re-fetcha a API, sobrescrevendo a tela com categorias re-sorteadas.
+      if (isPlatformServer(this.platformId)) {
+        this._transferState.set(makeStateKey<CategoryShowcase[]>(url), cached);
+      }
+      return of(cached);
+    }
+    return this._http.get<CategoryShowcase[]>(url).pipe(
+      tap(data => this._cache.set(CACHE_KEY_SHOWCASE, data))
+    );
+  }
+
+  public getTopDownloadedEbooks(days: number = 30): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/top-downloaded-ebooks?days=${days}`
+    );
+  }
+
+  public createDownloadEbookUrl(slug: string): Observable<DownloadEBookUrlResult> {
+    return this._http.post<DownloadEBookUrlResult>(
+      `${this.config.apiEndpoint}/book/DownloadEBookUrl/${slug}`,
+      null
     );
   }
 
@@ -95,6 +179,12 @@ export class BookService {
   public getBySlug(bookSlug: string) {
     return this._http.get<Book>(
       `${this.config.apiEndpoint}/book/Slug/${bookSlug}`
+    );
+  }
+
+  public getRecommendations(bookId: string, limit: number = 6): Observable<Book[]> {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/Recommendations/${bookId}?limit=${limit}`
     );
   }
 
@@ -177,6 +267,27 @@ export class BookService {
 
   public getDonatedBooks(): Observable<MyDonation[]> {
     return this._http.get<MyDonation[]>(`${this.config.apiEndpoint}/book/MyDonations`);
+  }
+
+  public getDonatedBooksPaged(
+    page: number,
+    pageSize: number,
+    search?: string,
+    bucket?: string
+  ): Observable<UserDonationsList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    return this._http.get<UserDonationsList>(`${this.config.apiEndpoint}/book/MyDonationsPaged`, { params });
   }
 
   public setTrackingNumber(

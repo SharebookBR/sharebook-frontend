@@ -1,0 +1,339 @@
+<div class="importer-dashboard container">
+  <nav aria-label="breadcrumb" class="importer-dashboard__breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Importador</li>
+    </ol>
+  </nav>
+
+  <div class="importer-dashboard__header">
+    <div>
+      <h1 class="display-4">Painel do importador</h1>
+    </div>
+  </div>
+
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="!isLoading && loadError">
+    Não foi possível carregar o painel do importador agora.
+  </div>
+
+  <ng-container *ngIf="!isLoading && !loadError">
+    <div class="importer-dashboard__filters">
+      <label class="importer-dashboard__source-filter">
+        <span>Source</span>
+        <select [(ngModel)]="selectedSourceId" (ngModelChange)="onSourceChanged()">
+          <option *ngFor="let source of availableSources; trackBy: trackBySource" [value]="getSourceKey(source)">
+            {{ source.sourceName }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div class="importer-dashboard__progress" *ngIf="selectedSource">
+      <div class="importer-dashboard__progress-bar">
+        <div class="importer-dashboard__progress-fill" [style.width.%]="completionRate"></div>
+      </div>
+      <span class="importer-dashboard__progress-value">{{ completionRate }}%</span>
+    </div>
+
+    <div class="aggregate-grid">
+      <div
+        class="aggregate-card"
+        *ngFor="let card of aggregateCards"
+        [ngClass]="['aggregate-card--' + card.id, (expandedCard === card.id || isAggregateCardSelected(card.id)) ? 'aggregate-card--active' : '']"
+        (click)="toggleAggregateCard(card.id)"
+      >
+        <div class="aggregate-card__badge" *ngIf="card.badge">
+          <mat-icon>{{ card.badge.icon }}</mat-icon>
+          <span>{{ card.badge.name }}</span>
+        </div>
+        <div class="aggregate-card__value-b">
+          {{ card.total }}
+          <span class="delta-inline" *ngIf="formatDelta(card.total, card.totalD1) !== null">{{ formatDelta(card.total, card.totalD1) }}</span>
+        </div>
+        <div class="aggregate-card__label">
+          <span class="aggregate-card__dot"></span>
+          {{ card.label }}
+        </div>
+      </div>
+    </div>
+
+    <div class="aggregate-breakdown" [ngClass]="'aggregate-breakdown--' + expandedCard" *ngIf="expandedCard && expandedCardBreakdown.length">
+      <button
+        class="aggregate-breakdown__bullet"
+        type="button"
+        *ngFor="let item of expandedCardBreakdown"
+        [class.aggregate-breakdown__bullet--selected]="selectedStatus === item.status"
+        (click)="toggleStatus(item.status)"
+      >
+        <span class="aggregate-breakdown__dot"></span>
+        {{ getStatusLabel(item.status) }}
+        <span class="aggregate-breakdown__count">{{ item.total }}</span>
+      </button>
+
+      <button class="aggregate-breakdown__action" type="button" *ngIf="expandedCard === 'editorial'" (click)="openEditorialPrompt()">
+        <mat-icon>edit_note</mat-icon>
+        Prompt editorial
+      </button>
+
+      <button class="aggregate-breakdown__action" type="button" *ngIf="expandedCard === 'traducao'" (click)="openTranslationPrompt()">
+        <mat-icon>translate</mat-icon>
+        Prompt tradução
+      </button>
+    </div>
+
+    <section class="importer-items" #importerItemsSection>
+      <header class="importer-items__header" *ngIf="!isLoading && !loadError">
+        <div class="importer-items__header-title">
+          <h2>Itens na Fila<ng-container *ngIf="totalQueueItems > 0"> - {{ totalQueueItems }}</ng-container></h2>
+        </div>
+
+        <div class="importer-items__controls">
+          <div class="importer-items__sort">
+            <div class="importer-items__select-wrapper">
+              <mat-icon>swap_vert</mat-icon>
+              <select [(ngModel)]="selectedSort" (ngModelChange)="onSortChanged()">
+                <option value="updated_at_desc">Última atualização</option>
+                <option value="id_asc">ID (ASC)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="importer-items__search">
+            <mat-icon>search</mat-icon>
+            <input
+              type="text"
+              placeholder="ID ou Título..."
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearch()"
+              (keyup.enter)="onSearch()"
+            />
+          </div>
+        </div>
+      </header>
+
+      <div class="alert alert-danger" *ngIf="itemsLoadError">
+        Não foi possível carregar os itens do importador agora.
+      </div>
+
+      <div class="spinner-container" *ngIf="isItemsLoading">
+        <mat-spinner diameter="42"></mat-spinner>
+      </div>
+
+      <div class="importer-items__list" *ngIf="!isItemsLoading && !itemsLoadError && importerItems.length">
+        <article class="importer-item" *ngFor="let item of importerItems; trackBy: trackByImporterItem" [ngClass]="getImporterItemStatusClass(item.status)">
+          <div class="importer-item__topline">
+            <div class="importer-item__main">
+              <div class="importer-item__position">#{{ item.id }}</div>
+              
+              <div class="importer-item__thumbnail" *ngIf="item.status === 'done' && item.bookSlug">
+                <img
+                  [src]="getBookImageUrl(item)"
+                  [alt]="item.title"
+                  loading="lazy"
+                  (error)="useOriginalBookImage($event, item)">
+              </div>
+
+              <div class="importer-item__content">
+                <h2>{{ getItemTitle(item) }}</h2>
+                <p *ngIf="getItemAuthor(item)">{{ getItemAuthor(item) }}</p>
+              </div>
+            </div>
+
+            <span class="importer-item__status">
+              {{ getStatusLabel(item.status) }}
+            </span>
+          </div>
+
+          <div class="importer-item__meta">
+            <span class="importer-item__chip" *ngIf="shouldShowAttempts(item.status)">Tentativas: {{ item.attempts || 0 }}</span>
+            <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+            <span class="importer-item__chip importer-item__chip--muted" *ngIf="shouldShowCategory(item.status) && getItemCategoryLabel(item)">{{ getItemCategoryLabel(item) }}</span>
+            <span class="importer-item__chip importer-item__chip--muted importer-item__chip--resolution" *ngIf="getResolutionChipLabel(item.status)">{{ getResolutionChipLabel(item.status) }}</span>
+          </div>
+
+          <div class="importer-item__error" *ngIf="item.status === 'triage_rejected' && getTriageDetail(item)">
+            {{ getTriageDetail(item) }}
+          </div>
+
+          <div class="importer-item__error importer-item__error--editorial-rejected" *ngIf="item.status === 'editorial_rejected' && getShortError(item)">
+            {{ getShortError(item) }}
+          </div>
+
+          <div class="importer-item__error" *ngIf="item.status !== 'triage_rejected' && item.status !== 'editorial_rejected' && item.status !== 'done' && getShortError(item)">
+            {{ getShortError(item) }}
+          </div>
+
+          <div class="importer-item__admin-note" *ngIf="item.adminNotes">
+            <mat-icon>comment</mat-icon>
+            {{ item.adminNotes }}
+          </div>
+
+          <div class="importer-item__actions">
+            <button class="importer-item__link importer-item__link--note" type="button" (click)="openAdminNote(item)" title="Comentário do adm">
+              <mat-icon>comment</mat-icon>
+              {{ item.adminNotes ? 'Editar nota' : 'Comentário do adm' }}
+            </button>
+            <button class="importer-item__link importer-item__link--data" type="button" (click)="viewData(item)" title="Ver todos os campos do Postgres">
+              Ver dados
+            </button>
+            <a class="importer-item__link importer-item__link--pdp" [href]="getPdpUrl(item)" target="_blank" rel="noopener noreferrer" *ngIf="item.status === 'done' && item.bookSlug" title="Ver na PDP">
+              Ver na PDP
+            </a>
+            <button class="importer-item__link" type="button" *ngIf="item.metadataJson" (click)="viewMetadata(item)" title="Ver metadata original">
+              Ver metadata
+            </button>
+            <a class="importer-item__link" [href]="item.sourceUrl" target="_blank" rel="noopener noreferrer" title="Abrir fonte">
+              Abrir fonte
+            </a>
+            <button class="importer-item__link importer-item__link--history" type="button" (click)="openHistory(item)" title="Histórico de status">
+              Histórico
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-state" *ngIf="!isItemsLoading && !itemsLoadError && !importerItems.length">
+        Nenhum item encontrado para a seleção atual.
+      </div>
+
+      <div class="pagination-bar" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > pageSize">
+        <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          Anterior
+        </button>
+
+        <button
+          class="pagination-btn pagination-btn--page"
+          type="button"
+          *ngFor="let page of visiblePages"
+          [class.pagination-btn--active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+
+        <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          Próxima
+        </button>
+      </div>
+
+      <div class="pagination-caption" *ngIf="!isItemsLoading && !itemsLoadError && totalQueueItems > pageSize">
+        Página {{ currentPage }} de {{ totalPages }}
+      </div>
+    </section>
+  </ng-container>
+</div>
+
+<ng-template #sourcePromptDialog>
+  <div class="editorial-prompt-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>{{ sourcePromptTitle }} — {{ sourcePromptSourceName }}</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="editorial-prompt-dialog__body">
+      <div class="spinner-container" *ngIf="sourcePromptLoading">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+      <div class="alert alert-danger" *ngIf="sourcePromptError">{{ sourcePromptError }}</div>
+      <textarea id="source-prompt-editor" *ngIf="!sourcePromptLoading"></textarea>
+    </div>
+    <div class="editorial-prompt-dialog__footer">
+      <button class="importer-item__link" type="button" mat-dialog-close>Cancelar</button>
+      <button class="importer-item__link editorial-prompt-dialog__save" type="button" (click)="saveSourcePrompt()" [disabled]="sourcePromptSaving">
+        <mat-icon>save</mat-icon>
+        {{ sourcePromptSaving ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #adminNoteDialog>
+  <div class="admin-note-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>#{{ adminNoteItem?.id }} — Comentário do adm</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="admin-note-dialog__body">
+      <textarea
+        class="admin-note-dialog__textarea"
+        [(ngModel)]="adminNoteText"
+        placeholder="Ex: são capítulos avulsos. não vale a pena torrar tokens nisso. vamos desistir desse item."
+        rows="4"
+        autofocus
+      ></textarea>
+    </div>
+    <div class="admin-note-dialog__footer">
+      <button class="importer-item__link importer-item__link--data" type="button" mat-dialog-close>Cancelar</button>
+      <button class="importer-item__link admin-note-dialog__save" type="button" (click)="saveAdminNote()" [disabled]="adminNoteSaving">
+        <mat-icon>save</mat-icon>
+        {{ adminNoteSaving ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #historyDialog>
+  <div class="history-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>#{{ historyItem?.id }} — Histórico de status</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="history-dialog__body">
+      <div class="spinner-container" *ngIf="historyLoading">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+      <div class="alert alert-danger" *ngIf="historyError">{{ historyError }}</div>
+      <div class="history-dialog__empty" *ngIf="!historyLoading && !historyError && historyEntries.length === 0">
+        Nenhum histórico encontrado.
+      </div>
+      <div class="history-dialog__table-wrap" *ngIf="!historyLoading && !historyError && historyEntries.length > 0">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>De</th>
+              <th>Para</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of historyEntries">
+              <td class="history-table__date">{{ entry.changedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="history-table__status history-table__status--from">{{ entry.fromStatus ? getStatusLabel(entry.fromStatus) : '—' }}</td>
+              <td class="history-table__status history-table__status--to">{{ getStatusLabel(entry.toStatus) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #metadataDialog>
+  <div class="metadata-dialog">
+    <div class="metadata-dialog__header">
+      <h2 mat-dialog-title>{{ selectedItemMetadata ? 'Metadata' : 'Dados do Registro' }}</h2>
+      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="metadata-dialog__content">
+      <div class="metadata-inspector">
+        <div class="metadata-inspector__row" *ngFor="let entry of getInspectorEntries()">
+          <div class="metadata-inspector__key">{{ entry.key }}</div>
+          <div class="metadata-inspector__value" [ngClass]="'metadata-inspector__value--' + entry.type">
+            {{ entry.value === null ? 'null' : entry.value }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

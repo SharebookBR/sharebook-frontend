@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
+import { ImporterDashboard, ImporterQueueItemHistoryEntry, ImporterQueueItemsPage } from '../../models/importer-dashboard';
 import { JobMonitorDashboard } from '../../models/job-monitor';
 
 @Injectable({ providedIn: 'root' })
@@ -11,5 +12,47 @@ export class OperationsService {
 
   getJobsDashboard(): Observable<JobMonitorDashboard> {
     return this._http.get<JobMonitorDashboard>(`${this.config.apiEndpoint}/Operations/Jobs`);
+  }
+
+  getImporterDashboard(): Observable<ImporterDashboard> {
+    return this._http.get<ImporterDashboard>(`${this.config.apiEndpoint}/Operations/ImporterDashboard`);
+  }
+
+  getImporterItems(sourceId: number, status: string, page: number, pageSize: number, id?: number, title?: string, sort?: string): Observable<ImporterQueueItemsPage> {
+    const params = {
+      sourceId: String(sourceId),
+      page: String(page),
+      pageSize: String(pageSize),
+      ...(status ? { status } : {}),
+      ...(id ? { id: String(id) } : {}),
+      ...(title ? { title } : {}),
+      ...(sort ? { sort } : {}),
+    };
+
+    return this._http.get<ImporterQueueItemsPage>(`${this.config.apiEndpoint}/Operations/ImporterItems`, { params });
+  }
+
+  getImporterEditorialPrompt(sourceName: string): Observable<{ sourceName: string; prompt: string }> {
+    return this._http.get<{ sourceName: string; prompt: string }>(`${this.config.apiEndpoint}/Operations/ImporterEditorialPrompt`, { params: { sourceName } });
+  }
+
+  updateImporterEditorialPrompt(sourceName: string, prompt: string): Observable<void> {
+    return this._http.put<void>(`${this.config.apiEndpoint}/Operations/ImporterEditorialPrompt`, { sourceName, prompt });
+  }
+
+  getImporterTranslationPrompt(sourceName: string): Observable<{ sourceName: string; prompt: string }> {
+    return this._http.get<{ sourceName: string; prompt: string }>(`${this.config.apiEndpoint}/Operations/ImporterTranslationPrompt`, { params: { sourceName } });
+  }
+
+  updateImporterTranslationPrompt(sourceName: string, prompt: string): Observable<void> {
+    return this._http.put<void>(`${this.config.apiEndpoint}/Operations/ImporterTranslationPrompt`, { sourceName, prompt });
+  }
+
+  updateImporterItemNotes(id: number, notes: string): Observable<void> {
+    return this._http.patch<void>(`${this.config.apiEndpoint}/Operations/ImporterItems/${id}/AdminNotes`, { notes });
+  }
+
+  getImporterItemHistory(id: number): Observable<ImporterQueueItemHistoryEntry[]> {
+    return this._http.get<ImporterQueueItemHistoryEntry[]>(`${this.config.apiEndpoint}/Operations/ImporterItems/${id}/History`);
   }
 }

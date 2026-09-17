@@ -12,11 +12,38 @@
     </div>
 
     <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/importer" title="Acompanhar importador">
+        <img class="card-img-top panel-item" src="../../../assets/img/importer-icon.png" alt="Painel do importador" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Importador de Livros</h5>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/analytics" title="Analytics">
+        <img class="card-img-top panel-item" src="../../../assets/img/ga4.png" alt="Analytics" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Analytics</h5>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="card">
       <a routerLink="/admin/jobs" title="Acompanhar jobs">
         <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
       </a>
       <div class="card-body">
         <h5 class="card-title">Painel de Jobs</h5>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="card">
+      <a routerLink="/admin/download-logs" title="Análise de downloads">
+        <img class="card-img-top panel-item" src="../../../assets/img/importer-icon.png" alt="Análise de Downloads" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Análise de Downloads</h5>
       </div>
     </div>
 

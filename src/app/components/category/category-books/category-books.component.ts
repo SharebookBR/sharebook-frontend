@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Meta, Title } from '@angular/platform-browser';
 
 import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Book } from '../../../core/models/book';
 import { Category } from '../../../core/models/category';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-category-books',
@@ -20,9 +20,13 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
   public subcategories: Category[] = [];
   public books: Book[] = [];
   public isLoading = true;
+  public isMoreLoading = false;
   public notFound = false;
   public physicalBooksCount = 0;
   public ebooksCount = 0;
+  public totalItems = 0;
+  public page = 1;
+  public pageSize = 100;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -30,8 +34,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private bookService: BookService,
     private categoryService: CategoryService,
-    private titleService: Title,
-    private metaService: Meta
+    private seoService: SeoService
   ) {}
 
   ngOnInit() {
@@ -40,6 +43,8 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.isLoading = true;
         this.notFound = false;
+        this.books = [];
+        this.page = 1;
         this.loadCategory(params['slug'], params['parentSlug']);
       });
   }
@@ -55,7 +60,6 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
         this.category = null;
         this.parentCategory = null;
         this.subcategories = [];
-        this.books = [];
         this.isLoading = false;
         return;
       }
@@ -68,10 +72,18 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
             slug: category.parentCategorySlug
           })
         : null;
-      this.subcategories = category.children || [];
+      this.subcategories = [...(category.children || [])].sort((left, right) =>
+        left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+      );
       this.updateSeoTags();
       this.loadBooks();
     });
+  }
+
+  public loadMore() {
+    this.page++;
+    this.isMoreLoading = true;
+    this.loadBooks();
   }
 
   private loadBooks() {
@@ -80,19 +92,23 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     }
 
     const request = this.parentCategory
-      ? this.bookService.getBooksByCategoryId(this.category.id)
-      : this.bookService.getBooksByCategoryTreeId(this.category.id);
+      ? this.bookService.getBooksByCategoryId(this.category.id, this.page, this.pageSize)
+      : this.bookService.getBooksByCategoryTreeId(this.category.id, this.page, this.pageSize);
 
     request.pipe(takeUntil(this._destroySubscribes$)).subscribe(
       response => {
-        this.books = this.sortBooksByType(response.items || response || []);
-        this.countBooksByType();
+        const newBooks = response.items || [];
+        this.books = [...this.books, ...newBooks];
+        this.totalItems = response.totalItems;
+        this.physicalBooksCount = response.physicalBooksCount;
+        this.ebooksCount = response.ebooksCount;
         this.isLoading = false;
+        this.isMoreLoading = false;
       },
       error => {
         console.error('Erro ao carregar livros:', error);
-        this.books = [];
         this.isLoading = false;
+        this.isMoreLoading = false;
       }
     );
   }
@@ -105,31 +121,50 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     const categoryPath = this.parentCategory
       ? `${this.parentCategory.name} > ${this.category.name}`
       : this.category.name;
-    const title = `${categoryPath} - Livros | ShareBook`;
-    const description = `Encontre livros de ${categoryPath} disponíveis para doação no ShareBook. Peça seu livro gratuitamente.`;
+    const categorySlug = this.category.slug
+      || this.categoryService.generateSlug(this.category.name);
+    const parentSlug = this.parentCategory
+      ? (this.parentCategory.slug || this.categoryService.generateSlug(this.parentCategory.name))
+      : '';
+    const path = this.parentCategory
+      ? `/categorias/${parentSlug}/${categorySlug}`
+      : `/categorias/${categorySlug}`;
+    const description =
+      `Encontre livros de ${categoryPath} disponíveis para doação no ShareBook. Solicite seu livro gratuitamente.`;
 
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'description', content: description });
-    this.metaService.updateTag({ property: 'og:title', content: title });
-    this.metaService.updateTag({ property: 'og:description', content: description });
-  }
-
-  private countBooksByType() {
-    this.ebooksCount = this.books.filter(book => book.type === 'Eletronic').length;
-    this.physicalBooksCount = this.books.filter(book => book.type === 'Printed').length;
-  }
-
-  private sortBooksByType(books: Book[]): Book[] {
-    const physicalBooks = books.filter(book => book.type === 'Printed');
-    const ebooks = books.filter(book => book.type === 'Eletronic');
-    const otherBooks = books.filter(book => book.type !== 'Printed' && book.type !== 'Eletronic');
-
-    return [...physicalBooks, ...ebooks, ...otherBooks];
+    this.seoService.generateTags({
+      title: `${categoryPath} - Livros`,
+      description,
+      path,
+      ogType: 'website',
+    });
   }
 
   public getSubcategoryRoute(subcategory: Category): string[] {
     return ['/categorias', this.category?.slug || '', subcategory.slug || ''];
   }
+
+  public getSubcategoryBookCount(subcategory: Category): number {
+    return subcategory.totalBooks || 0;
+  }
+
+  public shouldShowBooksGrid(): boolean {
+    return !this.subcategories.length && this.books.length > 0;
+  }
+
+  public shouldShowEmptyState(): boolean {
+    return !this.subcategories.length && this.books.length === 0 && !this.isLoading;
+  }
+
+  public hasMoreBooks(): boolean {
+    return this.shouldShowBooksGrid() && this.books.length < this.totalItems;
+  }
+
+  public getBooksAvailableLabel(): string {
+    const total = this.totalItems;
+    return total === 1 ? '1 livro disponível' : `${total} livros disponíveis`;
+  }
+
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();

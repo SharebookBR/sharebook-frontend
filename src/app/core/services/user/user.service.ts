@@ -9,6 +9,7 @@ import { AnonymizeUserVM } from '../../models/AnonymizeUserVM';
 import { ChangeUserPasswordByHashCodeVM } from '../../models/ChangeUserPasswordByHashCodeVM';
 import { ForgotMyPasswordVM } from '../../models/forgotMyPasswordVM';
 import { Profile } from '../../models/profile';
+import { BrowserStorageService } from '../platform/browser-storage.service';
 
 import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 
@@ -16,7 +17,11 @@ import { APP_CONFIG, AppConfig } from '../../../app-config.module';
 export class UserService {
   private _subject = new Subject<any>();
 
-  constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
+  constructor(
+    private _http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _browserStorage: BrowserStorageService
+  ) {}
 
   getAll() {
     return this._http.get<User[]>(`${this.config.apiEndpoint}/users`);
@@ -32,7 +37,7 @@ export class UserService {
         // login successful if there's a jwt token in the response
         if (response.authenticated) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('shareBookUser', JSON.stringify(response));
+          this._browserStorage.setItem('shareBookUser', JSON.stringify(response));
           this.setLoggedUser(response);
         }
         return response;
@@ -78,8 +83,9 @@ export class UserService {
   }
 
   getLoggedUserFromLocalStorage() {
-    if (localStorage.getItem('shareBookUser')) {
-      return JSON.parse(localStorage.getItem('shareBookUser'));
+    const userJson = this._browserStorage.getItem('shareBookUser');
+    if (userJson) {
+      return JSON.parse(userJson);
     }
     return;
   }
@@ -97,8 +103,10 @@ export class UserService {
   }
 
   whoAccessed() {
+    const userJson = this._browserStorage.getItem('shareBookUser');
+    const userId = userJson ? JSON.parse(userJson).userId : '';
     return this._http.get<any>(
-      `${this.config.apiEndpoint}/Account/WhoAccessed/${JSON.parse(localStorage.shareBookUser).userId}`
+      `${this.config.apiEndpoint}/Account/WhoAccessed/${userId}`
     );
   }
 

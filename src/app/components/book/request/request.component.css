@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  max-height: min(62vh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.request-title {
+  word-break: break-word;
+}
+
+.request-copy {
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.request-address {
+  margin: 12px 0 0;
+  word-break: break-word;
+}
+
+textarea.form-control {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.request-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.request-footer-actions button {
+  min-width: 150px;
+}
+
+.request-warning-button {
+  background-color: #ffc107;
+}
+
+@media (max-width: 600px) {
+  .request-footer-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .request-footer-actions button {
+    width: 100%;
+    margin: 0;
+  }
+}

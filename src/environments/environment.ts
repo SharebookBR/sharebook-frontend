@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: `https://api-dev.sharebook.com.br/api`,
+  apiEndpoint: `https://api.sharebook.com.br/api`,
   backendTimeZone: `America/Sao_Paulo`,
+  googleAnalyticsId: 'G-WEKKJQX4XC'
 };
 
 /*

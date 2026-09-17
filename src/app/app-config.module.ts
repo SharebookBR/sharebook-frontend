@@ -1,5 +1,5 @@
 import { NgModule, InjectionToken } from '@angular/core';
-import { EnvironmentSwitcherService } from './core/services/environment-switcher/environment-switcher.service';
+import { environment } from '../environments/environment';
 
 export let APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
@@ -8,9 +8,8 @@ export class AppConfig {
 }
 
 export function createAppConfig(): AppConfig {
-  const envSwitcher = new EnvironmentSwitcherService();
   return {
-    apiEndpoint: envSwitcher.getApiEndpoint()
+    apiEndpoint: environment.apiEndpoint,
   };
 }
 

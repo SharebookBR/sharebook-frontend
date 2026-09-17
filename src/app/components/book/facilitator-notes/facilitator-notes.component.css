@@ -1,0 +1,91 @@
+:host {
+  display: block;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  cursor: pointer;
+  color: #666;
+}
+
+.close i {
+  font-size: 24px;
+}
+
+[mat-dialog-title] {
+  margin: 0 36px 12px 0;
+  font-size: 24px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+mat-dialog-content {
+  max-height: min(62vh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+h4.book-title {
+  margin: 0 0 12px;
+  font-size: 28px;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.notes-list {
+  margin-bottom: 12px;
+}
+
+.note-line {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+textarea.form-control {
+  min-height: 130px;
+  resize: vertical;
+}
+
+mat-dialog-actions {
+  gap: 10px;
+  padding-top: 16px;
+}
+
+mat-dialog-actions button {
+  min-width: 120px;
+}
+
+@media (max-width: 600px) {
+  [mat-dialog-title] {
+    font-size: 20px;
+    margin-right: 28px;
+  }
+
+  h4.book-title {
+    font-size: 22px;
+  }
+
+  .note-line {
+    font-size: 14px;
+  }
+
+  mat-dialog-content {
+    max-height: 58vh;
+  }
+
+  mat-dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  mat-dialog-actions button {
+    width: 100%;
+    margin: 0;
+  }
+}

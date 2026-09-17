@@ -1,5 +1,7 @@
 # PRIMEIROS PASSOS DEVELOPER FRONTEND
 
+<!-- teste de commit/push automático: 2026-04-10 -->
+
 ## 1 - CONHEÇA O PROJETO SHAREBOOK
 
 https://www.linkedin.com/pulse/projeto-sharebook-raffaello-damgaard/

@@ -3,6 +3,10 @@
   max-width: 170px;
 }
 
+.figure--shelf {
+  margin: 0;
+}
+
 .figure div {
   width: 170px;
   height: 230px;

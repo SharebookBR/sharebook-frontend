@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Title, Meta } from '@angular/platform-browser';
 
-import { BookService } from '../../../core/services/book/book.service';
 import { CategoryService } from '../../../core/services/category/category.service';
 import { Category } from '../../../core/models/category';
-import { Book } from '../../../core/models/book';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -15,69 +13,78 @@ import { Book } from '../../../core/models/book';
 })
 export class CategoriesListComponent implements OnInit, OnDestroy {
   public categories: Category[] = [];
-  public categoryBookCount: Map<string, number> = new Map();
+  public expandedCategoryIds: Set<string> = new Set();
   public isLoading = true;
 
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
-    private _scBook: BookService,
     private _scCategory: CategoryService,
-    private titleService: Title,
-    private metaService: Meta
+    private seoService: SeoService
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('Categorias | ShareBook');
-    this.metaService.updateTag({
-      name: 'description',
-      content: 'Navegue por todas as categorias de livros disponíveis para doação no ShareBook.',
+    this.seoService.generateTags({
+      title: 'Categorias',
+      description: 'Navegue por todas as categorias de livros disponíveis para doação no ShareBook.',
+      path: '/categorias',
+      ogType: 'website',
     });
 
-    this.loadCategoriesAndBooks();
+    this.loadCategoriesWithCounts();
   }
 
-  private loadCategoriesAndBooks() {
-    let categoriesLoaded = false;
-    let booksLoaded = false;
-
+  private loadCategoriesWithCounts() {
     this._scCategory
-      .getAllWithSlug()
+      .getAllWithCounts()
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((categories) => {
         this.categories = this._scCategory.getRootCategories(categories);
-        categoriesLoaded = true;
-        if (booksLoaded) {
-          this.isLoading = false;
-        }
+        this.isLoading = false;
+      }, () => {
+        this.isLoading = false;
       });
-
-    this._scBook
-      .getAvailableBooks()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((books: Book[]) => {
-        this.countBooksByCategory(books);
-        booksLoaded = true;
-        if (categoriesLoaded) {
-          this.isLoading = false;
-        }
-      });
-  }
-
-  private countBooksByCategory(books: Book[]) {
-    this.categoryBookCount.clear();
-    books.forEach((book) => {
-      if (book.categoryId) {
-        const count = this.categoryBookCount.get(String(book.categoryId)) || 0;
-        this.categoryBookCount.set(String(book.categoryId), count + 1);
-      }
-    });
   }
 
   getCategoryBookCount(category: Category): number {
-    return this._scCategory
-      .collectCategoryIds(category)
-      .reduce((total, categoryId) => total + (this.categoryBookCount.get(String(categoryId)) || 0), 0);
+    return category.totalBooks || 0;
+  }
+
+  hasSubcategories(category: Category): boolean {
+    return !!category.children && category.children.length > 0;
+  }
+
+  isExpanded(category: Category): boolean {
+    return this.expandedCategoryIds.has(category.id);
+  }
+
+  toggleCategory(category: Category) {
+    if (!this.hasSubcategories(category)) {
+      return;
+    }
+
+    if (this.isExpanded(category)) {
+      this.expandedCategoryIds.delete(category.id);
+      return;
+    }
+
+    this.expandedCategoryIds.add(category.id);
+  }
+
+  getCategoryCountLabel(category: Category): string {
+    const totalBooks = this.getCategoryBookCount(category);
+
+    if (this.hasSubcategories(category)) {
+      return `${totalBooks} livro(s) nas subcategorias`;
+    }
+
+    return `${totalBooks} livro(s)`;
+  }
+
+  getSortedSubcategories(category: Category): Category[] {
+    return [...(category.children || [])].sort((left, right) =>
+      left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+    );
   }
 
   ngOnDestroy() {

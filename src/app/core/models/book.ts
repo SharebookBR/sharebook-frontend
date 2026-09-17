@@ -24,10 +24,12 @@ export class Book {
   freightOption: string;
   userId: string;
   categoryId: string;
+  downloadCount?: number;
   userIdFacilitator: string;
   category: Category | string;
   categoryInfo?: BookCategoryInfo;
   imageUrl: string;
+  thumbnailUrl?: string;
   imageName: string;
   chooseDate: Date;
   synopsis: string;

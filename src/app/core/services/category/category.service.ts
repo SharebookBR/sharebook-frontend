@@ -36,14 +36,20 @@ export class CategoryService {
     return this.getAll();
   }
 
+  public getAllWithCounts(): Observable<Category[]> {
+    return this._http.get<Category[]>(`${this.config.apiEndpoint}/category/Counts`).pipe(
+      map(response => this.normalizeCategories(response))
+    );
+  }
+
   public getBySlug(slug: string): Observable<Category | undefined> {
-    return this.getAll().pipe(
+    return this.getAllWithCounts().pipe(
       map(categories => this.flattenCategories(categories).find(category => category.slug === slug))
     );
   }
 
   public getByHierarchySlugs(parentSlug: string, slug: string): Observable<Category | undefined> {
-    return this.getAll().pipe(
+    return this.getAllWithCounts().pipe(
       map(categories => {
         const flattened = this.flattenCategories(categories);
         return flattened.find(category => category.slug === slug && category.parentCategorySlug === parentSlug);

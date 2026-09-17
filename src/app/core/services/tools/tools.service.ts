@@ -7,10 +7,12 @@ export class ToolsService {
   public getTools(): CardItem[] {
     const tools: CardItem[] = [
       {
-        image: 'assets/img/contribute-project/hostinger.jpg',
-        title: 'Hostinger',
-        text: 'Hospedagem web de alta performance para desenvolvedores. Use o link abaixo pra ganhar 20% de desconto e ajude nosso projeto.',
-        links: [{ url: 'https://hostinger.com.br?REFERRALCODE=A2KRAFFACYTL', content: 'Website' }]
+        image: 'assets/img/contribute-project/hostgator.jpg',
+        title: 'HostGator',
+        text: 'É a hospedagem que mantém o Sharebook no ar. Contratando pelo link abaixo, você ajuda a pagar nosso servidor.',
+        links: [
+          { url: 'https://indique-um-amigo.hostgator.com.br/raffacabofrio!363b9e2cc0!a?locale=pt', content: 'Website' }
+        ]
       },
       {
         image: 'assets/img/contribute-project/slack.jpg',

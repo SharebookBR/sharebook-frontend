@@ -7,6 +7,7 @@ export class Category {
   parentCategorySlug?: string | null;
   children?: Category[];
   displayName?: string;
+  totalBooks?: number;
 
   constructor(init?: Partial<Category>) {
     Object.assign(this, init);

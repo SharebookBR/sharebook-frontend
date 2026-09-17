@@ -17,21 +17,55 @@
 
   <!-- Grid de categorias -->
   <div *ngIf="!isLoading" class="categories-grid">
-    <a *ngFor="let category of categories"
-       [routerLink]="getCategoryBookCount(category) > 0 ? ['/categorias', category.slug] : null"
-       class="category-card"
-       [class.has-books]="getCategoryBookCount(category) > 0"
-       [class.no-books]="getCategoryBookCount(category) === 0">
-      <div class="category-icon">
-        <i class="fa fa-bookmark"></i>
+    <div *ngFor="let category of categories" class="category-group">
+      <button
+        *ngIf="hasSubcategories(category); else leafCategory"
+        type="button"
+        class="category-card category-card--expandable"
+        [class.has-books]="getCategoryBookCount(category) > 0"
+        [class.is-expanded]="isExpanded(category)"
+        (click)="toggleCategory(category)">
+        <div class="category-icon">
+          <i class="fa fa-bookmark"></i>
+        </div>
+        <div class="category-info">
+          <span class="category-name">{{ category.name }}</span>
+          <span class="category-count">{{ getCategoryCountLabel(category) }}</span>
+        </div>
+        <div class="category-arrow">
+          <i class="fa" [ngClass]="isExpanded(category) ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </div>
+      </button>
+
+      <ng-template #leafCategory>
+        <a
+          [routerLink]="getCategoryBookCount(category) > 0 ? ['/categorias', category.slug] : null"
+          class="category-card"
+          [class.has-books]="getCategoryBookCount(category) > 0"
+          [class.no-books]="getCategoryBookCount(category) === 0">
+          <div class="category-icon">
+            <i class="fa fa-bookmark"></i>
+          </div>
+          <div class="category-info">
+            <span class="category-name">{{ category.name }}</span>
+            <span class="category-count">{{ getCategoryCountLabel(category) }}</span>
+          </div>
+          <div class="category-arrow" *ngIf="getCategoryBookCount(category) > 0">
+            <i class="fa fa-chevron-right"></i>
+          </div>
+        </a>
+      </ng-template>
+
+      <div *ngIf="hasSubcategories(category) && isExpanded(category)" class="subcategory-list">
+        <a
+          *ngFor="let child of getSortedSubcategories(category)"
+          [routerLink]="getCategoryBookCount(child) > 0 ? ['/categorias', category.slug, child.slug] : null"
+          class="subcategory-link"
+          [class.subcategory-link--empty]="getCategoryBookCount(child) === 0">
+          <span class="subcategory-name">{{ child.name }}</span>
+          <span class="subcategory-count">{{ getCategoryBookCount(child) }} livro(s)</span>
+        </a>
       </div>
-      <div class="category-info">
-        <span class="category-name">{{ category.name }}</span>
-        <span class="category-count">{{ getCategoryBookCount(category) }} livro(s)</span>
-      </div>
-      <div class="category-arrow" *ngIf="getCategoryBookCount(category) > 0">
-        <i class="fa fa-chevron-right"></i>
-      </div>
-    </a>
+    </div>
   </div>
 </div>

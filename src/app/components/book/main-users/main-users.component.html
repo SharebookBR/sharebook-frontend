@@ -1,58 +1,39 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<h4 class="modal-title">Informações de usuários: {{ bookTitle }}</h4>
+<h4 mat-dialog-title class="main-users-title">Informações de usuários</h4>
 <mat-dialog-content>
+  <h4 class="main-users-book-title">{{ bookTitle }}</h4>
   <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
-  <!--Carousel Wrapper-->
-  <div id="myCarousel" class="carousel carousel-fade" data-ride="carousel">
-    <!--Slides-->
-    <div class="carousel-inner" role="listbox">
-      <div
-        *ngFor="let mainUser of mainUsers; let k = index"
-        [ngClass]="k == 0 ? 'carousel-item active' : 'carousel-item'"
-      >
-        <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
-            <p class="card-text">Nome: {{ mainUser.name }}</p>
-            <p class="card-text">E-mail: {{ mainUser.email }}</p>
-            <p class="card-text">LinkedIn: {{ mainUser.linkedin }}</p>
-            <p class="card-text">Telefone: {{ mainUser.phone }}</p>
-            <button
-              mat-flat-button
-              class="card-whatsapp-btn"
-              [disabled]="!hasWhatsappPhone(mainUser)"
-              (click)="contactOnWhatsapp(mainUser)">
-              <em class="fa fa-whatsapp" aria-hidden="true"></em>
-              Chamar no WhatsApp
-            </button>
-            <p class="card-text">
-              {{ mainUser.address?.street }}, {{ mainUser.address?.number }}
-              {{ !!mainUser.address?.complement ? mainUser.address?.complement : '' }}
-            </p>
-            <p class="card-text">
-              {{ mainUser.address?.neighborhood }} - {{ mainUser.address?.city }} - {{ mainUser.address?.state }}
-            </p>
-            <p class="card-text">CEP: {{ mainUser.address?.postalCode }} - {{ mainUser.address?.country }}</p>
-          </div>
-        </div>
-      </div>
+
+  <div class="main-users-stack" *ngIf="!isLoading">
+    <div class="user-card" *ngFor="let mainUser of mainUsers; let k = index">
+      <h5 class="user-card__role">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
+      <p class="card-text"><strong>Nome:</strong> {{ mainUser.name || 'Não informado' }}</p>
+      <p class="card-text"><strong>E-mail:</strong> {{ mainUser.email || 'Não informado' }}</p>
+      <p class="card-text"><strong>LinkedIn:</strong> {{ mainUser.linkedin || 'Não informado' }}</p>
+      <p class="card-text"><strong>Telefone:</strong> {{ mainUser.phone || 'Não informado' }}</p>
+      <button
+        mat-flat-button
+        class="card-whatsapp-btn"
+        [disabled]="!hasWhatsappPhone(mainUser)"
+        (click)="contactOnWhatsapp(mainUser)">
+        <em class="fa fa-whatsapp" aria-hidden="true"></em>
+        Chamar no WhatsApp
+      </button>
+      <p class="card-text">
+        <strong>Endereço:</strong>
+        {{ mainUser.address?.street || 'Não informado' }}, {{ mainUser.address?.number || 's/n' }}
+        {{ !!mainUser.address?.complement ? mainUser.address?.complement : '' }}
+      </p>
+      <p class="card-text">
+        <strong>Bairro / Cidade / Estado:</strong>
+        {{ mainUser.address?.neighborhood || 'Não informado' }} - {{ mainUser.address?.city || 'Não informado' }} - {{ mainUser.address?.state || 'Não informado' }}
+      </p>
+      <p class="card-text"><strong>CEP / País:</strong> {{ mainUser.address?.postalCode || 'Não informado' }} - {{ mainUser.address?.country || 'Não informado' }}</p>
     </div>
-    <!--/.Slides-->
-    <!--Controls-->
-    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-    <!--/.Controls-->
   </div>
-  <!--/.Carousel Wrapper-->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-flat-button color="primary" mat-dialog-close>Ok entendi</button>
+  <button mat-flat-button color="primary" mat-dialog-close>Ok, entendi</button>
 </mat-dialog-actions>

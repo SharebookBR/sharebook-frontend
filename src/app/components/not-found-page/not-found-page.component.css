@@ -1,0 +1,32 @@
+.not-found-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+.not-found-code {
+  font-weight: 700;
+  color: #ff4081;
+}
+
+h2 {
+  color: #333;
+}
+
+.btn-vitrine {
+  background-color: #29abe2;
+  color: #fff !important;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 32px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn-vitrine:hover {
+  background-color: #1e90c0;
+  color: #fff !important;
+  text-decoration: none;
+}

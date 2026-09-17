@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { PlatformService } from './core/services/platform/platform.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   constructor(
     private _router: Router,
-    private _viewportScroller: ViewportScroller
+    private _viewportScroller: ViewportScroller,
+    private _platform: PlatformService
   ) {}
 
   ngOnInit() {
@@ -20,7 +22,7 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         setTimeout(() => {
           this._viewportScroller.scrollToPosition([0, 0]);
-          window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+          this._platform.scrollToTop();
         }, 0);
       });
   }
