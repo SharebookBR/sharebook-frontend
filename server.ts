@@ -127,7 +127,9 @@ export const buildSitemap = (books: SitemapBook[], categories: SitemapCategory[]
   ].join('\n');
 };
 
-const commonEngine = new CommonEngine();
+const commonEngine = new CommonEngine({
+  allowedHosts: ['sharebook.com.br', 'www.sharebook.com.br', 'dev.sharebook.com.br', 'localhost'],
+});
 
 const renderSsr = (
   documentFilePath: string,
