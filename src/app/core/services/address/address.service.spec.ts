@@ -1,16 +1,17 @@
 import { Address } from './../../models/address';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { TestBed, inject } from '@angular/core/testing';
 import { AddressService } from './address.service';
 import * as AppConst from '../../../core/utils/app.const';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AddressService],
-    });
+    imports: [],
+    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {

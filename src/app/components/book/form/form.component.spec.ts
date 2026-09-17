@@ -4,7 +4,7 @@ import { User } from './../../../core/models/user';
 import { CategoryService } from './../../../core/services/category/category.service';
 import { BookService } from './../../../core/services/book/book.service';
 import { UserService } from './../../../core/services/user/user.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +23,7 @@ import { FormComponent } from './form.component';
 import { AppConfigModule } from '../../../app-config.module';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 let component: FormComponent;
 let fixture: ComponentFixture<FormComponent>;
@@ -97,9 +98,8 @@ function setFormValues(formData) {
 describe('FormComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [FormComponent],
-      imports: [
-        FormsModule,
+    declarations: [FormComponent],
+    imports: [FormsModule,
         ReactiveFormsModule,
         MatDialogModule,
         MatButtonModule,
@@ -109,19 +109,19 @@ describe('FormComponent', () => {
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
-        HttpClientTestingModule,
         ImageToDataUrlModule,
-        NoopAnimationsModule
-      ],
-      providers: [
+        NoopAnimationsModule],
+    providers: [
         UserService,
         BookService,
         {
-          provide: MatDialogRef,
-          useValue: {}
-        }
-      ],
-    }).compileComponents();
+            provide: MatDialogRef,
+            useValue: {}
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {
@@ -249,38 +249,37 @@ describe('FormComponent Editing book', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [FormComponent],
-      imports: [
-        FormsModule,
+    declarations: [FormComponent],
+    imports: [FormsModule,
         ReactiveFormsModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
-        HttpClientTestingModule,
         ImageToDataUrlModule,
         MatDialogModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatIconModule,
         MatAutocompleteModule,
-        NoopAnimationsModule
-      ],
-      providers: [
+        NoopAnimationsModule],
+    providers: [
         UserService,
         BookService,
         {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ id: 'f4816313-523b-4d61-89f1-08d80b14fdaf' }),
-          },
+            provide: ActivatedRoute,
+            useValue: {
+                params: of({ id: 'f4816313-523b-4d61-89f1-08d80b14fdaf' }),
+            },
         },
         CategoryService,
         {
-          provide: MatDialogRef,
-          useValue: {}
-        }
-      ],
-    }).compileComponents();
+            provide: MatDialogRef,
+            useValue: {}
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

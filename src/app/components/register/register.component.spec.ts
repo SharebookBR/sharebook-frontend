@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -30,9 +31,8 @@ describe('RegisterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [RegisterComponent],
-      imports: [
-        FormsModule,
+    declarations: [RegisterComponent],
+    imports: [FormsModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
         RecaptchaModule,
@@ -40,15 +40,15 @@ describe('RegisterComponent', () => {
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-      ],
-      providers: [
+        NoopAnimationsModule],
+    providers: [
         UserService,
         AddressService,
         { provide: GoogleAnalyticsService, useValue: googleAnalyticsMock },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {
