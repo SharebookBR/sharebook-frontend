@@ -1,4 +1,4 @@
-import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
@@ -171,7 +171,6 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'angular' }),
-    BrowserTransferStateModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

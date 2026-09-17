@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
-import { By, BrowserTransferStateModule } from '@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormComponent } from './form.component';
@@ -111,7 +111,6 @@ describe('FormComponent', () => {
         ToastrModule.forRoot(),
         HttpClientTestingModule,
         ImageToDataUrlModule,
-        BrowserTransferStateModule,
         NoopAnimationsModule
       ],
       providers: [
@@ -264,7 +263,6 @@ describe('FormComponent Editing book', () => {
         MatButtonToggleModule,
         MatIconModule,
         MatAutocompleteModule,
-        BrowserTransferStateModule,
         NoopAnimationsModule
       ],
       providers: [
