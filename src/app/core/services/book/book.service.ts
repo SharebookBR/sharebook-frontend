@@ -1,8 +1,8 @@
 import { BookToAdminProfile } from './../../models/BookToAdminProfile';
 import { UserInfoBook } from './../../models/UserInfoBook';
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import { TransferState, makeStateKey } from '@angular/platform-browser';
+
 import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
 import { Book } from '../../models/book';
 import { BookVM } from '../../models/bookVM';

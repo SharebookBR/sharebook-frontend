@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../../express.tokens';
 import { Response } from 'express';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

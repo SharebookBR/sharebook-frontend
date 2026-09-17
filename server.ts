@@ -1,15 +1,14 @@
-import 'zone.js/dist/zone-node';
-
-import { ngExpressEngine } from '@nguniversal/express-engine';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import express, { Express, NextFunction, Request, Response } from 'express';
-import http from 'http';
-import https from 'https';
-import { join } from 'path';
+import 'zone.js/node';
 
 import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
-import { existsSync } from 'fs';
+import { CommonEngine } from '@angular/ssr';
+import express, { Express, NextFunction, Request, Response } from 'express';
+import http from 'http';
+import https from 'https';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { REQUEST, RESPONSE } from './src/express.tokens';
 
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
@@ -82,7 +81,7 @@ const categorySlug = (name: string): string =>
   name
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
@@ -128,27 +127,27 @@ export const buildSitemap = (books: SitemapBook[], categories: SitemapCategory[]
   ].join('\n');
 };
 
+const commonEngine = new CommonEngine();
+
 const renderSsr = (
-  indexHtml: string,
+  documentFilePath: string,
+  publicPath: string,
   req: Request,
   res: Response
 ): Promise<SsrRenderResult> =>
-  new Promise((resolve, reject) => {
-    res.render(indexHtml, {
-      req,
+  commonEngine
+    .render({
+      bootstrap: AppServerModule,
+      documentFilePath,
+      publicPath,
+      url: `${req.protocol}://${req.headers.host}${req.originalUrl}`,
       providers: [
         { provide: APP_BASE_HREF, useValue: req.baseUrl },
         { provide: RESPONSE, useValue: res },
+        { provide: REQUEST, useValue: req },
       ],
-    }, (error, html) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve({ html, statusCode: res.statusCode });
-    });
-  });
+    })
+    .then(html => ({ html, statusCode: res.statusCode }));
 
 const setHomeCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'): void => {
   res.set('Cache-Control', 'public, max-age=1800');
@@ -156,7 +155,8 @@ const setHomeCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'
 };
 
 const serveCachedHome = async (
-  indexHtml: string,
+  documentFilePath: string,
+  publicPath: string,
   req: Request,
   res: Response,
   next: NextFunction
@@ -173,7 +173,7 @@ const serveCachedHome = async (
 
   if (isLeader) {
     setHomeCacheHeaders(res, 'MISS');
-    homeRenderInFlight = renderSsr(indexHtml, req, res).then(result => {
+    homeRenderInFlight = renderSsr(documentFilePath, publicPath, req, res).then(result => {
       if (result.statusCode === 200) {
         homeCache = {
           html: result.html,
@@ -206,12 +206,9 @@ const serveCachedHome = async (
 export function app(): Express {
   const server = express();
   const distFolder = join(process.cwd(), 'dist/angular/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
-
-  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine('html', ngExpressEngine({
-    bootstrap: AppServerModule,
-  }));
+  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
+    ? join(distFolder, 'index.original.html')
+    : join(distFolder, 'index.html');
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
@@ -247,12 +244,12 @@ export function app(): Express {
   // Cache the complete public home SSR output. Cache hits do not bootstrap Angular,
   // so neither the Node renderer nor browser hydration repeats the initial API calls.
   server.get('/', (req: Request, res: Response, next: NextFunction) => {
-    void serveCachedHome(indexHtml, req, res, next);
+    void serveCachedHome(indexHtml, distFolder, req, res, next);
   });
 
-  // All regular routes use the Universal engine
+  // All regular routes use the Angular engine
   server.get('*', (req: Request, res: Response, next: NextFunction) => {
-    void renderSsr(indexHtml, req, res)
+    void renderSsr(indexHtml, distFolder, req, res)
       .then(result => res.status(result.statusCode).send(result.html))
       .catch(next);
   });

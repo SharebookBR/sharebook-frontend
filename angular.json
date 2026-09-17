@@ -100,21 +100,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular:build"
+            "buildTarget": "angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular:build:production"
+              "buildTarget": "angular:build:production"
             },
             "local": {
-              "browserTarget": "angular:build:local"
+              "buildTarget": "angular:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular:build"
+            "buildTarget": "angular:build"
           }
         },
         "test": {
@@ -182,7 +182,7 @@
           "defaultConfiguration": "production"
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "configurations": {
             "local": {
               "browserTarget": "angular:build:local",
@@ -196,7 +196,7 @@
           "defaultConfiguration": "local"
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "builder": "@angular-devkit/build-angular:prerender",
           "options": {
             "routes": [
               "/"
