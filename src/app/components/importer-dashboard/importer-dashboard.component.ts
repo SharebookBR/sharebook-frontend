@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { finalize } from 'rxjs/operators';
 import type EasyMDE from 'easymde';
 import { PlatformService } from '../../core/services/platform/platform.service';
