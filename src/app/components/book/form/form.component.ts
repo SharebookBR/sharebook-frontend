@@ -3,7 +3,7 @@ import { Profile } from './../../../core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,8 +28,8 @@ import { BookType } from 'src/app/core/models/book';
   styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
-  categorySearchControl = new FormControl('');
+  formGroup: UntypedFormGroup;
+  categorySearchControl = new UntypedFormControl('');
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
   filteredCategories: Category[] = [];
@@ -76,7 +76,7 @@ export class FormComponent implements OnInit, OnDestroy {
     private _scBook: BookService,
     private _scCategory: CategoryService,
     private _scUser: UserService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _toastr: ToastrService,
     private _seo: SeoService,

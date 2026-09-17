@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   address = new Address();
   isGettingAddress: boolean;
   private _destroySubscribes$ = new Subject<void>();
@@ -26,7 +26,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     private _scUser: UserService,
     private _toastr: ToastrService,
     private _router: Router,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _AddressService: AddressService,
     private _seo: SeoService
   ) {

@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 import { PlatformService } from '../../core/services/platform/platform.service';
 import { InputSearchComponent } from './input-search.component';
@@ -12,7 +12,7 @@ describe('InputSearchComponent', () => {
     const router = jasmine.createSpyObj('Router', ['navigate']);
     const platform = jasmine.createSpyObj<PlatformService>('PlatformService', ['getPathname']);
     platform.getPathname.and.returnValue(pathname);
-    const component = new InputSearchComponent(new FormBuilder(), router, platform);
+    const component = new InputSearchComponent(new UntypedFormBuilder(), router, platform);
     component.ngOnInit();
     return { component, router };
   }

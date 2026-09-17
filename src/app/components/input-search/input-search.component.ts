@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
@@ -9,7 +9,7 @@ import { PlatformService } from 'src/app/core/services/platform/platform.service
   styleUrls: ['./input-search.component.css'],
 })
 export class InputSearchComponent implements OnInit {
-  public searchForm: FormGroup;
+  public searchForm: UntypedFormGroup;
   public searchAlert = false;
 
   @ViewChild('alert') alert: ElementRef;
@@ -17,7 +17,7 @@ export class InputSearchComponent implements OnInit {
   @Output() searchSubmitted = new EventEmitter<string>();
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _router: Router,
     private _platform: PlatformService,
   ) {}

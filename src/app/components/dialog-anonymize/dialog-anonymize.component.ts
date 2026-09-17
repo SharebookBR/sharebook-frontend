@@ -1,7 +1,7 @@
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { UserService } from './../../core/services/user/user.service';
@@ -20,7 +20,7 @@ export class DialogAnonymizeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _scUser: UserService,
     private _toastr: ToastrService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _router: Router,
     public dialog: MatDialog
   ) {
@@ -30,7 +30,7 @@ export class DialogAnonymizeComponent implements OnInit {
     });
   }
 
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   userData: any;
 
   ngOnInit(): void {

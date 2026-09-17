@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,14 +15,14 @@ import * as AppConst from '../../core/utils/app.const';
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   private _destroySubscribes$ = new Subject<void>();
 
   constructor(
     private _scUser: UserService,
     private _router: Router,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _toastr: ToastrService
   ) {
     this.formGroup = _formBuilder.group({
