@@ -6,8 +6,9 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService } from '../../core/services/user/user.service';
 
 @Component({
-  selector: 'app-unsubscribe',
-  templateUrl: './unsubscribe.component.html',
+    selector: 'app-unsubscribe',
+    templateUrl: './unsubscribe.component.html',
+    standalone: false
 })
 export class UnsubscribeComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();

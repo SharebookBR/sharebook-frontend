@@ -11,9 +11,10 @@ import { ImporterQueueItemHistoryEntry, ImporterQueueListItem, ImporterSourceSta
 import { OperationsService } from '../../core/services/operations/operations.service';
 
 @Component({
-  selector: 'app-importer-dashboard',
-  templateUrl: './importer-dashboard.component.html',
-  styleUrls: ['./importer-dashboard.component.css'],
+    selector: 'app-importer-dashboard',
+    templateUrl: './importer-dashboard.component.html',
+    styleUrls: ['./importer-dashboard.component.css'],
+    standalone: false
 })
 export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;

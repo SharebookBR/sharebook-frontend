@@ -10,9 +10,10 @@ import { UserService } from '../../core/services/user/user.service';
 import * as AppConst from '../../core/utils/app.const';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['./reset-password.component.css'],
+    standalone: false
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;

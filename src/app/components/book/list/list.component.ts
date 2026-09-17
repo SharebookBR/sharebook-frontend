@@ -20,9 +20,10 @@ import { AdminBookSummary } from './../../../core/models/adminBookSummary';
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css'],
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css'],
+    standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;

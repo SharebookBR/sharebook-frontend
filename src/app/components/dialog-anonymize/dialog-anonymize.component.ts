@@ -8,9 +8,10 @@ import { UserService } from './../../core/services/user/user.service';
 import { AnonymizeUserVM } from '../../core/models/AnonymizeUserVM';
 
 @Component({
-  selector: 'app-dialog-anonymize',
-  templateUrl: './dialog-anonymize.component.html',
-  styleUrls: ['./dialog-anonymize.component.css'],
+    selector: 'app-dialog-anonymize',
+    templateUrl: './dialog-anonymize.component.html',
+    styleUrls: ['./dialog-anonymize.component.css'],
+    standalone: false
 })
 export class DialogAnonymizeComponent implements OnInit {
   who: any = [{}];

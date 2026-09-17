@@ -23,9 +23,10 @@ import { BookDonationStatus } from 'src/app/core/models/BookDonationStatus';
 import { BookType } from 'src/app/core/models/book';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.css'],
+    standalone: false
 })
 export class FormComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;

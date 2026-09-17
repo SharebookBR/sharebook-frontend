@@ -12,9 +12,10 @@ import { Address } from '../../core/models/address';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.css'],
+    standalone: false
 })
 export class AccountComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;

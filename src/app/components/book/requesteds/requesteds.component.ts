@@ -16,9 +16,10 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
 type RequestsFilter = 'all' | 'awaiting' | 'won' | 'finished';
 
 @Component({
-  selector: 'app-requesteds',
-  templateUrl: './requesteds.component.html',
-  styleUrls: ['./requesteds.component.css'],
+    selector: 'app-requesteds',
+    templateUrl: './requesteds.component.html',
+    styleUrls: ['./requesteds.component.css'],
+    standalone: false
 })
 export class RequestedsComponent implements OnInit, OnDestroy {
   public requestedBooks = new MatTableDataSource<MyRequestItem>();

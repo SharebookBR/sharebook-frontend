@@ -7,9 +7,10 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { UserInfo } from 'src/app/core/models/userInfo';
 
 @Component({
-  selector: 'app-main-users',
-  templateUrl: './main-users.component.html',
-  styleUrls: ['./main-users.component.css'],
+    selector: 'app-main-users',
+    templateUrl: './main-users.component.html',
+    styleUrls: ['./main-users.component.css'],
+    standalone: false
 })
 export class MainUsersComponent implements OnInit, OnDestroy {
   @Input() bookId;

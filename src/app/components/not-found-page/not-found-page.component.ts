@@ -5,9 +5,10 @@ import { Response } from 'express';
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-not-found-page',
-  templateUrl: './not-found-page.component.html',
-  styleUrls: ['./not-found-page.component.css'],
+    selector: 'app-not-found-page',
+    templateUrl: './not-found-page.component.html',
+    styleUrls: ['./not-found-page.component.css'],
+    standalone: false
 })
 export class NotFoundPageComponent implements OnInit {
   constructor(

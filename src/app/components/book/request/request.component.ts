@@ -12,9 +12,10 @@ import { ToastrService } from 'ngx-toastr';
 import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 @Component({
-  selector: 'app-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.css']
+    selector: 'app-request',
+    templateUrl: './request.component.html',
+    styleUrls: ['./request.component.css'],
+    standalone: false
 })
 export class RequestComponent implements OnInit, OnDestroy {
   @Input() bookId;

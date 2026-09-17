@@ -10,8 +10,9 @@ import { GoogleAnalyticsService } from '../../core/services/analytics/google-ana
 import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
 
 @Component({
-  selector: 'app-search-results',
-  templateUrl: './search-results.component.html',
+    selector: 'app-search-results',
+    templateUrl: './search-results.component.html',
+    standalone: false
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {
   public criteria: string;

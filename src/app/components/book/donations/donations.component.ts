@@ -19,9 +19,10 @@ import { UserDonationsSummary } from 'src/app/core/models/userDonationsSummary';
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
 @Component({
-  selector: 'app-donations',
-  templateUrl: './donations.component.html',
-  styleUrls: ['./donations.component.css'],
+    selector: 'app-donations',
+    templateUrl: './donations.component.html',
+    styleUrls: ['./donations.component.css'],
+    standalone: false
 })
 export class DonationsComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;

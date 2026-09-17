@@ -8,9 +8,10 @@ import { UserService } from '../../core/services/user/user.service';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
 
 @Component({
-  selector: 'app-mais-sheet',
-  templateUrl: './mais-sheet.component.html',
-  styleUrls: ['./mais-sheet.component.css'],
+    selector: 'app-mais-sheet',
+    templateUrl: './mais-sheet.component.html',
+    styleUrls: ['./mais-sheet.component.css'],
+    standalone: false
 })
 export class MaisSheetComponent {
   userLogged = false;

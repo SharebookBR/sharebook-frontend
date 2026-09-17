@@ -7,9 +7,10 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-tracking',
-  templateUrl: './tracking.component.html',
-  styleUrls: ['./tracking.component.css']
+    selector: 'app-tracking',
+    templateUrl: './tracking.component.html',
+    styleUrls: ['./tracking.component.css'],
+    standalone: false
 })
 export class TrackingComponent implements OnInit, OnDestroy {
   @Input() bookId;

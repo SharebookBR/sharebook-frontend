@@ -8,9 +8,10 @@ import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-
 import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize.component';
 
 @Component({
-  selector: 'app-myaccount',
-  templateUrl: './myaccount.component.html',
-  styleUrls: ['./myaccount.component.css'],
+    selector: 'app-myaccount',
+    templateUrl: './myaccount.component.html',
+    styleUrls: ['./myaccount.component.css'],
+    standalone: false
 })
 export class MyaccountComponent implements OnInit, OnDestroy {
   isAdmin: boolean;

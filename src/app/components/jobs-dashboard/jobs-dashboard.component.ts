@@ -5,9 +5,10 @@ import { OperationsService } from '../../core/services/operations/operations.ser
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-jobs-dashboard',
-  templateUrl: './jobs-dashboard.component.html',
-  styleUrls: ['./jobs-dashboard.component.css'],
+    selector: 'app-jobs-dashboard',
+    templateUrl: './jobs-dashboard.component.html',
+    styleUrls: ['./jobs-dashboard.component.css'],
+    standalone: false
 })
 export class JobsDashboardComponent implements OnInit {
   dashboard: JobMonitorDashboard;

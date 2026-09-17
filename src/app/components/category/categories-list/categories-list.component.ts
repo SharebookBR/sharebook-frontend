@@ -7,9 +7,10 @@ import { Category } from '../../../core/models/category';
 import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-categories-list',
-  templateUrl: './categories-list.component.html',
-  styleUrls: ['./categories-list.component.css'],
+    selector: 'app-categories-list',
+    templateUrl: './categories-list.component.html',
+    styleUrls: ['./categories-list.component.css'],
+    standalone: false
 })
 export class CategoriesListComponent implements OnInit, OnDestroy {
   public categories: Category[] = [];

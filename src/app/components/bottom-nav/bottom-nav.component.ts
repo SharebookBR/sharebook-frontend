@@ -7,9 +7,10 @@ import { UserService } from '../../core/services/user/user.service';
 import { MaisSheetComponent } from '../mais-sheet/mais-sheet.component';
 
 @Component({
-  selector: 'app-bottom-nav',
-  templateUrl: './bottom-nav.component.html',
-  styleUrls: ['./bottom-nav.component.css'],
+    selector: 'app-bottom-nav',
+    templateUrl: './bottom-nav.component.html',
+    styleUrls: ['./bottom-nav.component.css'],
+    standalone: false
 })
 export class BottomNavComponent implements OnInit, OnDestroy {
   userLogged = false;

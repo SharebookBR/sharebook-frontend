@@ -7,9 +7,10 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-facilitator-notes',
-  templateUrl: './facilitator-notes.component.html',
-  styleUrls: ['./facilitator-notes.component.css']
+    selector: 'app-facilitator-notes',
+    templateUrl: './facilitator-notes.component.html',
+    styleUrls: ['./facilitator-notes.component.css'],
+    standalone: false
 })
 export class FacilitatorNotesComponent implements OnInit, OnDestroy {
   @Input() bookId;

@@ -11,9 +11,10 @@ import { CategoryService } from '../../core/services/category/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public availableBooks: ShowcaseBookItem[] = [];

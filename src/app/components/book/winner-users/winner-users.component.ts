@@ -9,9 +9,10 @@ import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
 import { Book } from 'src/app/core/models/book';
 
 @Component({
-  selector: 'app-winner-users',
-  templateUrl: './winner-users.component.html',
-  styleUrls: ['./winner-users.component.css']
+    selector: 'app-winner-users',
+    templateUrl: './winner-users.component.html',
+    styleUrls: ['./winner-users.component.css'],
+    standalone: false
 })
 export class WinnerUsersComponent implements OnInit, OnDestroy {
   @Input() bookId;

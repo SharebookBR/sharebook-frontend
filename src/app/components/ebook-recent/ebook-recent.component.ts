@@ -7,9 +7,10 @@ import { BookService } from '../../core/services/book/book.service';
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-ebook-recent',
-  templateUrl: './ebook-recent.component.html',
-  styleUrls: ['./ebook-recent.component.css'],
+    selector: 'app-ebook-recent',
+    templateUrl: './ebook-recent.component.html',
+    styleUrls: ['./ebook-recent.component.css'],
+    standalone: false
 })
 export class EbookRecentComponent implements OnInit, OnDestroy {
   public books: Book[] = [];

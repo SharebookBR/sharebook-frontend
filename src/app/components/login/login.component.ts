@@ -10,9 +10,10 @@ import { GoogleAnalyticsService } from '../../core/services/analytics/google-ana
 import * as AppConst from '../../core/utils/app.const';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-form',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;

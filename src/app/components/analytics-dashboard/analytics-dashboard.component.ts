@@ -62,9 +62,10 @@ interface DashboardData {
 }
 
 @Component({
-  selector: 'app-analytics-dashboard',
-  templateUrl: './analytics-dashboard.component.html',
-  styleUrls: ['./analytics-dashboard.component.css']
+    selector: 'app-analytics-dashboard',
+    templateUrl: './analytics-dashboard.component.html',
+    styleUrls: ['./analytics-dashboard.component.css'],
+    standalone: false
 })
 export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chartSessions') chartSessionsRef: ElementRef<HTMLCanvasElement>;

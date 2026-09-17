@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
@@ -168,7 +168,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         NotFoundComponent,
         NotFoundPageComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'angular' }),
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
@@ -218,6 +218,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
         AuthGuardAdmin,
         provideHttpClient(withInterceptorsFromDi()),
+        { provide: APP_ID, useValue: 'angular' },
     ] })
 export class AppModule {
   constructor(protected _googleAnalyticsService: GoogleAnalyticsService) {} // <-- We inject the service here to keep it alive whole time

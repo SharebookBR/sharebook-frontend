@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-freight-incentive-dialog',
-  templateUrl: './freight-incentive-dialog.component.html',
-  styleUrls: ['./freight-incentive-dialog.component.css']
+    selector: 'app-freight-incentive-dialog',
+    templateUrl: './freight-incentive-dialog.component.html',
+    styleUrls: ['./freight-incentive-dialog.component.css'],
+    standalone: false
 })
 export class FreightIncentiveDialogComponent implements OnInit {
 

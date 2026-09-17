@@ -2,7 +2,7 @@ import 'zone.js/node';
 
 import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine } from '@angular/ssr';
+import { CommonEngine } from '@angular/ssr/node';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import http from 'http';
 import https from 'https';

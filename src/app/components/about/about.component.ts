@@ -5,10 +5,11 @@ import { ContributorsService } from 'src/app/core/services/contributors/contribu
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css'],
-  providers: [ContributorsService]
+    selector: 'app-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.css'],
+    providers: [ContributorsService],
+    standalone: false
 })
 export class AboutComponent implements OnInit {
   contributors: Contributor[] = [];

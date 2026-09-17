@@ -11,7 +11,10 @@ import { EnvironmentSwitcherService } from '../../core/services/environment-swit
 import { UserService } from '../../core/services/user/user.service';
 import { HeaderComponent } from './header.component';
 
-@Component({ selector: 'app-input-search', template: '' })
+@Component({
+    selector: 'app-input-search', template: '',
+    standalone: false
+})
 class InputSearchStubComponent {
   @Output() searchSubmitted = new EventEmitter<string>();
   focus = jasmine.createSpy('focus');

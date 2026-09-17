@@ -8,10 +8,11 @@ import { ToastrService } from 'ngx-toastr';
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-contribute-project',
-  templateUrl: './contribute-project.component.html',
-  styleUrls: ['./contribute-project.component.css'],
-  providers: [TechnologiesService, ToolsService, CareersService]
+    selector: 'app-contribute-project',
+    templateUrl: './contribute-project.component.html',
+    styleUrls: ['./contribute-project.component.css'],
+    providers: [TechnologiesService, ToolsService, CareersService],
+    standalone: false
 })
 export class ContributeProjectComponent implements OnInit {
   technologies: CardItem[] = [];

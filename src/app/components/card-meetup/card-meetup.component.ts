@@ -6,9 +6,10 @@ import localePT from '@angular/common/locales/pt';
 registerLocaleData(localePT);
 
 @Component({
-  selector: 'app-card-meetup',
-  templateUrl: './card-meetup.component.html',
-  styleUrls: ['./card-meetup.component.css'],
+    selector: 'app-card-meetup',
+    templateUrl: './card-meetup.component.html',
+    styleUrls: ['./card-meetup.component.css'],
+    standalone: false
 })
 export class CardMeetupComponent {
   @Input() meetup: Meetup;

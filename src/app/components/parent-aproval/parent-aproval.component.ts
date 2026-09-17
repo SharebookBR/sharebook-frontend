@@ -7,9 +7,10 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../core/services/user/user.service';
 
 @Component({
-  selector: 'app-parent-aproval',
-  templateUrl: './parent-aproval.component.html',
-  styleUrls: ['./parent-aproval.component.css'],
+    selector: 'app-parent-aproval',
+    templateUrl: './parent-aproval.component.html',
+    styleUrls: ['./parent-aproval.component.css'],
+    standalone: false
 })
 export class ParentAprovalComponent implements OnInit, OnDestroy {
   private _destroySubscribes$ = new Subject<void>();

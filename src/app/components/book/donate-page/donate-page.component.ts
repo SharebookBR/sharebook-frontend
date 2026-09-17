@@ -20,9 +20,10 @@ import { UserInfo } from 'src/app/core/models/userInfo';
 import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
 
 @Component({
-  selector: 'app-donate-page',
-  templateUrl: './donate-page.component.html',
-  styleUrls: ['./donate-page.component.css']
+    selector: 'app-donate-page',
+    templateUrl: './donate-page.component.html',
+    styleUrls: ['./donate-page.component.css'],
+    standalone: false
 })
 export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;

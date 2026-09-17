@@ -9,8 +9,9 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-confirmation-dialog',
-  templateUrl: './confirmation-dialog.component.html'
+    selector: 'app-confirmation-dialog',
+    templateUrl: './confirmation-dialog.component.html',
+    standalone: false
 })
 export class ConfirmationDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>,

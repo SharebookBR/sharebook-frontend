@@ -8,9 +8,10 @@ export interface CropImageDialogData {
 }
 
 @Component({
-  selector: 'app-crop-image-dialog',
-  templateUrl: './crop-image-dialog.component.html',
-  styleUrls: ['./crop-image-dialog.component.css'],
+    selector: 'app-crop-image-dialog',
+    templateUrl: './crop-image-dialog.component.html',
+    styleUrls: ['./crop-image-dialog.component.css'],
+    standalone: false
 })
 export class CropImageDialogComponent {
   croppedBase64 = '';

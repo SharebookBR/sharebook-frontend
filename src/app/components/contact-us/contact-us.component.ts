@@ -9,9 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-contact-us',
-  templateUrl: './contact-us.component.html',
-  styleUrls: ['./contact-us.component.css']
+    selector: 'app-contact-us',
+    templateUrl: './contact-us.component.html',
+    styleUrls: ['./contact-us.component.css'],
+    standalone: false
 })
 export class ContactUsComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;

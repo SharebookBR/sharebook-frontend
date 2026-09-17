@@ -9,9 +9,10 @@ import { UserInfoBook } from 'src/app/core/models/UserInfoBook';
 import { UserInfo } from 'src/app/core/models/userInfo';
 
 @Component({
-  selector: 'app-donor-modal',
-  templateUrl: './donor-modal.component.html',
-  styleUrls: ['./donor-modal.component.css'],
+    selector: 'app-donor-modal',
+    templateUrl: './donor-modal.component.html',
+    styleUrls: ['./donor-modal.component.css'],
+    standalone: false
 })
 export class DonorModalComponent implements OnInit {
   @Input() bookId;

@@ -10,9 +10,10 @@ import { Category } from '../../../core/models/category';
 import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-category-books',
-  templateUrl: './category-books.component.html',
-  styleUrls: ['./category-books.component.css'],
+    selector: 'app-category-books',
+    templateUrl: './category-books.component.html',
+    styleUrls: ['./category-books.component.css'],
+    standalone: false
 })
 export class CategoryBooksComponent implements OnInit, OnDestroy {
   public category: Category | null = null;

@@ -22,9 +22,10 @@ export interface BookShelfSelection {
 export type BookShelfAppearance = 'default' | 'recommendations';
 
 @Component({
-  selector: 'app-book-shelf',
-  templateUrl: './book-shelf.component.html',
-  styleUrls: ['./book-shelf.component.css'],
+    selector: 'app-book-shelf',
+    templateUrl: './book-shelf.component.html',
+    styleUrls: ['./book-shelf.component.css'],
+    standalone: false
 })
 export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() title = '';

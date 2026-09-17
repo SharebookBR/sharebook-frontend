@@ -9,9 +9,10 @@ export interface BookCardInput {
 }
 
 @Component({
-  selector: 'app-book-card',
-  templateUrl: './book-card.component.html',
-  styleUrls: ['./book-card.component.css'],
+    selector: 'app-book-card',
+    templateUrl: './book-card.component.html',
+    styleUrls: ['./book-card.component.css'],
+    standalone: false
 })
 export class BookCardComponent {
   @Input() book: BookCardInput;

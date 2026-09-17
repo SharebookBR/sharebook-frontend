@@ -6,9 +6,10 @@ import { UserService } from '../../core/services/user/user.service';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
-  selector: 'app-panel',
-  templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.css']
+    selector: 'app-panel',
+    templateUrl: './panel.component.html',
+    styleUrls: ['./panel.component.css'],
+    standalone: false
 })
 export class PanelComponent implements OnInit, OnDestroy {
   isAdmin: boolean;

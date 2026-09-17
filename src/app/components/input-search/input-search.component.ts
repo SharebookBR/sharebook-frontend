@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
 @Component({
-  selector: 'app-input-search',
-  templateUrl: './input-search.component.html',
-  styleUrls: ['./input-search.component.css'],
+    selector: 'app-input-search',
+    templateUrl: './input-search.component.html',
+    styleUrls: ['./input-search.component.css'],
+    standalone: false
 })
 export class InputSearchComponent implements OnInit {
   public searchForm: UntypedFormGroup;

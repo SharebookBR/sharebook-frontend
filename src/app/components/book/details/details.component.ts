@@ -27,9 +27,10 @@ import { buildBookMetaDescription } from '../../../core/services/seo/book-meta-d
 import { BookCardInput } from '../../book-card/book-card.component';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css'],
+    selector: 'app-details',
+    templateUrl: './details.component.html',
+    styleUrls: ['./details.component.css'],
+    standalone: false
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   freightOptions: FreightOptions[] = [];

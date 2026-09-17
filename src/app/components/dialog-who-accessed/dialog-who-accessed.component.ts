@@ -2,9 +2,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, OnInit, Inject } from '@angular/core';
 
 @Component({
-  selector: 'app-dialog-who-accessed',
-  templateUrl: './dialog-who-accessed.component.html',
-  styleUrls: ['./dialog-who-accessed.component.css'],
+    selector: 'app-dialog-who-accessed',
+    templateUrl: './dialog-who-accessed.component.html',
+    styleUrls: ['./dialog-who-accessed.component.css'],
+    standalone: false
 })
 export class DialogWHoAccessedComponent implements OnInit {
   who: any = [{}];

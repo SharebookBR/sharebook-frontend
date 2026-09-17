@@ -15,9 +15,10 @@ import * as AppConst from '../../core/utils/app.const';
 import { Address } from '../../core/models/address';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+    selector: 'app-form',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
+    standalone: false
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   formGroup: UntypedFormGroup;
