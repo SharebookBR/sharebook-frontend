@@ -12,6 +12,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 
@@ -66,16 +67,16 @@ const freightOptionsArray = [
 ];
 
 const categoryServiceArray: Category[] = [
-  { id: 1, name: 'Administração' },
-  { id: 2, name: 'Artes' },
-  { id: 3, name: 'Aventura' },
-  { id: 4, name: 'Ciências Biógicas' },
-  { id: 5, name: 'Direito' },
-  { id: 6, name: 'Engenharia' },
-  { id: 7, name: 'Geografia e História' },
-  { id: 8, name: 'Informática' },
-  { id: 9, name: 'Medicina' },
-  { id: 10, name: 'Psicologia' },
+  { id: '1', name: 'Administração' },
+  { id: '2', name: 'Artes' },
+  { id: '3', name: 'Aventura' },
+  { id: '4', name: 'Ciências Biógicas' },
+  { id: '5', name: 'Direito' },
+  { id: '6', name: 'Engenharia' },
+  { id: '7', name: 'Geografia e História' },
+  { id: '8', name: 'Informática' },
+  { id: '9', name: 'Medicina' },
+  { id: '10', name: 'Psicologia' },
 ];
 
 
@@ -103,6 +104,7 @@ describe('FormComponent', () => {
         MatButtonModule,
         MatButtonToggleModule,
         MatIconModule,
+        MatAutocompleteModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
@@ -158,7 +160,7 @@ describe('FormComponent', () => {
     expect(compiled.querySelector('input[id="userId"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="title"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="author"]')).toBeTruthy();
-    expect(compiled.querySelector('select[id="categoryId"]')).toBeTruthy();
+    expect(compiled.querySelector('input[id="categoryId"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="userIdFacilitator"]')).toBeFalsy();
     // expect(compiled.querySelector('input[id="imageName"]')).toBeTruthy();
     // expect(compiled.querySelector('input[id="freightOption"]')).toBeTruthy();
@@ -440,7 +442,8 @@ describe('FormComponent Editing book', () => {
         MatDialogModule,
         MatButtonModule,
         MatButtonToggleModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule
       ],
       providers: [
         UserService,
@@ -500,7 +503,7 @@ describe('FormComponent Editing book', () => {
     expect(compiled.querySelector('input[id="userId"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="title"]')).toBeTruthy();
     expect(compiled.querySelector('input[id="author"]')).toBeTruthy();
-    expect(compiled.querySelector('select[id="categoryId"]')).toBeTruthy();
+    expect(compiled.querySelector('input[id="categoryId"]')).toBeTruthy();
     expect(compiled.querySelector('select[id="userIdFacilitator"]')).toBeTruthy();
     // expect(compiled.querySelector('input[id="imageName"]')).toBeTruthy();
     // expect(compiled.querySelector('input[name="freightOption"]')).toBeTruthy();
