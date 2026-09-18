@@ -57,7 +57,6 @@
     "bootstrap": "^4.5.0",
     "canvas-confetti": "^1.9.4",
     "chart.js": "^4.5.1",
-    "core-js": "^2.5.4",
     "easymde": "^2.21.0",
     "express": "^4.22.2",
     "moment-timezone": "^0.5.39",
@@ -66,7 +65,6 @@
     "ngx-mask": "^13.1.1",
     "ngx-toastr": "^20.0.5",
     "rxjs": "~6.6.7",
-    "rxjs-compat": "^6.2.1",
     "tslib": "^2.4.1",
     "zone.js": "~0.15.1"
   },
