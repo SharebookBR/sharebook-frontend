@@ -71,7 +71,8 @@ import { MeetupService } from './core/services/meetup/meetup.service';
 import { AppConfigModule } from './app-config.module';
 import { ListComponent } from './components/book/list/list.component';
 import { DonateComponent } from './components/book/donate/donate.component';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
+import { RecaptchaComponent } from './core/recaptcha/recaptcha.component';
+import { RECAPTCHA_SETTINGS, RecaptchaSettings } from './core/recaptcha/recaptcha-settings';
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './components/book/request/request.component';
 import { TrackingComponent } from './components/book/tracking/tracking.component';
@@ -113,6 +114,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 
 @NgModule({ declarations: [
         AppComponent,
+        RecaptchaComponent,
         BookFormComponent,
         BookDetailComponent,
         HomeComponent,
@@ -173,8 +175,6 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         FormsModule,
         ReactiveFormsModule,
         AppConfigModule,
-        RecaptchaModule,
-        RecaptchaFormsModule,
         NgxMaskModule.forRoot(),
         InputSearchModule,
         BrowserAnimationsModule,

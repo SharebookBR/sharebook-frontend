@@ -4,9 +4,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
-
 import { RegisterComponent } from './register.component';
+import { RecaptchaComponent } from '../../core/recaptcha/recaptcha.component';
+import { RECAPTCHA_SETTINGS } from '../../core/recaptcha/recaptcha-settings';
 
 import { AppConfigModule } from '../../app-config.module';
 import { UserService } from '../../core/services/user/user.service';
@@ -31,12 +31,10 @@ describe('RegisterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [RegisterComponent],
+    declarations: [RegisterComponent, RecaptchaComponent],
     imports: [FormsModule,
         ReactiveFormsModule,
         NgxMaskModule.forRoot(),
-        RecaptchaModule,
-        RecaptchaFormsModule,
         RouterTestingModule,
         AppConfigModule,
         ToastrModule.forRoot(),
@@ -45,6 +43,7 @@ describe('RegisterComponent', () => {
         UserService,
         AddressService,
         { provide: GoogleAnalyticsService, useValue: googleAnalyticsMock },
+        { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: 'test-site-key' } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
     ]
