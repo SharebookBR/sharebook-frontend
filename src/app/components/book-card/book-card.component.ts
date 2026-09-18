@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 export interface BookCardInput {
   slug: string;
@@ -12,6 +12,7 @@ export interface BookCardInput {
     selector: 'app-book-card',
     templateUrl: './book-card.component.html',
     styleUrls: ['./book-card.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BookCardComponent {

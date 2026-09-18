@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,6 +33,7 @@ interface PagedDownloadLogEvents {
     selector: 'app-download-logs-dashboard',
     templateUrl: './download-logs-dashboard.component.html',
     styleUrls: ['./download-logs-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked, OnDestroy {

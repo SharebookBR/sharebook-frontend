@@ -17,7 +17,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -44,7 +44,7 @@ describe('RegisterComponent', () => {
         AddressService,
         { provide: GoogleAnalyticsService, useValue: googleAnalyticsMock },
         { provide: RECAPTCHA_SETTINGS, useValue: { siteKey: 'test-site-key' } },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
     ]
 }).compileComponents();

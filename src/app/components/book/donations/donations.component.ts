@@ -1,5 +1,5 @@
 ﻿import { MyDonation } from '../../../core/models/MyDonation';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
@@ -22,6 +22,7 @@ type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finishe
     selector: 'app-donations',
     templateUrl: './donations.component.html',
     styleUrls: ['./donations.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DonationsComponent implements OnInit, OnDestroy {

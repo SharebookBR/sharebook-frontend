@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
     selector: 'app-contact-us',
     templateUrl: './contact-us.component.html',
     styleUrls: ['./contact-us.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ContactUsComponent implements OnInit, OnDestroy {

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-freight-incentive-dialog',
     templateUrl: './freight-incentive-dialog.component.html',
     styleUrls: ['./freight-incentive-dialog.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FreightIncentiveDialogComponent implements OnInit {

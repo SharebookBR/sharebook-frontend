@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, viewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, viewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { InputSearchComponent } from '../input-search/input-search.component';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {

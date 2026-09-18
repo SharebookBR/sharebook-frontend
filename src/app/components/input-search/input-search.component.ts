@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
@@ -7,6 +7,7 @@ import { PlatformService } from 'src/app/core/services/platform/platform.service
     selector: 'app-input-search',
     templateUrl: './input-search.component.html',
     styleUrls: ['./input-search.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InputSearchComponent implements OnInit {

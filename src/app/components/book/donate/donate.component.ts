@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import { ConfettiService } from '../../../core/services/confetti/confetti.servic
     selector: 'app-donate',
     templateUrl: './donate.component.html',
     styleUrls: ['./donate.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DonateComponent implements OnInit, OnDestroy {

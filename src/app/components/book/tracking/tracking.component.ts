@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     selector: 'app-tracking',
     templateUrl: './tracking.component.html',
     styleUrls: ['./tracking.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TrackingComponent implements OnInit, OnDestroy {

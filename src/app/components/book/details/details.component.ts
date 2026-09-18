@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from '../../../../express.tokens';
 import { Response } from 'express';
@@ -30,6 +30,7 @@ import { BookCardInput } from '../../book-card/book-card.component';
     selector: 'app-details',
     templateUrl: './details.component.html',
     styleUrls: ['./details.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DetailsComponent implements OnInit, OnDestroy {

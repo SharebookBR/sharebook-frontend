@@ -2,7 +2,7 @@ import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
 import { Profile } from './../../../core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -26,6 +26,7 @@ import { BookType } from 'src/app/core/models/book';
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FormComponent implements OnInit, OnDestroy {

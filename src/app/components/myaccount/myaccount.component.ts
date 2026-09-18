@@ -2,7 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from './../../core/services/user/user.service';
 import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
 import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize.component';
@@ -11,6 +11,7 @@ import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize
     selector: 'app-myaccount',
     templateUrl: './myaccount.component.html',
     styleUrls: ['./myaccount.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MyaccountComponent implements OnInit, OnDestroy {

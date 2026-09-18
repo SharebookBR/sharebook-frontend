@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms
     selector: 'app-facilitator-notes',
     templateUrl: './facilitator-notes.component.html',
     styleUrls: ['./facilitator-notes.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FacilitatorNotesComponent implements OnInit, OnDestroy {

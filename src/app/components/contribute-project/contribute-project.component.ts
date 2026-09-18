@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { CardItem } from '../../core/models/card';
 import { TechnologiesService } from '../../core/services/technologies/technologies.service';
@@ -12,6 +12,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
     templateUrl: './contribute-project.component.html',
     styleUrls: ['./contribute-project.component.css'],
     providers: [TechnologiesService, ToolsService, CareersService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ContributeProjectComponent implements OnInit {

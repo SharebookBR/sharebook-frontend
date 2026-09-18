@@ -3,7 +3,7 @@ import { APP_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -217,7 +217,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         },
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
         AuthGuardAdmin,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: APP_ID, useValue: 'angular' },
     ] })
 export class AppModule {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
@@ -11,6 +11,7 @@ export interface DialogData {
 @Component({
     selector: 'app-confirmation-dialog',
     templateUrl: './confirmation-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ConfirmationDialogComponent implements OnInit {

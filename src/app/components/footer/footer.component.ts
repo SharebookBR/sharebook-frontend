@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Subject, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -11,6 +11,7 @@ import { CategoryService } from '../../core/services/category/category.service';
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FooterComponent implements OnInit, OnDestroy {

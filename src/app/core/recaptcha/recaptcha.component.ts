@@ -7,6 +7,7 @@ import {
   PLATFORM_ID,
   ViewChild,
   forwardRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -24,6 +25,7 @@ import { RecaptchaLoaderService } from './recaptcha-loader.service';
   selector: 're-captcha',
   template: '<div #container></div>',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

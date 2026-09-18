@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
     selector: 'app-category-books',
     templateUrl: './category-books.component.html',
     styleUrls: ['./category-books.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CategoryBooksComponent implements OnInit, OnDestroy {

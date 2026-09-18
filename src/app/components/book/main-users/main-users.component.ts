@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { UserInfo } from 'src/app/core/models/userInfo';
     selector: 'app-main-users',
     templateUrl: './main-users.component.html',
     styleUrls: ['./main-users.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MainUsersComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,6 +10,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
     selector: 'app-ebook-recent',
     templateUrl: './ebook-recent.component.html',
     styleUrls: ['./ebook-recent.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EbookRecentComponent implements OnInit, OnDestroy {

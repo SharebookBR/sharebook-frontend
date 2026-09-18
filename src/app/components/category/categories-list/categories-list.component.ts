@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,6 +10,7 @@ import { SeoService } from '../../../core/services/seo/seo.service';
     selector: 'app-categories-list',
     templateUrl: './categories-list.component.html',
     styleUrls: ['./categories-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CategoriesListComponent implements OnInit, OnDestroy {

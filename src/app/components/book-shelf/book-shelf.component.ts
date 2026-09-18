@@ -10,6 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { BookCardInput } from '../book-card/book-card.component';
@@ -25,6 +26,7 @@ export type BookShelfAppearance = 'default' | 'recommendations';
     selector: 'app-book-shelf',
     templateUrl: './book-shelf.component.html',
     styleUrls: ['./book-shelf.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {

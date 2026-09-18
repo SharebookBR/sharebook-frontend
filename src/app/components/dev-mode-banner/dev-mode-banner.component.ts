@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EnvironmentSwitcherService } from '../../core/services/environment-switcher/environment-switcher.service';
 
 @Component({
     selector: 'app-dev-mode-banner',
     templateUrl: './dev-mode-banner.component.html',
     styleUrls: ['./dev-mode-banner.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DevModeBannerComponent implements OnInit {

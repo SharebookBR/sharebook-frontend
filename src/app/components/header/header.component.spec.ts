@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import { HeaderComponent } from './header.component';
 
 @Component({
     selector: 'app-input-search', template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class InputSearchStubComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import * as AppConst from '../../core/utils/app.const';
     selector: 'app-reset-password',
     templateUrl: './reset-password.component.html',
     styleUrls: ['./reset-password.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {

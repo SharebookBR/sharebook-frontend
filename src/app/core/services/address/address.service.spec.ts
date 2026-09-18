@@ -4,13 +4,13 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed, inject } from '@angular/core/testing';
 import { AddressService } from './address.service';
 import * as AppConst from '../../../core/utils/app.const';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('AddressService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
     imports: [],
-    providers: [AddressService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+    providers: [AddressService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
 });
   });
 

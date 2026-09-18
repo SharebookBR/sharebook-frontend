@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -19,6 +19,7 @@ type RequestsFilter = 'all' | 'awaiting' | 'won' | 'finished';
     selector: 'app-requesteds',
     templateUrl: './requesteds.component.html',
     styleUrls: ['./requesteds.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RequestedsComponent implements OnInit, OnDestroy {

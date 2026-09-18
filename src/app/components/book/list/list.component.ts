@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
@@ -23,6 +23,7 @@ type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebook
     selector: 'app-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy {

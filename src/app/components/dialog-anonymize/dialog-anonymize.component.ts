@@ -1,5 +1,5 @@
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { AnonymizeUserVM } from '../../core/models/AnonymizeUserVM';
     selector: 'app-dialog-anonymize',
     templateUrl: './dialog-anonymize.component.html',
     styleUrls: ['./dialog-anonymize.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DialogAnonymizeComponent implements OnInit {

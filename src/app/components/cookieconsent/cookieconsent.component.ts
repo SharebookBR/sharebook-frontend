@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BrowserStorageService } from '../../core/services/platform/browser-storage.service';
 
 @Component({
     selector: 'app-cookie-consent',
     templateUrl: './cookieconsent.component.html',
     styleUrls: ['./cookieconsent.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CookieConsentComponent implements OnInit {

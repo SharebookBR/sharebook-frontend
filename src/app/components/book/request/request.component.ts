@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -15,6 +15,7 @@ import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-a
     selector: 'app-request',
     templateUrl: './request.component.html',
     styleUrls: ['./request.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RequestComponent implements OnInit, OnDestroy {

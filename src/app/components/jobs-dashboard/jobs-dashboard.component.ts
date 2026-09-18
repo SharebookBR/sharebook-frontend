@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { JobMonitorDashboard, JobMonitorItem } from '../../core/models/job-monitor';
 import { OperationsService } from '../../core/services/operations/operations.service';
@@ -8,6 +8,7 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
     selector: 'app-jobs-dashboard',
     templateUrl: './jobs-dashboard.component.html',
     styleUrls: ['./jobs-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JobsDashboardComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -65,6 +65,7 @@ interface DashboardData {
     selector: 'app-analytics-dashboard',
     templateUrl: './analytics-dashboard.component.html',
     styleUrls: ['./analytics-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDestroy {

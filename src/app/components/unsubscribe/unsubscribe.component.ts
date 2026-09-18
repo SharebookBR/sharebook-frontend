@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { UserService } from '../../core/services/user/user.service';
 @Component({
     selector: 'app-unsubscribe',
     templateUrl: './unsubscribe.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UnsubscribeComponent implements OnInit, OnDestroy {

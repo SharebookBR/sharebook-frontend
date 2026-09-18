@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Meetup } from 'src/app/core/models/Meetup';
 
 import { registerLocaleData } from '@angular/common';
@@ -9,6 +9,7 @@ registerLocaleData(localePT);
     selector: 'app-card-meetup',
     templateUrl: './card-meetup.component.html',
     styleUrls: ['./card-meetup.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CardMeetupComponent {

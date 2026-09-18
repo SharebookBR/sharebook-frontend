@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -15,6 +15,7 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
     selector: 'app-account',
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AccountComponent implements OnInit, OnDestroy {

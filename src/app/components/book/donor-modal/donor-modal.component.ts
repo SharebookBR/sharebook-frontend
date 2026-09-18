@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ import { UserInfo } from 'src/app/core/models/userInfo';
     selector: 'app-donor-modal',
     templateUrl: './donor-modal.component.html',
     styleUrls: ['./donor-modal.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DonorModalComponent implements OnInit {

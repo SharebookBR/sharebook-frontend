@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
 @Component({
     selector: 'app-search-results',
     templateUrl: './search-results.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SearchResultsComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, Optional, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { RESPONSE } from '../../../express.tokens';
 import { Response } from 'express';
@@ -8,6 +8,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
     selector: 'app-not-found-page',
     templateUrl: './not-found-page.component.html',
     styleUrls: ['./not-found-page.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NotFoundPageComponent implements OnInit {

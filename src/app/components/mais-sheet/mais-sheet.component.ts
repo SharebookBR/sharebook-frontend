@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../core/services/authentication/authen
     selector: 'app-mais-sheet',
     templateUrl: './mais-sheet.component.html',
     styleUrls: ['./mais-sheet.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MaisSheetComponent {

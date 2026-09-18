@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { MaisSheetComponent } from '../mais-sheet/mais-sheet.component';
     selector: 'app-bottom-nav',
     templateUrl: './bottom-nav.component.html',
     styleUrls: ['./bottom-nav.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BottomNavComponent implements OnInit, OnDestroy {

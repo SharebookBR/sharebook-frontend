@@ -1,5 +1,5 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -23,6 +23,7 @@ import { BookRequestStatus } from 'src/app/core/models/BookRequestStatus';
     selector: 'app-donate-page',
     templateUrl: './donate-page.component.html',
     styleUrls: ['./donate-page.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {

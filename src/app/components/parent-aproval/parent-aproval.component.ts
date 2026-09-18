@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { UserService } from '../../core/services/user/user.service';
     selector: 'app-parent-aproval',
     templateUrl: './parent-aproval.component.html',
     styleUrls: ['./parent-aproval.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ParentAprovalComponent implements OnInit, OnDestroy {

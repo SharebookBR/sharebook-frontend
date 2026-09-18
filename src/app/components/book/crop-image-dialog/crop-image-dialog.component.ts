@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
 
@@ -11,6 +11,7 @@ export interface CropImageDialogData {
     selector: 'app-crop-image-dialog',
     templateUrl: './crop-image-dialog.component.html',
     styleUrls: ['./crop-image-dialog.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CropImageDialogComponent {

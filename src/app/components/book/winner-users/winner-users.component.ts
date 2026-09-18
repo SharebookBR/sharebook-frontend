@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { Book } from 'src/app/core/models/book';
     selector: 'app-winner-users',
     templateUrl: './winner-users.component.html',
     styleUrls: ['./winner-users.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class WinnerUsersComponent implements OnInit, OnDestroy {

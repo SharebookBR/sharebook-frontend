@@ -23,7 +23,7 @@ import { FormComponent } from './form.component';
 import { AppConfigModule } from '../../../app-config.module';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 let component: FormComponent;
 let fixture: ComponentFixture<FormComponent>;
@@ -118,7 +118,7 @@ describe('FormComponent', () => {
             provide: MatDialogRef,
             useValue: {}
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 }).compileComponents();
@@ -276,7 +276,7 @@ describe('FormComponent Editing book', () => {
             provide: MatDialogRef,
             useValue: {}
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
 }).compileComponents();

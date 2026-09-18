@@ -1,10 +1,11 @@
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-dialog-who-accessed',
     templateUrl: './dialog-who-accessed.component.html',
     styleUrls: ['./dialog-who-accessed.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DialogWHoAccessedComponent implements OnInit {

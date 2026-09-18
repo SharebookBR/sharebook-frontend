@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -9,6 +9,7 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
     selector: 'app-panel',
     templateUrl: './panel.component.html',
     styleUrls: ['./panel.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PanelComponent implements OnInit, OnDestroy {

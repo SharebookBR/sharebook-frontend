@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showc
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {

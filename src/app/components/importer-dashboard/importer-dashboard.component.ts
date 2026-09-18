@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Inject, DOCUMENT } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Inject, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { OperationsService } from '../../core/services/operations/operations.ser
     selector: 'app-importer-dashboard',
     templateUrl: './importer-dashboard.component.html',
     styleUrls: ['./importer-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ImporterDashboardComponent implements OnInit, OnDestroy {

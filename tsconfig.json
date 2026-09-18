@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
+    "ignoreDeprecations": "6.0",
     "module": "es2020",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -16,6 +16,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "strict": false,
+    "strictNullChecks": false
   }
 }

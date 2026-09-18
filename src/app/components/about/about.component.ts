@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Contributor } from 'src/app/core/models/contributor';
 import { ContributorsService } from 'src/app/core/services/contributors/contributors.service';
@@ -9,6 +9,7 @@ import { SeoService } from '../../core/services/seo/seo.service';
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.css'],
     providers: [ContributorsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AboutComponent implements OnInit {
