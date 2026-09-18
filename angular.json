@@ -29,7 +29,10 @@
               "node_modules/easymde/dist/easymde.min.css"
             ],
             "scripts": [],
-            "allowedCommonJsDependencies": ["easymde", "moment-timezone"],
+            "allowedCommonJsDependencies": [
+              "easymde",
+              "moment-timezone"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -213,6 +216,15 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
