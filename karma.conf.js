@@ -7,9 +7,10 @@ if (!process.env.CHROME_BIN) {
   const candidates = [];
 
   try {
-    candidates.push(require('puppeteer').executablePath());
+    candidates.push(require('playwright-core').chromium.executablePath());
   } catch (error) {
-    // Puppeteer é opcional quando existe Chrome instalado no sistema.
+    // O Chromium do Playwright (usado pelo e2e) é opcional aqui quando
+    // existe Chrome instalado no sistema.
   }
 
   if (process.platform === 'win32') {
