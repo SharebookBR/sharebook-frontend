@@ -1,5 +1,5 @@
 # Build Stage (inclui gate de testes)
-FROM public.ecr.aws/docker/library/node:20-bookworm-slim AS build
+FROM public.ecr.aws/docker/library/node:24-bookworm-slim AS build
 WORKDIR /app
 
 # Chromium para o Karma headless (npm test)
@@ -24,7 +24,7 @@ RUN npm test
 RUN npm run build:ssr
 
 # Runtime Stage
-FROM public.ecr.aws/docker/library/node:20-alpine
+FROM public.ecr.aws/docker/library/node:24-alpine
 WORKDIR /app
 
 # Copia apenas os artefatos necessários do estágio de build
