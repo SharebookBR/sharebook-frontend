@@ -8,9 +8,11 @@
 
   <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 
-  <div *ngIf="lastError" class="alert alert-danger" role="alert">{{ lastError }}</div>
+  @if (lastError) {
+    <div class="alert alert-danger" role="alert">{{ lastError }}</div>
+  }
 
-  <ng-container *ngIf="state === 'choice'">
+  @if (state === 'choice') {
     <p style="color: #666; margin-bottom: 16px;">Como o livro foi entregue?</p>
     <div class="delivery-options">
       <button mat-stroked-button (click)="onDeliverInPerson()" [disabled]="isLoading" class="delivery-option-button">
@@ -22,9 +24,9 @@
         <span class="delivery-option-label">Enviado pelos Correios - informar código de rastreio</span>
       </button>
     </div>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="state === 'tracking'">
+  @if (state === 'tracking') {
     <form [formGroup]="formGroup" (ngSubmit)="onTracking()">
       <p style="color: #666; margin-bottom: 8px;">Informe o código de rastreio:</p>
       <textarea
@@ -36,19 +38,25 @@
         rows="3"
         maxlength="2000"
       ></textarea>
-      <div *ngIf="formGroup.controls['trackingNumber'].touched && !formGroup.controls['trackingNumber'].valid">
-        <small class="form-text text-danger" *ngIf="formGroup.controls['trackingNumber'].hasError('required')">
-          Informe o código de rastreio.
-        </small>
-      </div>
+      @if (formGroup.controls['trackingNumber'].touched && !formGroup.controls['trackingNumber'].valid) {
+        <div>
+          @if (formGroup.controls['trackingNumber'].hasError('required')) {
+            <small class="form-text text-danger">
+              Informe o código de rastreio.
+            </small>
+          }
+        </div>
+      }
       <mat-dialog-actions align="end">
         <button mat-flat-button color="primary" [disabled]="!formGroup.valid || isLoading" type="submit">Confirmar</button>
         <button mat-stroked-button mat-dialog-close type="button">Cancelar</button>
       </mat-dialog-actions>
     </form>
-  </ng-container>
+  }
 </mat-dialog-content>
 
-<mat-dialog-actions align="end" *ngIf="state === 'choice'">
-  <button mat-stroked-button mat-dialog-close>Cancelar</button>
-</mat-dialog-actions>
+@if (state === 'choice') {
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+  </mat-dialog-actions>
+}

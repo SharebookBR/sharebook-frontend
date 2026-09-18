@@ -24,10 +24,14 @@
         <mat-label>Motivo</mat-label>
         <textarea matInput formControlName="reason"></textarea>
 
-        <mat-error *ngIf="formGroup.controls['reason'].hasError('required')"> Obrigatório informar motivo. </mat-error>
-        <mat-error *ngIf="formGroup.controls['reason'].hasError('minlength')">
-          O motivo deve conter no mínimo 30 caracteres.
-        </mat-error>
+        @if (formGroup.controls['reason'].hasError('required')) {
+          <mat-error> Obrigatório informar motivo. </mat-error>
+        }
+        @if (formGroup.controls['reason'].hasError('minlength')) {
+          <mat-error>
+            O motivo deve conter no mínimo 30 caracteres.
+          </mat-error>
+        }
       </mat-form-field>
     </form>
 
@@ -35,16 +39,21 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="anonymize()"
-    [disabled]="!formGroup.valid"
-    *ngIf="state == 'ready'"
-  >
-    Excluir minha conta
-  </button>
-  <button mat-raised-button mat-dialog-close color="secondary" *ngIf="state == 'ready'">Cancelar</button>
+  @if (state == 'ready') {
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="anonymize()"
+      [disabled]="!formGroup.valid"
+      >
+      Excluir minha conta
+    </button>
+  }
+  @if (state == 'ready') {
+    <button mat-raised-button mat-dialog-close color="secondary">Cancelar</button>
+  }
 
-  <div *ngIf="state == 'loading'"><mat-spinner></mat-spinner></div>
+  @if (state == 'loading') {
+    <div><mat-spinner></mat-spinner></div>
+  }
 </div>

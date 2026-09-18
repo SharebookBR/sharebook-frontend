@@ -7,42 +7,45 @@
     <em class="fa fa-spinner fa-spin"></em> Aguarde...
   </div>
 
-  <div *ngIf="winnerUsers.length > 0 && winnerUsers[0] as winnerUser" class="winner-card">
-    <p class="card-text card-text--book"><strong>Livro:</strong> {{ bookTitle }}</p>
-    <p class="card-text"><strong>Nome:</strong> {{ winnerUser.name }}</p>
-    <p class="card-text"><strong>E-mail:</strong> {{ winnerUser.email }}</p>
-    <p class="card-text"><strong>LinkedIn:</strong> {{ winnerUser.linkedin }}</p>
-    <div class="winner-phone">
-      <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
-      <button
-        mat-flat-button
-        class="winner-phone__whatsapp"
-        [disabled]="!hasWhatsappPhone(winnerUser)"
-        (click)="contactWinnerOnWhatsapp(winnerUser)">
-        <em class="fa fa-whatsapp" aria-hidden="true"></em>
-        Chamar no WhatsApp
-      </button>
+  @if (winnerUsers.length > 0 && winnerUsers[0]; as winnerUser) {
+    <div class="winner-card">
+      <p class="card-text card-text--book"><strong>Livro:</strong> {{ bookTitle }}</p>
+      <p class="card-text"><strong>Nome:</strong> {{ winnerUser.name }}</p>
+      <p class="card-text"><strong>E-mail:</strong> {{ winnerUser.email }}</p>
+      <p class="card-text"><strong>LinkedIn:</strong> {{ winnerUser.linkedin }}</p>
+      <div class="winner-phone">
+        <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
+        <button
+          mat-flat-button
+          class="winner-phone__whatsapp"
+          [disabled]="!hasWhatsappPhone(winnerUser)"
+          (click)="contactWinnerOnWhatsapp(winnerUser)">
+          <em class="fa fa-whatsapp" aria-hidden="true"></em>
+          Chamar no WhatsApp
+        </button>
+      </div>
+      <p class="card-text">
+        {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
+        {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
+      </p>
+      <p class="card-text">
+        {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
+      </p>
+      <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
+      <div class="winner-card__actions">
+        <button mat-stroked-button color="primary" (click)="generateEtiquetas(winnerUser)">
+          Gerar Etiquetas
+        </button>
+        <button mat-stroked-button color="primary" (click)="generateDeclaracao(winnerUser)">
+          Gerar Declaração de Conteúdo
+        </button>
+      </div>
     </div>
-    <p class="card-text">
-      {{ winnerUser.address?.street }}, {{ winnerUser.address?.number }}
-      {{ !!winnerUser.address?.complement ? winnerUser.address?.complement : '' }}
-    </p>
-    <p class="card-text">
-      {{ winnerUser.address?.neighborhood }} - {{ winnerUser.address?.city }} - {{ winnerUser.address?.state }}
-    </p>
-    <p class="card-text">CEP: {{ winnerUser.address?.postalCode }} - {{ winnerUser.address?.country }}</p>
+  }
 
-    <div class="winner-card__actions">
-      <button mat-stroked-button color="primary" (click)="generateEtiquetas(winnerUser)">
-        Gerar Etiquetas
-      </button>
-      <button mat-stroked-button color="primary" (click)="generateDeclaracao(winnerUser)">
-        Gerar Declaração de Conteúdo
-      </button>
-    </div>
-  </div>
-
-  <p *ngIf="!isLoading && winnerUsers.length === 0" class="empty-state">
-    Não encontramos dados do ganhador para esta doação.
-  </p>
+  @if (!isLoading && winnerUsers.length === 0) {
+    <p class="empty-state">
+      Não encontramos dados do ganhador para esta doação.
+    </p>
+  }
 </mat-dialog-content>

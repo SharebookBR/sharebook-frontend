@@ -33,87 +33,99 @@
       </mat-form-field>
     </div>
 
-    <div class="request-cards-grid" *ngIf="(isLoading$ | async) === false">
-      <div class="request-card" *ngFor="let element of requestedBooks.data">
-        <div class="request-card__header">
-          <a class="request-card__title" [routerLink]="['/livros', element.slug]">{{ element.title }}</a>
-          <div class="request-card__author">{{ element.author }}</div>
-        </div>
-
-        <div class="request-card__badges">
-          <span
-            class="custom-badge"
+    @if ((isLoading$ | async) === false) {
+      <div class="request-cards-grid">
+        @for (element of requestedBooks.data; track element) {
+          <div class="request-card">
+            <div class="request-card__header">
+              <a class="request-card__title" [routerLink]="['/livros', element.slug]">{{ element.title }}</a>
+              <div class="request-card__author">{{ element.author }}</div>
+            </div>
+            <div class="request-card__badges">
+              <span
+                class="custom-badge"
             [ngStyle]="{
               backgroundColor: getStatusBadgeBackgroundColor(element.status),
               color: getStatusBadgeTextColor(element.status)
             }"
-          >{{ getTranslatedStatusDescription(element.status) }}</span>
-          <span *ngIf="isDonated(element.status)" class="winner-message">Você ganhou 🎉</span>
-        </div>
-
-        <div class="request-card__meta">
-          <div class="meta-line" *ngIf="showLogistics(element)">
-            <span class="meta-label">Logística:</span>
-            <span class="meta-value">{{ getLogisticsLabel(element) }}</span>
+              >{{ getTranslatedStatusDescription(element.status) }}</span>
+              @if (isDonated(element.status)) {
+                <span class="winner-message">Você ganhou 🎉</span>
+              }
+            </div>
+            <div class="request-card__meta">
+              @if (showLogistics(element)) {
+                <div class="meta-line">
+                  <span class="meta-label">Logística:</span>
+                  <span class="meta-value">{{ getLogisticsLabel(element) }}</span>
+                </div>
+              }
+              @if (isDonated(element.status)) {
+                <div class="meta-line">
+                  <span class="meta-label">Rastreio:</span>
+                  <span class="meta-value">{{ getTrackingNumber(element) || 'Rastreio indisponível' }}</span>
+                </div>
+              }
+            </div>
+            <div class="request-card__actions">
+              @if (canTalkToDonor(element)) {
+                <button
+                  mat-flat-button
+                  color="primary"
+                  class="action-btn action-btn--primary"
+                  (click)="onCustomActionColum('verDoador', element)"
+                  >
+                  <mat-icon class="action-btn__icon">chat_bubble_outline</mat-icon>
+                  Falar com doador
+                </button>
+              }
+              @if (getTrackingNumber(element)) {
+                <button
+                  mat-stroked-button
+                  class="action-btn"
+                  (click)="copyTrackingCode(element)"
+                  >
+                  <mat-icon class="action-btn__icon">content_copy</mat-icon>
+                  Copiar código
+                </button>
+              }
+              @if (canMarkAsReceived(element)) {
+                <button
+                  mat-flat-button
+                  class="action-btn action-btn--success"
+                  (click)="confirmBookReceived(element)"
+                  >
+                  <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
+                  Já recebi o livro
+                </button>
+              }
+              @if (canCancelRequest(element)) {
+                <button
+                  mat-flat-button
+                  class="action-btn action-btn--danger"
+                  (click)="onCustomActionColum('cancelarPedido', element)"
+                  >
+                  <mat-icon class="action-btn__icon">delete_outline</mat-icon>
+                  Cancelar pedido
+                </button>
+              }
+            </div>
           </div>
-          <div class="meta-line" *ngIf="isDonated(element.status)">
-            <span class="meta-label">Rastreio:</span>
-            <span class="meta-value">{{ getTrackingNumber(element) || 'Rastreio indisponível' }}</span>
-          </div>
-        </div>
-
-        <div class="request-card__actions">
-          <button
-            *ngIf="canTalkToDonor(element)"
-            mat-flat-button
-            color="primary"
-            class="action-btn action-btn--primary"
-            (click)="onCustomActionColum('verDoador', element)"
-          >
-            <mat-icon class="action-btn__icon">chat_bubble_outline</mat-icon>
-            Falar com doador
-          </button>
-
-          <button
-            *ngIf="getTrackingNumber(element)"
-            mat-stroked-button
-            class="action-btn"
-            (click)="copyTrackingCode(element)"
-          >
-            <mat-icon class="action-btn__icon">content_copy</mat-icon>
-            Copiar código
-          </button>
-
-          <button
-            *ngIf="canMarkAsReceived(element)"
-            mat-flat-button
-            class="action-btn action-btn--success"
-            (click)="confirmBookReceived(element)"
-          >
-            <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
-            Já recebi o livro
-          </button>
-
-          <button
-            *ngIf="canCancelRequest(element)"
-            mat-flat-button
-            class="action-btn action-btn--danger"
-            (click)="onCustomActionColum('cancelarPedido', element)"
-          >
-            <mat-icon class="action-btn__icon">delete_outline</mat-icon>
-            Cancelar pedido
-          </button>
-        </div>
+        }
       </div>
-    </div>
+    }
 
-    <div class="empty-data" *ngIf="requestedBooks.data.length === 0 && (isLoading$ | async) === false">
-      Nenhum registro encontrado.
-    </div>
+    @if (requestedBooks.data.length === 0 && (isLoading$ | async) === false) {
+      <div class="empty-data">
+        Nenhum registro encontrado.
+      </div>
+    }
 
-    <div class="spinner-container" *ngIf="isLoading$ | async">
-      <mat-spinner></mat-spinner>
-    </div>
+    @if (isLoading$ | async) {
+      <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
 
     <p class="mt-2">
       <button mat-button color="primary" routerLink="/panel">Voltar</button>

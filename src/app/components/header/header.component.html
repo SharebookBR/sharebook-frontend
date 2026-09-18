@@ -14,20 +14,21 @@
     aria-controls="mobile-search-panel"
     [attr.aria-label]="mobileSearchOpen ? 'Fechar busca' : 'Abrir busca'"
     (click)="toggleMobileSearch()"
-  >
+    >
     <mat-icon aria-hidden="true">{{ mobileSearchOpen ? 'close' : 'search' }}</mat-icon>
   </button>
 </div>
-<div
-  *ngIf="mobileSearchOpen"
-  id="mobile-search-panel"
-  class="mobile-search-panel d-md-none"
->
-  <app-input-search
-    #mobileSearch
-    (searchSubmitted)="closeMobileSearch(false)"
-  ></app-input-search>
-</div>
+@if (mobileSearchOpen) {
+  <div
+    id="mobile-search-panel"
+    class="mobile-search-panel d-md-none"
+    >
+    <app-input-search
+      #mobileSearch
+      (searchSubmitted)="closeMobileSearch(false)"
+    ></app-input-search>
+  </div>
+}
 <div class="mobile-top-bar-spacer d-block d-md-none"></div>
 
 <!-- ============================================================ -->
@@ -59,41 +60,49 @@
   </a>
 
   <div class="ml-3 user-area">
-    <a *ngIf="!userLogged" class="nav-link" routerLink="/login">Entrar</a>
+    @if (!userLogged) {
+      <a class="nav-link" routerLink="/login">Entrar</a>
+    }
 
-    <div *ngIf="userLogged" class="user-menu-wrapper">
-      <button class="btn btn-link nav-link user-menu-trigger" (click)="toggleUserMenu($event)">
-        {{ firstName }} <mat-icon>expand_more</mat-icon>
-      </button>
-      <div class="user-dropdown" *ngIf="showUserMenu">
-        <a class="user-dropdown__item" routerLink="/panel" (click)="closeUserMenu()">
-          <mat-icon>dashboard</mat-icon> Meu Painel
-        </a>
-        <a class="user-dropdown__item" routerLink="/admin/importer" *ngIf="isAdmin" (click)="closeUserMenu()">
-          <mat-icon>auto_awesome</mat-icon> Importador
-        </a>
-        <a class="user-dropdown__item" routerLink="/myaccount" (click)="closeUserMenu()">
-          <mat-icon>manage_accounts</mat-icon> Minha Conta
-        </a>
-        <div class="user-dropdown__divider"></div>
-        <a class="user-dropdown__item" routerLink="/categorias" (click)="closeUserMenu()">
-          <mat-icon>folder_open</mat-icon> Categorias
-        </a>
-        <a class="user-dropdown__item" routerLink="/apoie-projeto" (click)="closeUserMenu()">
-          <mat-icon>favorite_border</mat-icon> Apoie o projeto
-        </a>
-        <a class="user-dropdown__item" routerLink="/quem-somos" (click)="closeUserMenu()">
-          <mat-icon>info_outline</mat-icon> Quem somos
-        </a>
-        <a class="user-dropdown__item" routerLink="/contact-us" (click)="closeUserMenu()">
-          <mat-icon>mail_outline</mat-icon> Fale conosco
-        </a>
-        <div class="user-dropdown__divider"></div>
-        <button class="user-dropdown__item user-dropdown__item--danger" (click)="logout()">
-          <mat-icon>logout</mat-icon> Sair
+    @if (userLogged) {
+      <div class="user-menu-wrapper">
+        <button class="btn btn-link nav-link user-menu-trigger" (click)="toggleUserMenu($event)">
+          {{ firstName }} <mat-icon>expand_more</mat-icon>
         </button>
+        @if (showUserMenu) {
+          <div class="user-dropdown">
+            <a class="user-dropdown__item" routerLink="/panel" (click)="closeUserMenu()">
+              <mat-icon>dashboard</mat-icon> Meu Painel
+            </a>
+            @if (isAdmin) {
+              <a class="user-dropdown__item" routerLink="/admin/importer" (click)="closeUserMenu()">
+                <mat-icon>auto_awesome</mat-icon> Importador
+              </a>
+            }
+            <a class="user-dropdown__item" routerLink="/myaccount" (click)="closeUserMenu()">
+              <mat-icon>manage_accounts</mat-icon> Minha Conta
+            </a>
+            <div class="user-dropdown__divider"></div>
+            <a class="user-dropdown__item" routerLink="/categorias" (click)="closeUserMenu()">
+              <mat-icon>folder_open</mat-icon> Categorias
+            </a>
+            <a class="user-dropdown__item" routerLink="/apoie-projeto" (click)="closeUserMenu()">
+              <mat-icon>favorite_border</mat-icon> Apoie o projeto
+            </a>
+            <a class="user-dropdown__item" routerLink="/quem-somos" (click)="closeUserMenu()">
+              <mat-icon>info_outline</mat-icon> Quem somos
+            </a>
+            <a class="user-dropdown__item" routerLink="/contact-us" (click)="closeUserMenu()">
+              <mat-icon>mail_outline</mat-icon> Fale conosco
+            </a>
+            <div class="user-dropdown__divider"></div>
+            <button class="user-dropdown__item user-dropdown__item--danger" (click)="logout()">
+              <mat-icon>logout</mat-icon> Sair
+            </button>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
 </nav>
 <div class="desktop-nav-spacer d-none d-md-block"></div>

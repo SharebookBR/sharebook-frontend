@@ -9,18 +9,23 @@
     </nav>
     <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">
       <option value="all">Todas as semanas</option>
-      <option *ngFor="let w of weekOptions" [value]="w">{{ isoToFriendly(w) }}</option>
+      @for (w of weekOptions; track w) {
+        <option [value]="w">{{ isoToFriendly(w) }}</option>
+      }
     </select>
   </div>
 
-  <div *ngIf="loading" class="analytics-loading">
-    <div class="spinner"></div>
-    <p>Carregando analytics...</p>
-  </div>
-  <div *ngIf="error" class="analytics-error">Erro ao carregar analytics.</div>
+  @if (loading) {
+    <div class="analytics-loading">
+      <div class="spinner"></div>
+      <p>Carregando analytics...</p>
+    </div>
+  }
+  @if (error) {
+    <div class="analytics-error">Erro ao carregar analytics.</div>
+  }
 
-  <ng-container *ngIf="data && !loading">
-
+  @if (data && !loading) {
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-label">Sessões</div>
@@ -43,69 +48,70 @@
         <div class="kpi-sub">{{ selectedWeek === 'all' ? 'últimas 12 semanas' : isoToFriendly(selectedWeek) }}</div>
       </div>
     </div>
-
-    <div class="card organic-card" *ngIf="searchConsole.available">
-      <h3>Google orgânico · últimos 28 dias</h3>
-
-      <div class="organic-period">
-        <span>Dados fechados de {{ formatIsoDate(searchConsole.startDate) }} a {{ formatIsoDate(searchConsole.endDate) }}</span>
-        <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Asharebook.com.br"
-           target="_blank" rel="noopener noreferrer">Abrir Search Console</a>
+    @if (searchConsole.available) {
+      <div class="card organic-card">
+        <h3>Google orgânico · últimos 28 dias</h3>
+        <div class="organic-period">
+          <span>Dados fechados de {{ formatIsoDate(searchConsole.startDate) }} a {{ formatIsoDate(searchConsole.endDate) }}</span>
+          <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=sc-domain%3Asharebook.com.br"
+          target="_blank" rel="noopener noreferrer">Abrir Search Console</a>
+        </div>
+        <div class="search-kpi-grid">
+          <div class="search-kpi organic-kpi">
+            <span class="search-kpi-label">Cliques</span>
+            <strong>{{ searchConsole.current.clicks | number:'1.0-0' }}</strong>
+            <small>{{ metricChange(searchConsole.current.clicks, searchConsole.previous.clicks) }}</small>
+          </div>
+          <div class="search-kpi organic-kpi">
+            <span class="search-kpi-label">Impressões</span>
+            <strong>{{ searchConsole.current.impressions | number:'1.0-0' }}</strong>
+            <small>{{ metricChange(searchConsole.current.impressions, searchConsole.previous.impressions) }}</small>
+          </div>
+          <div class="search-kpi organic-kpi">
+            <span class="search-kpi-label">CTR</span>
+            <strong>{{ searchConsole.current.ctr | percent:'1.2-2' }}</strong>
+            <small>{{ ctrChange() }}</small>
+          </div>
+          <div class="search-kpi organic-kpi">
+            <span class="search-kpi-label">Posição média</span>
+            <strong>{{ searchConsole.current.position | number:'1.2-2' }}</strong>
+            <small>{{ positionChange() }}</small>
+          </div>
+        </div>
+        <div class="organic-details-grid">
+          <div class="organic-chart">
+            <h4>Evolução diária</h4>
+            <canvas #chartOrganic></canvas>
+          </div>
+          <div class="organic-opportunities">
+            <h4>Oportunidades</h4>
+            <p class="organic-opportunities-intro">Boas impressões, CTR abaixo de 5% e posição até 20.</p>
+            @if (searchConsole.opportunities.length > 0) {
+              <ol>
+                @for (opportunity of searchConsole.opportunities; track opportunity) {
+                  <li>
+                    <a [href]="opportunity.page" target="_blank" rel="noopener noreferrer">{{ opportunity.query }}</a>
+                    <span>{{ opportunityPageLabel(opportunity.page) }}</span>
+                    <small>
+                      {{ opportunity.impressions | number:'1.0-0' }} impressões ·
+                      {{ opportunity.ctr | percent:'1.1-1' }} CTR ·
+                      posição {{ opportunity.position | number:'1.1-1' }}
+                    </small>
+                  </li>
+                }
+              </ol>
+            }
+            @if (searchConsole.opportunities.length === 0) {
+              <p class="empty-row">
+                Nenhuma oportunidade clara neste período.
+              </p>
+            }
+          </div>
+        </div>
       </div>
-
-      <div class="search-kpi-grid">
-        <div class="search-kpi organic-kpi">
-          <span class="search-kpi-label">Cliques</span>
-          <strong>{{ searchConsole.current.clicks | number:'1.0-0' }}</strong>
-          <small>{{ metricChange(searchConsole.current.clicks, searchConsole.previous.clicks) }}</small>
-        </div>
-        <div class="search-kpi organic-kpi">
-          <span class="search-kpi-label">Impressões</span>
-          <strong>{{ searchConsole.current.impressions | number:'1.0-0' }}</strong>
-          <small>{{ metricChange(searchConsole.current.impressions, searchConsole.previous.impressions) }}</small>
-        </div>
-        <div class="search-kpi organic-kpi">
-          <span class="search-kpi-label">CTR</span>
-          <strong>{{ searchConsole.current.ctr | percent:'1.2-2' }}</strong>
-          <small>{{ ctrChange() }}</small>
-        </div>
-        <div class="search-kpi organic-kpi">
-          <span class="search-kpi-label">Posição média</span>
-          <strong>{{ searchConsole.current.position | number:'1.2-2' }}</strong>
-          <small>{{ positionChange() }}</small>
-        </div>
-      </div>
-
-      <div class="organic-details-grid">
-        <div class="organic-chart">
-          <h4>Evolução diária</h4>
-          <canvas #chartOrganic></canvas>
-        </div>
-
-        <div class="organic-opportunities">
-          <h4>Oportunidades</h4>
-          <p class="organic-opportunities-intro">Boas impressões, CTR abaixo de 5% e posição até 20.</p>
-          <ol *ngIf="searchConsole.opportunities.length > 0">
-            <li *ngFor="let opportunity of searchConsole.opportunities">
-              <a [href]="opportunity.page" target="_blank" rel="noopener noreferrer">{{ opportunity.query }}</a>
-              <span>{{ opportunityPageLabel(opportunity.page) }}</span>
-              <small>
-                {{ opportunity.impressions | number:'1.0-0' }} impressões ·
-                {{ opportunity.ctr | percent:'1.1-1' }} CTR ·
-                posição {{ opportunity.position | number:'1.1-1' }}
-              </small>
-            </li>
-          </ol>
-          <p *ngIf="searchConsole.opportunities.length === 0" class="empty-row">
-            Nenhuma oportunidade clara neste período.
-          </p>
-        </div>
-      </div>
-    </div>
-
+    }
     <div class="card search-card">
       <h3>Busca nos últimos 30 dias</h3>
-
       <div class="search-kpi-grid">
         <div class="search-kpi">
           <span class="search-kpi-label">Buscas</span>
@@ -128,7 +134,6 @@
           <small>{{ desktopSearches?.count ?? 0 | number }} buscas</small>
         </div>
       </div>
-
       <div class="search-details-grid">
         <div>
           <h4>Termos mais buscados</h4>
@@ -141,31 +146,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let term of searchAnalytics.topTerms">
-                <td class="event-name">{{ term.term }}</td>
-                <td class="text-right">{{ term.count | number }}</td>
-                <td class="text-right">{{ term.users | number }}</td>
-              </tr>
-              <tr *ngIf="searchAnalytics.topTerms.length === 0">
-                <td colspan="3" class="empty-row">Sem buscas no período</td>
-              </tr>
+              @for (term of searchAnalytics.topTerms; track term) {
+                <tr>
+                  <td class="event-name">{{ term.term }}</td>
+                  <td class="text-right">{{ term.count | number }}</td>
+                  <td class="text-right">{{ term.users | number }}</td>
+                </tr>
+              }
+              @if (searchAnalytics.topTerms.length === 0) {
+                <tr>
+                  <td colspan="3" class="empty-row">Sem buscas no período</td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
-
         <div>
           <h4>Dispositivos</h4>
           <div class="device-list">
-            <div class="device-row" *ngFor="let device of searchAnalytics.devices">
-              <div class="device-summary">
-                <span>{{ deviceLabel(device.device) }}</span>
-                <strong>{{ deviceShare(device) | number:'1.0-0' }}%</strong>
+            @for (device of searchAnalytics.devices; track device) {
+              <div class="device-row">
+                <div class="device-summary">
+                  <span>{{ deviceLabel(device.device) }}</span>
+                  <strong>{{ deviceShare(device) | number:'1.0-0' }}%</strong>
+                </div>
+                <div class="device-track" aria-hidden="true">
+                  <div class="device-bar" [style.width.%]="deviceShare(device)"></div>
+                </div>
+                <small>{{ device.count | number }} buscas · {{ device.users | number }} usuários</small>
               </div>
-              <div class="device-track" aria-hidden="true">
-                <div class="device-bar" [style.width.%]="deviceShare(device)"></div>
-              </div>
-              <small>{{ device.count | number }} buscas · {{ device.users | number }} usuários</small>
-            </div>
+            }
           </div>
           <p class="measurement-note">
             Ainda não é possível separar buscas sem resultado: essa métrica não está disponível no GA4.
@@ -173,7 +183,6 @@
         </div>
       </div>
     </div>
-
     <div class="charts-grid">
       <div class="card">
         <h3>Sessões por semana</h3>
@@ -184,88 +193,96 @@
         <canvas #chartDownloads></canvas>
       </div>
     </div>
-
     <div class="charts-grid">
       <div class="card">
         <h3>Top {{ currentTopViews.length }} livros por visualizações</h3>
         <table class="books-table">
-          <tr *ngFor="let b of currentTopViews; let i = index">
-            <td class="rank">{{ i + 1 }}</td>
-            <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
-            <td class="views">{{ b.count | number }}</td>
-          </tr>
-          <tr *ngIf="currentTopViews.length === 0">
-            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
-          </tr>
+          @for (b of currentTopViews; track b; let i = $index) {
+            <tr>
+              <td class="rank">{{ i + 1 }}</td>
+              <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
+              <td class="views">{{ b.count | number }}</td>
+            </tr>
+          }
+          @if (currentTopViews.length === 0) {
+            <tr>
+              <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
+            </tr>
+          }
         </table>
       </div>
       <div class="card">
         <h3>Top {{ currentTopDownloads.length }} livros por downloads</h3>
         <table class="books-table">
-          <tr *ngFor="let b of currentTopDownloads; let i = index">
-            <td class="rank">{{ i + 1 }}</td>
-            <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
-            <td class="views">{{ b.count | number }}</td>
-          </tr>
-          <tr *ngIf="currentTopDownloads.length === 0">
-            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
-          </tr>
+          @for (b of currentTopDownloads; track b; let i = $index) {
+            <tr>
+              <td class="rank">{{ i + 1 }}</td>
+              <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
+              <td class="views">{{ b.count | number }}</td>
+            </tr>
+          }
+          @if (currentTopDownloads.length === 0) {
+            <tr>
+              <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
+            </tr>
+          }
         </table>
       </div>
     </div>
-
     <div class="charts-grid">
-    <div class="card events-card funnel-card">
-      <h3>Funis de conversão</h3>
-      <table class="books-table events-table">
-        <thead>
-          <tr>
-            <th>Funil</th>
-            <th class="text-right">Entrada</th>
-            <th class="text-right">Conversão</th>
-            <th class="text-right">Taxa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="event-name">Compartilhamento<br><small>share_modal_open → social_share</small></td>
-            <td class="text-right">{{ funnelShare.open | number }}</td>
-            <td class="text-right">{{ funnelShare.shared | number }}</td>
-            <td class="text-right funnel-rate">{{ funnelShare.rate }}</td>
-          </tr>
-          <tr>
-            <td class="event-name">Pedido de livro<br><small>book_request_modal_open → book_request_success</small></td>
-            <td class="text-right">{{ funnelRequest.open | number }}</td>
-            <td class="text-right">{{ funnelRequest.success | number }}</td>
-            <td class="text-right funnel-rate">{{ funnelRequest.rate }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="card events-card funnel-card">
+        <h3>Funis de conversão</h3>
+        <table class="books-table events-table">
+          <thead>
+            <tr>
+              <th>Funil</th>
+              <th class="text-right">Entrada</th>
+              <th class="text-right">Conversão</th>
+              <th class="text-right">Taxa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="event-name">Compartilhamento<br><small>share_modal_open → social_share</small></td>
+              <td class="text-right">{{ funnelShare.open | number }}</td>
+              <td class="text-right">{{ funnelShare.shared | number }}</td>
+              <td class="text-right funnel-rate">{{ funnelShare.rate }}</td>
+            </tr>
+            <tr>
+              <td class="event-name">Pedido de livro<br><small>book_request_modal_open → book_request_success</small></td>
+              <td class="text-right">{{ funnelRequest.open | number }}</td>
+              <td class="text-right">{{ funnelRequest.success | number }}</td>
+              <td class="text-right funnel-rate">{{ funnelRequest.rate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card events-card">
+        <h3>Eventos</h3>
+        <table class="books-table events-table">
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th class="text-right">Ocorrências</th>
+              <th class="text-right">Usuários</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of currentEventSummary; track e) {
+              <tr>
+                <td class="event-name">{{ e.eventName }}</td>
+                <td class="text-right">{{ e.count | number }}</td>
+                <td class="text-right">{{ e.users | number }}</td>
+              </tr>
+            }
+            @if (currentEventSummary.length === 0) {
+              <tr>
+                <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <div class="card events-card">
-      <h3>Eventos</h3>
-      <table class="books-table events-table">
-        <thead>
-          <tr>
-            <th>Evento</th>
-            <th class="text-right">Ocorrências</th>
-            <th class="text-right">Usuários</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let e of currentEventSummary">
-            <td class="event-name">{{ e.eventName }}</td>
-            <td class="text-right">{{ e.count | number }}</td>
-            <td class="text-right">{{ e.users | number }}</td>
-          </tr>
-          <tr *ngIf="currentEventSummary.length === 0">
-            <td colspan="3" style="text-align:center; color:#aaa; padding: 16px;">Sem dados para esta semana</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    </div>
-
-  </ng-container>
+  }
 </div>

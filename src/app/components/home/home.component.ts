@@ -141,7 +141,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getBooks() {
     this._scBook
       .getFeaturedPrintedBooks()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
       .subscribe((books) => {
         this.availableBooks = books;
         this.hasBook = this.availableBooks.length > 0;
@@ -151,7 +151,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getCategoriesShowcase() {
     this._scBook
       .getCategoriesShowcase()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as CategoryShowcase[])))
       .subscribe((showcase) => {
         this.categoriesShowcase = showcase;
       });
@@ -160,7 +160,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getTopDownloadedEbooks() {
     this._scBook
       .getTopDownloadedEbooks(30)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
       .subscribe((books) => {
         this.topDownloadedEbooks = books;
       });
@@ -169,21 +169,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   getEbooks() {
     this._scBook
       .getNewestEbooks()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
       .subscribe((ebooks) => {
         this.ebooks = ebooks;
       });
 
     this._scBook
       .getRecentEbooksCount(7)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of(null)))
       .subscribe((response) => {
         this.recentEbooksCount = response?.total || 0;
       });
 
     this._scBook
       .getAvailableEbooksCount()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of(null)))
       .subscribe((response) => {
         this.availableEbooksCount = response?.total || 0;
       });
@@ -193,9 +193,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     // meetups já realizados
     this._scMeetup
       .get(this.meetupsCurrentPage, this.meetupsPerPage)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of({ items: [], totalItems: 0, itemsPerPage: this.meetupsPerPage, page: this.meetupsCurrentPage }))
+      )
       .subscribe((meetups) => {
-        this.meetups.push(...meetups.items);
+        this.meetups.push(...(meetups.items || []));
 
         const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
         this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
@@ -206,9 +209,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     // próximos meetups
     this._scMeetup
       .get(1, 50, true)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of({ items: [], totalItems: 0, itemsPerPage: 50, page: 1 }))
+      )
       .subscribe((meetups) => {
-        this.meetupsUpcoming.push(...meetups.items);
+        this.meetupsUpcoming.push(...(meetups.items || []));
 
         this.meetupsUpcoming.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
       });

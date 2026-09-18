@@ -1,17 +1,20 @@
 <div class="container text-center">
   <h1 class="display-4">Painel</h1>
   <div class="flex-container justify-content-center">
-    <div *ngIf="isAdmin" class="card">
-      <a routerLink="/book/list" title="Editar livros">
-        <img class="card-img-top panel-item" src="../../../assets/img/library.svg" alt="Card image" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Gerenciar Livros</h5>
+    @if (isAdmin) {
+      <div class="card">
+        <a routerLink="/book/list" title="Editar livros">
+          <img class="card-img-top panel-item" src="../../../assets/img/library.svg" alt="Card image" />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gerenciar Livros</h5>
         <!--p class="card-text">Esta função permite gerenciar os livros para doação.</p-->
       </div>
     </div>
+  }
 
-    <div *ngIf="isAdmin" class="card">
+  @if (isAdmin) {
+    <div class="card">
       <a routerLink="/admin/importer" title="Acompanhar importador">
         <img class="card-img-top panel-item" src="../../../assets/img/importer-icon.png" alt="Painel do importador" />
       </a>
@@ -19,8 +22,10 @@
         <h5 class="card-title">Importador de Livros</h5>
       </div>
     </div>
+  }
 
-    <div *ngIf="isAdmin" class="card">
+  @if (isAdmin) {
+    <div class="card">
       <a routerLink="/admin/analytics" title="Analytics">
         <img class="card-img-top panel-item" src="../../../assets/img/ga4.png" alt="Analytics" />
       </a>
@@ -28,8 +33,10 @@
         <h5 class="card-title">Analytics</h5>
       </div>
     </div>
+  }
 
-    <div *ngIf="isAdmin" class="card">
+  @if (isAdmin) {
+    <div class="card">
       <a routerLink="/admin/jobs" title="Acompanhar jobs">
         <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
       </a>
@@ -37,8 +44,10 @@
         <h5 class="card-title">Painel de Jobs</h5>
       </div>
     </div>
+  }
 
-    <div *ngIf="isAdmin" class="card">
+  @if (isAdmin) {
+    <div class="card">
       <a routerLink="/admin/download-logs" title="Análise de downloads">
         <img class="card-img-top panel-item" src="../../../assets/img/importer-icon.png" alt="Análise de Downloads" />
       </a>
@@ -46,33 +55,34 @@
         <h5 class="card-title">Análise de Downloads</h5>
       </div>
     </div>
+  }
 
-    <div class="card">
-      <a routerLink="/myaccount" title="Editar perfil">
-        <img class="card-img-top panel-item" src="../../../assets/img/learning.svg" alt="Card image" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Minha Conta</h5>
-      </div>
-    </div>
-
-
-    <div class="card">
-      <a routerLink="/book/requesteds" title="Meus pedidos">
-        <img class="card-img-top panel-item" src="../../../assets/img/person_book.png" alt="Card image" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Meus pedidos</h5>
-      </div>
-    </div>
-
-    <div class="card">
-      <a routerLink="/book/donations" title="Minhas doações">
-        <img class="card-img-top panel-item" src="../../../assets/img/send.svg" alt="Card image" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Minhas doações</h5>
-      </div>
+  <div class="card">
+    <a routerLink="/myaccount" title="Editar perfil">
+      <img class="card-img-top panel-item" src="../../../assets/img/learning.svg" alt="Card image" />
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">Minha Conta</h5>
     </div>
   </div>
+
+
+  <div class="card">
+    <a routerLink="/book/requesteds" title="Meus pedidos">
+      <img class="card-img-top panel-item" src="../../../assets/img/person_book.png" alt="Card image" />
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">Meus pedidos</h5>
+    </div>
+  </div>
+
+  <div class="card">
+    <a routerLink="/book/donations" title="Minhas doações">
+      <img class="card-img-top panel-item" src="../../../assets/img/send.svg" alt="Card image" />
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">Minhas doações</h5>
+    </div>
+  </div>
+</div>
 </div>

@@ -105,14 +105,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .getAddressByPostalCode(postalCode)
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((address: Address) => {
+        if (!address.street) {
+          this.isGettingAddress = false;
+          return;
+        }
         this.address = address;
         this.address.country = 'Brasil';
-        this.formGroup.controls['street'].setValue(this.address.street.substring(0, 80));
-        this.formGroup.controls['complement'].setValue(this.address.complement.substring(0, 50));
-        this.formGroup.controls['neighborhood'].setValue(this.address.neighborhood.substring(0, 50));
-        this.formGroup.controls['city'].setValue(this.address.city.substring(0, 50));
-        this.formGroup.controls['state'].setValue(this.address.state.substring(0, 30));
-        this.formGroup.controls['country'].setValue(this.address.country.substring(0, 50));
+        this.formGroup.controls['street'].setValue((this.address.street || '').substring(0, 80));
+        this.formGroup.controls['complement'].setValue((this.address.complement || '').substring(0, 50));
+        this.formGroup.controls['neighborhood'].setValue((this.address.neighborhood || '').substring(0, 50));
+        this.formGroup.controls['city'].setValue((this.address.city || '').substring(0, 50));
+        this.formGroup.controls['state'].setValue((this.address.state || '').substring(0, 30));
+        this.formGroup.controls['country'].setValue((this.address.country || '').substring(0, 50));
         this.isGettingAddress = false;
       });
   }

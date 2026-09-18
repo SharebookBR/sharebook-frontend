@@ -34,7 +34,7 @@
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'available'" (click)="setFilter('available')">Disponíveis</button>
   </div>
 
-    <div class="container mt-4">
+  <div class="container mt-4">
     <div fxLayout fxLayoutAlign="center center">
       <mat-form-field>
         <input matInput type="text" [value]="searchTerm" (keyup)="search($event.target.value)" placeholder="Pesquisar" />
@@ -44,135 +44,155 @@
       <mat-form-field>
         <select matNativeControl [value]="statusFilter" (change)="searchByStatus($event.target.value)" id="selectSearchByStatus">
           <option value="">Busca por Status</option>
-          <option *ngFor="let status of statusSearchValues; let i = index" [value]="statusSearchValues[i].value">
-            {{ statusSearchValues[i].title }}
-          </option>
+          @for (status of statusSearchValues; track status; let i = $index) {
+            <option [value]="statusSearchValues[i].value">
+              {{ statusSearchValues[i].title }}
+            </option>
+          }
         </select>
       </mat-form-field>
     </div>
 
-    <div class="results-toolbar" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
-      <div class="results-toolbar__summary">
-        Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalFilteredBooks }} livros
+    @if ((isLoading$ | async) === false && totalFilteredBooks > 0) {
+      <div class="results-toolbar">
+        <div class="results-toolbar__summary">
+          Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalFilteredBooks }} livros
+        </div>
+        <label class="results-toolbar__page-size">
+          Itens por página
+          <select [value]="pageSize" (change)="changePageSize($event.target.value)">
+            @for (option of pageSizeOptions; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </label>
       </div>
+    }
 
-      <label class="results-toolbar__page-size">
-        Itens por página
-        <select [value]="pageSize" (change)="changePageSize($event.target.value)">
-          <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="admin-cards-grid" *ngIf="(isLoading$ | async) === false">
-      <div class="admin-card" *ngFor="let element of pagedBooks">
-        <div class="admin-card__header">
-          <div class="admin-card__title">{{ element.title }}</div>
-          <div class="admin-card__author">{{ element.author }}</div>
-        </div>
-
-        <div class="admin-card__badges">
-          <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
-            <mat-icon class="badge-icon">{{ isEbook(element) ? 'menu_book' : 'book' }}</mat-icon>
-            {{ isEbook(element) ? 'Livro digital' : 'Livro físico' }}
-          </span>
-          <span [class]="getStatusBadgeClass(element.status)">
-            {{ getTranslatedStatusDescription(element.status) }}
-          </span>
-        </div>
-
-        <div class="admin-card__meta">
-          <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
-          <div><b>Doador:</b> {{ element.donor || '-' }}</div>
-          <div *ngIf="canShowDecisionDate(element)">
-            <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}
+    @if ((isLoading$ | async) === false) {
+      <div class="admin-cards-grid">
+        @for (element of pagedBooks; track element) {
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <div class="admin-card__title">{{ element.title }}</div>
+              <div class="admin-card__author">{{ element.author }}</div>
+            </div>
+            <div class="admin-card__badges">
+              <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
+                <mat-icon class="badge-icon">{{ isEbook(element) ? 'menu_book' : 'book' }}</mat-icon>
+                {{ isEbook(element) ? 'Livro digital' : 'Livro físico' }}
+              </span>
+              <span [class]="getStatusBadgeClass(element.status)">
+                {{ getTranslatedStatusDescription(element.status) }}
+              </span>
+            </div>
+            <div class="admin-card__meta">
+              <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
+              <div><b>Doador:</b> {{ element.donor || '-' }}</div>
+              @if (canShowDecisionDate(element)) {
+                <div>
+                  <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}
+                </div>
+              }
+              @if (shouldShowDecisionNotice(element)) {
+                <div class="admin-card__notice">
+                  {{ getDecisionNoticeLabel(element) }}
+                </div>
+              }
+              <div>{{ getPrimaryMetric(element) }}</div>
+              @if (canShowWinner(element)) {
+                <div><b>Ganhador(a):</b> {{ element.winner }}</div>
+              }
+              @if (canShowFacilitator(element)) {
+                <div><b>Facilitador:</b> {{ element.facilitator }}</div>
+              }
+              @if (canShowTrackingInfo(element)) {
+                <div><b>Rastreio:</b> {{ element.trackingNumber }}</div>
+              }
+            </div>
+            <div class="admin-card__actions">
+              <button mat-flat-button color="primary" class="action-btn action-btn--primary" (click)="onCustom('edit', element)">
+                <mat-icon class="action-btn__icon">edit_note</mat-icon> Editar
+              </button>
+              @if (canShowPrimaryAction(element)) {
+                <button
+                  mat-flat-button
+                  class="action-btn action-btn--yellow"
+                  (click)="onCustom('donate', element)"
+                  >
+                  <mat-icon class="action-btn__icon">{{ getPrimaryActionIcon(element) }}</mat-icon> {{ getPrimaryActionLabel(element) }}
+                </button>
+              }
+              <button mat-flat-button class="action-btn action-btn--info" (click)="onCustom('facilitatorNotes', element)">
+                <mat-icon class="action-btn__icon">sticky_note_2</mat-icon> Comentários
+              </button>
+              @if (canOpenPdf(element)) {
+                <button
+                  mat-stroked-button
+                  class="action-btn action-btn--pdf"
+                  (click)="onCustom('openPdf', element)"
+                  >
+                  <mat-icon class="action-btn__icon">picture_as_pdf</mat-icon> Ver PDF
+                </button>
+              }
+              @if (canShowTrackAction(element)) {
+                <button
+                  mat-flat-button
+                  class="action-btn action-btn--neutral"
+                  (click)="onCustom('trackNumber', element)"
+                  >
+                  <mat-icon class="action-btn__icon">local_shipping</mat-icon> Rastreio
+                </button>
+              }
+              <button mat-stroked-button class="action-btn" (click)="onCustom('showUsersInfo', element)">
+                <mat-icon class="action-btn__icon">group</mat-icon> Usuários
+              </button>
+              <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">
+                <mat-icon class="action-btn__icon">delete_outline</mat-icon> Cancelar
+              </button>
+            </div>
           </div>
-          <div *ngIf="shouldShowDecisionNotice(element)" class="admin-card__notice">
-            {{ getDecisionNoticeLabel(element) }}
-          </div>
-          <div>{{ getPrimaryMetric(element) }}</div>
-          <div *ngIf="canShowWinner(element)"><b>Ganhador(a):</b> {{ element.winner }}</div>
-          <div *ngIf="canShowFacilitator(element)"><b>Facilitador:</b> {{ element.facilitator }}</div>
-          <div *ngIf="canShowTrackingInfo(element)"><b>Rastreio:</b> {{ element.trackingNumber }}</div>
-        </div>
-
-        <div class="admin-card__actions">
-          <button mat-flat-button color="primary" class="action-btn action-btn--primary" (click)="onCustom('edit', element)">
-            <mat-icon class="action-btn__icon">edit_note</mat-icon> Editar
-          </button>
-
-          <button
-            mat-flat-button
-            class="action-btn action-btn--yellow"
-            *ngIf="canShowPrimaryAction(element)"
-            (click)="onCustom('donate', element)"
-          >
-            <mat-icon class="action-btn__icon">{{ getPrimaryActionIcon(element) }}</mat-icon> {{ getPrimaryActionLabel(element) }}
-          </button>
-
-          <button mat-flat-button class="action-btn action-btn--info" (click)="onCustom('facilitatorNotes', element)">
-            <mat-icon class="action-btn__icon">sticky_note_2</mat-icon> Comentários
-          </button>
-
-          <button
-            mat-stroked-button
-            class="action-btn action-btn--pdf"
-            *ngIf="canOpenPdf(element)"
-            (click)="onCustom('openPdf', element)"
-          >
-            <mat-icon class="action-btn__icon">picture_as_pdf</mat-icon> Ver PDF
-          </button>
-
-          <button
-            mat-flat-button
-            class="action-btn action-btn--neutral"
-            *ngIf="canShowTrackAction(element)"
-            (click)="onCustom('trackNumber', element)"
-          >
-            <mat-icon class="action-btn__icon">local_shipping</mat-icon> Rastreio
-          </button>
-
-          <button mat-stroked-button class="action-btn" (click)="onCustom('showUsersInfo', element)">
-            <mat-icon class="action-btn__icon">group</mat-icon> Usuários
-          </button>
-
-          <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">
-            <mat-icon class="action-btn__icon">delete_outline</mat-icon> Cancelar
-          </button>
-        </div>
+        }
       </div>
-    </div>
+    }
 
-    <div class="pagination-bar" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
-      <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-        Anterior
-      </button>
+    @if ((isLoading$ | async) === false && totalFilteredBooks > 0) {
+      <div class="pagination-bar">
+        <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+          Anterior
+        </button>
+        @for (page of visiblePages; track page) {
+          <button
+            class="pagination-btn pagination-btn--page"
+            type="button"
+            [class.pagination-btn--active]="page === currentPage"
+            (click)="goToPage(page)"
+            >
+            {{ page }}
+          </button>
+        }
+        <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          Próxima
+        </button>
+      </div>
+    }
 
-      <button
-        class="pagination-btn pagination-btn--page"
-        type="button"
-        *ngFor="let page of visiblePages"
-        [class.pagination-btn--active]="page === currentPage"
-        (click)="goToPage(page)"
-      >
-        {{ page }}
-      </button>
+    @if ((isLoading$ | async) === false && totalFilteredBooks > 0) {
+      <div class="pagination-caption">
+        Página {{ currentPage }} de {{ totalPages }}
+      </div>
+    }
 
-      <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-        Próxima
-      </button>
-    </div>
+    @if (totalFilteredBooks === 0 && (isLoading$ | async) === false) {
+      <div class="empty-data">
+        Nenhum registro encontrado.
+      </div>
+    }
 
-    <div class="pagination-caption" *ngIf="(isLoading$ | async) === false && totalFilteredBooks > 0">
-      Página {{ currentPage }} de {{ totalPages }}
-    </div>
-
-    <div class="empty-data" *ngIf="totalFilteredBooks === 0 && (isLoading$ | async) === false">
-      Nenhum registro encontrado.
-    </div>
-
-    <div class="spinner-container" *ngIf="isLoading$ | async">
-      <mat-spinner></mat-spinner>
-    </div>
+    @if (isLoading$ | async) {
+      <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
   </div>
 </div>

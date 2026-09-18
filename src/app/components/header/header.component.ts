@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, viewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mobileSearchOpen = false;
   isDevMode = false;
 
-  @ViewChild('mobileSearch') mobileSearch: InputSearchComponent;
-  @ViewChild('mobileSearchToggle') mobileSearchToggle: ElementRef<HTMLButtonElement>;
+  mobileSearch = viewChild<InputSearchComponent>('mobileSearch');
+  mobileSearchToggle = viewChild<ElementRef<HTMLButtonElement>>('mobileSearchToggle');
 
   get firstName(): string {
     if (!this.shareBookUser?.name) return '';
@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     this.mobileSearchOpen = true;
-    setTimeout(() => this.mobileSearch?.focus());
+    setTimeout(() => this.mobileSearch()?.focus());
   }
 
   closeMobileSearch(restoreFocus = true): void {
@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.mobileSearchOpen = false;
     if (restoreFocus) {
-      setTimeout(() => this.mobileSearchToggle?.nativeElement.focus());
+      setTimeout(() => this.mobileSearchToggle()?.nativeElement.focus());
     }
   }
 

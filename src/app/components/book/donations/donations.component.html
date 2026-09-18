@@ -39,117 +39,132 @@
       </mat-form-field>
     </div>
 
-    <div class="results-toolbar" *ngIf="(isLoading$ | async) === false && totalItems > 0">
-      <div class="results-toolbar__summary">
-        Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalItems }} doações
+    @if ((isLoading$ | async) === false && totalItems > 0) {
+      <div class="results-toolbar">
+        <div class="results-toolbar__summary">
+          Mostrando {{ paginationStart }}-{{ paginationEnd }} de {{ totalItems }} doações
+        </div>
+        <label class="results-toolbar__page-size">
+          Itens por página
+          <select [value]="pageSize" (change)="changePageSize($event.target.value)">
+            @for (option of pageSizeOptions; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </label>
       </div>
-
-      <label class="results-toolbar__page-size">
-        Itens por página
-        <select [value]="pageSize" (change)="changePageSize($event.target.value)">
-          <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
-        </select>
-      </label>
-    </div>
+    }
 
     <div class="donation-cards-grid">
-      <div class="donation-card" *ngFor="let element of donatedBooks">
-        <div class="donation-card__header">
-          <div class="donation-card__title">{{ element.title }}</div>
-        </div>
-        <div class="donation-card__badges">
-          <span
-            class="custom-badge donation-card__status"
+      @for (element of donatedBooks; track element) {
+        <div class="donation-card">
+          <div class="donation-card__header">
+            <div class="donation-card__title">{{ element.title }}</div>
+          </div>
+          <div class="donation-card__badges">
+            <span
+              class="custom-badge donation-card__status"
             [ngStyle]="{
               backgroundColor: getStatusBadgeBackgroundColor(element.status),
               color: getStatusBadgeTextColor(element.status)
             }"
-            >{{ getTranslatedStatusDescription(element.status) }}</span
-          >
-          <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
-            <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
-            {{ isEbook(element) ? 'Livro digital' : 'Físico' }}
-          </span>
-        </div>
-
-        <div class="donation-card__meta">
-          <div class="meta-line">
-            <span class="meta-value">{{ getMobilePrimaryMetric(element) }}</span>
+              >{{ getTranslatedStatusDescription(element.status) }}</span
+              >
+              <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
+                <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
+                {{ isEbook(element) ? 'Livro digital' : 'Físico' }}
+              </span>
+            </div>
+            <div class="donation-card__meta">
+              <div class="meta-line">
+                <span class="meta-value">{{ getMobilePrimaryMetric(element) }}</span>
+              </div>
+            </div>
+            <div class="donation-card__actions">
+              @if (canPrimaryAction(element)) {
+                <button
+                  mat-flat-button
+                  color="primary"
+                  class="action-btn action-btn--primary"
+                  [ngClass]="{ 'action-btn--winner': canChooseWinnerNow(element) }"
+                  (click)="executePrimaryAction(element)"
+                  >
+                  <mat-icon class="action-btn__icon">
+                    {{ canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline' }}
+                  </mat-icon>
+                  {{ getPrimaryActionLabel(element) }}
+                </button>
+              }
+              @if (canRenew(element)) {
+                <button mat-stroked-button class="action-btn" (click)="onCustom('renewChooseDate', element)">
+                  <mat-icon class="action-btn__icon">calendar_month</mat-icon>
+                  Adiar decisão
+                </button>
+              }
+              @if (canTrack(element)) {
+                <button mat-flat-button class="action-btn action-btn--success" (click)="onCustom('markAsFinished', element)">
+                  <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
+                  Marcar finalizado
+                </button>
+              }
+              @if (canShowWinner(element)) {
+                <button mat-stroked-button class="action-btn" (click)="onCustom('ShowWinnerInfo', element)">
+                  <mat-icon class="action-btn__icon">person</mat-icon>
+                  Ver ganhador
+                </button>
+              }
+              @if (canCancel(element)) {
+                <button mat-flat-button class="action-btn action-btn--danger" (click)="onCustom('CancelDonation', element)">
+                  <mat-icon class="action-btn__icon">delete_outline</mat-icon>
+                  Cancelar
+                </button>
+              }
+            </div>
           </div>
-        </div>
-
-        <div class="donation-card__actions">
-          <button
-            *ngIf="canPrimaryAction(element)"
-            mat-flat-button
-            color="primary"
-            class="action-btn action-btn--primary"
-            [ngClass]="{ 'action-btn--winner': canChooseWinnerNow(element) }"
-            (click)="executePrimaryAction(element)"
-          >
-            <mat-icon class="action-btn__icon">
-              {{ canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline' }}
-            </mat-icon>
-            {{ getPrimaryActionLabel(element) }}
-          </button>
-          
-          <button mat-stroked-button class="action-btn" *ngIf="canRenew(element)" (click)="onCustom('renewChooseDate', element)">
-            <mat-icon class="action-btn__icon">calendar_month</mat-icon>
-            Adiar decisão
-          </button>
-
-          <button mat-flat-button class="action-btn action-btn--success" *ngIf="canTrack(element)" (click)="onCustom('markAsFinished', element)">
-            <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
-            Marcar finalizado
-          </button>
-
-          <button mat-stroked-button class="action-btn" *ngIf="canShowWinner(element)" (click)="onCustom('ShowWinnerInfo', element)">
-            <mat-icon class="action-btn__icon">person</mat-icon>
-            Ver ganhador
-          </button>
-
-          <button mat-flat-button class="action-btn action-btn--danger" *ngIf="canCancel(element)" (click)="onCustom('CancelDonation', element)">
-            <mat-icon class="action-btn__icon">delete_outline</mat-icon>
-            Cancelar
-          </button>
-        </div>
+        }
       </div>
+
+      @if ((isLoading$ | async) === false && totalItems > 0) {
+        <div class="pagination-bar">
+          <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            Anterior
+          </button>
+          @for (page of visiblePages; track page) {
+            <button
+              class="pagination-btn pagination-btn--page"
+              type="button"
+              [class.pagination-btn--active]="page === currentPage"
+              (click)="goToPage(page)"
+              >
+              {{ page }}
+            </button>
+          }
+          <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+            Próxima
+          </button>
+        </div>
+      }
+
+      @if ((isLoading$ | async) === false && totalItems > 0) {
+        <div class="pagination-caption">
+          Página {{ currentPage }} de {{ totalPages }}
+        </div>
+      }
+
+      @if (donatedBooks.length === 0 && (isLoading$ | async) === false) {
+        <div class="empty-data">
+          Você ainda não tem doações neste filtro.
+        </div>
+      }
+
+      @if (isLoading$ | async) {
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner>
+        </div>
+      }
+
+      <p class="mt-2">
+        <button mat-button color="primary" routerLink="/panel">Voltar</button>
+      </p>
     </div>
-
-    <div class="pagination-bar" *ngIf="(isLoading$ | async) === false && totalItems > 0">
-      <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-        Anterior
-      </button>
-
-      <button
-        class="pagination-btn pagination-btn--page"
-        type="button"
-        *ngFor="let page of visiblePages"
-        [class.pagination-btn--active]="page === currentPage"
-        (click)="goToPage(page)"
-      >
-        {{ page }}
-      </button>
-
-      <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-        Próxima
-      </button>
-    </div>
-
-    <div class="pagination-caption" *ngIf="(isLoading$ | async) === false && totalItems > 0">
-      Página {{ currentPage }} de {{ totalPages }}
-    </div>
-
-    <div class="empty-data" *ngIf="donatedBooks.length === 0 && (isLoading$ | async) === false">
-      Você ainda não tem doações neste filtro.
-    </div>
-
-    <div class="spinner-container" *ngIf="isLoading$ | async">
-      <mat-spinner></mat-spinner>
-    </div>
-
-    <p class="mt-2">
-      <button mat-button color="primary" routerLink="/panel">Voltar</button>
-    </p>
   </div>
-</div>

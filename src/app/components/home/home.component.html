@@ -5,10 +5,14 @@
     <h1 class="hero__title">Encontre livros gratuitos para ler e compartilhar</h1>
     <p class="hero__sub">
       Explore
-      <strong *ngIf="availableEbooksCount > 0">
-        {{ availableEbooksCount | number:'1.0-0':'pt-BR' }} livros digitais gratuitos
-      </strong>
-      <strong *ngIf="availableEbooksCount === 0">milhares de livros digitais gratuitos</strong>
+      @if (availableEbooksCount > 0) {
+        <strong>
+          {{ availableEbooksCount | number:'1.0-0':'pt-BR' }} livros digitais gratuitos
+        </strong>
+      }
+      @if (availableEbooksCount === 0) {
+        <strong>milhares de livros digitais gratuitos</strong>
+      }
       e encontre livros físicos disponíveis para doação.
     </p>
     <div class="hero__actions">
@@ -21,78 +25,92 @@
 <div class="container shelves">
 
   <!-- NENHUM LIVRO -->
-  <p class="text-center mt-4" *ngIf="!hasBook && ebooks.length === 0">
-    Nenhum livro encontrado &#9785; — Ajude o Sharebook e
-    <strong><a routerLink="/livros/doar">doe um livro agora</a></strong>.
-  </p>
+  @if (!hasBook && ebooks.length === 0) {
+    <p class="text-center mt-4">
+      Nenhum livro encontrado &#9785; — Ajude o Sharebook e
+      <strong><a routerLink="/livros/doar">doe um livro agora</a></strong>.
+    </p>
+  }
 
   <!-- LIVROS EM DESTAQUE -->
-  <app-book-shelf
-    *ngIf="hasBook"
-    title="Livros físicos"
-    [books]="availableBooks"
-    moreLink="/livros"
-    ariaLabel="Livros físicos disponíveis"
-  ></app-book-shelf>
+  @if (hasBook) {
+    <app-book-shelf
+      title="Livros físicos"
+      [books]="availableBooks"
+      moreLink="/livros"
+      ariaLabel="Livros físicos disponíveis"
+    ></app-book-shelf>
+  }
 
   <!-- VITRINE EDITORIAL FIXA — MITOLOGIA GREGA -->
-  <app-book-shelf
-    *ngIf="mythologyShowcase.length > 0"
-    title="Mitologia grega"
-    [books]="mythologyShowcase"
-    ariaLabel="Livros de mitologia grega"
-  ></app-book-shelf>
+  @if (mythologyShowcase.length > 0) {
+    <app-book-shelf
+      title="Mitologia grega"
+      [books]="mythologyShowcase"
+      ariaLabel="Livros de mitologia grega"
+    ></app-book-shelf>
+  }
 
   <!-- VITRINE EDITORIAL FIXA — LITERATURA DE TERROR -->
-  <app-book-shelf
-    *ngIf="horrorShowcase.length > 0"
-    title="Literatura de Terror"
-    [books]="horrorShowcase"
-    ariaLabel="Livros de literatura de terror"
-  ></app-book-shelf>
+  @if (horrorShowcase.length > 0) {
+    <app-book-shelf
+      title="Literatura de Terror"
+      [books]="horrorShowcase"
+      ariaLabel="Livros de literatura de terror"
+    ></app-book-shelf>
+  }
 
   <!-- MAIS BAIXADOS -->
-  <app-book-shelf
-    *ngIf="topDownloadedEbooks.length > 0"
-    title="Mais baixados"
-    [books]="topDownloadedEbooks"
-    ariaLabel="Livros digitais mais baixados nos últimos 30 dias"
-  ></app-book-shelf>
+  @if (topDownloadedEbooks.length > 0) {
+    <app-book-shelf
+      title="Mais baixados"
+      [books]="topDownloadedEbooks"
+      ariaLabel="Livros digitais mais baixados nos últimos 30 dias"
+    ></app-book-shelf>
+  }
 
   <!-- LIVROS DIGITAIS -->
-  <app-book-shelf
-    *ngIf="ebooks.length > 0"
-    title="Novidades digitais"
-    [books]="ebooks"
-    moreLink="/livros-digitais/novidades"
-    [badgeText]="recentEbooksCount > 0 ? recentEbooksCount + ' novos' : ''"
-    ariaLabel="Novidades em livros digitais"
-  ></app-book-shelf>
+  @if (ebooks.length > 0) {
+    <app-book-shelf
+      title="Novidades digitais"
+      [books]="ebooks"
+      moreLink="/livros-digitais/novidades"
+      [badgeText]="recentEbooksCount > 0 ? recentEbooksCount + ' novos' : ''"
+      ariaLabel="Novidades em livros digitais"
+    ></app-book-shelf>
+  }
 
   <!-- CATEGORIAS EM DESTAQUE -->
-  <app-book-shelf
-    *ngFor="let category of categoriesShowcase"
-    [title]="category.name"
-    [books]="category.books"
-    [moreLink]="['/categorias', _categoryService.generateSlug(category.name)]"
-    [ariaLabel]="'Livros da categoria ' + category.name"
-  ></app-book-shelf>
+  @for (category of categoriesShowcase; track category) {
+    <app-book-shelf
+      [title]="category.name"
+      [books]="category.books"
+      [moreLink]="['/categorias', _categoryService.generateSlug(category.name)]"
+      [ariaLabel]="'Livros da categoria ' + category.name"
+    ></app-book-shelf>
+  }
 
   <!-- PRÓXIMOS MEETUPS -->
-  <ng-container *ngIf="meetupsUpcoming.length > 0">
+  @if (meetupsUpcoming.length > 0) {
     <h2 class="shelf-title shelf-title--meetup">Próximos Meetups</h2>
-    <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetupsUpcoming"></app-card-meetup>
+    @for (meetup of meetupsUpcoming; track meetup) {
+      <app-card-meetup [meetup]="meetup"></app-card-meetup>
+    }
     <div style="clear:both; height:20px"></div>
-  </ng-container>
+  }
 
   <!-- MEETUPS JÁ REALIZADOS -->
   <h2 class="shelf-title shelf-title--meetup">Meetups já realizados</h2>
-  <app-card-meetup [meetup]="meetup" *ngFor="let meetup of meetups"></app-card-meetup>
-  <div class="meetup" *ngIf="showButtonMoreMeetups">
-    <button mat-flat-button color="primary" (click)="showMoreMetups()">
-      Carregar mais Meetups...
-    </button>
-  </div>
+  @for (meetup of meetups; track meetup) {
+    <app-card-meetup [meetup]="meetup"></app-card-meetup>
+  }
+  @if (showButtonMoreMeetups) {
+    <div class="meetup">
+      <button mat-flat-button color="primary" (click)="showMoreMetups()">
+        Carregar mais Meetups...
+      </button>
+    </div>
+  }
   <div style="clear:both; height:20px"></div>
 
 </div>

@@ -10,31 +10,43 @@
   </a>
   <mat-divider></mat-divider>
 
-  <div *ngIf="userLogged" class="mais-sheet__greeting">
-    <mat-icon>person</mat-icon>
-    <span>Olá, {{ userName }}</span>
-  </div>
-  <mat-divider *ngIf="userLogged"></mat-divider>
+  @if (userLogged) {
+    <div class="mais-sheet__greeting">
+      <mat-icon>person</mat-icon>
+      <span>Olá, {{ userName }}</span>
+    </div>
+  }
+  @if (userLogged) {
+    <mat-divider></mat-divider>
+  }
 
-  <a mat-list-item (click)="navigate('/panel')" *ngIf="userLogged">
-    <mat-icon mat-list-icon>dashboard</mat-icon>
-    <span mat-line>Meu Painel</span>
-  </a>
-  <a mat-list-item (click)="navigate('/admin/importer')" *ngIf="isAdmin">
-    <mat-icon mat-list-icon>auto_awesome</mat-icon>
-    <span mat-line>Importador de Livros</span>
-  </a>
-  <a mat-list-item (click)="navigate('/myaccount')" *ngIf="userLogged">
-    <mat-icon mat-list-icon>manage_accounts</mat-icon>
-    <span mat-line>Minha Conta</span>
-  </a>
+  @if (userLogged) {
+    <a mat-list-item (click)="navigate('/panel')">
+      <mat-icon mat-list-icon>dashboard</mat-icon>
+      <span mat-line>Meu Painel</span>
+    </a>
+  }
+  @if (isAdmin) {
+    <a mat-list-item (click)="navigate('/admin/importer')">
+      <mat-icon mat-list-icon>auto_awesome</mat-icon>
+      <span mat-line>Importador de Livros</span>
+    </a>
+  }
+  @if (userLogged) {
+    <a mat-list-item (click)="navigate('/myaccount')">
+      <mat-icon mat-list-icon>manage_accounts</mat-icon>
+      <span mat-line>Minha Conta</span>
+    </a>
+  }
 
   <mat-divider></mat-divider>
 
-  <a mat-list-item (click)="logout()" *ngIf="userLogged" class="mais-sheet__logout">
-    <mat-icon mat-list-icon>logout</mat-icon>
-    <span mat-line>Sair</span>
-  </a>
+  @if (userLogged) {
+    <a mat-list-item (click)="logout()" class="mais-sheet__logout">
+      <mat-icon mat-list-icon>logout</mat-icon>
+      <span mat-line>Sair</span>
+    </a>
+  }
 
   <mat-divider></mat-divider>
 

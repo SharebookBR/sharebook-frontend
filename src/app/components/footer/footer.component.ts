@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { Link } from '../../core/models/link';
 import { RepositoriesUrls } from '../../core/models/RepositoriesUrls';
@@ -47,7 +47,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._categoryService
       .getAllWithCounts()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Category[])))
       .subscribe((categories) => {
         this.categories = this._categoryService
           .getRootCategories(categories)

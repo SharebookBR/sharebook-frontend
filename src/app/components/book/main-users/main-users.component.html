@@ -6,33 +6,37 @@
   <h4 class="main-users-book-title">{{ bookTitle }}</h4>
   <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
 
-  <div class="main-users-stack" *ngIf="!isLoading">
-    <div class="user-card" *ngFor="let mainUser of mainUsers; let k = index">
-      <h5 class="user-card__role">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
-      <p class="card-text"><strong>Nome:</strong> {{ mainUser.name || 'Não informado' }}</p>
-      <p class="card-text"><strong>E-mail:</strong> {{ mainUser.email || 'Não informado' }}</p>
-      <p class="card-text"><strong>LinkedIn:</strong> {{ mainUser.linkedin || 'Não informado' }}</p>
-      <p class="card-text"><strong>Telefone:</strong> {{ mainUser.phone || 'Não informado' }}</p>
-      <button
-        mat-flat-button
-        class="card-whatsapp-btn"
-        [disabled]="!hasWhatsappPhone(mainUser)"
-        (click)="contactOnWhatsapp(mainUser)">
-        <em class="fa fa-whatsapp" aria-hidden="true"></em>
-        Chamar no WhatsApp
-      </button>
-      <p class="card-text">
-        <strong>Endereço:</strong>
-        {{ mainUser.address?.street || 'Não informado' }}, {{ mainUser.address?.number || 's/n' }}
-        {{ !!mainUser.address?.complement ? mainUser.address?.complement : '' }}
-      </p>
-      <p class="card-text">
-        <strong>Bairro / Cidade / Estado:</strong>
-        {{ mainUser.address?.neighborhood || 'Não informado' }} - {{ mainUser.address?.city || 'Não informado' }} - {{ mainUser.address?.state || 'Não informado' }}
-      </p>
-      <p class="card-text"><strong>CEP / País:</strong> {{ mainUser.address?.postalCode || 'Não informado' }} - {{ mainUser.address?.country || 'Não informado' }}</p>
+  @if (!isLoading) {
+    <div class="main-users-stack">
+      @for (mainUser of mainUsers; track mainUser; let k = $index) {
+        <div class="user-card">
+          <h5 class="user-card__role">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
+          <p class="card-text"><strong>Nome:</strong> {{ mainUser.name || 'Não informado' }}</p>
+          <p class="card-text"><strong>E-mail:</strong> {{ mainUser.email || 'Não informado' }}</p>
+          <p class="card-text"><strong>LinkedIn:</strong> {{ mainUser.linkedin || 'Não informado' }}</p>
+          <p class="card-text"><strong>Telefone:</strong> {{ mainUser.phone || 'Não informado' }}</p>
+          <button
+            mat-flat-button
+            class="card-whatsapp-btn"
+            [disabled]="!hasWhatsappPhone(mainUser)"
+            (click)="contactOnWhatsapp(mainUser)">
+            <em class="fa fa-whatsapp" aria-hidden="true"></em>
+            Chamar no WhatsApp
+          </button>
+          <p class="card-text">
+            <strong>Endereço:</strong>
+            {{ mainUser.address?.street || 'Não informado' }}, {{ mainUser.address?.number || 's/n' }}
+            {{ !!mainUser.address?.complement ? mainUser.address?.complement : '' }}
+          </p>
+          <p class="card-text">
+            <strong>Bairro / Cidade / Estado:</strong>
+            {{ mainUser.address?.neighborhood || 'Não informado' }} - {{ mainUser.address?.city || 'Não informado' }} - {{ mainUser.address?.state || 'Não informado' }}
+          </p>
+          <p class="card-text"><strong>CEP / País:</strong> {{ mainUser.address?.postalCode || 'Não informado' }} - {{ mainUser.address?.country || 'Não informado' }}</p>
+        </div>
+      }
     </div>
-  </div>
+  }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-flat-button color="primary" mat-dialog-close>Ok, entendi</button>

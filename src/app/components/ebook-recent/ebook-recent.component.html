@@ -6,29 +6,41 @@
     </ol>
   </nav>
 
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Carregando novidades...</p>
-  </div>
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Carregando novidades...</p>
+    </div>
+  }
 
-  <div *ngIf="!isLoading" class="recent-ebooks-header">
-    <h1>Novos livros digitais da semana</h1>
-    <p class="recent-ebooks-subtitle">
-      Aqui estão os ebooks aprovados nos últimos 7 dias.
-    </p>
-    <p class="recent-ebooks-count" *ngIf="books.length > 0">
-      {{ totalItems }} livro(s) digital(is) novo(s)
-    </p>
-  </div>
+  @if (!isLoading) {
+    <div class="recent-ebooks-header">
+      <h1>Novos livros digitais da semana</h1>
+      <p class="recent-ebooks-subtitle">
+        Aqui estão os ebooks aprovados nos últimos 7 dias.
+      </p>
+      @if (books.length > 0) {
+        <p class="recent-ebooks-count">
+          {{ totalItems }} livro(s) digital(is) novo(s)
+        </p>
+      }
+    </div>
+  }
 
-  <div *ngIf="!isLoading && books.length > 0" class="row justify-content-center book-covers">
-    <app-book-card [book]="book" *ngFor="let book of books"></app-book-card>
-  </div>
+  @if (!isLoading && books.length > 0) {
+    <div class="row justify-content-center book-covers">
+      @for (book of books; track book) {
+        <app-book-card [book]="book"></app-book-card>
+      }
+    </div>
+  }
 
-  <div *ngIf="!isLoading && books.length === 0" class="empty-state">
-    <i class="fa fa-book fa-4x"></i>
-    <h2>Nenhum livro digital novo por aqui</h2>
-    <p>Quando chegarem novidades, elas vão aparecer nesta página.</p>
-    <a routerLink="/" class="btn btn-primary">Voltar para a vitrine</a>
-  </div>
+  @if (!isLoading && books.length === 0) {
+    <div class="empty-state">
+      <i class="fa fa-book fa-4x"></i>
+      <h2>Nenhum livro digital novo por aqui</h2>
+      <p>Quando chegarem novidades, elas vão aparecer nesta página.</p>
+      <a routerLink="/" class="btn btn-primary">Voltar para a vitrine</a>
+    </div>
+  }
 </div>

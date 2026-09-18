@@ -20,14 +20,17 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="dl-loading">
-    <div class="spinner"></div>
-    <p>Carregando logs de download...</p>
-  </div>
-  <div *ngIf="error" class="dl-error">Erro ao carregar os logs de download.</div>
+  @if (loading) {
+    <div class="dl-loading">
+      <div class="spinner"></div>
+      <p>Carregando logs de download...</p>
+    </div>
+  }
+  @if (error) {
+    <div class="dl-error">Erro ao carregar os logs de download.</div>
+  }
 
-  <ng-container *ngIf="!loading && !error">
-
+  @if (!loading && !error) {
     <div class="kpi-grid">
       <div class="kpi-card kpi-allowed">
         <div class="kpi-label">Permitidos</div>
@@ -42,23 +45,22 @@
         <div class="kpi-value">{{ totalBlockedDailyLimit | number }}</div>
       </div>
     </div>
-
     <div class="card chart-card">
       <h3>Downloads por dia</h3>
       <canvas #chartDownloads></canvas>
     </div>
-
     <div class="card table-card">
       <div class="table-card-header">
         <h3>Eventos</h3>
         <label class="page-size-label">
           Itens por página
           <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
           </select>
         </label>
       </div>
-
       <div class="events-filters">
         <label>
           IP
@@ -73,16 +75,16 @@
             <option value="BlockedDailyLimit">Limite diário</option>
           </select>
         </label>
-        <button
-          type="button"
-          class="clear-filters-btn"
-          *ngIf="filterIp || filterOutcome"
-          (click)="filterIp = ''; filterOutcome = ''; onEventsFilterChange()"
-        >
-          Limpar filtros
-        </button>
+        @if (filterIp || filterOutcome) {
+          <button
+            type="button"
+            class="clear-filters-btn"
+            (click)="filterIp = ''; filterOutcome = ''; onEventsFilterChange()"
+            >
+            Limpar filtros
+          </button>
+        }
       </div>
-
       <table class="dl-table">
         <thead>
           <tr>
@@ -93,48 +95,60 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let e of paged?.items">
-            <td class="timestamp">{{ formatTimestamp(e.timestamp) }}</td>
-            <td class="ip">
-              <button type="button" class="ip-link" [class.ip-link--active]="filterIp === e.ip" (click)="onIpClick(e.ip)">
-                {{ e.ip || '—' }}
-              </button>
-              <span class="ip-count" *ngIf="ipCount(e.ip) > 1" title="Ocorrências dessa IP na amostra atual">{{ ipCount(e.ip) }}</span>
-            </td>
-            <td><span class="outcome-badge" [ngClass]="outcomeClass(e.outcome)">{{ outcomeLabel(e.outcome) }}</span></td>
-            <td class="title">
-              <a *ngIf="e.slug" [href]="pdpUrl(e.slug)" target="_blank" rel="noopener">{{ e.title || e.slug }}</a>
-              <span *ngIf="!e.slug">—</span>
-            </td>
-          </tr>
-          <tr *ngIf="(paged?.items?.length ?? 0) === 0">
-            <td colspan="4" class="dl-empty">Nenhum evento no período selecionado.</td>
-          </tr>
+          @for (e of paged?.items; track e) {
+            <tr>
+              <td class="timestamp">{{ formatTimestamp(e.timestamp) }}</td>
+              <td class="ip">
+                <button type="button" class="ip-link" [class.ip-link--active]="filterIp === e.ip" (click)="onIpClick(e.ip)">
+                  {{ e.ip || '—' }}
+                </button>
+                @if (ipCount(e.ip) > 1) {
+                  <span class="ip-count" title="Ocorrências dessa IP na amostra atual">{{ ipCount(e.ip) }}</span>
+                }
+              </td>
+              <td><span class="outcome-badge" [ngClass]="outcomeClass(e.outcome)">{{ outcomeLabel(e.outcome) }}</span></td>
+              <td class="title">
+                @if (e.slug) {
+                  <a [href]="pdpUrl(e.slug)" target="_blank" rel="noopener">{{ e.title || e.slug }}</a>
+                }
+                @if (!e.slug) {
+                  <span>—</span>
+                }
+              </td>
+            </tr>
+          }
+          @if ((paged?.items?.length ?? 0) === 0) {
+            <tr>
+              <td colspan="4" class="dl-empty">Nenhum evento no período selecionado.</td>
+            </tr>
+          }
         </tbody>
       </table>
-
-      <div class="pagination-bar" *ngIf="totalItems > pageSize">
-        <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-          Anterior
-        </button>
-        <button
-          class="pagination-btn pagination-btn--page"
-          type="button"
-          *ngFor="let page of visiblePages"
-          [class.pagination-btn--active]="page === currentPage"
-          (click)="goToPage(page)"
-        >
-          {{ page }}
-        </button>
-        <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-          Próxima
-        </button>
-      </div>
-
-      <div class="pagination-caption" *ngIf="totalItems > 0">
-        Página {{ currentPage }} de {{ totalPages }} — {{ totalItems | number }} evento(s) no período
-      </div>
+      @if (totalItems > pageSize) {
+        <div class="pagination-bar">
+          <button class="pagination-btn" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            Anterior
+          </button>
+          @for (page of visiblePages; track page) {
+            <button
+              class="pagination-btn pagination-btn--page"
+              type="button"
+              [class.pagination-btn--active]="page === currentPage"
+              (click)="goToPage(page)"
+              >
+              {{ page }}
+            </button>
+          }
+          <button class="pagination-btn" type="button" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+            Próxima
+          </button>
+        </div>
+      }
+      @if (totalItems > 0) {
+        <div class="pagination-caption">
+          Página {{ currentPage }} de {{ totalPages }} — {{ totalItems | number }} evento(s) no período
+        </div>
+      }
     </div>
-
-  </ng-container>
+  }
 </div>

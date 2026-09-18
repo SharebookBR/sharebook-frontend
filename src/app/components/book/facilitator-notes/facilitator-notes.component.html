@@ -6,15 +6,19 @@
   <mat-dialog-content>
     <h4 class="book-title">{{ bookTitle }}</h4>
     <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
-    <div class="text-center" *ngIf="state == 'request-error'">
-      <p>Não foi possível concluir sua solicitação agora.</p>
-      <div class="alert alert-danger" role="alert">
-        {{ lastError }}
+    @if (state == 'request-error') {
+      <div class="text-center">
+        <p>Não foi possível concluir sua solicitação agora.</p>
+        <div class="alert alert-danger" role="alert">
+          {{ lastError }}
+        </div>
       </div>
-    </div>
+    }
     <h5>Comentários:</h5>
     <div class="notes-list">
-      <p class="note-line" *ngFor="let facilitatorNote of facilitatorNotes.split('\n')">{{ facilitatorNote }}</p>
+      @for (facilitatorNote of facilitatorNotes.split('\n'); track facilitatorNote) {
+        <p class="note-line">{{ facilitatorNote }}</p>
+      }
     </div>
     <textarea
       formControlName="facilitatorNotes"
@@ -25,11 +29,15 @@
       rows="3"
       maxlength="2000"
     ></textarea>
-    <div *ngIf="formGroup.controls['facilitatorNotes'].touched && !formGroup.controls['facilitatorNotes'].valid">
-      <small class="form-text text-danger" *ngIf="formGroup.controls['facilitatorNotes'].hasError('required')">
-        Informe o código de rastreio.
-      </small>
-    </div>
+    @if (formGroup.controls['facilitatorNotes'].touched && !formGroup.controls['facilitatorNotes'].valid) {
+      <div>
+        @if (formGroup.controls['facilitatorNotes'].hasError('required')) {
+          <small class="form-text text-danger">
+            Informe o código de rastreio.
+          </small>
+        }
+      </div>
+    }
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Confirmar</button>

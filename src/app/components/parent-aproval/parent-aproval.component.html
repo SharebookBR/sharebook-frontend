@@ -7,27 +7,35 @@
     usuários.
   </p>
 
-  <div class="form-row" *ngIf="state == 'ready'">
-    <div class="col">
-      <div class="form-group col-md-6 offset-md-3">
-        <div class="text-center">
-          <button
-            type="submit"
-            mat-flat-button
-            color="primary"
-            style="padding-left: 50px; padding-right: 50px"
-            (click)="parentAproval()"
-          >
-            Liberar acesso
-          </button>
+  @if (state == 'ready') {
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group col-md-6 offset-md-3">
+          <div class="text-center">
+            <button
+              type="submit"
+              mat-flat-button
+              color="primary"
+              style="padding-left: 50px; padding-right: 50px"
+              (click)="parentAproval()"
+              >
+              Liberar acesso
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  }
 
-  <div class="alert alert-success" role="alert" *ngIf="state == 'approved'">Acesso liberado com sucesso.</div>
+  @if (state == 'approved') {
+    <div class="alert alert-success" role="alert">Acesso liberado com sucesso.</div>
+  }
 
-  <div *ngIf="state == 'loading'"><mat-spinner></mat-spinner></div>
+  @if (state == 'loading') {
+    <div><mat-spinner></mat-spinner></div>
+  }
 
-  <div class="alert alert-danger" role="alert" *ngIf="state == 'error'">{{ errorMsg }}</div>
+  @if (state == 'error') {
+    <div class="alert alert-danger" role="alert">{{ errorMsg }}</div>
+  }
 </div>

@@ -9,11 +9,11 @@
       <div class="text-center"><em class="fa fa-spinner fa-spin"></em> Aguarde...</div>
     </div>
 
-    <ng-container *ngIf="messageBody !== ''">
+    @if (messageBody !== '') {
       <h5 class="card-title">{{ messageBody }}</h5>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="(userInfo$ | async)?.donor as donor">
+    @if ((userInfo$ | async)?.donor; as donor) {
       <h5 class="card-title">Doador</h5>
       <p class="card-text"><strong>Nome:</strong> {{ donor.name }}</p>
       <p class="card-text"><strong>E-mail:</strong> {{ donor.email }}</p>
@@ -27,7 +27,7 @@
         <em class="fa fa-whatsapp" aria-hidden="true"></em>
         Chamar no WhatsApp
       </button>
-    </ng-container>
+    }
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

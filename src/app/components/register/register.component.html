@@ -10,17 +10,25 @@
             <i class="fa fa-address-book"></i>
           </div>
         </div>
-        <div *ngIf="formGroup.controls['name'].touched && !formGroup.controls['name'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('required')">
-            Nome obrigatório.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('minlength')">
-            O nome deve conter no mínimo 3 caracteres.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['name'].hasError('maxlength')">
-            O nome deve conter no máximo 200 caracteres.
-          </small>
-        </div>
+        @if (formGroup.controls['name'].touched && !formGroup.controls['name'].valid) {
+          <div>
+            @if (formGroup.controls['name'].hasError('required')) {
+              <small class="form-text text-danger">
+                Nome obrigatório.
+              </small>
+            }
+            @if (formGroup.controls['name'].hasError('minlength')) {
+              <small class="form-text text-danger">
+                O nome deve conter no mínimo 3 caracteres.
+              </small>
+            }
+            @if (formGroup.controls['name'].hasError('maxlength')) {
+              <small class="form-text text-danger">
+                O nome deve conter no máximo 200 caracteres.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -33,21 +41,27 @@
           <i class="fa fa-info-circle" aria-hidden="true"></i>
           Se você tem menos de 12 anos, será necessário o consentimento de um responsável.
         </small>
-        <div *ngIf="formGroup.controls['age'].touched && !formGroup.controls['age'].valid">
-          <small class="form-text text-danger"> Não parece ser uma idade válida. Tente entre 8 e 100. </small>
-        </div>
+        @if (formGroup.controls['age'].touched && !formGroup.controls['age'].valid) {
+          <div>
+            <small class="form-text text-danger"> Não parece ser uma idade válida. Tente entre 8 e 100. </small>
+          </div>
+        }
       </div>
 
-      <div class="form-group col-md-6 offset-md-3 mb-2" *ngIf="isMinor">
-        <label class="col-form-label" for="name">Email dos pais ou responsável</label>
-        <div class="input-group">
-          <input formControlName="parentEmail" id="parentEmail" name="parentEmail" type="text" class="form-control" />
-          <div class="input-group-addon append"><i class="fa fa-envelope-square" aria-hidden="true"></i></div>
+      @if (isMinor) {
+        <div class="form-group col-md-6 offset-md-3 mb-2">
+          <label class="col-form-label" for="name">Email dos pais ou responsável</label>
+          <div class="input-group">
+            <input formControlName="parentEmail" id="parentEmail" name="parentEmail" type="text" class="form-control" />
+            <div class="input-group-addon append"><i class="fa fa-envelope-square" aria-hidden="true"></i></div>
+          </div>
+          @if (formGroup.controls['parentEmail'].touched && !formGroup.controls['parentEmail'].valid) {
+            <div>
+              <small class="form-text text-danger"> O e-mail deve ser um e-mail válido. </small>
+            </div>
+          }
         </div>
-        <div *ngIf="formGroup.controls['parentEmail'].touched && !formGroup.controls['parentEmail'].valid">
-          <small class="form-text text-danger"> O e-mail deve ser um e-mail válido. </small>
-        </div>
-      </div>
+      }
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <label class="col-form-label" for="email">E-mail</label>
@@ -58,14 +72,20 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['email'].touched && !formGroup.controls['email'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('required')">
-            E-mail obrigatório.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['email'].hasError('pattern')">
-            O e-mail deve ser um e-mail válido.
-          </small>
-        </div>
+        @if (formGroup.controls['email'].touched && !formGroup.controls['email'].valid) {
+          <div>
+            @if (formGroup.controls['email'].hasError('required')) {
+              <small class="form-text text-danger">
+                E-mail obrigatório.
+              </small>
+            }
+            @if (formGroup.controls['email'].hasError('pattern')) {
+              <small class="form-text text-danger">
+                O e-mail deve ser um e-mail válido.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -77,17 +97,25 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['password'].touched && !formGroup.controls['password'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('required')">
-            Senha obrigatória.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('minlength')">
-            A senha deve conter no mínimo 6 caracteres.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['password'].hasError('maxlength')">
-            A senha deve conter no máximo 32 caracteres.
-          </small>
-        </div>
+        @if (formGroup.controls['password'].touched && !formGroup.controls['password'].valid) {
+          <div>
+            @if (formGroup.controls['password'].hasError('required')) {
+              <small class="form-text text-danger">
+                Senha obrigatória.
+              </small>
+            }
+            @if (formGroup.controls['password'].hasError('minlength')) {
+              <small class="form-text text-danger">
+                A senha deve conter no mínimo 6 caracteres.
+              </small>
+            }
+            @if (formGroup.controls['password'].hasError('maxlength')) {
+              <small class="form-text text-danger">
+                A senha deve conter no máximo 32 caracteres.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -99,14 +127,20 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['confirmPassword'].touched && !formGroup.controls['confirmPassword'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('required')">
-            Confirmação de senha obrigatória.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['confirmPassword'].hasError('MatchPassword')">
-            A confirmação de senha não confere com a senha informada.
-          </small>
-        </div>
+        @if (formGroup.controls['confirmPassword'].touched && !formGroup.controls['confirmPassword'].valid) {
+          <div>
+            @if (formGroup.controls['confirmPassword'].hasError('required')) {
+              <small class="form-text text-danger">
+                Confirmação de senha obrigatória.
+              </small>
+            }
+            @if (formGroup.controls['confirmPassword'].hasError('MatchPassword')) {
+              <small class="form-text text-danger">
+                A confirmação de senha não confere com a senha informada.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -119,20 +153,26 @@
             class="form-control"
             [dropSpecialCharacters]="false"
             mask="(00) 00000-0000"
-          />
+            />
           <div class="input-group-addon append">
             <i class="fa fa-whatsapp"></i>
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('required')">
-            Telefone obrigatório.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['phone'].hasError('pattern')">
-            Telefone deve estar no formato (99) 99999-9999
-          </small>
-        </div>
+        @if (formGroup.controls['phone'].touched && !formGroup.controls['phone'].valid) {
+          <div>
+            @if (formGroup.controls['phone'].hasError('required')) {
+              <small class="form-text text-danger">
+                Telefone obrigatório.
+              </small>
+            }
+            @if (formGroup.controls['phone'].hasError('pattern')) {
+              <small class="form-text text-danger">
+                Telefone deve estar no formato (99) 99999-9999
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -146,7 +186,7 @@
             mask="00000-000"
             class="form-control"
             (blur)="getAddressByPostalCode($event.target.value)"
-          />
+            />
 
           <div class="input-group-addon append" [hidden]="isGettingAddress">
             <i class="fa fa-map-marker"></i>
@@ -156,14 +196,20 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['postalCode'].touched && !formGroup.controls['postalCode'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('required')">
-            CEP obrigatório.
-          </small>
-          <small class="form-text text-danger" *ngIf="formGroup.controls['postalCode'].hasError('pattern')">
-            CEP deve estar no formato 99999-999.
-          </small>
-        </div>
+        @if (formGroup.controls['postalCode'].touched && !formGroup.controls['postalCode'].valid) {
+          <div>
+            @if (formGroup.controls['postalCode'].hasError('required')) {
+              <small class="form-text text-danger">
+                CEP obrigatório.
+              </small>
+            }
+            @if (formGroup.controls['postalCode'].hasError('pattern')) {
+              <small class="form-text text-danger">
+                CEP deve estar no formato 99999-999.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -175,11 +221,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['street'].touched && !formGroup.controls['street'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['street'].hasError('required')">
-            Endereço obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['street'].touched && !formGroup.controls['street'].valid) {
+          <div>
+            @if (formGroup.controls['street'].hasError('required')) {
+              <small class="form-text text-danger">
+                Endereço obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -191,11 +241,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['number'].touched && !formGroup.controls['number'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['number'].hasError('required')">
-            Número obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['number'].touched && !formGroup.controls['number'].valid) {
+          <div>
+            @if (formGroup.controls['number'].hasError('required')) {
+              <small class="form-text text-danger">
+                Número obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -217,11 +271,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['neighborhood'].touched && !formGroup.controls['neighborhood'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['neighborhood'].hasError('required')">
-            Bairro obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['neighborhood'].touched && !formGroup.controls['neighborhood'].valid) {
+          <div>
+            @if (formGroup.controls['neighborhood'].hasError('required')) {
+              <small class="form-text text-danger">
+                Bairro obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -233,11 +291,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['city'].touched && !formGroup.controls['city'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['city'].hasError('required')">
-            Cidade obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['city'].touched && !formGroup.controls['city'].valid) {
+          <div>
+            @if (formGroup.controls['city'].hasError('required')) {
+              <small class="form-text text-danger">
+                Cidade obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -249,11 +311,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['state'].touched && !formGroup.controls['state'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['state'].hasError('required')">
-            Estado obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['state'].touched && !formGroup.controls['state'].valid) {
+          <div>
+            @if (formGroup.controls['state'].hasError('required')) {
+              <small class="form-text text-danger">
+                Estado obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
 
       <div class="form-group col-md-6 offset-md-3 mb-2">
@@ -265,11 +331,15 @@
           </div>
         </div>
 
-        <div *ngIf="formGroup.controls['country'].touched && !formGroup.controls['country'].valid">
-          <small class="form-text text-danger" *ngIf="formGroup.controls['country'].hasError('required')">
-            País obrigatório.
-          </small>
-        </div>
+        @if (formGroup.controls['country'].touched && !formGroup.controls['country'].valid) {
+          <div>
+            @if (formGroup.controls['country'].hasError('required')) {
+              <small class="form-text text-danger">
+                País obrigatório.
+              </small>
+            }
+          </div>
+        }
       </div>
       <div class="form-group col-md-6 offset-md-3 mb-2">
         <div class="form-check">
@@ -289,7 +359,7 @@
             id="defaultCheck2"
             required
             defaultCheck2
-          />
+            />
           <label class="form-check-label" for="defaultCheck2">
             Aceito os <a routerLink="/termos-de-uso">termos de uso</a>
           </label>
@@ -310,7 +380,7 @@
             color="primary"
             style="padding-left: 50px; padding-right: 50px"
             [disabled]="!formGroup.valid"
-          >
+            >
             Criar conta
           </button>
           <button [routerLink]="['/login']" mat-button color="primary">Cancelar</button>

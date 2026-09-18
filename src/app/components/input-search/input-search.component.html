@@ -8,25 +8,26 @@
       id="inputSearch"
       placeholder="Busque por livro ou autor"
       aria-label="Busque por livro ou autor"
-    />
+      />
     <div class="input-group-append">
       <button mat-stroked-button color="primary" type="submit" id="button-addon2">Pesquisar</button>
     </div>
   </div>
-  <div
-        *ngIf="searchAlert"
-        #alert
-        class="alert alert-warning alert-dismissible fade show"
-        role="alert"
+  @if (searchAlert) {
+    <div
+      #alert
+      class="alert alert-warning alert-dismissible fade show"
+      role="alert"
       >
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="closeAlert()"
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="closeAlert()"
         >
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Você deve incluir uma palavra na pesquisa</strong>
-      </div>
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>Você deve incluir uma palavra na pesquisa</strong>
+    </div>
+  }
 </form>
