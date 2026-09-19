@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../../core/services/user/user.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { PasswordValidation } from '../../core/utils/passwordValidation';
+import { PasswordValidation } from 'src/app/core/utils/passwordValidation';
 
 @Component({
     selector: 'app-change-password',

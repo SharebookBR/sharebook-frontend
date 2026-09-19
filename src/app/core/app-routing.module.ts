@@ -1,4 +1,4 @@
-import { MyaccountComponent } from './../components/myaccount/myaccount.component';
+import { MyaccountComponent } from '../features/account/myaccount/myaccount.component';
 
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -12,9 +12,9 @@ import { DetailsComponent as BookDetailComponent } from '../components/book/deta
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
-import { AccountComponent } from '../components/account/account.component';
+import { AccountComponent } from '../features/account/account/account.component';
 import { ContributeProjectComponent } from '../features/static-pages/contribute-project/contribute-project.component';
-import { ChangePasswordComponent } from '../components/change-password/change-password.component';
+import { ChangePasswordComponent } from '../features/account/change-password/change-password.component';
 import { ResetPasswordComponent } from '../components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from '../components/forgot-password/forgot-password.component';
 import { ParentAprovalComponent } from '../components/parent-aproval/parent-aproval.component';
@@ -29,7 +29,7 @@ import { DataAnonymizationInfoComponent } from '../features/static-pages/data-an
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
 import { CategoryBooksComponent } from '../features/category/category-books/category-books.component';
 import { CategoriesListComponent } from '../features/category/categories-list/categories-list.component';
-import { SettingsComponent } from '../components/settings/settings.component';
+import { SettingsComponent } from '../features/account/settings/settings.component';
 import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
 import { ImporterDashboardComponent } from '../components/importer-dashboard/importer-dashboard.component';

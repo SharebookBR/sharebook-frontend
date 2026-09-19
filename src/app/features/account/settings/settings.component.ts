@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { EnvironmentSwitcherService, EnvironmentType, EnvironmentConfig } from '../../core/services/environment-switcher/environment-switcher.service';
+import { EnvironmentSwitcherService, EnvironmentType, EnvironmentConfig } from 'src/app/core/services/environment-switcher/environment-switcher.service';
 
 @Component({
     selector: 'app-settings',

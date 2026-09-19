@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserService } from '../../core/services/user/user.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { AddressService } from '../../core/services/address/address.service';
-import * as AppConst from '../../core/utils/app.const';
-import { Address } from '../../core/models/address';
+import { AddressService } from 'src/app/core/services/address/address.service';
+import * as AppConst from 'src/app/core/utils/app.const';
+import { Address } from 'src/app/core/models/address';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({

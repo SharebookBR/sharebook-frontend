@@ -1,11 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { UserService } from './../../core/services/user/user.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
-import { DialogWHoAccessedComponent } from './../dialog-who-accessed/dialog-who-accessed.component';
-import { DialogAnonymizeComponent } from './../dialog-anonymize/dialog-anonymize.component';
+import { DialogWHoAccessedComponent } from 'src/app/features/account/dialog-who-accessed/dialog-who-accessed.component';
+import { DialogAnonymizeComponent } from 'src/app/features/account/dialog-anonymize/dialog-anonymize.component';
 
 @Component({
     selector: 'app-myaccount',

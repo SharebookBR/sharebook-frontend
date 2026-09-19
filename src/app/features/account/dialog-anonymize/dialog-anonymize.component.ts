@@ -4,8 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { UserService } from './../../core/services/user/user.service';
-import { AnonymizeUserVM } from '../../core/models/AnonymizeUserVM';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { AnonymizeUserVM } from 'src/app/core/models/AnonymizeUserVM';
 
 @Component({
     selector: 'app-dialog-anonymize',
