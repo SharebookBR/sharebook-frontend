@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showc
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -71,7 +71,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _scBook: BookService,
     private _scMeetup: MeetupService,
     private _seo: SeoService,
-    private _categoryService: CategoryService
+    private _categoryService: CategoryService,
+    private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -124,6 +125,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
         this.mythologyShowcase = books.filter((book) => !!book);
+        this._cdr.markForCheck();
       });
   }
 
@@ -136,6 +138,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
         this.horrorShowcase = books.filter((book) => !!book);
+        this._cdr.markForCheck();
       });
   }
 
@@ -146,6 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((books) => {
         this.availableBooks = books;
         this.hasBook = this.availableBooks.length > 0;
+        this._cdr.markForCheck();
       });
   }
 
@@ -155,6 +159,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as CategoryShowcase[])))
       .subscribe((showcase) => {
         this.categoriesShowcase = showcase;
+        this._cdr.markForCheck();
       });
   }
 
@@ -164,6 +169,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
       .subscribe((books) => {
         this.topDownloadedEbooks = books;
+        this._cdr.markForCheck();
       });
   }
 
@@ -173,6 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
       .subscribe((ebooks) => {
         this.ebooks = ebooks;
+        this._cdr.markForCheck();
       });
 
     this._scBook
@@ -180,6 +187,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$), catchError(() => of(null)))
       .subscribe((response) => {
         this.recentEbooksCount = response?.total || 0;
+        this._cdr.markForCheck();
       });
 
     this._scBook
@@ -187,6 +195,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroySubscribes$), catchError(() => of(null)))
       .subscribe((response) => {
         this.availableEbooksCount = response?.total || 0;
+        this._cdr.markForCheck();
       });
   }
 
@@ -203,6 +212,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
         this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
+        this._cdr.markForCheck();
       });
   }
 
@@ -218,6 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.meetupsUpcoming.push(...(meetups.items || []));
 
         this.meetupsUpcoming.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
+        this._cdr.markForCheck();
       });
   }
 

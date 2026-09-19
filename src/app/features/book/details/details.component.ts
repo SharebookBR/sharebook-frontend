@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from 'src/express.tokens';
 import { Response } from 'express';
@@ -30,7 +30,7 @@ import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
     selector: 'app-details',
     templateUrl: './details.component.html',
     styleUrls: ['./details.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class DetailsComponent implements OnInit, OnDestroy {
@@ -70,7 +70,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _platform: PlatformService,
     private _ga: GoogleAnalyticsService,
     @Inject(APP_CONFIG) private config: AppConfig,
-    @Optional() @Inject(RESPONSE) private response: Response
+    @Optional() @Inject(RESPONSE) private response: Response,
+    private _cdr: ChangeDetectorRef
   ) {
     this._scAuthentication.checkTokenValidity();
   }
@@ -178,9 +179,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
                     .subscribe((requested) => {
                       this.requested = requested?.value?.bookRequested;
                       this.state = 'ready';
+                      this._cdr.markForCheck();
                     });
                 } else {
                   this.state = 'ready';
+                  this._cdr.markForCheck();
                 }
 
                 const metaDescription = buildBookMetaDescription({
@@ -216,6 +219,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
             this.response?.status(404);
             this.pageTitle = 'Ops... Não encontramos essa página :/';
             this.state = 'not-found';
+            this._cdr.markForCheck();
           }
         );
     } else {
@@ -237,6 +241,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     modalRef.afterClosed().subscribe(result => {
       if (result) {
         this.requested = true;
+        this._cdr.markForCheck();
       }
     });
 
@@ -259,6 +264,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       reader.onload = (event) => {
         const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
+        this._cdr.markForCheck();
       };
     }
   }
@@ -493,10 +499,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
               recommendation_count: books.length,
             });
           }
+          this._cdr.markForCheck();
         },
         error => {
           console.error('Erro ao carregar recomendações:', error);
           this.recommendations = [];
+          this._cdr.markForCheck();
         }
       );
   }
