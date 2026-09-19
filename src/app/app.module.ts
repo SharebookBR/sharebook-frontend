@@ -3,7 +3,7 @@ import { APP_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageToDataUrlModule } from 'ngx-image2dataurl';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -54,10 +54,8 @@ import { BookCardModule } from './shared/book-card/book-card.module';
 import { BookShelfModule } from './shared/book-shelf/book-shelf.module';
 import { ActionButtonModule } from './shared/action-button/action-button.module';
 
-import { AuthGuardUser } from './core/guards/auth.guard.user';
-import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
-import { JwtInterceptor, ErrorInterceptor, TransferStateInterceptor } from './core/helpers';
+import { jwtInterceptor, errorInterceptor, transferStateInterceptor } from './core/helpers';
 import { BookService } from './features/book/services/book.service';
 import { CategoryService } from './features/category/services/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
@@ -196,7 +194,6 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         BookCardModule,
         BookShelfModule,
         ActionButtonModule], providers: [
-        AuthGuardUser,
         BookService,
         CategoryService,
         AuthenticationService,
@@ -205,9 +202,6 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         AddressService,
         UserService,
         MeetupService,
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: TransferStateInterceptor, multi: true },
         {
             provide: RECAPTCHA_SETTINGS,
             useValue: {
@@ -215,8 +209,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
             } as RecaptchaSettings,
         },
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-        AuthGuardAdmin,
-        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptors([jwtInterceptor, errorInterceptor, transferStateInterceptor])),
         provideClientHydration(withEventReplay()),
         { provide: APP_ID, useValue: 'angular' },
     ] })

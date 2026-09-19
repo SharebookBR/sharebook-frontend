@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../services/user/user.service';
 
-@Injectable()
-export class AuthGuardAdmin  {
-  constructor(private router: Router, private _scUserService: UserService) {}
+export const authGuardAdmin: CanActivateFn = (route, state) => {
+  const userService = inject(UserService);
+  const router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const user = this._scUserService.getLoggedUserFromLocalStorage();
+  const user = userService.getLoggedUserFromLocalStorage();
 
-    if (user?.profile === 'Administrator') {
-      // logged in so return true
-      return true;
-    }
-
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
-    return false;
+  if (user?.profile === 'Administrator') {
+    // logged in so return true
+    return true;
   }
-}
+
+  // not logged in so redirect to login page with the return url
+  router.navigate(['/'], { queryParams: { returnUrl: state.url } });
+  return false;
+};

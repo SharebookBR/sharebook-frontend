@@ -1,22 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { BrowserStorageService } from '../services/platform/browser-storage.service';
 
-@Injectable()
-export class AuthGuardUser  {
-  constructor(
-    private router: Router,
-    private _browserStorage: BrowserStorageService
-  ) {}
+export const authGuardUser: CanActivateFn = (route, state) => {
+  const browserStorage = inject(BrowserStorageService);
+  const router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this._browserStorage.getItem('shareBookUser')) {
-      // logged in so return true
-      return true;
-    }
-
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    return false;
+  if (browserStorage.getItem('shareBookUser')) {
+    // logged in so return true
+    return true;
   }
-}
+
+  // not logged in so redirect to login page with the return url
+  router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+  return false;
+};

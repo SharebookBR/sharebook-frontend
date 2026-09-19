@@ -2,8 +2,8 @@ import { MyaccountComponent } from '../features/account/myaccount/myaccount.comp
 
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardUser } from './guards/auth.guard.user';
-import { AuthGuardAdmin } from './guards/auth.guard.admin';
+import { authGuardUser } from './guards/auth.guard.user';
+import { authGuardAdmin } from './guards/auth.guard.admin';
 
 import { HomeComponent } from '../components/home/home.component';
 import { FormComponent as BookFormComponent } from '../features/book/form/form.component';
@@ -46,57 +46,57 @@ const routes: Routes = [
   {
     path: 'book/form',
     component: BookFormComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'livros/doar',
     component: BookFormComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'book/form/:id',
     component: BookFormComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'book/list',
     component: BookListComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/jobs',
     component: JobsDashboardComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/importer',
     component: ImporterDashboardComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/analytics',
     component: AnalyticsDashboardComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/download-logs',
     component: DownloadLogsDashboardComponent,
-    canActivate: [AuthGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
   {
     path: 'book/requesteds',
     component: RequestedsComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'book/donations',
     component: DonationsComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'book/donate/:id',
     component: DonatePageComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'livros/:slug',
@@ -145,22 +145,22 @@ const routes: Routes = [
   {
     path: 'panel',
     component: PanelComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'myaccount',
     component: MyaccountComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'account',
     component: AccountComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'change-password',
     component: ChangePasswordComponent,
-    canActivate: [AuthGuardUser],
+    canActivate: [authGuardUser],
   },
   {
     path: 'reset-password',

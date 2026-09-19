@@ -1,42 +1,34 @@
-import { Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
+import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
-@Injectable()
-export class TransferStateInterceptor implements HttpInterceptor {
-  constructor(
-    private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: any
-  ) {}
-
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    // Only intercept GET requests
-    if (request.method !== 'GET') {
-      return next.handle(request);
-    }
-
-    const key = makeStateKey<any>(request.urlWithParams);
-
-    if (isPlatformBrowser(this.platformId)) {
-      const storedResponse = this.transferState.get(key, null);
-      if (storedResponse) {
-        this.transferState.remove(key);
-        return of(new HttpResponse({ body: storedResponse, status: 200 }));
-      }
-    }
-
-    return next.handle(request).pipe(
-      tap((event) => {
-        if (isPlatformServer(this.platformId) && event instanceof HttpResponse) {
-          this.transferState.set(key, event.body);
-        }
-      })
-    );
+export const transferStateInterceptor: HttpInterceptorFn = (request, next) => {
+  // Only intercept GET requests
+  if (request.method !== 'GET') {
+    return next(request);
   }
-}
+
+  const transferState = inject(TransferState);
+  const platformId = inject(PLATFORM_ID);
+
+  const key = makeStateKey<any>(request.urlWithParams);
+
+  if (isPlatformBrowser(platformId)) {
+    const storedResponse = transferState.get(key, null);
+    if (storedResponse) {
+      transferState.remove(key);
+      return of(new HttpResponse({ body: storedResponse, status: 200 }));
+    }
+  }
+
+  return next(request).pipe(
+    tap((event) => {
+      if (isPlatformServer(platformId) && event instanceof HttpResponse) {
+        transferState.set(key, event.body);
+      }
+    })
+  );
+};
