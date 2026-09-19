@@ -1,8 +1,9 @@
 import { MatDialog } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, catchError } from 'rxjs/operators';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 import { DialogWHoAccessedComponent } from 'src/app/features/account/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from 'src/app/features/account/dialog-anonymize/dialog-anonymize.component';
@@ -22,13 +23,20 @@ export class MyaccountComponent implements OnInit, OnDestroy {
   whoAccessedList: any;
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _scUser: UserService, public dialog: MatDialog) {}
+  constructor(
+    private _scUser: UserService,
+    public dialog: MatDialog,
+    private _toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this._scUser
       .getProfile()
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((profile) => (this.isAdmin = profile.profile === 'Administrator' ? true : false));
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null))
+      )
+      .subscribe((profile) => (this.isAdmin = profile?.profile === 'Administrator' ? true : false));
   }
 
   ngOnDestroy() {
@@ -37,7 +45,14 @@ export class MyaccountComponent implements OnInit, OnDestroy {
   }
 
   download() {
-    this._scUser.downloadData().subscribe((data) => {
+    this._scUser
+      .downloadData()
+      .pipe(catchError(() => of(null)))
+      .subscribe((data) => {
+      if (!data) {
+        this._toastr.error('Não foi possível baixar seus dados agora.');
+        return;
+      }
       this.fileContent = JSON.stringify(data);
       this.convertedData = this.fileContent.toString();
       this.convertedData = this.convertedData.replace(/[\[\]"]+/g, '');
@@ -77,10 +92,17 @@ export class MyaccountComponent implements OnInit, OnDestroy {
   }
 
   whoAccessed() {
-    this._scUser.whoAccessed().subscribe((data) => {
-      this.whoAccessedList = data;
-      this.dialog.open(DialogWHoAccessedComponent, { data: this.whoAccessedList, width: '100%' });
-    });
+    this._scUser
+      .whoAccessed()
+      .pipe(catchError(() => of(null)))
+      .subscribe((data) => {
+        if (!data) {
+          this._toastr.error('Não foi possível carregar o histórico de acessos agora.');
+          return;
+        }
+        this.whoAccessedList = data;
+        this.dialog.open(DialogWHoAccessedComponent, { data: this.whoAccessedList, width: '100%' });
+      });
   }
 
   anonymize() {

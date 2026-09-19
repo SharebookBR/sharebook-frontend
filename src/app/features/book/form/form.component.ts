@@ -5,8 +5,8 @@ import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, BehaviorSubject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
@@ -110,13 +110,17 @@ export class FormComponent implements OnInit, OnDestroy {
     this._scBook
       .getFreightOptions()
       .pipe(
-        takeUntil(this._destroySubscribes$)
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of([] as FreightOptions[]))
       )
       .subscribe((data) => (this.freightOptions = data));
 
     this._scCategory
       .getAll()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of([] as Category[]))
+      )
       .subscribe((data) => {
         this.categories = this._scCategory.flattenForSelect(data);
         this.filteredCategories = this.categories;
@@ -222,8 +226,15 @@ export class FormComponent implements OnInit, OnDestroy {
   findProfile() {
     this._scUser
       .getProfile()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null as Profile))
+      )
       .subscribe(profile => {
+        if (!profile) {
+          this._toastr.error('Não foi possível carregar seu perfil agora.');
+          return;
+        }
         this.userProfile = profile;
         this.createFormGroup();
         this.getBookSaved();
@@ -250,8 +261,15 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.userProfile.profile === 'Administrator' && bookId) {
       this._scBook
         .getById(bookId)
-        .pipe(takeUntil(this._destroySubscribes$))
+        .pipe(
+          takeUntil(this._destroySubscribes$),
+          catchError(() => of(null as BookToAdminProfile))
+        )
         .subscribe((book: BookToAdminProfile) => {
+          if (!book) {
+            this._toastr.error('Não foi possível carregar os dados do livro agora.');
+            return;
+          }
           this.status = book.status;
           this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
@@ -360,8 +378,19 @@ export class FormComponent implements OnInit, OnDestroy {
       } else {
         this._scBook
           .create(bookData)
-          .pipe(takeUntil(this._destroySubscribes$))
+          .pipe(
+            takeUntil(this._destroySubscribes$),
+            catchError((error) => {
+              const msg = error?.error?.messages?.join(' ') || error?.message || 'Erro ao cadastrar o livro. Tente novamente.';
+              this._toastr.error(msg);
+              this.isLoading = false;
+              return of(null);
+            })
+          )
           .subscribe((resp) => {
+            if (!resp) {
+              return;
+            }
             if (resp.success) {
               this.isSaved = true;
               this._toastr.success('Livro cadastrado com sucesso!');
@@ -533,7 +562,10 @@ export class FormComponent implements OnInit, OnDestroy {
   getAllFacilitators() {
     this._scUser
       .getAllFacilitators(this.formGroup.get('userId').value)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of([] as User[]))
+      )
       .subscribe(data => this.facilitators = data);
   }
 
@@ -554,8 +586,18 @@ export class FormComponent implements OnInit, OnDestroy {
   approve() {
     this._scBook
       .approve(this.formGroup.value.bookId)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => {
+          this._toastr.error('Não foi possível aprovar o livro agora. Tente novamente.');
+          this.isLoading = false;
+          return of(null);
+        })
+      )
       .subscribe((resp) => {
+        if (!resp) {
+          return;
+        }
         this.happyEnd();
       });
   }

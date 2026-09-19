@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectionStrategy
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from 'src/express.tokens';
 import { Response } from 'express';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { Category } from 'src/app/features/category/category';
@@ -89,9 +89,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getMyUser() {
     this._scUser
       .getUserData()
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null))
+      )
       .subscribe((x) => {
-        this.myUser = x;
+        this.myUser = x || {};
         this.getBook();
       });
   }
@@ -110,7 +113,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
           (book) => {
             this._scBook
               .getFreightOptions()
-              .pipe(takeUntil(this._destroySubscribes$))
+              .pipe(
+                takeUntil(this._destroySubscribes$),
+                catchError(() => of([]))
+              )
               .subscribe((data) => {
                 this.freightOptions = data;
 
@@ -165,9 +171,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 if (this.userProfile && book.id) {
                   this._scBook
                     .getRequested(book.id)
-                    .pipe(takeUntil(this._destroySubscribes$))
+                    .pipe(
+                      takeUntil(this._destroySubscribes$),
+                      catchError(() => of(null))
+                    )
                     .subscribe((requested) => {
-                      this.requested = requested.value.bookRequested;
+                      this.requested = requested?.value?.bookRequested;
                       this.state = 'ready';
                     });
                 } else {

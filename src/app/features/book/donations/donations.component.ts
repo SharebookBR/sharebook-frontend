@@ -1,8 +1,8 @@
 ﻿import { MyDonation } from 'src/app/features/book/MyDonation';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, takeUntil, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
 import { BookService } from 'src/app/features/book/services/book.service';
@@ -111,8 +111,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
       .getDonatedBooksPaged(this.currentPage, this.pageSize, this.searchTerm, this.selectedFilter)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false)))
+        finalize(() => this.isLoadingSubject.next(false)),
+        catchError(() => {
+          this._toastr.error('Não foi possível carregar suas doações agora.');
+          return of(null as UserDonationsList);
+        })
+      )
       .subscribe((resp: UserDonationsList) => {
+        if (!resp) {
+          return;
+        }
         this.donatedBooks = resp.items || [];
         this.summary = resp.summary || this.createEmptySummary();
         this.totalItems = resp.totalItems || 0;
@@ -224,9 +232,16 @@ export class DonationsComponent implements OnInit, OnDestroy {
           if (result) {
             this._bookService
               .cancelDonation(param.id)
-              .pipe(takeUntil(this._destroySubscribes$))
+              .pipe(
+                takeUntil(this._destroySubscribes$),
+                catchError((error) => {
+                  const msg = error?.error?.messages?.join(' ') || error?.message || 'Erro ao cancelar a doação. Tente novamente.';
+                  this._toastr.error(msg);
+                  return of(null);
+                })
+              )
               .subscribe((resp) => {
-                if (resp['success']) {
+                if (resp?.['success']) {
                   this._toastr.success('Doação cancelada com sucesso.');
                   this.getDonations();
                 }

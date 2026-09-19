@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, takeUntil, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
@@ -59,9 +59,16 @@ export class ListComponent implements OnInit, OnDestroy {
       .getAdminBooks(this.currentPage, this.pageSize, this.searchTerm, this.statusFilter, this.selectedFilter)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false))
+        finalize(() => this.isLoadingSubject.next(false)),
+        catchError(() => {
+          this._toastr.error('Não foi possível carregar os livros agora.');
+          return of(null as AdminBookList);
+        })
       )
       .subscribe((resp: AdminBookList) => {
+        if (!resp) {
+          return;
+        }
         this.pagedBooks = resp.items || [];
         this.summary = resp.summary || this.createEmptySummary();
         this.totalItems = resp.totalItems || 0;
@@ -115,9 +122,16 @@ export class ListComponent implements OnInit, OnDestroy {
           if (result) {
             this._scBook
               .cancelDonation(param.id)
-              .pipe(takeUntil(this._destroySubscribes$))
+              .pipe(
+                takeUntil(this._destroySubscribes$),
+                catchError((error) => {
+                  const msg = error?.error?.messages?.join(' ') || error?.message || 'Erro ao cancelar a doação. Tente novamente.';
+                  this._toastr.error(msg);
+                  return of(null);
+                })
+              )
               .subscribe((resp) => {
-                if (resp['success']) {
+                if (resp?.['success']) {
                   this._toastr.success('Doação cancelada com sucesso.');
                   this.reloadData();
                 }

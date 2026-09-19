@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
@@ -56,30 +56,35 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
       ? this.categoryService.getByHierarchySlugs(parentSlug, slug)
       : this.categoryService.getBySlug(slug);
 
-    request.pipe(takeUntil(this._destroySubscribes$)).subscribe(category => {
-      if (!category) {
-        this.notFound = true;
-        this.category = null;
-        this.parentCategory = null;
-        this.subcategories = [];
-        this.isLoading = false;
-        return;
-      }
+    request
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null as Category))
+      )
+      .subscribe(category => {
+        if (!category) {
+          this.notFound = true;
+          this.category = null;
+          this.parentCategory = null;
+          this.subcategories = [];
+          this.isLoading = false;
+          return;
+        }
 
-      this.category = category;
-      this.parentCategory = category.parentCategoryName
-        ? new Category({
-            id: category.parentCategoryId,
-            name: category.parentCategoryName,
-            slug: category.parentCategorySlug
-          })
-        : null;
-      this.subcategories = [...(category.children || [])].sort((left, right) =>
-        left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
-      );
-      this.updateSeoTags();
-      this.loadBooks();
-    });
+        this.category = category;
+        this.parentCategory = category.parentCategoryName
+          ? new Category({
+              id: category.parentCategoryId,
+              name: category.parentCategoryName,
+              slug: category.parentCategorySlug
+            })
+          : null;
+        this.subcategories = [...(category.children || [])].sort((left, right) =>
+          left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })
+        );
+        this.updateSeoTags();
+        this.loadBooks();
+      });
   }
 
   public loadMore() {

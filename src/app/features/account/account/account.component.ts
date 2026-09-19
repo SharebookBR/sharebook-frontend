@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -55,9 +55,16 @@ export class AccountComponent implements OnInit, OnDestroy {
     this._seo.generateTags({ title: 'Minha Conta' });
     this._scUser.getUserData()
     .pipe(
-      takeUntil(this._destroySubscribes$)
+      takeUntil(this._destroySubscribes$),
+      catchError(() => {
+        this._toastr.error('Não foi possível carregar seus dados agora.');
+        return of(null);
+      })
     )
     .subscribe(userInfo => {
+      if (!userInfo) {
+        return;
+      }
       const foo = {
         name: userInfo.name,
         email: userInfo.email,
@@ -110,9 +117,17 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     this._AddressService.getAddressByPostalCode(postalCode)
     .pipe(
-      takeUntil(this._destroySubscribes$)
+      takeUntil(this._destroySubscribes$),
+      catchError(() => {
+        this._toastr.error('Não foi possível buscar o endereço para esse CEP.');
+        this.isGettingAddress = false;
+        return of(null as Address);
+      })
     )
     .subscribe((address: Address) => {
+      if (!address) {
+        return;
+      }
       this.address = address;
       this.address.country = 'Brasil';
       this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));

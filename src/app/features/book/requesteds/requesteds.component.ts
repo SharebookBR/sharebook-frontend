@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of } from 'rxjs';
+import { takeUntil, finalize, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { ConfirmationDialogComponent } from 'src/app/core/directives/confirmation-dialog/confirmation-dialog.component';
@@ -50,9 +50,16 @@ export class RequestedsComponent implements OnInit, OnDestroy {
       .getRequestedBooks(1, 9999)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        finalize(() => this.isLoadingSubject.next(false))
+        finalize(() => this.isLoadingSubject.next(false)),
+        catchError(() => {
+          this._toastr.error('Não foi possível carregar seus pedidos agora.');
+          return of(null as MyRequest);
+        })
       )
       .subscribe((resp: MyRequest) => {
+        if (!resp) {
+          return;
+        }
         this.allRequestedBooks = resp.items || [];
         this.applyFilters();
       });
@@ -171,6 +178,10 @@ export class RequestedsComponent implements OnInit, OnDestroy {
           finalize(() => {
             this.isLoadingSubject.next(false);
             this.buscarDados();
+          }),
+          catchError(() => {
+            this._toastr.error('Não foi possível cancelar a solicitação agora.');
+            return of(null);
           })
         )
         .subscribe();

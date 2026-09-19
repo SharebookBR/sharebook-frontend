@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
+import { FullSearch } from 'src/app/core/models/FullSearch';
 import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
 
 @Component({
@@ -37,7 +38,10 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this._scBook
       .getFullSearch(this.criteria, 1, 100)
-      .pipe(takeUntil(this._destroySubscribes$))
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null as FullSearch))
+      )
       .subscribe((result) => {
         this.books = result?.items || [];
         this.isLoading = false;
