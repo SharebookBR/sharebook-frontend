@@ -6,13 +6,13 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
-import { UserService } from '../../core/services/user/user.service';
-import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
-import { PasswordValidation } from '../../core/utils/passwordValidation';
-import { AddressService } from '../../core/services/address/address.service';
-import * as AppConst from '../../core/utils/app.const';
-import { Address } from '../../core/models/address';
+import { PasswordValidation } from 'src/app/core/utils/passwordValidation';
+import { AddressService } from 'src/app/core/services/address/address.service';
+import * as AppConst from 'src/app/core/utils/app.const';
+import { Address } from 'src/app/core/models/address';
 
 @Component({
     selector: 'app-form',

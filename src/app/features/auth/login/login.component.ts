@@ -5,9 +5,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from '../../core/services/authentication/authentication.service';
-import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
-import * as AppConst from '../../core/utils/app.const';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
+import * as AppConst from 'src/app/core/utils/app.const';
 
 @Component({
     selector: 'app-form',

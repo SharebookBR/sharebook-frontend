@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
-import { UserService } from '../../core/services/user/user.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 
 @Component({
     selector: 'app-parent-aproval',

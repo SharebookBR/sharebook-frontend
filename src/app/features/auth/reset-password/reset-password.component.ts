@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 
-import { UserService } from '../../core/services/user/user.service';
-import * as AppConst from '../../core/utils/app.const';
+import { UserService } from 'src/app/core/services/user/user.service';
+import * as AppConst from 'src/app/core/utils/app.const';
 
 @Component({
     selector: 'app-reset-password',
