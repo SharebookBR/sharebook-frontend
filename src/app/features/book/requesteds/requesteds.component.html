@@ -69,45 +69,41 @@
             </div>
             <div class="request-card__actions">
               @if (canTalkToDonor(element)) {
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="action-btn action-btn--primary"
-                  (click)="onCustomActionColum('verDoador', element)"
+                <app-action-button
+                  variant="primary"
+                  icon="chat_bubble_outline"
+                  (action)="onCustomActionColum('verDoador', element)"
                   >
-                  <mat-icon class="action-btn__icon">chat_bubble_outline</mat-icon>
                   Falar com doador
-                </button>
+                </app-action-button>
               }
               @if (getTrackingNumber(element)) {
-                <button
-                  mat-stroked-button
-                  class="action-btn"
-                  (click)="copyTrackingCode(element)"
+                <app-action-button
+                  variant="ghost"
+                  appearance="stroked"
+                  icon="content_copy"
+                  (action)="copyTrackingCode(element)"
                   >
-                  <mat-icon class="action-btn__icon">content_copy</mat-icon>
                   Copiar código
-                </button>
+                </app-action-button>
               }
               @if (canMarkAsReceived(element)) {
-                <button
-                  mat-flat-button
-                  class="action-btn action-btn--success"
-                  (click)="confirmBookReceived(element)"
+                <app-action-button
+                  variant="success"
+                  icon="check_circle_outline"
+                  (action)="confirmBookReceived(element)"
                   >
-                  <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
                   Já recebi o livro
-                </button>
+                </app-action-button>
               }
               @if (canCancelRequest(element)) {
-                <button
-                  mat-flat-button
-                  class="action-btn action-btn--danger"
-                  (click)="onCustomActionColum('cancelarPedido', element)"
+                <app-action-button
+                  variant="danger"
+                  icon="delete_outline"
+                  (action)="onCustomActionColum('cancelarPedido', element)"
                   >
-                  <mat-icon class="action-btn__icon">delete_outline</mat-icon>
                   Cancelar pedido
-                </button>
+                </app-action-button>
               }
             </div>
           </div>

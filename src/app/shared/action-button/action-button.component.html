@@ -1,0 +1,37 @@
+@if (routerLink) {
+  <a
+    mat-flat-button
+    [color]="materialColor"
+    [ngClass]="hostClasses"
+    [routerLink]="routerLink"
+    (click)="onClick($event)"
+    >
+    @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
+    <ng-content></ng-content>
+  </a>
+} @else if (href) {
+  <a
+    mat-flat-button
+    [color]="materialColor"
+    [ngClass]="hostClasses"
+    [href]="href"
+    [target]="target"
+    [rel]="rel"
+    (click)="onClick($event)"
+    >
+    @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
+    <ng-content></ng-content>
+  </a>
+} @else {
+  <button
+    mat-flat-button
+    type="button"
+    [color]="materialColor"
+    [ngClass]="hostClasses"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+    >
+    @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
+    <ng-content></ng-content>
+  </button>
+}

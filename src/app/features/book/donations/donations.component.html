@@ -82,42 +82,33 @@
             </div>
             <div class="donation-card__actions">
               @if (canPrimaryAction(element)) {
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="action-btn action-btn--primary"
-                  [ngClass]="{ 'action-btn--winner': canChooseWinnerNow(element) }"
-                  (click)="executePrimaryAction(element)"
+                <app-action-button
+                  [variant]="canChooseWinnerNow(element) ? 'success' : 'primary'"
+                  [icon]="canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline'"
+                  (action)="executePrimaryAction(element)"
                   >
-                  <mat-icon class="action-btn__icon">
-                    {{ canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline' }}
-                  </mat-icon>
                   {{ getPrimaryActionLabel(element) }}
-                </button>
+                </app-action-button>
               }
               @if (canRenew(element)) {
-                <button mat-stroked-button class="action-btn" (click)="onCustom('renewChooseDate', element)">
-                  <mat-icon class="action-btn__icon">calendar_month</mat-icon>
+                <app-action-button variant="ghost" appearance="stroked" icon="calendar_month" (action)="onCustom('renewChooseDate', element)">
                   Adiar decisão
-                </button>
+                </app-action-button>
               }
               @if (canTrack(element)) {
-                <button mat-flat-button class="action-btn action-btn--success" (click)="onCustom('markAsFinished', element)">
-                  <mat-icon class="action-btn__icon">check_circle_outline</mat-icon>
+                <app-action-button variant="success" icon="check_circle_outline" (action)="onCustom('markAsFinished', element)">
                   Marcar finalizado
-                </button>
+                </app-action-button>
               }
               @if (canShowWinner(element)) {
-                <button mat-stroked-button class="action-btn" (click)="onCustom('ShowWinnerInfo', element)">
-                  <mat-icon class="action-btn__icon">person</mat-icon>
+                <app-action-button variant="ghost" appearance="stroked" icon="person" (action)="onCustom('ShowWinnerInfo', element)">
                   Ver ganhador
-                </button>
+                </app-action-button>
               }
               @if (canCancel(element)) {
-                <button mat-flat-button class="action-btn action-btn--danger" (click)="onCustom('CancelDonation', element)">
-                  <mat-icon class="action-btn__icon">delete_outline</mat-icon>
+                <app-action-button variant="danger" icon="delete_outline" (action)="onCustom('CancelDonation', element)">
                   Cancelar
-                </button>
+                </app-action-button>
               }
             </div>
           </div>

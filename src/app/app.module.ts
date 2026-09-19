@@ -54,6 +54,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
 import { BookCardModule } from './shared/book-card/book-card.module';
 import { BookShelfModule } from './shared/book-shelf/book-shelf.module';
+import { ActionButtonModule } from './shared/action-button/action-button.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
@@ -195,7 +196,8 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         MatListModule,
         MatDividerModule,
         BookCardModule,
-        BookShelfModule], providers: [
+        BookShelfModule,
+        ActionButtonModule], providers: [
         AuthGuardUser,
         BookService,
         CategoryService,

@@ -274,46 +274,6 @@ th.mat-mdc-header-cell {
   gap: 8px;
 }
 
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  min-height: 40px;
-  white-space: nowrap;
-  border-radius: 8px !important;
-  font-weight: 700;
-}
-
-.action-btn--primary {
-  box-shadow: 0 6px 14px rgba(37, 64, 173, 0.28);
-}
-
-.action-btn--winner {
-  background: #28a745 !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
-}
-
-.action-btn__icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.action-btn--success {
-  background: #28a745 !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 14px rgba(40, 167, 69, 0.25);
-}
-
-.action-btn--danger {
-  background: #dc3545 !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 14px rgba(220, 53, 69, 0.25);
-}
-
 .pagination-bar {
   display: flex;
   align-items: center;

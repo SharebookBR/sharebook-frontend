@@ -1,0 +1,59 @@
+:host {
+  display: inline-flex;
+}
+
+.app-action-button {
+  width: 100%;
+  min-height: 42px;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.app-action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  filter: brightness(0.95);
+}
+
+.app-action-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+  filter: brightness(0.88);
+}
+
+.app-action-button--success {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+}
+
+.app-action-button--danger {
+  background-color: #c62828 !important;
+  color: #ffffff !important;
+}
+
+.app-action-button--ghost {
+  background-color: transparent !important;
+  color: #6b7a90 !important;
+  border: 1px solid #d7dee8;
+  box-shadow: none !important;
+}
+
+.app-action-button--outlined {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: 1px solid currentColor;
+}
+
+.app-action-button--outlined.app-action-button--success {
+  color: #2e7d32 !important;
+  border-color: #2e7d32;
+}
+
+.app-action-button--outlined.app-action-button--danger {
+  color: #c62828 !important;
+  border-color: #c62828;
+}
+
+.app-action-button mat-icon {
+  margin-right: 4px;
+}
