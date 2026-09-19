@@ -1,6 +1,7 @@
 # PRIMEIROS PASSOS DEVELOPER FRONTEND
 
 <!-- teste de commit/push automático: 2026-04-10 -->
+<!-- teste de auto-deploy Coolify (dev) apos troca da source GitHub App: 2026-09-19 -->
 
 ## 1 - CONHEÇA O PROJETO SHAREBOOK
 
