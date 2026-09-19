@@ -1,0 +1,364 @@
+import { BookToAdminProfile } from 'src/app/features/book/BookToAdminProfile';
+import { UserInfoBook } from 'src/app/features/book/UserInfoBook';
+import { Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+
+import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
+import { Book } from 'src/app/features/book/book';
+import { BookVM } from 'src/app/features/book/bookVM';
+import { AdminBookList } from 'src/app/features/book/adminBookList';
+import { DonateBookUser } from 'src/app/features/book/donateBookUser';
+import { map, filter } from 'rxjs/operators';
+
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.module';
+import { TrackingNumberBookVM } from 'src/app/features/book/trackingNumberBookVM';
+import { FacilitatorNotes } from 'src/app/features/book/facilitatorNotes';
+import { Observable, Subject, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Requesters } from 'src/app/features/book/requesters';
+import { MyRequest } from 'src/app/features/book/MyRequest';
+import { MyDonation } from 'src/app/features/book/MyDonation';
+import { UserDonationsList } from 'src/app/features/book/userDonationsList';
+import { FullSearch } from 'src/app/core/models/FullSearch';
+import { IRequestResult } from 'src/app/core/interfaces/IRequestResult';
+import { CategoryShowcase, ShowcaseBookItem } from 'src/app/core/models/home-showcase';
+import { SsrCacheService } from 'src/app/core/services/ssr-cache/ssr-cache.service';
+
+const CACHE_KEY_SHOWCASE = 'home:categories-showcase';
+
+interface DownloadEBookUrlResult {
+  url: string;
+  tracked: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BookService {
+  // TODO TypicodeInterceptor
+  constructor(
+    private _http: HttpClient,
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private _cache: SsrCacheService,
+    private _transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) { }
+
+  public getAll(): Observable<BookVM> {
+    return this._http.get<BookVM>(`${this.config.apiEndpoint}/book/1/9999`);
+  }
+
+  public getAdminBooks(
+    page: number,
+    pageSize: number,
+    search?: string,
+    status?: string,
+    bucket?: string,
+    type?: string
+  ): Observable<AdminBookList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    if (type) {
+      params = params.set('type', type);
+    }
+
+    return this._http.get<AdminBookList>(`${this.config.apiEndpoint}/book/Admin`, { params });
+  }
+
+  public getFeaturedPrintedBooks(): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/featured-printed-books`
+    );
+  }
+
+  public getNewestEbooks() {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/Newest15EBooks`
+    );
+  }
+
+  public getRecentEbooks(page: number = 1, items: number = 100, days: number = 7): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/RecentEBooks/${page}/${items}?days=${days}`
+    );
+  }
+
+  public getAvailableEbooksCount() {
+    return this._http.get<{ total: number }>(
+      `${this.config.apiEndpoint}/book/AvailableEBooksCount`
+    );
+  }
+
+  public getRecentEbooksCount(days: number = 7) {
+    return this._http.get<{ total: number }>(
+      `${this.config.apiEndpoint}/book/RecentEBooksCount?days=${days}`
+    );
+  }
+
+  public getCategoriesShowcase(): Observable<CategoryShowcase[]> {
+    const url = `${this.config.apiEndpoint}/home/categories-showcase`;
+    const cached = this._cache.get<CategoryShowcase[]>(CACHE_KEY_SHOWCASE);
+    if (cached) {
+      // Cache hit bypassa o HttpClient — o TransferStateInterceptor nunca roda.
+      // Sem este set, o browser não acha a chave no estado transferido e
+      // re-fetcha a API, sobrescrevendo a tela com categorias re-sorteadas.
+      if (isPlatformServer(this.platformId)) {
+        this._transferState.set(makeStateKey<CategoryShowcase[]>(url), cached);
+      }
+      return of(cached);
+    }
+    return this._http.get<CategoryShowcase[]>(url).pipe(
+      tap(data => this._cache.set(CACHE_KEY_SHOWCASE, data))
+    );
+  }
+
+  public getTopDownloadedEbooks(days: number = 30): Observable<ShowcaseBookItem[]> {
+    return this._http.get<ShowcaseBookItem[]>(
+      `${this.config.apiEndpoint}/home/top-downloaded-ebooks?days=${days}`
+    );
+  }
+
+  public createDownloadEbookUrl(slug: string): Observable<DownloadEBookUrlResult> {
+    return this._http.post<DownloadEBookUrlResult>(
+      `${this.config.apiEndpoint}/book/DownloadEBookUrl/${slug}`,
+      null
+    );
+  }
+
+  public getRandom15Books() {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/Random15Books`
+    );
+  }
+
+  public create(book: Book) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book`, book);
+  }
+
+  public createWithProgress(book: Book, progressCallback: (progress: number) => void): Observable<any> {
+    const req = new HttpRequest('POST', `${this.config.apiEndpoint}/book`, book, {
+      reportProgress: true
+    });
+
+    return this._http.request(req).pipe(
+      map(event => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            const progress = event.total ? Math.round(100 * event.loaded / event.total) : 0;
+            progressCallback(progress);
+            return null;
+          case HttpEventType.Response:
+            progressCallback(100);
+            return event.body;
+          default:
+            return null;
+        }
+      }),
+      filter(result => result !== null)
+    );
+  }
+
+  public getById(bookId: string): Observable<BookToAdminProfile> {
+    return this._http.get<BookToAdminProfile>(`${this.config.apiEndpoint}/book/${bookId}`);
+  }
+
+  public getBySlug(bookSlug: string) {
+    return this._http.get<Book>(
+      `${this.config.apiEndpoint}/book/Slug/${bookSlug}`
+    );
+  }
+
+  public getRecommendations(bookId: string, limit: number = 6): Observable<Book[]> {
+    return this._http.get<Book[]>(
+      `${this.config.apiEndpoint}/book/Recommendations/${bookId}?limit=${limit}`
+    );
+  }
+
+  public update(book: Book) {
+    return this._http.put<any>(
+      `${this.config.apiEndpoint}/book/${book.id}`,
+      book
+    );
+  }
+
+  public delete(bookId: string) {
+    return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
+  }
+
+  public cancelDonation(bookId: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/cancel/${bookId}`,
+      null
+    );
+  }
+
+  public getFreightOptions() {
+    return this._http
+      .get<any>(`${this.config.apiEndpoint}/book/freightOptions`)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
+
+  public getGranteeUsersByBookId(bookId: string) {
+    return this._http.get(
+      `${this.config.apiEndpoint}/book/GranteeUsersByBookId/${bookId}`
+    );
+  }
+
+  public getRequestersList(bookId: string): Observable<Requesters[]> {
+    return this._http.get<Requesters[]>(
+      `${this.config.apiEndpoint}/book/RequestersList/${bookId}`
+    );
+  }
+
+  public donateBookUser(bookId: string, donateBookUser: DonateBookUser) {
+    return this._http.put<any>(
+      `${this.config.apiEndpoint}/book/Donate/${bookId}`,
+      donateBookUser
+    );
+  }
+
+  public renewChooseDate(bookId: string) {
+    return this._http.put<any>(
+      `${this.config.apiEndpoint}/book/RenewChooseDate/${bookId}`,
+      null
+    );
+  }
+
+  public requestBook(bookId: string, reason: string) {
+    const request = {
+      BookId: bookId,
+      Reason: reason,
+    };
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/Request/`,
+      request
+    );
+  }
+
+  public getRequested(bookId: string) {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/Requested/${bookId}`
+    );
+  }
+
+  public getRequestedBooks(page: number, items: number): Observable<MyRequest> {
+    return this._http.get<MyRequest>(
+      `${this.config.apiEndpoint}/book/MyRequests/${page}/${items}`
+    );
+  }
+
+  public getDonatedBooks(): Observable<MyDonation[]> {
+    return this._http.get<MyDonation[]>(`${this.config.apiEndpoint}/book/MyDonations`);
+  }
+
+  public getDonatedBooksPaged(
+    page: number,
+    pageSize: number,
+    search?: string,
+    bucket?: string
+  ): Observable<UserDonationsList> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (bucket && bucket !== 'all') {
+      params = params.set('bucket', bucket);
+    }
+
+    return this._http.get<UserDonationsList>(`${this.config.apiEndpoint}/book/MyDonationsPaged`, { params });
+  }
+
+  public setTrackingNumber(
+    bookId: string,
+    trackingNumberBookVM: TrackingNumberBookVM
+  ) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/InformTrackingNumber/${bookId}`,
+      trackingNumberBookVM
+    );
+  }
+
+  public setFacilitatorNotes(facilitatorNotes: FacilitatorNotes) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/AddFacilitatorNotes`,
+      facilitatorNotes
+    );
+  }
+
+  public getFullSearch(
+    criteria: string,
+    page: number,
+    items: number
+  ): Observable<FullSearch> {
+    return this._http.get<FullSearch>(
+      `${this.config.apiEndpoint}/book/FullSearch/${encodeURIComponent(
+        criteria
+      )}/${page}/${items}`
+    );
+  }
+
+  public getMainUsers(bookId: string): Observable<UserInfoBook> {
+    return this._http.get<UserInfoBook>(
+      `${this.config.apiEndpoint}/book/MainUsers/${bookId}`
+    );
+  }
+
+  public approve(bookId: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/Approve/${bookId}`,
+      {}
+    );
+  }
+
+  public cancelRequest(requestId: string) {
+    return this._http.post<IRequestResult<boolean>>(
+      `${this.config.apiEndpoint}/book/CancelRequest/${requestId}`,
+        {}
+    );
+  }
+
+  public getBooksByCategoryId(categoryId: string, page: number = 1, items: number = 100): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/Category/${categoryId}/${page}/${items}`
+    );
+  }
+
+  public getBooksByCategoryTreeId(categoryId: string, page: number = 1, items: number = 100): Observable<any> {
+    return this._http.get<any>(
+      `${this.config.apiEndpoint}/book/CategoryTree/${categoryId}/${page}/${items}`
+    );
+  }
+
+  public markAsDelivered(bookId: string) {
+    return this._http.post<any>(`${this.config.apiEndpoint}/book/MarkAsDelivered/${bookId}`, {});
+  }
+
+  public reportCopyright(slug: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/ReportCopyright/${slug}`,
+      {}
+    );
+  }
+}

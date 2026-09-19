@@ -6,9 +6,9 @@ import { AuthGuardUser } from './guards/auth.guard.user';
 import { AuthGuardAdmin } from './guards/auth.guard.admin';
 
 import { HomeComponent } from '../components/home/home.component';
-import { FormComponent as BookFormComponent } from '../components/book/form/form.component';
-import { ListComponent as BookListComponent } from '../components/book/list/list.component';
-import { DetailsComponent as BookDetailComponent } from '../components/book/details/details.component';
+import { FormComponent as BookFormComponent } from '../features/book/form/form.component';
+import { ListComponent as BookListComponent } from '../features/book/list/list.component';
+import { DetailsComponent as BookDetailComponent } from '../features/book/details/details.component';
 import { RegisterComponent } from '../features/auth/register/register.component';
 import { LoginComponent } from '../features/auth/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
@@ -19,10 +19,10 @@ import { ResetPasswordComponent } from '../features/auth/reset-password/reset-pa
 import { ForgotPasswordComponent } from '../features/auth/forgot-password/forgot-password.component';
 import { ParentAprovalComponent } from '../features/auth/parent-aproval/parent-aproval.component';
 import { ContactUsComponent } from '../features/contact/contact-us/contact-us.component';
-import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
-import { DonationsComponent } from '../components/book/donations/donations.component';
+import { RequestedsComponent } from '../features/book/requesteds/requesteds.component';
+import { DonationsComponent } from '../features/book/donations/donations.component';
 import { AboutComponent } from '../features/static-pages/about/about.component';
-import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
+import { DonatePageComponent } from '../features/book/donate-page/donate-page.component';
 import { PrivacyPolicyComponent } from '../features/static-pages/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from '../features/static-pages/terms-of-use/terms-of-use.component';
 import { DataAnonymizationInfoComponent } from '../features/static-pages/data-anonymization-info/data-anonymization-info.component';

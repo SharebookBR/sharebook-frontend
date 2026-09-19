@@ -1,4 +1,4 @@
-import { BookType } from '../../models/book';
+import { BookType } from 'src/app/features/book/book';
 
 export interface BookMetaDescriptionInput {
   title?: string;

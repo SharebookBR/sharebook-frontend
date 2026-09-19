@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BookService } from 'src/app/core/services/book/book.service';
+import { BookService } from 'src/app/features/book/services/book.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
-import { Book } from 'src/app/core/models/book';
+import { Book } from 'src/app/features/book/book';
 import { Category } from 'src/app/features/category/category';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 

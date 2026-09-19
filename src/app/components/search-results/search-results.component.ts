@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
-import { BookService } from '../../core/services/book/book.service';
+import { BookService } from 'src/app/features/book/services/book.service';
 import { GoogleAnalyticsService } from '../../core/services/analytics/google-analytics.service';
 import { FullSearchItem } from 'src/app/core/models/FullSearchItem';
 

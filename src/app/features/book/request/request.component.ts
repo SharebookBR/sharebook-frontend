@@ -1,0 +1,135 @@
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { UserService } from 'src/app/core/services/user/user.service';
+import { BookService } from 'src/app/features/book/services/book.service';
+import { DonateBookUser } from 'src/app/features/book/donateBookUser';
+import { ToastrService } from 'ngx-toastr';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
+
+@Component({
+    selector: 'app-request',
+    templateUrl: './request.component.html',
+    styleUrls: ['./request.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
+})
+export class RequestComponent implements OnInit, OnDestroy {
+  @Input() bookId;
+  @Input() bookTitle;
+  @Input() bookSlug;
+  donateUsers;
+  settings: any;
+  isLoading: Boolean = true;
+  showNote: Boolean = false;
+  selectedDonatedUser: any;
+  myNote: String;
+  formGroup: UntypedFormGroup;
+  donateBookUser: DonateBookUser;
+  addressLine01: String;
+  addressLine02: String;
+  addressLine03: String;
+  modalTitle: String;
+
+  state = 'loading'; // loading, form, error
+  lastError: string;
+
+  private _destroySubscribes$ = new Subject<void>();
+
+  constructor(
+    public dialogRef: MatDialogRef<RequestComponent>,
+    private _scBook: BookService,
+    private _scUser: UserService,
+    private _router: Router,
+    private _toastr: ToastrService,
+    private _formBuilder: UntypedFormBuilder,
+    private _ga: GoogleAnalyticsService
+  ) {
+    this.formGroup = _formBuilder.group({
+      myNote: ['', [Validators.required]]
+    });
+  }
+
+  ngOnInit() {
+    this.state = 'form';
+    this.modalTitle = 'Quanto você quer esse livro?';
+
+    this._ga.sendEvent('book_request_modal_open', {
+      book_id: this.bookId,
+      book_title: this.bookTitle,
+      book_slug: this.bookSlug
+    });
+
+    this._scUser.getUserData()
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(userInfo => {
+        this.addressLine01 =
+          userInfo.address.street +
+          ',' +
+          userInfo.address.number +
+          ' ' +
+          (!userInfo.address.complement ? '' : userInfo.address.complement);
+        this.addressLine02 =
+          userInfo.address.neighborhood + ' - ' + userInfo.address.city + ' - ' + userInfo.address.state;
+        this.addressLine03 = 'CEP: ' + userInfo.address.postalCode + ' - ' + userInfo.address.country;
+      });
+  }
+
+  onRequest() {
+    this.state = 'loading';
+    const reason = this.formGroup.value.myNote;
+    this._scBook.requestBook(this.bookId, reason)
+      .pipe(
+        takeUntil(this._destroySubscribes$)
+      )
+      .subscribe(
+        resp => {
+          if (resp.success) {
+            this._ga.sendEvent('book_request_success', {
+              book_id: this.bookId,
+              book_title: this.bookTitle,
+              book_slug: this.bookSlug
+            });
+            this.state = 'request-success';
+            this.modalTitle = 'Pedido enviado. Leia tudo com atenção.';
+          } else {
+            this._ga.sendEvent('book_request_error', {
+              book_id: this.bookId,
+              book_title: this.bookTitle,
+              book_slug: this.bookSlug,
+              error: resp.messages[0]
+            });
+            this.lastError = resp.messages[0];
+            this.state = 'request-error';
+            this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
+          }
+        },
+        error => {
+          this._ga.sendEvent('book_request_error', {
+            book_id: this.bookId,
+            book_title: this.bookTitle,
+            book_slug: this.bookSlug,
+            error: error
+          });
+          this.lastError = error;
+          this.state = 'request-error';
+          this.modalTitle = 'Desculpa o incoveniente. Tivemos algum erro.';
+        }
+      );
+  }
+
+  updateAddress() {
+    this._router.navigate(['/account']);
+  }
+
+  ngOnDestroy() {
+    this._destroySubscribes$.next();
+    this._destroySubscribes$.complete();
+  }
+}

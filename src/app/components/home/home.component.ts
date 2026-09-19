@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
-import { BookService } from '../../core/services/book/book.service';
-import { Book } from '../../core/models/book';
+import { BookService } from 'src/app/features/book/services/book.service';
+import { Book } from 'src/app/features/book/book';
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';

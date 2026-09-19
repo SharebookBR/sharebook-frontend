@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Book } from '../../core/models/book';
-import { BookService } from '../../core/services/book/book.service';
+import { Book } from 'src/app/features/book/book';
+import { BookService } from 'src/app/features/book/services/book.service';
 import { SeoService } from '../../core/services/seo/seo.service';
 
 @Component({

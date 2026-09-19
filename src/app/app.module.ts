@@ -35,8 +35,8 @@ import { ContributeProjectComponent } from './features/static-pages/contribute-p
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CookieConsentComponent } from './components/cookieconsent/cookieconsent.component';
-import { FormComponent as BookFormComponent } from './components/book/form/form.component';
-import { DetailsComponent as BookDetailComponent } from './components/book/details/details.component';
+import { FormComponent as BookFormComponent } from './features/book/form/form.component';
+import { DetailsComponent as BookDetailComponent } from './features/book/details/details.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { PanelComponent } from './components/panel/panel.component';
@@ -45,21 +45,21 @@ import { ChangePasswordComponent } from './features/account/change-password/chan
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
 import { ParentAprovalComponent } from './features/auth/parent-aproval/parent-aproval.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
-import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
-import { DonationsComponent } from './components/book/donations/donations.component';
+import { RequestedsComponent } from './features/book/requesteds/requesteds.component';
+import { DonationsComponent } from './features/book/donations/donations.component';
 import { ContactUsComponent } from './features/contact/contact-us/contact-us.component';
 import { PrivacyPolicyComponent } from './features/static-pages/privacy-policy/privacy-policy.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
-import { BookCardModule } from './components/book-card/book-card.module';
-import { BookShelfModule } from './components/book-shelf/book-shelf.module';
+import { BookCardModule } from './shared/book-card/book-card.module';
+import { BookShelfModule } from './shared/book-shelf/book-shelf.module';
 
 import { AuthGuardUser } from './core/guards/auth.guard.user';
 import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
 import { JwtInterceptor, ErrorInterceptor, TransferStateInterceptor } from './core/helpers';
-import { BookService } from './core/services/book/book.service';
+import { BookService } from './features/book/services/book.service';
 import { CategoryService } from './features/category/services/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
 import { UserService } from './core/services/user/user.service';
@@ -69,16 +69,16 @@ import { ContactUsService } from './features/contact/services/contact-us.service
 import { MeetupService } from './core/services/meetup/meetup.service';
 
 import { AppConfigModule } from './app-config.module';
-import { ListComponent } from './components/book/list/list.component';
-import { DonateComponent } from './components/book/donate/donate.component';
+import { ListComponent } from './features/book/list/list.component';
+import { DonateComponent } from './features/book/donate/donate.component';
 import { RecaptchaComponent } from './core/recaptcha/recaptcha.component';
 import { RECAPTCHA_SETTINGS, RecaptchaSettings } from './core/recaptcha/recaptcha-settings';
 import { NgxMaskModule } from 'ngx-mask';
-import { RequestComponent } from './components/book/request/request.component';
-import { TrackingComponent } from './components/book/tracking/tracking.component';
-import { FacilitatorNotesComponent } from './components/book/facilitator-notes/facilitator-notes.component';
-import { MainUsersComponent } from './components/book/main-users/main-users.component';
-import { WinnerUsersComponent } from './components/book/winner-users/winner-users.component';
+import { RequestComponent } from './features/book/request/request.component';
+import { TrackingComponent } from './features/book/tracking/tracking.component';
+import { FacilitatorNotesComponent } from './features/book/facilitator-notes/facilitator-notes.component';
+import { MainUsersComponent } from './features/book/main-users/main-users.component';
+import { WinnerUsersComponent } from './features/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -88,12 +88,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
-import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
+import { DonatePageComponent } from './features/book/donate-page/donate-page.component';
 import { TermsOfUseComponent } from './features/static-pages/terms-of-use/terms-of-use.component';
 import { DataAnonymizationInfoComponent } from './features/static-pages/data-anonymization-info/data-anonymization-info.component';
-import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
-import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
-import { CropImageDialogComponent } from './components/book/crop-image-dialog/crop-image-dialog.component';
+import { DonorModalComponent } from './features/book/donor-modal/donor-modal.component';
+import { FreightIncentiveDialogComponent } from './features/book/freight-incentive-dialog/freight-incentive-dialog.component';
+import { CropImageDialogComponent } from './features/book/crop-image-dialog/crop-image-dialog.component';
 import { MyaccountComponent } from './features/account/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './features/account/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './features/account/dialog-anonymize/dialog-anonymize.component';
