@@ -3,12 +3,12 @@ import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Injec
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import type EasyMDE from 'easymde';
-import { PlatformService } from '../../core/services/platform/platform.service';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
-import { ImporterQueueItemHistoryEntry, ImporterQueueListItem, ImporterSourceStatus } from '../../core/models/importer-dashboard';
-import { OperationsService } from '../../core/services/operations/operations.service';
+import { ImporterQueueItemHistoryEntry, ImporterQueueListItem, ImporterSourceStatus } from 'src/app/features/admin/importer-dashboard';
+import { OperationsService } from 'src/app/features/admin/services/operations.service';
 
 @Component({
     selector: 'app-importer-dashboard',

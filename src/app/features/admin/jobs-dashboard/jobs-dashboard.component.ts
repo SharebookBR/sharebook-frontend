@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { JobMonitorDashboard, JobMonitorItem } from '../../core/models/job-monitor';
-import { OperationsService } from '../../core/services/operations/operations.service';
+import { JobMonitorDashboard, JobMonitorItem } from 'src/app/features/admin/job-monitor';
+import { OperationsService } from 'src/app/features/admin/services/operations.service';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({

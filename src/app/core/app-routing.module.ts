@@ -31,10 +31,10 @@ import { CategoryBooksComponent } from '../features/category/category-books/cate
 import { CategoriesListComponent } from '../features/category/categories-list/categories-list.component';
 import { SettingsComponent } from '../features/account/settings/settings.component';
 import { UnsubscribeComponent } from '../features/auth/unsubscribe/unsubscribe.component';
-import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';
-import { ImporterDashboardComponent } from '../components/importer-dashboard/importer-dashboard.component';
-import { AnalyticsDashboardComponent } from '../components/analytics-dashboard/analytics-dashboard.component';
-import { DownloadLogsDashboardComponent } from '../components/download-logs-dashboard/download-logs-dashboard.component';
+import { JobsDashboardComponent } from '../features/admin/jobs-dashboard/jobs-dashboard.component';
+import { ImporterDashboardComponent } from '../features/admin/importer-dashboard/importer-dashboard.component';
+import { AnalyticsDashboardComponent } from '../features/admin/analytics-dashboard/analytics-dashboard.component';
+import { DownloadLogsDashboardComponent } from '../features/admin/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
 import { NotFoundComponent } from '../features/static-pages/not-found/not-found.component';
 

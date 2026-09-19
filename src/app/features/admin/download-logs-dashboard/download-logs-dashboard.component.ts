@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Chart, registerables } from 'chart.js';
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 Chart.register(...registerables);
 

@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { APP_CONFIG, AppConfig } from '../../../app-config.module';
-import { ImporterDashboard, ImporterQueueItemHistoryEntry, ImporterQueueItemsPage } from '../../models/importer-dashboard';
-import { JobMonitorDashboard } from '../../models/job-monitor';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.module';
+import { ImporterDashboard, ImporterQueueItemHistoryEntry, ImporterQueueItemsPage } from 'src/app/features/admin/importer-dashboard';
+import { JobMonitorDashboard } from 'src/app/features/admin/job-monitor';
 
 @Injectable({ providedIn: 'root' })
 export class OperationsService {
