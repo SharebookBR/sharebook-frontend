@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Contributor } from 'src/app/core/models/contributor';
 import { ContributorsService } from 'src/app/core/services/contributors/contributors.service';
-import { SeoService } from '../../core/services/seo/seo.service';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-about',

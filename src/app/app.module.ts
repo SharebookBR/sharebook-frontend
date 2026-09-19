@@ -30,8 +30,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { fakeBackendProvider } from './core/helpers';
 
 import { HomeComponent } from './components/home/home.component';
-import { AboutComponent } from './components/about/about.component';
-import { ContributeProjectComponent } from './components/contribute-project/contribute-project.component';
+import { AboutComponent } from './features/static-pages/about/about.component';
+import { ContributeProjectComponent } from './features/static-pages/contribute-project/contribute-project.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CookieConsentComponent } from './components/cookieconsent/cookieconsent.component';
@@ -48,7 +48,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
-import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { PrivacyPolicyComponent } from './features/static-pages/privacy-policy/privacy-policy.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 import { CardMeetupComponent } from './components/card-meetup/card-meetup.component';
@@ -89,8 +89,8 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './core/router/custom-reuse-strategy';
 import { InputSearchModule } from './components/input-search/input-search.module';
 import { DonatePageComponent } from './components/book/donate-page/donate-page.component';
-import { TermsOfUseComponent } from './components/terms-of-use/terms-of-use.component';
-import { DataAnonymizationInfoComponent } from './components/data-anonymization-info/data-anonymization-info.component';
+import { TermsOfUseComponent } from './features/static-pages/terms-of-use/terms-of-use.component';
+import { DataAnonymizationInfoComponent } from './features/static-pages/data-anonymization-info/data-anonymization-info.component';
 import { DonorModalComponent } from './components/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './components/book/freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from './components/book/crop-image-dialog/crop-image-dialog.component';
@@ -109,8 +109,8 @@ import { ImporterDashboardComponent } from './components/importer-dashboard/impo
 import { AnalyticsDashboardComponent } from './components/analytics-dashboard/analytics-dashboard.component';
 import { DownloadLogsDashboardComponent } from './components/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from './components/ebook-recent/ebook-recent.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { NotFoundComponent } from './features/static-pages/not-found/not-found.component';
+import { NotFoundPageComponent } from './features/static-pages/not-found-page/not-found-page.component';
 
 @NgModule({ declarations: [
         AppComponent,

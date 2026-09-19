@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit, Optional, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import { RESPONSE } from '../../../express.tokens';
+import { RESPONSE } from 'src/express.tokens';
 import { Response } from 'express';
-import { SeoService } from '../../core/services/seo/seo.service';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-not-found-page',

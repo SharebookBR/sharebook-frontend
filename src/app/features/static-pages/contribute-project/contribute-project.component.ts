@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { CardItem } from '../../core/models/card';
-import { TechnologiesService } from '../../core/services/technologies/technologies.service';
-import { ToolsService } from '../../core/services/tools/tools.service';
-import { CareersService } from '../../core/services/careers/careers.service';
+import { CardItem } from 'src/app/core/models/card';
+import { TechnologiesService } from 'src/app/core/services/technologies/technologies.service';
+import { ToolsService } from 'src/app/core/services/tools/tools.service';
+import { CareersService } from 'src/app/core/services/careers/careers.service';
 import { ToastrService } from 'ngx-toastr';
-import { SeoService } from '../../core/services/seo/seo.service';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-contribute-project',

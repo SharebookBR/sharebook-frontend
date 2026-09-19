@@ -13,7 +13,7 @@ import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { PanelComponent } from '../components/panel/panel.component';
 import { AccountComponent } from '../components/account/account.component';
-import { ContributeProjectComponent } from '../components/contribute-project/contribute-project.component';
+import { ContributeProjectComponent } from '../features/static-pages/contribute-project/contribute-project.component';
 import { ChangePasswordComponent } from '../components/change-password/change-password.component';
 import { ResetPasswordComponent } from '../components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from '../components/forgot-password/forgot-password.component';
@@ -21,11 +21,11 @@ import { ParentAprovalComponent } from '../components/parent-aproval/parent-apro
 import { ContactUsComponent } from '../components/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
-import { AboutComponent } from '../components/about/about.component';
+import { AboutComponent } from '../features/static-pages/about/about.component';
 import { DonatePageComponent } from '../components/book/donate-page/donate-page.component';
-import { PrivacyPolicyComponent } from '../components/privacy-policy/privacy-policy.component';
-import { TermsOfUseComponent } from '../components/terms-of-use/terms-of-use.component';
-import { DataAnonymizationInfoComponent } from '../components/data-anonymization-info/data-anonymization-info.component';
+import { PrivacyPolicyComponent } from '../features/static-pages/privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from '../features/static-pages/terms-of-use/terms-of-use.component';
+import { DataAnonymizationInfoComponent } from '../features/static-pages/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
 import { CategoryBooksComponent } from '../components/category/category-books/category-books.component';
 import { CategoriesListComponent } from '../components/category/categories-list/categories-list.component';
@@ -36,7 +36,7 @@ import { ImporterDashboardComponent } from '../components/importer-dashboard/imp
 import { AnalyticsDashboardComponent } from '../components/analytics-dashboard/analytics-dashboard.component';
 import { DownloadLogsDashboardComponent } from '../components/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
-import { NotFoundComponent } from '../components/not-found/not-found.component';
+import { NotFoundComponent } from '../features/static-pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
