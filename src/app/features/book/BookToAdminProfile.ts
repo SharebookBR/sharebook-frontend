@@ -3,16 +3,16 @@ export class BookToAdminProfile {
   category: string;
   categoryId: string;
   downloadCount: number;
-  chooseDate?: Date;
+  chooseDate?: Date | null;
   city: string;
   creationDate: Date;
   daysInShowcase: number;
   daysLate: number;
   donor: string;
-  eBookDownloadLink?: string;
-  eBookPdfPath?: string;
-  facilitator?: string;
-  facilitatorNotes?: string;
+  eBookDownloadLink?: string | null;
+  eBookPdfPath?: string | null;
+  facilitator?: string | null;
+  facilitatorNotes?: string | null;
   freightOption: string;
   id: string;
   imageSlug: string;
@@ -24,9 +24,9 @@ export class BookToAdminProfile {
   synopsis: string;
   title: string;
   totalInterested: number;
-  trackingNumber?: string;
+  trackingNumber?: string | null;
   type: string;
   userId: string;
-  userIdFacilitator?: string;
+  userIdFacilitator?: string | null;
   winner: string;
 }

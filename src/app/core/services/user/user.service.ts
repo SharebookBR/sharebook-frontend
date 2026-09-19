@@ -74,7 +74,7 @@ export class UserService {
     // return this._http.delete(`${this.config.apiEndpoint}/users/` + id);
   }
 
-  setLoggedUser(user: User) {
+  setLoggedUser(user: User | null) {
     this._subject.next(user);
   }
 

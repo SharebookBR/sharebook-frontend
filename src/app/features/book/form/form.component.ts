@@ -3,7 +3,7 @@ import { Profile } from 'src/app/core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -30,6 +30,14 @@ import { BookType } from 'src/app/features/book/book';
     standalone: false
 })
 export class FormComponent implements OnInit, OnDestroy {
+  private getRequiredControl(name: string): AbstractControl {
+    const control = this.formGroup.get(name);
+    if (!control) {
+      throw new Error(`Form control "${name}" not found — createFormGroup() should have created it.`);
+    }
+    return control;
+  }
+
   formGroup: UntypedFormGroup;
   categorySearchControl = new UntypedFormControl('');
   freightOptions: FreightOptions[] = [];
@@ -137,7 +145,7 @@ export class FormComponent implements OnInit, OnDestroy {
         const selectedLabel = selectedCategory ? this.getCategoryOptionLabel(selectedCategory) : '';
 
         if (typeof value === 'string' && value !== selectedLabel) {
-          this.formGroup.get('categoryId').setValue('');
+          this.getRequiredControl('categoryId').setValue('');
         }
       });
   }
@@ -182,11 +190,11 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   updateValidators() {
-    const freightControl = this.formGroup.get('freightOption');
-    const pdfControl = this.formGroup.get('pdfBytes');
-    const antiPiracyControl = this.formGroup.get('agreeToAntiPiracy');
-    const agreeToTermsControl = this.formGroup.get('agreeToTerms');
-    const facilitatorControl = this.formGroup.get('userIdFacilitator');
+    const freightControl = this.getRequiredControl('freightOption');
+    const pdfControl = this.getRequiredControl('pdfBytes');
+    const antiPiracyControl = this.getRequiredControl('agreeToAntiPiracy');
+    const agreeToTermsControl = this.getRequiredControl('agreeToTerms');
+    const facilitatorControl = this.getRequiredControl('userIdFacilitator');
 
     if (this.selectedBookType === 'Printed') {
       freightControl.setValidators([Validators.required]);
@@ -228,7 +236,7 @@ export class FormComponent implements OnInit, OnDestroy {
       .getProfile()
       .pipe(
         takeUntil(this._destroySubscribes$),
-        catchError(() => of(null as Profile))
+        catchError(() => of<Profile | null>(null))
       )
       .subscribe(profile => {
         if (!profile) {
@@ -263,9 +271,9 @@ export class FormComponent implements OnInit, OnDestroy {
         .getById(bookId)
         .pipe(
           takeUntil(this._destroySubscribes$),
-          catchError(() => of(null as BookToAdminProfile))
+          catchError(() => of<BookToAdminProfile | null>(null))
         )
-        .subscribe((book: BookToAdminProfile) => {
+        .subscribe((book) => {
           if (!book) {
             this._toastr.error('Não foi possível carregar os dados do livro agora.');
             return;
@@ -318,7 +326,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     // ao doar um livro, o userId é do usuário logado.
     if (!this.itsEditMode) {
-      this.formGroup.get('userId').setValue(this.shareBookUser['userId']);
+      this.getRequiredControl('userId').setValue(this.shareBookUser['userId']);
       this.getAllFacilitators();
     }
   }
@@ -546,7 +554,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.isLoadingMessage = 'Processando imagem...';
       this.isImageLoaded = true;
-      this.src = <string>imageResult.resized.dataURL;
+      this.src = imageResult.resized?.dataURL ?? imageResult.dataURL ?? '';
       const img = this.src.split(',');
       this.formGroup.controls['imageBytes'].setValue(img[1]);
       this.isLoading = false;
@@ -561,7 +569,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   getAllFacilitators() {
     this._scUser
-      .getAllFacilitators(this.formGroup.get('userId').value)
+      .getAllFacilitators(this.getRequiredControl('userId').value)
       .pipe(
         takeUntil(this._destroySubscribes$),
         catchError(() => of([] as User[]))
@@ -574,7 +582,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 
-  private formatDateForInput(date: Date | string): string {
+  private formatDateForInput(date: Date | string): string | null {
     const parsedDate = new Date(date);
     if (Number.isNaN(parsedDate.getTime())) {
       return null;
@@ -649,13 +657,13 @@ export class FormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.formGroup.get('categoryId').setValue(category.id);
-    this.formGroup.get('categoryId').markAsTouched();
+    this.getRequiredControl('categoryId').setValue(category.id);
+    this.getRequiredControl('categoryId').markAsTouched();
     this.categorySearchControl.setValue(category, { emitEvent: false });
   }
 
   onCategoryBlur() {
-    this.formGroup.get('categoryId').markAsTouched();
+    this.getRequiredControl('categoryId').markAsTouched();
     this.syncCategorySearchControl();
   }
 
@@ -671,7 +679,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private findSelectedCategory(): Category | undefined {
-    const selectedCategoryId = this.formGroup.get('categoryId').value;
+    const selectedCategoryId = this.getRequiredControl('categoryId').value;
     return this.categories.find(category => category.id === selectedCategoryId);
   }
 

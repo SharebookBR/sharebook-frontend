@@ -121,20 +121,20 @@ export class AccountComponent implements OnInit, OnDestroy {
       catchError(() => {
         this._toastr.error('Não foi possível buscar o endereço para esse CEP.');
         this.isGettingAddress = false;
-        return of(null as Address);
+        return of<Address | null>(null);
       })
     )
-    .subscribe((address: Address) => {
+    .subscribe((address) => {
       if (!address) {
         return;
       }
       this.address = address;
       this.address.country = 'Brasil';
-      this.formGroup['controls'].Address['controls'].street.setValue(this.address.street.substring(0, 80));
-      this.formGroup['controls'].Address['controls'].neighborhood.setValue(this.address.neighborhood.substring(0, 50));
-      this.formGroup['controls'].Address['controls'].city.setValue(this.address.city.substring(0, 50));
-      this.formGroup['controls'].Address['controls'].state.setValue(this.address.state.substring(0, 30));
-      this.formGroup['controls'].Address['controls'].country.setValue(this.address.country.substring(0, 50));
+      this.formGroup['controls'].Address['controls'].street.setValue((this.address.street ?? '').substring(0, 80));
+      this.formGroup['controls'].Address['controls'].neighborhood.setValue((this.address.neighborhood ?? '').substring(0, 50));
+      this.formGroup['controls'].Address['controls'].city.setValue((this.address.city ?? '').substring(0, 50));
+      this.formGroup['controls'].Address['controls'].state.setValue((this.address.state ?? '').substring(0, 30));
+      this.formGroup['controls'].Address['controls'].country.setValue((this.address.country ?? '').substring(0, 50));
       this.isGettingAddress = false;
     });
   }

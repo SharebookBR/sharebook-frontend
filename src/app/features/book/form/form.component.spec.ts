@@ -35,18 +35,18 @@ const userArray: User[] = [
   {
     id: '54338afc-7674-46a3-9e35-1f8babd99d6b',
     name: 'Cussa (3)',
-    email: null,
-    linkedin: null,
-    phone: null,
-    address: null,
+    email: undefined,
+    linkedin: undefined,
+    phone: undefined,
+    address: undefined,
   },
   {
     id: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
     name: 'Vagner (1)',
-    email: null,
-    linkedin: null,
-    phone: null,
-    address: null,
+    email: undefined,
+    linkedin: undefined,
+    phone: undefined,
+    address: undefined,
   },
 ];
 

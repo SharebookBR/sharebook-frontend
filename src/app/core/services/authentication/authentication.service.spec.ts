@@ -8,6 +8,11 @@ import { UserService } from '../user/user.service';
 import { BrowserStorageService } from '../platform/browser-storage.service';
 import { APP_CONFIG } from '../../../app-config.module';
 
+function getStoredUser(key: string): any {
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : null;
+}
+
 describe('AuthenticationService', () => {
   const config = { apiEndpoint: 'http://api.test' };
   const storageKey = 'shareBookUser';
@@ -50,7 +55,7 @@ describe('AuthenticationService', () => {
       req.flush({ success: true, value });
 
       expect(resolved).toEqual(value);
-      expect(JSON.parse(localStorage.getItem(storageKey))).toEqual(value);
+      expect(getStoredUser(storageKey)).toEqual(value);
       expect(loggedUsers).toEqual([value]);
     }
   ));
@@ -66,7 +71,7 @@ describe('AuthenticationService', () => {
       req.flush({ success: false, value });
 
       expect(resolved).toEqual(value);
-      expect(JSON.parse(localStorage.getItem(storageKey))).toEqual(value);
+      expect(getStoredUser(storageKey)).toEqual(value);
     }
   ));
 

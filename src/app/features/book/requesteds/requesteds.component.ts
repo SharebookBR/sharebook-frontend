@@ -53,10 +53,10 @@ export class RequestedsComponent implements OnInit, OnDestroy {
         finalize(() => this.isLoadingSubject.next(false)),
         catchError(() => {
           this._toastr.error('Não foi possível carregar seus pedidos agora.');
-          return of(null as MyRequest);
+          return of<MyRequest | null>(null);
         })
       )
-      .subscribe((resp: MyRequest) => {
+      .subscribe((resp) => {
         if (!resp) {
           return;
         }

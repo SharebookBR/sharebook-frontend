@@ -21,8 +21,8 @@ export class WinnerUsersComponent implements OnInit, OnDestroy {
   @Input() bookSlug;
 
   isLoading: Boolean;
-  winnerUsers: UserInfo[] = [];
-  donorInfo: UserInfo;
+  winnerUsers: (UserInfo | null)[] = [];
+  donorInfo: UserInfo | null;
   bookInfo: Book;
 
   private _destroySubscribes$ = new Subject<void>();

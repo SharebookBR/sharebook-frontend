@@ -26,7 +26,7 @@ export class CropImageDialogComponent {
   ) {}
 
   onImageCropped(event: ImageCroppedEvent) {
-    this.croppedBase64 = event.base64;
+    this.croppedBase64 = event.base64 ?? '';
   }
 
   onLoadImageFailed() {

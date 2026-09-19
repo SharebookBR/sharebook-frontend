@@ -42,7 +42,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   formGroup: UntypedFormGroup;
   bookSlug: string;
   book: Book = new Book();
-  chooseDateFormated: string;
+  chooseDateFormated: string | null;
   warningMessage: string;
   showWarning = false;
   showWarningWinnerChoosed = false;
@@ -257,7 +257,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 
-  private getFirstName(name: string): string {
+  private getFirstName(name: string | undefined): string {
     return (name || '').trim().split(/\s+/)[0] || '';
   }
 }

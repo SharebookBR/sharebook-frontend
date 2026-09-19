@@ -114,10 +114,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
         finalize(() => this.isLoadingSubject.next(false)),
         catchError(() => {
           this._toastr.error('Não foi possível carregar suas doações agora.');
-          return of(null as UserDonationsList);
+          return of<UserDonationsList | null>(null);
         })
       )
-      .subscribe((resp: UserDonationsList) => {
+      .subscribe((resp) => {
         if (!resp) {
           return;
         }

@@ -59,7 +59,7 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
     request
       .pipe(
         takeUntil(this._destroySubscribes$),
-        catchError(() => of(null as Category))
+        catchError(() => of<Category | null>(null))
       )
       .subscribe(category => {
         if (!category) {
@@ -74,9 +74,9 @@ export class CategoryBooksComponent implements OnInit, OnDestroy {
         this.category = category;
         this.parentCategory = category.parentCategoryName
           ? new Category({
-              id: category.parentCategoryId,
+              id: category.parentCategoryId ?? undefined,
               name: category.parentCategoryName,
-              slug: category.parentCategorySlug
+              slug: category.parentCategorySlug ?? undefined
             })
           : null;
         this.subcategories = [...(category.children || [])].sort((left, right) =>

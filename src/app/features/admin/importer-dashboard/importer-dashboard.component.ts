@@ -132,9 +132,9 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     const source = this.selectedSource;
     return this.aggregateGroups.filter(group => this.shouldShowAggregateGroup(group.id, source)).map(group => {
       const total = group.statuses.reduce((sum, s) => sum + (source ? this.getStatusCount(source, s) : 0), 0);
-      const d1Values = source ? group.statuses.map(s => this.getStatusCountD1(source, s)) : [];
+      const d1Values: (number | null)[] = source ? group.statuses.map(s => this.getStatusCountD1(source, s)) : [];
       const hasD1 = d1Values.some(v => v !== null);
-      const totalD1 = hasD1 ? d1Values.reduce((sum, v) => sum + (v ?? 0), 0) : null;
+      const totalD1 = hasD1 ? d1Values.reduce<number>((sum, v) => sum + (v ?? 0), 0) : null;
       return {
         ...group,
         total,

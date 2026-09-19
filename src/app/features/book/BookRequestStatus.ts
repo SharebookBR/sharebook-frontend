@@ -5,7 +5,7 @@ export enum BookRequestStatus {
   CANCELED = 'Canceled'
 }
 
-export function getStatusDescription(RequestStatus) {
+export function getStatusDescription(RequestStatus): string {
   switch (RequestStatus) {
     case BookRequestStatus.DONATED:
       return 'Doado';
@@ -15,5 +15,7 @@ export function getStatusDescription(RequestStatus) {
       return 'Aguardando decisão do(a) doador(a)';
     case BookRequestStatus.CANCELED:
       return 'Cancelado';
+    default:
+      return '???';
   }
 }

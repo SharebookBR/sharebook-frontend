@@ -262,6 +262,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(event.target.files[0]);
 
       reader.onload = (event) => {
+        if (!event.target) {
+          return;
+        }
         const img = (<string>event.target['result']).split(',');
         this.bookInfo.imageBytes = img[1];
         this._cdr.markForCheck();

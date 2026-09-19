@@ -6,6 +6,11 @@ import { UserService } from './user.service';
 import { BrowserStorageService } from '../platform/browser-storage.service';
 import { APP_CONFIG } from '../../../app-config.module';
 
+function getStoredUser(key: string): any {
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : null;
+}
+
 describe('UserService', () => {
   const config = { apiEndpoint: 'http://api.test' };
   const storageKey = 'shareBookUser';
@@ -74,7 +79,7 @@ describe('UserService', () => {
       req.flush(response);
 
       expect(resolved).toEqual(response);
-      expect(JSON.parse(localStorage.getItem(storageKey))).toEqual(response);
+      expect(getStoredUser(storageKey)).toEqual(response);
       expect(received).toEqual([response]);
     }
   ));

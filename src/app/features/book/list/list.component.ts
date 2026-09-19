@@ -29,7 +29,7 @@ type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebook
 export class ListComponent implements OnInit, OnDestroy {
   public readonly BookDonationStatus = BookDonationStatus;
   pagedBooks: BookVMItem[] = [];
-  statusSearchValues = [];
+  statusSearchValues: { value: string; title: string }[] = [];
   selectedFilter: AdminBooksFilter = 'needsAction';
   statusFilter = '';
   searchTerm = '';
@@ -62,10 +62,10 @@ export class ListComponent implements OnInit, OnDestroy {
         finalize(() => this.isLoadingSubject.next(false)),
         catchError(() => {
           this._toastr.error('Não foi possível carregar os livros agora.');
-          return of(null as AdminBookList);
+          return of<AdminBookList | null>(null);
         })
       )
-      .subscribe((resp: AdminBookList) => {
+      .subscribe((resp) => {
         if (!resp) {
           return;
         }

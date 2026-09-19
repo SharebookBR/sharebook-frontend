@@ -40,7 +40,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       .getFullSearch(this.criteria, 1, 100)
       .pipe(
         takeUntil(this._destroySubscribes$),
-        catchError(() => of(null as FullSearch))
+        catchError(() => of<FullSearch | null>(null))
       )
       .subscribe((result) => {
         this.books = result?.items || [];

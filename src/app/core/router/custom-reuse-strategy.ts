@@ -7,22 +7,26 @@ export class CustomReuseStrategy implements RouteReuseStrategy {
 
   /** Determines if this route (and its subtree) should be detached to be reused later */
   public shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    return route.routeConfig.path === 'book/list';
+    return route.routeConfig?.path === 'book/list';
   }
 
   /** Stores the detached route */
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+    if (!route.routeConfig?.path) {
+      return;
+    }
+
     this.handlers[route.routeConfig.path] = handle;
   }
 
   /** Determines if this route (and its subtree) should be reattached */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    return !!route.routeConfig && !!this.handlers[route.routeConfig.path];
+    return !!route.routeConfig?.path && !!this.handlers[route.routeConfig.path];
   }
 
   /** Retrieves the previously stored route */
-  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-    if (!route.routeConfig) {
+  public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    if (!route.routeConfig?.path) {
       return null;
     }
 
