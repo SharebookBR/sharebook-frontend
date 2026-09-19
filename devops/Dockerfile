@@ -2,8 +2,10 @@
 FROM public.ecr.aws/docker/library/node:24-bookworm-slim AS build
 WORKDIR /app
 
-# Chromium para o Karma headless (npm test)
-RUN apt-get update && apt-get install -y chromium --no-install-recommends \
+# Chromium para o Karma headless (npm test); git é fallback do
+# scripts/generate-build-info.js quando o .git copiado pro contexto de
+# build não tem o formato esperado (ver leitura direta do filesystem).
+RUN apt-get update && apt-get install -y chromium git --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala dependências (inclui devDeps necessárias ao teste e ao build)
