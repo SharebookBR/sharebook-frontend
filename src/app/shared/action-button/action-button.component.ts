@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
-export type ActionButtonVariant = 'primary' | 'accent' | 'success' | 'danger' | 'ghost';
+export type ActionButtonVariant = 'primary' | 'accent' | 'success' | 'danger' | 'ghost' | 'yellow' | 'info' | 'neutral';
 export type ActionButtonAppearance = 'flat' | 'stroked';
 
 @Component({

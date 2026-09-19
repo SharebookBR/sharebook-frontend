@@ -111,45 +111,42 @@
               }
             </div>
             <div class="admin-card__actions">
-              <button mat-flat-button color="primary" class="action-btn action-btn--primary" (click)="onCustom('edit', element)">
-                <mat-icon class="action-btn__icon">edit_note</mat-icon> Editar
-              </button>
+              <app-action-button variant="primary" icon="edit_note" (action)="onCustom('edit', element)">
+                Editar
+              </app-action-button>
               @if (canShowPrimaryAction(element)) {
-                <button
-                  mat-flat-button
-                  class="action-btn action-btn--yellow"
-                  (click)="onCustom('donate', element)"
+                <app-action-button
+                  variant="yellow"
+                  [icon]="getPrimaryActionIcon(element)"
+                  (action)="onCustom('donate', element)"
                   >
-                  <mat-icon class="action-btn__icon">{{ getPrimaryActionIcon(element) }}</mat-icon> {{ getPrimaryActionLabel(element) }}
-                </button>
+                  {{ getPrimaryActionLabel(element) }}
+                </app-action-button>
               }
-              <button mat-flat-button class="action-btn action-btn--info" (click)="onCustom('facilitatorNotes', element)">
-                <mat-icon class="action-btn__icon">sticky_note_2</mat-icon> Comentários
-              </button>
+              <app-action-button variant="info" icon="sticky_note_2" (action)="onCustom('facilitatorNotes', element)">
+                Comentários
+              </app-action-button>
               @if (canOpenPdf(element)) {
-                <button
-                  mat-stroked-button
-                  class="action-btn action-btn--pdf"
-                  (click)="onCustom('openPdf', element)"
+                <app-action-button
+                  variant="danger"
+                  appearance="stroked"
+                  icon="picture_as_pdf"
+                  (action)="onCustom('openPdf', element)"
                   >
-                  <mat-icon class="action-btn__icon">picture_as_pdf</mat-icon> Ver PDF
-                </button>
+                  Ver PDF
+                </app-action-button>
               }
               @if (canShowTrackAction(element)) {
-                <button
-                  mat-flat-button
-                  class="action-btn action-btn--neutral"
-                  (click)="onCustom('trackNumber', element)"
-                  >
-                  <mat-icon class="action-btn__icon">local_shipping</mat-icon> Rastreio
-                </button>
+                <app-action-button variant="neutral" icon="local_shipping" (action)="onCustom('trackNumber', element)">
+                  Rastreio
+                </app-action-button>
               }
-              <button mat-stroked-button class="action-btn" (click)="onCustom('showUsersInfo', element)">
-                <mat-icon class="action-btn__icon">group</mat-icon> Usuários
-              </button>
-              <button mat-flat-button class="action-btn action-btn--warn" (click)="onCustom('cancelDonation', element)">
-                <mat-icon class="action-btn__icon">delete_outline</mat-icon> Cancelar
-              </button>
+              <app-action-button variant="ghost" appearance="stroked" icon="group" (action)="onCustom('showUsersInfo', element)">
+                Usuários
+              </app-action-button>
+              <app-action-button variant="danger" icon="delete_outline" (action)="onCustom('cancelDonation', element)">
+                Cancelar
+              </app-action-button>
             </div>
           </div>
         }

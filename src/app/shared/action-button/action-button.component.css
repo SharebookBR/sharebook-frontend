@@ -31,6 +31,21 @@
   color: #ffffff !important;
 }
 
+.app-action-button--yellow {
+  background-color: #ff8f00 !important;
+  color: #ffffff !important;
+}
+
+.app-action-button--info {
+  background-color: #0277bd !important;
+  color: #ffffff !important;
+}
+
+.app-action-button--neutral {
+  background-color: #616161 !important;
+  color: #ffffff !important;
+}
+
 .app-action-button--ghost {
   background-color: transparent !important;
   color: #6b7a90 !important;

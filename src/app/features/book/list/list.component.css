@@ -243,57 +243,6 @@
   color: #495057;
 }
 
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  min-height: 40px;
-  white-space: nowrap;
-  border-radius: 8px !important;
-  font-weight: 700;
-}
-
-.action-btn__icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.action-btn--primary {
-  box-shadow: 0 6px 14px rgba(37, 64, 173, 0.28);
-}
-
-.action-btn--warn {
-  background: #dc3545 !important;
-  color: #ffffff !important;
-}
-
-.action-btn--yellow {
-  background: #ffc107 !important;
-  color: #212529 !important;
-}
-
-.action-btn--info {
-  background: #17a2b8 !important;
-  color: #ffffff !important;
-}
-
-.action-btn--neutral {
-  background: #6c757d !important;
-  color: #ffffff !important;
-}
-
-.action-btn--pdf {
-  border-color: #dc3545 !important;
-  color: #dc3545 !important;
-}
-
-.action-btn--pdf:hover {
-  background: rgba(220, 53, 69, 0.08) !important;
-}
-
 .pagination-bar {
   display: flex;
   align-items: center;
