@@ -4,8 +4,8 @@ import { takeUntil, catchError } from 'rxjs/operators';
 
 import { Link } from '../../core/models/link';
 import { RepositoriesUrls } from '../../core/models/RepositoriesUrls';
-import { Category } from '../../core/models/category';
-import { CategoryService } from '../../core/services/category/category.service';
+import { Category } from 'src/app/features/category/category';
+import { CategoryService } from 'src/app/features/category/services/category.service';
 
 @Component({
     selector: 'app-footer',

@@ -12,8 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Options, ImageResult } from 'ngx-image2dataurl';
 
 import { BookService } from '../../../core/services/book/book.service';
-import { CategoryService } from '../../../core/services/category/category.service';
-import { Category } from '../../../core/models/category';
+import { CategoryService } from 'src/app/features/category/services/category.service';
+import { Category } from 'src/app/features/category/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { User } from '../../../core/models/user';
 import { UserService } from '../../../core/services/user/user.service';

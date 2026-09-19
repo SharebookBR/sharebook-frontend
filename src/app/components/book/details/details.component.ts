@@ -6,11 +6,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { BookService } from '../../../core/services/book/book.service';
-import { Category } from '../../../core/models/category';
+import { Category } from 'src/app/features/category/category';
 import { FreightOptions } from '../../../core/models/freightOptions';
 import { UserService } from '../../../core/services/user/user.service';
 import { Book } from '../../../core/models/book';
-import { CategoryService } from '../../../core/services/category/category.service';
+import { CategoryService } from 'src/app/features/category/services/category.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { RequestComponent } from '../request/request.component';

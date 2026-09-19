@@ -1,4 +1,4 @@
-import { Category } from './category';
+import { Category } from 'src/app/features/category/category';
 import { BookDonationStatus } from './BookDonationStatus';
 
 export type BookType = 'Printed' | 'Eletronic';

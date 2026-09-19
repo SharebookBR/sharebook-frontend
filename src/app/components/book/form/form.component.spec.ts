@@ -1,7 +1,7 @@
 import { BookToAdminProfile } from './../../../core/models/BookToAdminProfile';
-import { Category } from './../../../core/models/category';
+import { Category } from 'src/app/features/category/category';
 import { User } from './../../../core/models/user';
-import { CategoryService } from './../../../core/services/category/category.service';
+import { CategoryService } from 'src/app/features/category/services/category.service';
 import { BookService } from './../../../core/services/book/book.service';
 import { UserService } from './../../../core/services/user/user.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';

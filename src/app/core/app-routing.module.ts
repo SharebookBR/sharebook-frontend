@@ -27,8 +27,8 @@ import { PrivacyPolicyComponent } from '../features/static-pages/privacy-policy/
 import { TermsOfUseComponent } from '../features/static-pages/terms-of-use/terms-of-use.component';
 import { DataAnonymizationInfoComponent } from '../features/static-pages/data-anonymization-info/data-anonymization-info.component';
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
-import { CategoryBooksComponent } from '../components/category/category-books/category-books.component';
-import { CategoriesListComponent } from '../components/category/categories-list/categories-list.component';
+import { CategoryBooksComponent } from '../features/category/category-books/category-books.component';
+import { CategoriesListComponent } from '../features/category/categories-list/categories-list.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { UnsubscribeComponent } from '../components/unsubscribe/unsubscribe.component';
 import { JobsDashboardComponent } from '../components/jobs-dashboard/jobs-dashboard.component';

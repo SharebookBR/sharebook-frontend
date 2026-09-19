@@ -7,7 +7,7 @@ import { Book } from '../../core/models/book';
 import { MeetupService } from '../../core/services/meetup/meetup.service';
 import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
-import { CategoryService } from '../../core/services/category/category.service';
+import { CategoryService } from 'src/app/features/category/services/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
 
 @Component({

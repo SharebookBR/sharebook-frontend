@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CategoryService } from '../../../core/services/category/category.service';
-import { Category } from '../../../core/models/category';
-import { SeoService } from '../../../core/services/seo/seo.service';
+import { CategoryService } from 'src/app/features/category/services/category.service';
+import { Category } from 'src/app/features/category/category';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-categories-list',

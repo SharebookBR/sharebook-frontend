@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { BookService } from '../../../core/services/book/book.service';
-import { CategoryService } from '../../../core/services/category/category.service';
-import { Book } from '../../../core/models/book';
-import { Category } from '../../../core/models/category';
-import { SeoService } from '../../../core/services/seo/seo.service';
+import { BookService } from 'src/app/core/services/book/book.service';
+import { CategoryService } from 'src/app/features/category/services/category.service';
+import { Book } from 'src/app/core/models/book';
+import { Category } from 'src/app/features/category/category';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-category-books',

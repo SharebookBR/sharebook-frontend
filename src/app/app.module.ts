@@ -60,7 +60,7 @@ import { AuthGuardAdmin } from './core/guards/auth.guard.admin';
 
 import { JwtInterceptor, ErrorInterceptor, TransferStateInterceptor } from './core/helpers';
 import { BookService } from './core/services/book/book.service';
-import { CategoryService } from './core/services/category/category.service';
+import { CategoryService } from './features/category/services/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
 import { UserService } from './core/services/user/user.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
@@ -97,8 +97,8 @@ import { CropImageDialogComponent } from './components/book/crop-image-dialog/cr
 import { MyaccountComponent } from './components/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './components/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './components/dialog-anonymize/dialog-anonymize.component';
-import { CategoryBooksComponent } from './components/category/category-books/category-books.component';
-import { CategoriesListComponent } from './components/category/categories-list/categories-list.component';
+import { CategoryBooksComponent } from './features/category/category-books/category-books.component';
+import { CategoriesListComponent } from './features/category/categories-list/categories-list.component';
 import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
