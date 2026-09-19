@@ -92,7 +92,10 @@
   <!-- Footer Links -->
 
   <!-- Copyright? OpenSource! -->
-  <div class="footer-copyright text-center py-3">© 2018-{{currentYear}} Copyleft: sharebook.com.br</div>
+  <div class="footer-copyright text-center py-3">
+    © 2018-{{currentYear}} Copyleft: sharebook.com.br
+    <span class="footer-build-info" title="{{ 'Build em ' + buildInfo.builtAt }}"> · build {{ buildInfo.commit }}</span>
+  </div>
   <!-- Copyright? OpenSource! -->
 </footer>
 <!-- Footer -->

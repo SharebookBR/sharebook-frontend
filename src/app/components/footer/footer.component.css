@@ -6,6 +6,12 @@
   background-color: #193254;
 }
 
+.footer-build-info {
+  opacity: 0.55;
+  font-size: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
 p,
 a {
   color: #fff;

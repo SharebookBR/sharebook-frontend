@@ -6,6 +6,7 @@ import { Link } from '../../core/models/link';
 import { RepositoriesUrls } from '../../core/models/RepositoriesUrls';
 import { Category } from 'src/app/features/category/category';
 import { CategoryService } from 'src/app/features/category/services/category.service';
+import { BUILD_INFO } from 'src/environments/version';
 
 @Component({
     selector: 'app-footer',
@@ -22,6 +23,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     { url: RepositoriesUrls.MOBILE, content: 'Mobile' }
   ];
   currentYear: number = new Date().getFullYear();
+  buildInfo = BUILD_INFO;
 
   socialLinks = [
     {

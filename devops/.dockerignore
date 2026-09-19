@@ -1,5 +1,7 @@
+# .git é usado propositalmente pelo build (scripts/generate-build-info.js lê
+# .git/HEAD pra gravar o commit no rodapé) — não ignorar. Como o build é
+# multi-stage, .git nunca chega na imagem final de runtime.
 node_modules
-.git
 .gitignore
 .angular
 .claude
