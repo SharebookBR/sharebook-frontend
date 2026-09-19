@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subject, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -25,6 +26,18 @@ export class FooterComponent implements OnInit, OnDestroy {
   currentYear: number = new Date().getFullYear();
   buildInfo = BUILD_INFO;
 
+  isBrowser: boolean;
+
+  get buildTimeLocal(): string {
+    // Sem timeZone explícito: o motor de datas usa o fuso de quem está rodando
+    // o JS — no navegador, o do usuário. Só é exibido no cliente (ver .html)
+    // pra não descasar do fuso do servidor durante o SSR (hydration mismatch).
+    return new Date(this.buildInfo.builtAt).toLocaleString('pt-BR', {
+      dateStyle: 'short',
+      timeStyle: 'medium',
+    });
+  }
+
   socialLinks = [
     {
       label: 'YouTube',
@@ -45,7 +58,12 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
 
-  constructor(private _categoryService: CategoryService) { }
+  constructor(
+    private _categoryService: CategoryService,
+    @Inject(PLATFORM_ID) platformId: object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit() {
     this._categoryService
