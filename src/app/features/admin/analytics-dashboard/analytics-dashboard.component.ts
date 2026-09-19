@@ -1,4 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -66,7 +69,8 @@ interface DashboardData {
     templateUrl: './analytics-dashboard.component.html',
     styleUrls: ['./analytics-dashboard.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterLink]
 })
 export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chartSessions') chartSessionsRef: ElementRef<HTMLCanvasElement>;

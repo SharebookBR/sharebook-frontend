@@ -1,4 +1,7 @@
 import { Component, OnInit, AfterViewChecked, OnDestroy, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -34,7 +37,8 @@ interface PagedDownloadLogEvents {
     templateUrl: './download-logs-dashboard.component.html',
     styleUrls: ['./download-logs-dashboard.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterLink]
 })
 export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('chartDownloads') chartRef: ElementRef<HTMLCanvasElement>;

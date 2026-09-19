@@ -1,6 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ElementRef, Inject, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
-
-import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs/operators';
 import type EasyMDE from 'easymde';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
@@ -15,7 +20,8 @@ import { OperationsService } from 'src/app/features/admin/services/operations.se
     templateUrl: './importer-dashboard.component.html',
     styleUrls: ['./importer-dashboard.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterLink, MatButtonModule, MatDialogModule, MatIconModule, MatProgressSpinnerModule]
 })
 export class ImporterDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;

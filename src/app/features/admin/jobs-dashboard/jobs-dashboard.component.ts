@@ -1,4 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { JobMonitorDashboard, JobMonitorItem } from 'src/app/features/admin/job-monitor';
 import { OperationsService } from 'src/app/features/admin/services/operations.service';
@@ -9,7 +13,8 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
     templateUrl: './jobs-dashboard.component.html',
     styleUrls: ['./jobs-dashboard.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, RouterLink, MatButtonModule, MatProgressSpinnerModule]
 })
 export class JobsDashboardComponent implements OnInit {
   dashboard: JobMonitorDashboard;

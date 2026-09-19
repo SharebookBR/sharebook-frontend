@@ -31,10 +31,6 @@ import { CategoryBooksComponent } from '../features/category/category-books/cate
 import { CategoriesListComponent } from '../features/category/categories-list/categories-list.component';
 import { SettingsComponent } from '../features/account/settings/settings.component';
 import { UnsubscribeComponent } from '../features/auth/unsubscribe/unsubscribe.component';
-import { JobsDashboardComponent } from '../features/admin/jobs-dashboard/jobs-dashboard.component';
-import { ImporterDashboardComponent } from '../features/admin/importer-dashboard/importer-dashboard.component';
-import { AnalyticsDashboardComponent } from '../features/admin/analytics-dashboard/analytics-dashboard.component';
-import { DownloadLogsDashboardComponent } from '../features/admin/download-logs-dashboard/download-logs-dashboard.component';
 import { EbookRecentComponent } from '../components/ebook-recent/ebook-recent.component';
 import { NotFoundComponent } from '../features/static-pages/not-found/not-found.component';
 
@@ -65,22 +61,34 @@ const routes: Routes = [
   },
   {
     path: 'admin/jobs',
-    component: JobsDashboardComponent,
+    loadComponent: () =>
+      import('../features/admin/jobs-dashboard/jobs-dashboard.component').then(
+        (m) => m.JobsDashboardComponent
+      ),
     canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/importer',
-    component: ImporterDashboardComponent,
+    loadComponent: () =>
+      import('../features/admin/importer-dashboard/importer-dashboard.component').then(
+        (m) => m.ImporterDashboardComponent
+      ),
     canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/analytics',
-    component: AnalyticsDashboardComponent,
+    loadComponent: () =>
+      import('../features/admin/analytics-dashboard/analytics-dashboard.component').then(
+        (m) => m.AnalyticsDashboardComponent
+      ),
     canActivate: [authGuardAdmin],
   },
   {
     path: 'admin/download-logs',
-    component: DownloadLogsDashboardComponent,
+    loadComponent: () =>
+      import('../features/admin/download-logs-dashboard/download-logs-dashboard.component').then(
+        (m) => m.DownloadLogsDashboardComponent
+      ),
     canActivate: [authGuardAdmin],
   },
   {
