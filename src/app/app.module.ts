@@ -47,7 +47,7 @@ import { ParentAprovalComponent } from './components/parent-aproval/parent-aprov
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestedsComponent } from './components/book/requesteds/requesteds.component';
 import { DonationsComponent } from './components/book/donations/donations.component';
-import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { ContactUsComponent } from './features/contact/contact-us/contact-us.component';
 import { PrivacyPolicyComponent } from './features/static-pages/privacy-policy/privacy-policy.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 
@@ -65,7 +65,7 @@ import { AuthenticationService } from './core/services/authentication/authentica
 import { UserService } from './core/services/user/user.service';
 import { GoogleAnalyticsService } from './core/services/analytics/google-analytics.service';
 import { AddressService } from './core/services/address/address.service';
-import { ContactUsService } from './core/services/contact-us/contact-us.service';
+import { ContactUsService } from './features/contact/services/contact-us.service';
 import { MeetupService } from './core/services/meetup/meetup.service';
 
 import { AppConfigModule } from './app-config.module';
@@ -135,7 +135,6 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         ContactUsComponent,
         RequestComponent,
         RequestedsComponent,
-        ContactUsComponent,
         DonationsComponent,
         DonatePageComponent,
         ConfirmationDialogComponent,

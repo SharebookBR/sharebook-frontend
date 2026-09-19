@@ -3,10 +3,10 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl } 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import * as AppConst from '../../core/utils/app.const';
-import { ContactUsService } from '../../core/services/contact-us/contact-us.service';
+import * as AppConst from 'src/app/core/utils/app.const';
+import { ContactUsService } from 'src/app/features/contact/services/contact-us.service';
 import { ToastrService } from 'ngx-toastr';
-import { SeoService } from '../../core/services/seo/seo.service';
+import { SeoService } from 'src/app/core/services/seo/seo.service';
 
 @Component({
     selector: 'app-contact-us',

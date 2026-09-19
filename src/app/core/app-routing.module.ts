@@ -18,7 +18,7 @@ import { ChangePasswordComponent } from '../components/change-password/change-pa
 import { ResetPasswordComponent } from '../components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from '../components/forgot-password/forgot-password.component';
 import { ParentAprovalComponent } from '../components/parent-aproval/parent-aproval.component';
-import { ContactUsComponent } from '../components/contact-us/contact-us.component';
+import { ContactUsComponent } from '../features/contact/contact-us/contact-us.component';
 import { RequestedsComponent } from '../components/book/requesteds/requesteds.component';
 import { DonationsComponent } from '../components/book/donations/donations.component';
 import { AboutComponent } from '../features/static-pages/about/about.component';
