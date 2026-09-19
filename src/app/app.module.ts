@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { APP_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './core/app-routing.module';
@@ -217,6 +217,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
         AuthGuardAdmin,
         provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideClientHydration(withEventReplay()),
         { provide: APP_ID, useValue: 'angular' },
     ] })
 export class AppModule {
