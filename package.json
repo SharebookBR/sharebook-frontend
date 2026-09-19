@@ -64,7 +64,7 @@
     "ngx-image2dataurl": "^13.0.0",
     "ngx-mask": "^13.1.1",
     "ngx-toastr": "^20.0.5",
-    "rxjs": "~6.6.7",
+    "rxjs": "^7.8.0",
     "tslib": "^2.4.1",
     "zone.js": "~0.15.1"
   },

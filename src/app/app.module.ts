@@ -26,8 +26,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-// used to create fake backend
-import { fakeBackendProvider } from './core/helpers';
 
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './features/static-pages/about/about.component';

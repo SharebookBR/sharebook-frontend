@@ -94,7 +94,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         catchError(() => of(null))
       )
       .subscribe((x) => {
-        this.myUser = x || {};
+        this.myUser = x || new UserInfo();
         this.getBook();
       });
   }
