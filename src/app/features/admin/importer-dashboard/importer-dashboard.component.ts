@@ -13,7 +13,7 @@ import { PlatformService } from 'src/app/core/services/platform/platform.service
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { ImporterQueueItemHistoryEntry, ImporterQueueListItem, ImporterSourceStatus } from 'src/app/features/admin/importer-dashboard';
-import { OperationsService } from 'src/app/features/admin/services/operations.service';
+import { ImporterService } from 'src/app/features/admin/services/importer.service';
 
 @Component({
     selector: 'app-importer-dashboard',
@@ -98,7 +98,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private _operationsService: OperationsService,
+    private _importerService: ImporterService,
     private _seo: SeoService,
     private _dialog: MatDialog,
     private _toastr: ToastrService,
@@ -442,8 +442,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
 
     dialogRef.afterOpened().subscribe(() => {
       const request = kind === 'translation'
-        ? this._operationsService.getImporterTranslationPrompt(source.sourceName)
-        : this._operationsService.getImporterEditorialPrompt(source.sourceName);
+        ? this._importerService.getImporterTranslationPrompt(source.sourceName)
+        : this._importerService.getImporterEditorialPrompt(source.sourceName);
 
       request.subscribe({
         next: ({ prompt }) => {
@@ -465,8 +465,8 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     this.sourcePromptError = '';
 
     const request = this.sourcePromptKind === 'translation'
-      ? this._operationsService.updateImporterTranslationPrompt(this.sourcePromptSourceName, prompt)
-      : this._operationsService.updateImporterEditorialPrompt(this.sourcePromptSourceName, prompt);
+      ? this._importerService.updateImporterTranslationPrompt(this.sourcePromptSourceName, prompt)
+      : this._importerService.updateImporterEditorialPrompt(this.sourcePromptSourceName, prompt);
 
     request
       .pipe(finalize(() => (this.sourcePromptSaving = false)))
@@ -525,7 +525,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     if (!this.adminNoteItem) return;
     this.adminNoteSaving = true;
     const item = this.adminNoteItem;
-    this._operationsService.updateImporterItemNotes(item.id, this.adminNoteText)
+    this._importerService.updateImporterItemNotes(item.id, this.adminNoteText)
       .pipe(finalize(() => (this.adminNoteSaving = false)))
       .subscribe({
         next: () => {
@@ -550,7 +550,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterOpened().subscribe(() => {
-      this._operationsService.getImporterItemHistory(item.id).subscribe({
+      this._importerService.getImporterItemHistory(item.id).subscribe({
         next: entries => {
           this.historyLoading = false;
           this.historyEntries = entries;
@@ -710,7 +710,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.loadError = false;
 
-    this._operationsService.getImporterDashboard().subscribe({
+    this._importerService.getImporterDashboard().subscribe({
       next: dashboard => {
         this.generatedAtUtc = dashboard.generatedAtUtc;
         this.totalItems = dashboard.totalItems;
@@ -756,7 +756,7 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       }
     }
 
-    this._operationsService
+    this._importerService
       .getImporterItems(source.sourceId, this.selectedStatus, this.currentPage, this.pageSize, searchId, searchTitle, this.selectedSort)
       .pipe(finalize(() => (this.isItemsLoading = false)))
       .subscribe({
