@@ -181,8 +181,14 @@ const clientIp = (req: Request): string => {
 const cleanLogValue = (value: string | undefined, maxLength: number): string =>
   (value || '').replace(/\s+/g, ' ').trim().slice(0, maxLength);
 
+const isLocalHealthCheck = (req: Request): boolean => {
+  const ip = clientIp(req);
+  const userAgent = cleanLogValue(firstHeaderValue(req.headers['user-agent']), 40);
+  return req.path === '/' && userAgent === 'Wget' && ['::1', '127.0.0.1', '::ffff:127.0.0.1'].includes(ip);
+};
+
 const ssrAccessLogger = (req: Request, res: Response, next: NextFunction): void => {
-  if (!shouldLogSsrRequest(req)) {
+  if (!shouldLogSsrRequest(req) || isLocalHealthCheck(req)) {
     next();
     return;
   }
