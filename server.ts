@@ -13,13 +13,15 @@ import { REQUEST, RESPONSE } from './src/express.tokens';
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
 const HOME_CACHE_TTL_MS = 30 * 60 * 1000;
+const PDP_CACHE_TTL_MS = 30 * 60 * 1000;
+const PDP_CACHE_MAX_ENTRIES = 1000;
 const PERMANENT_REDIRECTS: Record<string, string> = {
   '/livros/eu-e-outras-poesias_copy1': '/livros/eu-e-outras-poesias',
   '/livros/the-art-of-high-performance-computing---volum':
     '/livros/the-art-of-high-performance-computing-volume-1',
 };
 
-interface HomeCacheEntry {
+interface SsrCacheEntry {
   html: string;
   expiresAt: number;
 }
@@ -29,8 +31,10 @@ interface SsrRenderResult {
   statusCode: number;
 }
 
-let homeCache: HomeCacheEntry | null = null;
+let homeCache: SsrCacheEntry | null = null;
 let homeRenderInFlight: Promise<SsrRenderResult> | null = null;
+const pdpCache = new Map<string, SsrCacheEntry>();
+const pdpRenderInFlight = new Map<string, Promise<SsrRenderResult>>();
 
 interface SitemapBook {
   slug: string;
@@ -154,6 +158,22 @@ const renderSsr = (
 const setHomeCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'): void => {
   res.set('Cache-Control', 'public, max-age=1800');
   res.set('X-SSR-Cache', status);
+  res.set('X-SSR-Cache-Route', 'home');
+};
+
+const setPdpCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'): void => {
+  res.set('Cache-Control', 'public, max-age=1800');
+  res.set('X-SSR-Cache', status);
+  res.set('X-SSR-Cache-Route', 'pdp');
+};
+
+const prunePdpCache = (): void => {
+  const now = Date.now();
+  for (const [key, entry] of pdpCache) {
+    if (entry.expiresAt <= now || pdpCache.size > PDP_CACHE_MAX_ENTRIES) {
+      pdpCache.delete(key);
+    }
+  }
 };
 
 const serveCachedHome = async (
@@ -204,6 +224,65 @@ const serveCachedHome = async (
   }
 };
 
+const serveCachedPdp = async (
+  documentFilePath: string,
+  publicPath: string,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const cacheKey = req.path;
+  const now = Date.now();
+  const cached = pdpCache.get(cacheKey);
+
+  if (cached && cached.expiresAt > now) {
+    pdpCache.delete(cacheKey);
+    pdpCache.set(cacheKey, cached);
+    setPdpCacheHeaders(res, 'HIT');
+    res.status(200).send(cached.html);
+    return;
+  }
+
+  if (cached) {
+    pdpCache.delete(cacheKey);
+  }
+
+  const existingRender = pdpRenderInFlight.get(cacheKey);
+  const isLeader = existingRender === undefined;
+  const renderPromise = existingRender || renderSsr(documentFilePath, publicPath, req, res).then(result => {
+    if (result.statusCode === 200) {
+      prunePdpCache();
+      pdpCache.set(cacheKey, {
+        html: result.html,
+        expiresAt: Date.now() + PDP_CACHE_TTL_MS,
+      });
+    }
+    return result;
+  });
+
+  if (isLeader) {
+    setPdpCacheHeaders(res, 'MISS');
+    pdpRenderInFlight.set(cacheKey, renderPromise);
+  } else {
+    setPdpCacheHeaders(res, 'COALESCED');
+  }
+
+  try {
+    const result = await renderPromise;
+    if (result.statusCode !== 200) {
+      res.set('Cache-Control', 'no-store');
+    }
+    res.status(result.statusCode).send(result.html);
+  } catch (error) {
+    res.set('Cache-Control', 'no-store');
+    next(error);
+  } finally {
+    if (isLeader) {
+      pdpRenderInFlight.delete(cacheKey);
+    }
+  }
+};
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): Express {
   const server = express();
@@ -247,6 +326,12 @@ export function app(): Express {
   // so neither the Node renderer nor browser hydration repeats the initial API calls.
   server.get('/', (req: Request, res: Response, next: NextFunction) => {
     void serveCachedHome(indexHtml, distFolder, req, res, next);
+  });
+
+  // Cache public book detail pages by path. Query params are intentionally ignored
+  // so campaign tags do not create duplicate SSR entries for the same book.
+  server.get(/^\/livros\/[^/?#]+\/?$/, (req: Request, res: Response, next: NextFunction) => {
+    void serveCachedPdp(indexHtml, distFolder, req, res, next);
   });
 
   // All regular routes use the Angular engine
