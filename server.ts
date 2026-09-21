@@ -167,6 +167,47 @@ const setPdpCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED')
   res.set('X-SSR-Cache-Route', 'pdp');
 };
 
+const shouldLogSsrRequest = (req: Request): boolean =>
+  req.method === 'GET' && (req.path === '/sitemap.xml' || !req.path.includes('.'));
+
+const firstHeaderValue = (value: string | string[] | undefined): string | undefined =>
+  Array.isArray(value) ? value[0] : value;
+
+const clientIp = (req: Request): string => {
+  const forwardedFor = firstHeaderValue(req.headers['x-forwarded-for']);
+  return forwardedFor?.split(',')[0]?.trim() || req.ip || '';
+};
+
+const cleanLogValue = (value: string | undefined, maxLength: number): string =>
+  (value || '').replace(/\s+/g, ' ').trim().slice(0, maxLength);
+
+const ssrAccessLogger = (req: Request, res: Response, next: NextFunction): void => {
+  if (!shouldLogSsrRequest(req)) {
+    next();
+    return;
+  }
+
+  const startedAt = process.hrtime.bigint();
+
+  res.on('finish', () => {
+    const durationMs = Number(process.hrtime.bigint() - startedAt) / 1_000_000;
+    console.log(JSON.stringify({
+      event: 'ssr_access',
+      method: req.method,
+      path: req.path,
+      hasQuery: Object.keys(req.query).length > 0,
+      status: res.statusCode,
+      durationMs: Math.round(durationMs * 100) / 100,
+      cache: res.getHeader('X-SSR-Cache') || null,
+      cacheRoute: res.getHeader('X-SSR-Cache-Route') || null,
+      ip: clientIp(req),
+      userAgent: cleanLogValue(firstHeaderValue(req.headers['user-agent']), 180),
+    }));
+  });
+
+  next();
+};
+
 const prunePdpCache = (): void => {
   const now = Date.now();
   for (const [key, entry] of pdpCache) {
@@ -293,6 +334,8 @@ export function app(): Express {
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
+  server.set('trust proxy', true);
+  server.use(ssrAccessLogger);
 
   server.get('/sitemap.xml', async (_req: Request, res: Response) => {
     try {
