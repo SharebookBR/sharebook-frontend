@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
@@ -9,6 +10,8 @@ import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
+
+const EDITORIAL_SHOWCASE_RANDOM_SEED_KEY = makeStateKey<number>('home:editorial-showcase-random-seed');
 
 @Component({
     selector: 'app-home',
@@ -66,14 +69,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   public showButtonMoreMeetups: boolean = true;
 
   private _destroySubscribes$ = new Subject<void>();
+  private readonly _editorialShowcaseRandomSeed: number;
+  private _browserShuffleTimeouts: ReturnType<typeof setTimeout>[] = [];
 
   constructor(
     private _scBook: BookService,
     private _scMeetup: MeetupService,
     private _seo: SeoService,
     private _categoryService: CategoryService,
-    private _cdr: ChangeDetectorRef
-  ) {}
+    private _cdr: ChangeDetectorRef,
+    private _transferState: TransferState,
+    @Inject(PLATFORM_ID) private _platformId: Object
+  ) {
+    this._editorialShowcaseRandomSeed = this.getEditorialShowcaseRandomSeed();
+  }
 
   ngOnInit() {
     this._seo.generateTags({
@@ -124,7 +133,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     )
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
-        this.mythologyShowcase = books.filter((book) => !!book);
+        this.mythologyShowcase = this.shuffleBooks(
+          books.filter((book) => !!book),
+          this._editorialShowcaseRandomSeed + 1
+        );
+        this.shuffleShowcaseInBrowser('mythology');
         this._cdr.markForCheck();
       });
   }
@@ -137,9 +150,80 @@ export class HomeComponent implements OnInit, OnDestroy {
     )
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe((books) => {
-        this.horrorShowcase = books.filter((book) => !!book);
+        this.horrorShowcase = this.shuffleBooks(
+          books.filter((book) => !!book),
+          this._editorialShowcaseRandomSeed + 2
+        );
+        this.shuffleShowcaseInBrowser('horror');
         this._cdr.markForCheck();
       });
+  }
+
+  private getEditorialShowcaseRandomSeed(): number {
+    const storedSeed = this._transferState.get(EDITORIAL_SHOWCASE_RANDOM_SEED_KEY, null);
+
+    if (storedSeed !== null) {
+      return storedSeed;
+    }
+
+    const seed = Math.floor(Math.random() * 2147483647);
+
+    if (isPlatformServer(this._platformId)) {
+      this._transferState.set(EDITORIAL_SHOWCASE_RANDOM_SEED_KEY, seed);
+    }
+
+    return seed;
+  }
+
+  private shuffleShowcaseInBrowser(showcase: 'mythology' | 'horror') {
+    if (!isPlatformBrowser(this._platformId)) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      const seed = this.createBrowserRandomSeed();
+
+      if (showcase === 'mythology' && this.mythologyShowcase.length > 1) {
+        this.mythologyShowcase = this.shuffleBooks(this.mythologyShowcase, seed + 1);
+      }
+
+      if (showcase === 'horror' && this.horrorShowcase.length > 1) {
+        this.horrorShowcase = this.shuffleBooks(this.horrorShowcase, seed + 2);
+      }
+
+      this._cdr.markForCheck();
+    });
+
+    this._browserShuffleTimeouts.push(timeout);
+  }
+
+  private createBrowserRandomSeed(): number {
+    return Math.floor(Math.random() * 2147483647);
+  }
+
+  private shuffleBooks<T>(books: T[], seed: number): T[] {
+    const shuffled = [...books];
+    const random = this.createSeededRandom(seed);
+
+    for (let index = shuffled.length - 1; index > 0; index--) {
+      const randomIndex = Math.floor(random() * (index + 1));
+      [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+    }
+
+    return shuffled;
+  }
+
+  private createSeededRandom(seed: number): () => number {
+    let state = seed % 2147483647;
+
+    if (state <= 0) {
+      state += 2147483646;
+    }
+
+    return () => {
+      state = (state * 16807) % 2147483647;
+      return (state - 1) / 2147483646;
+    };
   }
 
   getBooks() {
@@ -238,6 +322,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this._browserShuffleTimeouts.forEach((timeout) => clearTimeout(timeout));
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
   }
