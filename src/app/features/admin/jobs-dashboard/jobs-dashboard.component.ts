@@ -20,6 +20,7 @@ export class JobsDashboardComponent implements OnInit {
   dashboard: JobMonitorDashboard;
   isLoading = true;
   loadError = false;
+  expandedHistory = new Set<string>();
   private readonly weekDayLabels: Record<string, string> = {
     Monday: 'segunda',
     Tuesday: 'terca',
@@ -48,6 +49,35 @@ export class JobsDashboardComponent implements OnInit {
     }
 
     return job.bestTimeToExecute || 'Livre';
+  }
+
+  getFlowLabel(job: JobMonitorItem): string {
+    if (job.jobName === 'NewBookGetInterestedUsers' || job.jobName === 'NewEbookWeeklyDigest') {
+      return 'Enfileira e-mails';
+    }
+
+    if (job.jobName === 'MailSender') {
+      return 'Consome fila';
+    }
+
+    return 'Executa rotina';
+  }
+
+  getHealthClass(job: JobMonitorItem): string {
+    return `job-health--${job.healthStatus || 'unknown'}`;
+  }
+
+  toggleHistory(jobName: string): void {
+    if (this.expandedHistory.has(jobName)) {
+      this.expandedHistory.delete(jobName);
+      return;
+    }
+
+    this.expandedHistory.add(jobName);
+  }
+
+  isHistoryExpanded(jobName: string): boolean {
+    return this.expandedHistory.has(jobName);
   }
 
   private loadDashboard(): void {

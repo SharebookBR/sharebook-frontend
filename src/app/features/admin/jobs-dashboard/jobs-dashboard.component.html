@@ -38,6 +38,18 @@
         <div class="summary-card__label">Com histórico</div>
         <div class="summary-card__value">{{ dashboard.summary.jobsWithHistory }}</div>
       </div>
+      <div class="summary-card summary-card--healthy">
+        <div class="summary-card__label">Saudáveis</div>
+        <div class="summary-card__value">{{ dashboard.summary.healthyJobs }}</div>
+      </div>
+      <div class="summary-card summary-card--warning">
+        <div class="summary-card__label">Atrasados</div>
+        <div class="summary-card__value">{{ dashboard.summary.delayedJobs }}</div>
+      </div>
+      <div class="summary-card summary-card--error">
+        <div class="summary-card__label">Com erro</div>
+        <div class="summary-card__value">{{ dashboard.summary.jobsWithError }}</div>
+      </div>
     </div>
     <div class="executor-card">
       <div class="executor-card__top">
@@ -78,6 +90,8 @@
           <tr>
             <th>#</th>
             <th>Job</th>
+            <th>Saúde</th>
+            <th>Fluxo</th>
             <th>Status</th>
             <th>Periodicidade</th>
             <th>Melhor horário</th>
@@ -86,13 +100,20 @@
           </tr>
         </thead>
         <tbody>
-          @for (job of dashboard.jobs; track job) {
+          @for (job of dashboard.jobs; track job.jobName) {
             <tr>
               <td>{{ job.order }}</td>
               <td>
                 <div class="jobs-table__title">{{ job.jobName }}</div>
                 <div class="jobs-table__description">{{ job.description }}</div>
               </td>
+              <td>
+                <span class="job-health" [ngClass]="getHealthClass(job)">
+                  {{ job.healthLabel }}
+                </span>
+                <div class="jobs-table__note">{{ job.healthReason }}</div>
+              </td>
+              <td>{{ getFlowLabel(job) }}</td>
               <td>
                 <span class="job-badge" [class.job-badge--active]="job.active" [class.job-badge--inactive]="!job.active">
                   {{ job.active ? 'Ativo' : 'Inativo' }}
@@ -104,10 +125,39 @@
               <td>{{ job.lastExecutionDurationSeconds != null ? (job.lastExecutionDurationSeconds | number: '1.0-2') + 's' : '-' }}</td>
             </tr>
             <tr class="jobs-table__details-row">
-              <td colspan="7">
+              <td colspan="9">
                 <div class="jobs-table__details">
-                  <strong>Último detalhe:</strong>
+                  <div class="jobs-table__details-header">
+                    <strong>Último detalhe</strong>
+                    <button type="button" class="history-toggle" (click)="toggleHistory(job.jobName)">
+                      {{ isHistoryExpanded(job.jobName) ? 'Ocultar histórico' : 'Ver histórico' }}
+                    </button>
+                  </div>
                   <pre class="jobs-table__details-pre">{{ job.lastExecutionDetails || 'Sem detalhe registrado ainda.' }}</pre>
+                  @if (isHistoryExpanded(job.jobName)) {
+                    <div class="history-list">
+                      @for (history of job.recentHistory; track history.creationDate) {
+                        <div class="history-list__item">
+                          <div>
+                            <span
+                              class="history-list__status"
+                              [class.history-list__status--success]="history.isSuccess"
+                              [class.history-list__status--error]="!history.isSuccess"
+                              >
+                              {{ history.isSuccess ? 'Sucesso' : 'Erro' }}
+                            </span>
+                            <span>{{ history.creationDate | date: 'dd/MM/yyyy HH:mm' }}</span>
+                            <span>{{ history.timeSpentSeconds | number: '1.0-2' }}s</span>
+                          </div>
+                          @if (history.details) {
+                            <pre class="history-list__details">{{ history.details }}</pre>
+                          }
+                        </div>
+                      } @empty {
+                        <div class="history-list__empty">Sem histórico registrado.</div>
+                      }
+                    </div>
+                  }
                 </div>
               </td>
             </tr>

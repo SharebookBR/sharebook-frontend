@@ -4,6 +4,9 @@ export interface JobMonitorSummary {
   inactiveJobs: number;
   jobsWithHistory: number;
   jobsNeverExecuted: number;
+  healthyJobs: number;
+  delayedJobs: number;
+  jobsWithError: number;
 }
 
 export interface JobMonitorExecutor {
@@ -23,8 +26,20 @@ export interface JobMonitorItem {
   bestTimeToExecute?: string;
   nextExecutionAt?: string;
   lastExecutionAt?: string;
+  lastExecutionSuccess?: boolean;
   lastExecutionDurationSeconds?: number;
   lastExecutionDetails?: string;
+  healthStatus: 'healthy' | 'delayed' | 'error' | 'inactive' | 'unknown' | string;
+  healthLabel: string;
+  healthReason: string;
+  recentHistory: JobMonitorHistoryItem[];
+}
+
+export interface JobMonitorHistoryItem {
+  creationDate?: string;
+  isSuccess: boolean;
+  timeSpentSeconds: number;
+  details?: string;
 }
 
 export interface JobMonitorDashboard {

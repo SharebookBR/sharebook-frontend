@@ -36,6 +36,18 @@
   padding: 1rem 1.25rem;
 }
 
+.summary-card--healthy {
+  border-color: #bbf7d0;
+}
+
+.summary-card--warning {
+  border-color: #fde68a;
+}
+
+.summary-card--error {
+  border-color: #fecaca;
+}
+
 .summary-card__label {
   color: #667085;
   font-size: 0.95rem;
@@ -154,6 +166,45 @@
   color: #4b5563;
 }
 
+.job-health {
+  display: inline-flex;
+  align-items: center;
+  min-width: 6.5rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.job-health--healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.job-health--delayed {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.job-health--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.job-health--inactive,
+.job-health--unknown {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.jobs-table__note {
+  max-width: 18rem;
+  margin-top: 0.25rem;
+  color: #667085;
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
 .jobs-table__details-row td {
   padding-top: 0;
   border-top: 0;
@@ -164,8 +215,76 @@
   padding-bottom: 1rem;
 }
 
+.jobs-table__details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .jobs-table__details-pre {
   margin-top: 0.5rem;
+}
+
+.history-toggle {
+  border: 1px solid #b6c7d8;
+  border-radius: 999px;
+  background: #fff;
+  color: #255f85;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+}
+
+.history-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.history-list__item {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.history-list__item > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  color: #526071;
+}
+
+.history-list__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.history-list__status--success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.history-list__status--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.history-list__details {
+  margin: 0.6rem 0 0;
+  white-space: pre-wrap;
+  color: #243447;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.85rem;
+}
+
+.history-list__empty {
+  color: #667085;
 }
 
 .spinner-container {
