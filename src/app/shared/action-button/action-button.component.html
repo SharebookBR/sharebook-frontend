@@ -1,3 +1,7 @@
+<!-- Um único ng-content: o Angular projeta o conteúdo em um só slot, então
+     repetir <ng-content> em cada ramo deixa os links sem texto. -->
+<ng-template #content><ng-content></ng-content></ng-template>
+
 @if (routerLink) {
   <a
     mat-flat-button
@@ -7,7 +11,7 @@
     (click)="onClick($event)"
     >
     @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
-    <ng-content></ng-content>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
   </a>
 } @else if (href) {
   <a
@@ -20,7 +24,7 @@
     (click)="onClick($event)"
     >
     @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
-    <ng-content></ng-content>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
   </a>
 } @else {
   <button
@@ -32,6 +36,6 @@
     (click)="onClick($event)"
     >
     @if (icon) { <mat-icon>{{ icon }}</mat-icon> }
-    <ng-content></ng-content>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 }

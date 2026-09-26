@@ -59,6 +59,19 @@
   border: 1px solid currentColor;
 }
 
+/* O mat-flat-button pinta o texto de primary/accent de branco (cor sobre
+   fundo cheio); no contorno o fundo é transparente, então a cor precisa
+   vir daqui, senão fica branco sobre branco. */
+.app-action-button--outlined.app-action-button--primary {
+  color: #29abe2 !important;
+  border-color: #29abe2;
+}
+
+.app-action-button--outlined.app-action-button--accent {
+  color: #ff4081 !important;
+  border-color: #ff4081;
+}
+
 .app-action-button--outlined.app-action-button--success {
   color: #2e7d32 !important;
   border-color: #2e7d32;
