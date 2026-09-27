@@ -42,6 +42,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
   public mythologyShowcase: Book[] = [];
 
+  // Vitrine editorial fixa — bruxas, magia e fantasia sombria do acervo.
+  private readonly WITCHES_SHOWCASE_SLUGS = [
+    'bruxa-por-acaso-o-gala-de-milhoes',
+    'lumi-a-bruxinha',
+    'a-bruxa-de-salem',
+    'a-bruxa-de-praga',
+    'a-furia-de-oya',
+  ];
+  public witchesShowcase: Book[] = [];
+
   // Vitrine editorial fixa — clássicos e horror literário, sem títulos infantis.
   private readonly HORROR_SHOWCASE_SLUGS = [
     'dracula',
@@ -118,6 +128,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getBooks();
     this.getEbooks();
     this.getMythologyShowcase();
+    this.getWitchesShowcase();
     this.getHorrorShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
@@ -142,6 +153,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  getWitchesShowcase() {
+    forkJoin(
+      this.WITCHES_SHOWCASE_SLUGS.map((slug) =>
+        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+      )
+    )
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((books) => {
+        this.witchesShowcase = this.shuffleBooks(
+          books.filter((book) => !!book),
+          this._editorialShowcaseRandomSeed + 2
+        );
+        this.shuffleShowcaseInBrowser('witches');
+        this._cdr.markForCheck();
+      });
+  }
+
   getHorrorShowcase() {
     forkJoin(
       this.HORROR_SHOWCASE_SLUGS.map((slug) =>
@@ -152,7 +180,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((books) => {
         this.horrorShowcase = this.shuffleBooks(
           books.filter((book) => !!book),
-          this._editorialShowcaseRandomSeed + 2
+          this._editorialShowcaseRandomSeed + 3
         );
         this.shuffleShowcaseInBrowser('horror');
         this._cdr.markForCheck();
@@ -175,7 +203,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return seed;
   }
 
-  private shuffleShowcaseInBrowser(showcase: 'mythology' | 'horror') {
+  private shuffleShowcaseInBrowser(showcase: 'mythology' | 'witches' | 'horror') {
     if (!isPlatformBrowser(this._platformId)) {
       return;
     }
@@ -187,8 +215,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.mythologyShowcase = this.shuffleBooks(this.mythologyShowcase, seed + 1);
       }
 
+      if (showcase === 'witches' && this.witchesShowcase.length > 1) {
+        this.witchesShowcase = this.shuffleBooks(this.witchesShowcase, seed + 2);
+      }
+
       if (showcase === 'horror' && this.horrorShowcase.length > 1) {
-        this.horrorShowcase = this.shuffleBooks(this.horrorShowcase, seed + 2);
+        this.horrorShowcase = this.shuffleBooks(this.horrorShowcase, seed + 3);
       }
 
       this._cdr.markForCheck();

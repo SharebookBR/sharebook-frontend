@@ -51,6 +51,16 @@
     ></app-book-shelf>
   }
 
+  <!-- VITRINE EDITORIAL FIXA — BRUXAS E MAGIA -->
+  @if (witchesShowcase.length > 0) {
+    <app-book-shelf
+      title="Bruxas & Magia"
+      [books]="witchesShowcase"
+      [moreLink]="['/categorias', 'ficcao', 'bruxas-magia']"
+      ariaLabel="Livros de bruxas e magia"
+    ></app-book-shelf>
+  }
+
   <!-- VITRINE EDITORIAL FIXA — LITERATURA DE TERROR -->
   @if (horrorShowcase.length > 0) {
     <app-book-shelf
