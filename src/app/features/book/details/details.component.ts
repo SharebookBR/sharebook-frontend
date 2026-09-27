@@ -25,6 +25,7 @@ import { PlatformService } from 'src/app/core/services/platform/platform.service
 import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-description';
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
+import { CachedEbookFile, EbookDownloadCacheService } from 'src/app/features/book/services/ebook-download-cache.service';
 
 @Component({
     selector: 'app-details',
@@ -69,6 +70,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _platform: PlatformService,
     private _ga: GoogleAnalyticsService,
+    private _ebookCache: EbookDownloadCacheService,
     @Inject(APP_CONFIG) private config: AppConfig,
     @Optional() @Inject(RESPONSE) private response: Response,
     private _cdr: ChangeDetectorRef
@@ -379,26 +381,90 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getParentCategoryName(): string {
     return this.bookInfo?.categoryInfo?.parentCategoryName || '';
   }
-  onDownloadEbook() {
-    if (this.bookInfo.slug) {
-      const pendingWindow = this._platform.open('about:blank', '_blank');
-      this._ga.sendEvent('ebook_download', {
-        book_title: this.bookInfo.title,
-        book_slug: this.bookInfo.slug,
-      });
-      this._scBook
-        .createDownloadEbookUrl(this.bookInfo.slug)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .subscribe({
-          next: (response) => {
-            this._platform.navigateOpenedWindow(pendingWindow, response.url);
-          },
-          error: () => {
-            const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${this.bookInfo.slug}`;
-            this._platform.navigateOpenedWindow(pendingWindow, downloadUrl);
-          }
-        });
+  async onDownloadEbook() {
+    const slug = this.bookInfo.slug;
+    if (!slug) {
+      return;
     }
+
+    const pendingWindow = this._platform.open('about:blank', '_blank');
+    this._ga.sendEvent('ebook_download', {
+      book_title: this.bookInfo.title,
+      book_slug: slug,
+    });
+
+    const cachedFile = await this._ebookCache.get(slug);
+    if (cachedFile && this.openCachedEbook(pendingWindow, cachedFile)) {
+      return;
+    }
+
+    try {
+      const urlResponse = await this._scBook
+        .createDownloadEbookUrl(slug)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .toPromise();
+      if (!urlResponse?.url) {
+        throw new Error('Download URL indisponível');
+      }
+
+      const fileResponse = await this._scBook
+        .downloadEbookFile(urlResponse.url)
+        .pipe(takeUntil(this._destroySubscribes$))
+        .toPromise();
+      if (!fileResponse) {
+        throw new Error('Arquivo indisponível');
+      }
+      const blob = fileResponse.body;
+
+      if (blob) {
+        const cached: CachedEbookFile = {
+          slug,
+          blob,
+          contentType: blob.type || fileResponse.headers.get('content-type') || 'application/octet-stream',
+          fileName: this.resolveEbookFileName(fileResponse.headers.get('content-disposition')),
+          savedAt: Date.now(),
+        };
+
+        await this._ebookCache.put(cached);
+        if (this.openCachedEbook(pendingWindow, cached)) {
+          return;
+        }
+      }
+
+      this._platform.navigateOpenedWindow(pendingWindow, urlResponse.url);
+    } catch {
+      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${slug}`;
+      this._platform.navigateOpenedWindow(pendingWindow, downloadUrl);
+    }
+  }
+
+  private openCachedEbook(openedWindow: Window | null, file: CachedEbookFile): boolean {
+    const objectUrl = this._ebookCache.createObjectUrl(file);
+    if (!objectUrl) {
+      return false;
+    }
+
+    this._platform.navigateOpenedWindow(openedWindow, objectUrl);
+    return true;
+  }
+
+  private resolveEbookFileName(contentDisposition: string | null): string {
+    const fallbackTitle = (this.bookInfo.title || this.bookInfo.slug || 'sharebook-ebook')
+      .replace(/[\\/:*?"<>|]/g, '')
+      .trim();
+    const fallback = `${fallbackTitle || 'sharebook-ebook'}.pdf`;
+
+    if (!contentDisposition) {
+      return fallback;
+    }
+
+    const utf8Match = /filename\*=UTF-8''([^;]+)/i.exec(contentDisposition);
+    if (utf8Match?.[1]) {
+      return decodeURIComponent(utf8Match[1].replace(/"/g, ''));
+    }
+
+    const filenameMatch = /filename="?([^";]+)"?/i.exec(contentDisposition);
+    return filenameMatch?.[1] || fallback;
   }
 
   getEbookSocialProofLabel(): string {

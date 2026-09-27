@@ -3,7 +3,7 @@ import { UserInfoBook } from 'src/app/features/book/UserInfoBook';
 import { Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
-import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Book } from 'src/app/features/book/book';
 import { BookVM } from 'src/app/features/book/bookVM';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
@@ -137,6 +137,13 @@ export class BookService {
       `${this.config.apiEndpoint}/book/DownloadEBookUrl/${slug}`,
       null
     );
+  }
+
+  public downloadEbookFile(url: string): Observable<HttpResponse<Blob>> {
+    return this._http.get(url, {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 
   public getRandom15Books() {
