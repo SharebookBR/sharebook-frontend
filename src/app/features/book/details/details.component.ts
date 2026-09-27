@@ -398,17 +398,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    try {
-      const urlResponse = await this._scBook
-        .createDownloadEbookUrl(slug)
-        .pipe(takeUntil(this._destroySubscribes$))
-        .toPromise();
-      if (!urlResponse?.url) {
-        throw new Error('Download URL indisponível');
-      }
+    let authorizedDownloadUrl: string | null = null;
 
+    try {
+      authorizedDownloadUrl = await this.createAuthorizedDownloadUrl(slug);
       const fileResponse = await this._scBook
-        .downloadEbookFile(urlResponse.url)
+        .downloadEbookFile(authorizedDownloadUrl)
         .pipe(takeUntil(this._destroySubscribes$))
         .toPromise();
       if (!fileResponse) {
@@ -431,11 +426,26 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       }
 
-      this._platform.navigateOpenedWindow(pendingWindow, urlResponse.url);
+      this._platform.navigateOpenedWindow(pendingWindow, authorizedDownloadUrl);
     } catch {
-      const downloadUrl = `${this.config.apiEndpoint}/book/DownloadEBook/${slug}`;
-      this._platform.navigateOpenedWindow(pendingWindow, downloadUrl);
+      this._platform.navigateOpenedWindow(
+        pendingWindow,
+        authorizedDownloadUrl || `${this.config.apiEndpoint}/book/DownloadEBook/${slug}`
+      );
     }
+  }
+
+  private async createAuthorizedDownloadUrl(slug: string): Promise<string> {
+    const urlResponse = await this._scBook
+      .createDownloadEbookUrl(slug)
+      .pipe(takeUntil(this._destroySubscribes$))
+      .toPromise();
+
+    if (!urlResponse?.url) {
+      throw new Error('Download URL indisponível');
+    }
+
+    return urlResponse.url;
   }
 
   private openCachedEbook(openedWindow: Window | null, file: CachedEbookFile): boolean {
