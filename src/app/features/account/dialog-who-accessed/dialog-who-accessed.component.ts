@@ -28,9 +28,9 @@ export class DialogWHoAccessedComponent implements OnInit {
         time: item.visitingDay.substring(11, 19),
         name: item.visitorName,
         profile: item.profile
-          .replace('Donor', 'Doador')
+          .replace('Donor', 'Pessoa doadora')
           .replace('Undefined', 'Não Definido')
-          .replace('Winner', 'Ganhador'),
+          .replace('Winner', 'Pessoa ganhadora'),
       });
     }
   }

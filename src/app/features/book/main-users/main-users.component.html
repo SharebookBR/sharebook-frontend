@@ -10,7 +10,7 @@
     <div class="main-users-stack">
       @for (mainUser of mainUsers; track mainUser; let k = $index) {
         <div class="user-card">
-          <h5 class="user-card__role">{{ k == 0 ? 'Doador' : k == 1 ? 'Facilitador' : 'Vencedor' }}</h5>
+          <h5 class="user-card__role">{{ k == 0 ? 'Pessoa doadora' : k == 1 ? 'Facilitador' : 'Pessoa escolhida' }}</h5>
           <p class="card-text"><strong>Nome:</strong> {{ mainUser.name || 'Não informado' }}</p>
           <p class="card-text"><strong>E-mail:</strong> {{ mainUser.email || 'Não informado' }}</p>
           <p class="card-text"><strong>LinkedIn:</strong> {{ mainUser.linkedin || 'Não informado' }}</p>

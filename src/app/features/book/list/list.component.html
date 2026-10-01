@@ -88,7 +88,7 @@
             </div>
             <div class="admin-card__meta">
               <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
-              <div><b>Doador:</b> {{ element.donor || '-' }}</div>
+              <div><b>Pessoa doadora:</b> {{ element.donor || '-' }}</div>
               @if (canShowDecisionDate(element)) {
                 <div>
                   <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}
