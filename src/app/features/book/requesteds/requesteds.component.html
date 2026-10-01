@@ -9,7 +9,7 @@
     </div>
     <div class="summary-card summary-card--won">
       <div class="summary-title">Você ganhou</div>
-      <div class="summary-subtitle">Pedidos aprovados pelo doador</div>
+      <div class="summary-subtitle">Pedidos aprovados pela pessoa doadora</div>
       <div class="summary-value">{{ wonCount }}</div>
     </div>
     <div class="summary-card summary-card--finished">
@@ -74,7 +74,7 @@
                   icon="chat_bubble_outline"
                   (action)="onCustomActionColum('verDoador', element)"
                   >
-                  Falar com doador
+                  Falar com pessoa doadora
                 </app-action-button>
               }
               @if (getTrackingNumber(element)) {

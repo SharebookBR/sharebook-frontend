@@ -31,7 +31,7 @@ export class AboutComponent implements OnInit {
     this._seo.generateTags({
       title: 'Quem somos.',
       description:
-        'Sharebook é um projeto social. Um app livre e gratuito para ajudar as pessoas a doar ou ganhar livros.' +
+        'Sharebook é um projeto social. Um app livre e gratuito para ajudar as pessoas a doar e receber livros.' +
         'Foi fundado pelo Raffaello Damgaard após conversar com Vagner Nunes que incentivou a ideia. ' +
         'Centenas de livros já foram doados em nossa plataforma. Em cada um deles temos muito orgulho e incentivo de continuar em frente.',
       slug: 'quem-somos'

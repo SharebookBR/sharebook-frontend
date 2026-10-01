@@ -102,10 +102,10 @@ export class FormComponent implements OnInit, OnDestroy {
       title: 'Doe um livro.',
       description:
         'Doe um livro e você vai ficar emocionado com a experiência. Nossos usuários tem relatado que eh emocionante. ' +
-        'Apesar de ser no anonimato vc se envolve com muitas histórias incríveis. ' +
+        'Apesar de ser no anonimato você se envolve com muitas histórias incríveis. ' +
         'Vc não faz ideia de como tem pessoas que realmente precisam. ' +
         'E da força transformadora que um simples livro causa na vida de uma pessoa. ' +
-        'E que você ao escolher um ganhador, passa a fazer parte dessa história.',
+        'E que, ao escolher quem vai receber, você passa a fazer parte dessa história.',
       slug: 'doar-livro',
     });
 

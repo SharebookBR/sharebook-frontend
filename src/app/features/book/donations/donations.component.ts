@@ -256,7 +256,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         if (param.status !== BookDonationStatus.WAITING_SEND &&
           param.status !== BookDonationStatus.SENT &&
           param.status !== BookDonationStatus.RECEIVED) {
-          this._toastr.info('Você ainda não escolheu o ganhador.');
+          this._toastr.info('Você ainda não escolheu quem vai receber.');
           return;
         }
         const modalRef = this.dialog.open(WinnerUsersComponent, {
@@ -393,7 +393,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
     }
 
     if (this.canChooseWinnerNow(book)) {
-      return 'Escolher ganhador';
+      return 'Escolher quem vai receber';
     }
 
     return 'Ver pedidos';

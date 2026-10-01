@@ -414,7 +414,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getPrimaryActionLabel(book: BookVMItem): string {
     if (this.canChooseWinnerNow(book)) {
-      return 'Escolher ganhador';
+      return 'Escolher quem vai receber';
     }
 
     return 'Ver pedidos';

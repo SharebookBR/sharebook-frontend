@@ -12,7 +12,7 @@ export function getStatusDescription(RequestStatus): string {
     case BookRequestStatus.REFUSED:
       return 'Não foi dessa vez';
     case BookRequestStatus.AWAITING_ACTION:
-      return 'Aguardando decisão do(a) doador(a)';
+      return 'Aguardando decisão da pessoa doadora';
     case BookRequestStatus.CANCELED:
       return 'Cancelado';
     default:

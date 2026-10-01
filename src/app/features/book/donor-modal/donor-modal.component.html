@@ -1,7 +1,7 @@
 <div class="close">
   <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
 </div>
-<h4 mat-dialog-title class="donor-title">Informações do doador do livro</h4>
+<h4 mat-dialog-title class="donor-title">Informações da pessoa doadora</h4>
 <mat-dialog-content>
   <h4 class="donor-book-title">{{ bookTitle }}</h4>
   <section class="card-body">
@@ -14,7 +14,7 @@
     }
 
     @if ((userInfo$ | async)?.donor; as donor) {
-      <h5 class="card-title">Doador</h5>
+      <h5 class="card-title">Pessoa doadora</h5>
       <p class="card-text"><strong>Nome:</strong> {{ donor.name }}</p>
       <p class="card-text"><strong>E-mail:</strong> {{ donor.email }}</p>
       <p class="card-text"><strong>LinkedIn:</strong> {{ donor.linkedin }}</p>

@@ -101,12 +101,12 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
 
         // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-        // é a hora de escolher o(a) ganhador(a)!
+        // é a hora de escolher quem vai receber.
 
         case BookDonationStatus.WAITING_SEND:
         case BookDonationStatus.SENT:
         case BookDonationStatus.RECEIVED:
-          alert(`Você já escolheu o(a) ganhador(a).`);
+          alert(`Você já escolheu quem vai receber.`);
           return;
 
         case BookDonationStatus.CANCELED:
@@ -160,11 +160,11 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             case BookDonationStatus.AVAILABLE:
               this.showWarning = true;
-              this.warningMessage = `Aguarde a data de decisão para escolher o(a) ganhador(a), em ${this.chooseDateFormated}.`;
+              this.warningMessage = `Aguarde a data de decisão para escolher quem vai receber, em ${this.chooseDateFormated}.`;
               break;
 
             // BookDonationStatus.WAITING_DECISION >> não precisa de aviso.
-            // é a hora de escolher o(a) ganhador(a)!
+            // é a hora de escolher quem vai receber.
 
             case BookDonationStatus.WAITING_SEND:
             case BookDonationStatus.SENT:
@@ -235,9 +235,9 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     const digits = phone.replace(/\D/g, '');
     const number = digits.startsWith('55') ? digits : `55${digits}`;
     const message = [
-      `Olá! Meu nome é ${this.donorFirstName} e sou o doador do livro "${this.book.title}" no Sharebook.`,
-      'Dentre muitos pedidos, vc foi escolhida como ganhadora do livro. Parabéns!',
-      'Estarei enviando ainda essa semana.'
+      `Olá! Meu nome é ${this.donorFirstName} e doei o livro "${this.book.title}" pelo Sharebook.`,
+      'Dentre muitas solicitações, você foi escolhida para receber o livro. Parabéns!',
+      'Vou enviar ainda esta semana.'
     ].join('\n\n');
     return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
   }

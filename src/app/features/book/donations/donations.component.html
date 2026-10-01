@@ -9,7 +9,7 @@
     </div>
     <div class="summary-card summary-card--shipping">
       <div class="summary-title">Aguardando envio</div>
-      <div class="summary-subtitle">Livros com ganhador, prontos para despacho</div>
+      <div class="summary-subtitle">Livros com pessoa escolhida, prontos para despacho</div>
       <div class="summary-value">{{ waitingSendCount }}</div>
     </div>
     <div class="summary-card summary-card--finished">
@@ -102,7 +102,7 @@
               }
               @if (canShowWinner(element)) {
                 <app-action-button variant="ghost" appearance="stroked" icon="person" (action)="onCustom('ShowWinnerInfo', element)">
-                  Ver ganhador
+                  Ver pessoa escolhida
                 </app-action-button>
               }
               @if (canCancel(element)) {

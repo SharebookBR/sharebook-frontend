@@ -68,7 +68,7 @@
           </p>
           @if (isEbook() && bookInfo.donor?.displayName) {
             <p>
-              <strong>Doador:</strong><br />
+              <strong>Pessoa doadora:</strong><br />
               @if (bookInfo.donor?.linkedin) {
                 <a
                   class="details-link"
@@ -90,7 +90,7 @@
           }
           @if (available && !isEbook()) {
             <p>
-              <strong>Quando será anunciado o(a) ganhador(a) deste livro?</strong><br />{{ chooseDateInfo }}
+              <strong>Quando será feita a escolha deste livro?</strong><br />{{ chooseDateInfo }}
             </p>
           }
           @if (available && userProfile && !isEbook()) {
@@ -100,7 +100,7 @@
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="checkFreight" [(ngModel)]="isCheckedFreight" />
               <label class="custom-control-label" for="checkFreight"
-                >Estou ciente que o frete não é grátis. Caso seja escolhido, me comprometo a reembolsar o doador.</label
+                >Estou ciente que o frete não é grátis. Caso seja escolhido, me comprometo a reembolsar a pessoa doadora.</label
                 >
               </div>
             }
