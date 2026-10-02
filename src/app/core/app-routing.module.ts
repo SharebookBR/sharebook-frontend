@@ -29,6 +29,7 @@ import { DataAnonymizationInfoComponent } from '../features/static-pages/data-an
 import { SearchResultsComponent } from '../components/search-results/search-results.component';
 import { CategoryBooksComponent } from '../features/category/category-books/category-books.component';
 import { CategoriesListComponent } from '../features/category/categories-list/categories-list.component';
+import { TagsListComponent } from '../features/tag/tags-list/tags-list.component';
 import { TagBooksComponent } from '../features/tag/tag-books/tag-books.component';
 import { SettingsComponent } from '../features/account/settings/settings.component';
 import { UnsubscribeComponent } from '../features/auth/unsubscribe/unsubscribe.component';
@@ -130,6 +131,10 @@ const routes: Routes = [
   {
     path: 'categorias/:slug',
     component: CategoryBooksComponent,
+  },
+  {
+    path: 'tags',
+    component: TagsListComponent,
   },
   {
     path: 'tags/:slug',

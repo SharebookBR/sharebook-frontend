@@ -18,6 +18,10 @@ export interface TagBooksPage {
 export class TagService {
   constructor(private _http: HttpClient, @Inject(APP_CONFIG) private config: AppConfig) {}
 
+  public getTags(): Observable<TagVM[]> {
+    return this._http.get<TagVM[]>(`${this.config.apiEndpoint}/tag`);
+  }
+
   public getTag(idOrAlias: string): Observable<TagVM> {
     return this._http.get<TagVM>(`${this.config.apiEndpoint}/tag/${encodeURIComponent(idOrAlias)}`);
   }

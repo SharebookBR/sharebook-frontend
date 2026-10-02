@@ -1,0 +1,42 @@
+<div class="container tags-page">
+  <nav aria-label="breadcrumb" class="tags-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Vitrine</a></li>
+      <li class="breadcrumb-item active" aria-current="page">tags</li>
+    </ol>
+  </nav>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Carregando tags...</p>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <div class="tags-header">
+      <h1>Tags</h1>
+      <p>Explore livros por assunto, stack e intenção de leitura.</p>
+    </div>
+  }
+
+  @if (!isLoading && tags.length > 0) {
+    <div class="tags-grid">
+      @for (tag of tags; track tag.id) {
+        <a class="tag-card" [routerLink]="['/tags', tag.id]">
+          <span class="tag-name">{{ tag.name }}</span>
+          <span class="tag-id">/{{ tag.id }}</span>
+        </a>
+      }
+    </div>
+  }
+
+  @if (!isLoading && tags.length === 0) {
+    <div class="empty-state">
+      <i class="fa fa-tag fa-4x"></i>
+      <h2>Nenhuma tag disponível</h2>
+      <p>As tags públicas ainda não foram publicadas.</p>
+      <a routerLink="/" class="btn btn-primary">Voltar para a Vitrine</a>
+    </div>
+  }
+</div>
