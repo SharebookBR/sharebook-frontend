@@ -49,6 +49,10 @@ export class TagsListComponent implements OnInit, OnDestroy {
     });
   }
 
+  public hasBooks(tag: TagVM): boolean {
+    return tag.totalBooks === undefined || tag.totalBooks === null || tag.totalBooks > 0;
+  }
+
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
