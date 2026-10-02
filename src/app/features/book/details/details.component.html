@@ -66,6 +66,16 @@
               }
             }
           </p>
+          @if (bookInfo.tags?.length) {
+            <p>
+              <strong>Tags:</strong><br />
+              @for (tag of bookInfo.tags; track tag.id; let isLast = $last) {
+                <a class="details-link tag-link" [routerLink]="getTagLink(tag.id)">{{ tag.name }}</a>@if (!isLast) {
+                <span>, </span>
+              }
+            }
+          </p>
+          }
           @if (isEbook() && bookInfo.donor?.displayName) {
             <p>
               <strong>Pessoa doadora:</strong><br />

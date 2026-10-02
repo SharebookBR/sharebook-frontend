@@ -96,6 +96,8 @@ import { DialogWHoAccessedComponent } from './features/account/dialog-who-access
 import { DialogAnonymizeComponent } from './features/account/dialog-anonymize/dialog-anonymize.component';
 import { CategoryBooksComponent } from './features/category/category-books/category-books.component';
 import { CategoriesListComponent } from './features/category/categories-list/categories-list.component';
+import { TagBooksComponent } from './features/tag/tag-books/tag-books.component';
+import { TagService } from './features/tag/services/tag.service';
 import { DevModeBannerComponent } from './components/dev-mode-banner/dev-mode-banner.component';
 import { SettingsComponent } from './features/account/settings/settings.component';
 import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
@@ -149,6 +151,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         SearchResultsComponent,
         CategoryBooksComponent,
         CategoriesListComponent,
+        TagBooksComponent,
         DevModeBannerComponent,
         SettingsComponent,
         BottomNavComponent,
@@ -188,6 +191,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         ActionButtonModule], providers: [
         BookService,
         CategoryService,
+        TagService,
         AuthenticationService,
         ContactUsService,
         GoogleAnalyticsService,

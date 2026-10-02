@@ -15,6 +15,12 @@ export interface BookDonorInfo {
   linkedin?: string | null;
 }
 
+export interface TagSummary {
+  id: string;
+  name: string;
+  family: string;
+}
+
 export class Book {
   title: string;
   author: string;
@@ -42,4 +48,5 @@ export class Book {
   pdfBytes?: string;
   eBookPdfPath?: string;
   donor?: BookDonorInfo;
+  tags?: TagSummary[];
 }

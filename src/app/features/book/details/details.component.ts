@@ -369,6 +369,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
       : this.bookInfo.category.name || '';
   }
 
+  getTagLink(tagId: string): string[] {
+    return ['/tags', tagId];
+  }
+
   getParentCategoryLink(): string[] | null {
     const categoryInfo = this.bookInfo?.categoryInfo;
     if (!categoryInfo?.parentCategoryName) {

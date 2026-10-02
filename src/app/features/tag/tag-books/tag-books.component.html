@@ -1,0 +1,64 @@
+<div class="container tag-page">
+  <nav aria-label="breadcrumb" class="tag-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Vitrine</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ tag?.name || 'Tag' }}
+      </li>
+    </ol>
+  </nav>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Carregando livros...</p>
+    </div>
+  }
+
+  @if (notFound && !isLoading) {
+    <div class="not-found-container">
+      <i class="fa fa-tag fa-4x"></i>
+      <h2>Tag nao encontrada</h2>
+      <p>A tag que voce procura nao existe.</p>
+      <a routerLink="/" class="btn btn-primary">Voltar para a Vitrine</a>
+    </div>
+  }
+
+  @if (tag && !isLoading && !notFound) {
+    <div class="tag-header">
+      <h1>{{ tag.name }}</h1>
+      <p class="books-count">{{ getBooksAvailableLabel() }}</p>
+      @if (tag.description) {
+        <p class="tag-description">{{ tag.description }}</p>
+      }
+    </div>
+  }
+
+  @if (tag && !isLoading && !notFound && books.length > 0) {
+    <div class="row justify-content-center book-covers">
+      @for (book of books; track book) {
+        <app-book-card [book]="book"></app-book-card>
+      }
+    </div>
+  }
+
+  @if (hasMoreBooks()) {
+    <div class="load-more-container mt-4 mb-5 text-center">
+      <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="isMoreLoading">
+        @if (isMoreLoading) {
+          <i class="fa fa-spinner fa-spin"></i>
+        }
+        {{ isMoreLoading ? 'Carregando...' : 'Carregar mais livros' }}
+      </button>
+    </div>
+  }
+
+  @if (tag && !isLoading && !notFound && books.length === 0) {
+    <div class="empty-state">
+      <i class="fa fa-book fa-4x"></i>
+      <h2>Nenhum livro disponivel</h2>
+      <p>No momento nao temos livros disponiveis com esta tag.</p>
+      <a routerLink="/" class="btn btn-primary">Ver todos os livros</a>
+    </div>
+  }
+</div>
