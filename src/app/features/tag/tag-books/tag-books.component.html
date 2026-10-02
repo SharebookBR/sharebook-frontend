@@ -2,8 +2,9 @@
   <nav aria-label="breadcrumb" class="tag-breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a routerLink="/">Vitrine</a></li>
+      <li class="breadcrumb-item">tags</li>
       <li class="breadcrumb-item active" aria-current="page">
-        {{ tag?.name || 'Tag' }}
+        {{ tag?.id || 'tag' }}
       </li>
     </ol>
   </nav>
