@@ -48,26 +48,30 @@
 }
 
 .tags-grid {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .tag-card {
-  border: 1px solid #e5e5ec;
-  border-radius: 6px;
-  color: #302d59;
-  display: block;
+  align-items: center;
+  background: #eef9fd;
+  border: 1px solid #bfe8f7;
+  border-radius: 8px;
+  color: #127fa8;
+  display: inline-flex;
   font-weight: 600;
-  min-height: 72px;
-  padding: 0.9rem 1rem;
+  line-height: 1.2;
+  min-height: 34px;
+  padding: 6px 12px;
   text-decoration: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .tag-card:hover {
   border-color: #29abe2;
-  box-shadow: 0 4px 14px rgba(41, 171, 226, 0.12);
+  background: #def3fb;
+  color: #0d6f93;
   text-decoration: none;
 }
 
@@ -76,11 +80,11 @@
 }
 
 .tag-card-disabled {
-  background: #f6f6f8;
-  border-color: #ededf2;
-  color: #9a9aa6;
+  background: #f5f6f8;
+  border-color: #e0e3e8;
+  color: #9aa1ab;
   cursor: not-allowed;
-  opacity: 0.72;
+  opacity: 0.74;
 }
 
 .loading-container,
