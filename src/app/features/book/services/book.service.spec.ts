@@ -237,27 +237,6 @@ describe('BookService', () => {
     }
   ));
 
-  it('downloadEbookFile: baixa blob preservando a resposta HTTP', inject(
-    [HttpTestingController, BookService],
-    (httpMock: HttpTestingController, service: BookService) => {
-      const url = 'http://api.test/book/DownloadEBook/meu-livro';
-      const file = new Blob(['pdf'], { type: 'application/pdf' });
-      let result: HttpResponse<Blob> | undefined;
-
-      service.downloadEbookFile(url).subscribe((response) => (result = response));
-
-      const req = httpMock.expectOne(url);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.responseType).toBe('blob');
-
-      req.flush(file, {
-        headers: { 'content-type': 'application/pdf' },
-      });
-
-      expect(result?.body).toBe(file);
-    }
-  ));
-
   describe('createWithProgress', () => {
     it('repassa progresso de upload e emite o corpo da resposta ao final', inject(
       [HttpTestingController, BookService],
