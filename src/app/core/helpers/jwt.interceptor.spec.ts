@@ -5,6 +5,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { jwtInterceptor } from './jwt.interceptor';
 import { BrowserStorageService } from '../services/platform/browser-storage.service';
 import * as AppConst from '../utils/app.const';
+import { APP_CONFIG } from '../../app-config.module';
 
 describe('jwtInterceptor', () => {
   const storageKey = 'shareBookUser';
@@ -14,6 +15,7 @@ describe('jwtInterceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         BrowserStorageService,
+        { provide: APP_CONFIG, useValue: { apiEndpoint: 'http://api.test' } },
         provideHttpClient(withInterceptors([jwtInterceptor])),
         provideHttpClientTesting(),
       ],
@@ -51,6 +53,28 @@ describe('jwtInterceptor', () => {
     const req = TestBed.inject(HttpTestingController).expectOne(
       `${AppConst.postalCodeWebService}01310940/json/`
     );
+    expect(req.request.headers.has('Authorization')).toBeFalse();
+    req.flush({});
+  });
+
+  it('does not leak the token to other hosts, such as a presigned S3 URL', () => {
+    localStorage.setItem(storageKey, JSON.stringify({ accessToken: 'abc123' }));
+    const s3Url = 'https://bucket.s3.amazonaws.com/livro.pdf?X-Amz-Signature=x';
+
+    TestBed.inject(HttpClient).get(s3Url).subscribe();
+
+    const req = TestBed.inject(HttpTestingController).expectOne(s3Url);
+    expect(req.request.headers.has('Authorization')).toBeFalse();
+    req.flush({});
+  });
+
+  it('does not match a host that merely starts with the API endpoint', () => {
+    localStorage.setItem(storageKey, JSON.stringify({ accessToken: 'abc123' }));
+    const lookalike = 'http://api.test.evil.com/steal';
+
+    TestBed.inject(HttpClient).get(lookalike).subscribe();
+
+    const req = TestBed.inject(HttpTestingController).expectOne(lookalike);
     expect(req.request.headers.has('Authorization')).toBeFalse();
     req.flush({});
   });
