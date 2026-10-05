@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Subject, forkJoin, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { takeUntil, catchError, switchMap } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
@@ -34,24 +34,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public witchesShowcase: Book[] = [];
 
-  // Vitrine editorial fixa — clássicos e horror literário, sem títulos infantis.
-  private readonly HORROR_SHOWCASE_SLUGS = [
-    'dracula',
-    'frankenstein_copy1',
-    'strange-case-of-dr-jekyll-and-mr-hyde',
-    'carmilla-edicion-en-espanol',
-    'the-black-cat',
-    'the-turn-of-the-screw',
-    'o-sinaleiro',
-    'noite-na-taverna',
-    'a-ilha-do-dr-moreau',
-    'the-vampyre',
-    'the-horla',
-    'the-castle-of-otranto',
-    'a-metamorfose_copy2',
-    'historias-da-meia-noite',
-    'ilha-da-caveira',
-  ];
   public horrorShowcase: Book[] = [];
 
   public meetups: Meetup[] = [];
@@ -159,15 +141,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getHorrorShowcase() {
-    forkJoin(
-      this.HORROR_SHOWCASE_SLUGS.map((slug) =>
-        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+    this._categoryService
+      .getByHierarchySlugs('ficcao', 'terror')
+      .pipe(
+        switchMap((category) =>
+          category
+            ? this._scBook.getBooksByCategoryId(category.id, 1, 30)
+            : of({ items: [] })
+        ),
+        catchError(() => of({ items: [] })),
+        takeUntil(this._destroySubscribes$)
       )
-    )
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((books) => {
+      .subscribe((response) => {
         this.horrorShowcase = this.shuffleBooks(
-          books.filter((book) => !!book),
+          response.items ?? [],
           this._editorialShowcaseRandomSeed + 3
         );
         this.shuffleShowcaseInBrowser('horror');
