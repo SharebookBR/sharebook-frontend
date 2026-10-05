@@ -10,6 +10,7 @@ import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
+import { TagBooksPage, TagService } from 'src/app/features/tag/services/tag.service';
 
 const EDITORIAL_SHOWCASE_RANDOM_SEED_KEY = makeStateKey<number>('home:editorial-showcase-random-seed');
 
@@ -29,17 +30,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public categoriesShowcase: CategoryShowcase[] = [];
   public topDownloadedEbooks: ShowcaseBookItem[] = [];
 
-  // Vitrine editorial fixa — Odisseia em alta, clássicos da mitologia grega.
-  // Remover ou trocar os slugs quando o gancho editorial passar.
-  private readonly MYTHOLOGY_SHOWCASE_SLUGS = [
-    'odisseia',
-    'iliada',
-    'eneida',
-    'a-caixa-de-pandora',
-    'faetonte-filho-de-apolo',
-    'o-minotauro',
-    'o-veu-de-penelope',
-  ];
   public mythologyShowcase: Book[] = [];
 
   // Vitrine editorial fixa — bruxas, magia e fantasia sombria do acervo.
@@ -87,6 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _scMeetup: MeetupService,
     private _seo: SeoService,
     private _categoryService: CategoryService,
+    private _tagService: TagService,
     private _cdr: ChangeDetectorRef,
     private _transferState: TransferState,
     @Inject(PLATFORM_ID) private _platformId: Object
@@ -137,15 +128,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getMythologyShowcase() {
-    forkJoin(
-      this.MYTHOLOGY_SHOWCASE_SLUGS.map((slug) =>
-        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+    this._tagService
+      .getBooksByTag('mitologia-grega', 1, 30)
+      .pipe(
+        catchError(() => of({ page: 1, itemsPerPage: 30, totalItems: 0, items: [] } as TagBooksPage)),
+        takeUntil(this._destroySubscribes$)
       )
-    )
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((books) => {
+      .subscribe((response) => {
         this.mythologyShowcase = this.shuffleBooks(
-          books.filter((book) => !!book),
+          response.items ?? [],
           this._editorialShowcaseRandomSeed + 1
         );
         this.shuffleShowcaseInBrowser('mythology');
