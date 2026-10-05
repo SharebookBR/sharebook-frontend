@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Subject, forkJoin, of } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { takeUntil, catchError, switchMap } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { Book } from 'src/app/features/book/book';
@@ -32,14 +32,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public mythologyShowcase: Book[] = [];
 
-  // Vitrine editorial fixa — bruxas, magia e fantasia sombria do acervo.
-  private readonly WITCHES_SHOWCASE_SLUGS = [
-    'bruxa-por-acaso-o-gala-de-milhoes',
-    'lumi-a-bruxinha',
-    'a-bruxa-de-salem',
-    'a-bruxa-de-praga',
-    'a-furia-de-oya',
-  ];
   public witchesShowcase: Book[] = [];
 
   // Vitrine editorial fixa — clássicos e horror literário, sem títulos infantis.
@@ -145,15 +137,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getWitchesShowcase() {
-    forkJoin(
-      this.WITCHES_SHOWCASE_SLUGS.map((slug) =>
-        this._scBook.getBySlug(slug).pipe(catchError(() => of(null)))
+    this._categoryService
+      .getByHierarchySlugs('ficcao', 'bruxas-magia')
+      .pipe(
+        switchMap((category) =>
+          category
+            ? this._scBook.getBooksByCategoryId(category.id, 1, 30)
+            : of({ items: [] })
+        ),
+        catchError(() => of({ items: [] })),
+        takeUntil(this._destroySubscribes$)
       )
-    )
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe((books) => {
+      .subscribe((response) => {
         this.witchesShowcase = this.shuffleBooks(
-          books.filter((book) => !!book),
+          response.items ?? [],
           this._editorialShowcaseRandomSeed + 2
         );
         this.shuffleShowcaseInBrowser('witches');
