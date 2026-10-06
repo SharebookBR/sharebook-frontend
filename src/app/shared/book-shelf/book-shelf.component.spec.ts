@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -54,5 +55,20 @@ describe('BookShelfComponent', () => {
     component.updateArrows();
     expect(component.leftDisabled).toBeFalse();
     expect(component.rightDisabled).toBeTrue();
+  }));
+
+  it('resets the shelf scroll when the book list changes', fakeAsync(() => {
+    const track = fixture.debugElement.query(By.css('.book-shelf__track')).nativeElement as HTMLElement;
+    track.scrollLeft = 380;
+
+    const nextBooks = [
+      ...books,
+      { slug: 'book-three', imageUrl: 'assets/img/img-placeholder.png', title: 'Book Three', type: 'Eletronic' },
+    ];
+    component.books = nextBooks;
+    component.ngOnChanges({ books: new SimpleChange(books, nextBooks, false) });
+    tick();
+
+    expect(track.scrollLeft).toBe(0);
   }));
 });

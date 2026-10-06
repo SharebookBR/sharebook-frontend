@@ -48,6 +48,7 @@ export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private viewInitialized = false;
   private arrowUpdateTimer: ReturnType<typeof setTimeout>;
+  private scrollResetTimer: ReturnType<typeof setTimeout>;
 
   ngAfterViewInit(): void {
     this.viewInitialized = true;
@@ -56,13 +57,16 @@ export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.books && this.viewInitialized) {
-      this.scheduleArrowUpdate();
+      this.scheduleScrollReset();
     }
   }
 
   ngOnDestroy(): void {
     if (this.arrowUpdateTimer) {
       clearTimeout(this.arrowUpdateTimer);
+    }
+    if (this.scrollResetTimer) {
+      clearTimeout(this.scrollResetTimer);
     }
   }
 
@@ -108,5 +112,25 @@ export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     this.arrowUpdateTimer = setTimeout(() => this.updateArrows(), delay);
+  }
+
+  private scheduleScrollReset(): void {
+    if (this.scrollResetTimer) {
+      clearTimeout(this.scrollResetTimer);
+    }
+
+    this.scrollResetTimer = setTimeout(() => {
+      this.resetScrollPosition();
+      this.updateArrows();
+    });
+  }
+
+  private resetScrollPosition(): void {
+    const track = this.trackRef?.nativeElement;
+    if (!track) {
+      return;
+    }
+
+    track.scrollLeft = 0;
   }
 }
