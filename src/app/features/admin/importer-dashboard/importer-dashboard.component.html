@@ -172,6 +172,9 @@
                   <span class="importer-item__chip">Tentativas: {{ item.attempts || 0 }}</span>
                 }
                 <span class="importer-item__chip">Atualizado em {{ item.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+                @if (getItemPageBadgeLabel(item)) {
+                  <span class="importer-item__chip importer-item__chip--pages">{{ getItemPageBadgeLabel(item) }}</span>
+                }
                 @if (shouldShowCategory(item.status) && getItemCategoryLabel(item)) {
                   <span class="importer-item__chip importer-item__chip--muted">{{ getItemCategoryLabel(item) }}</span>
                 }

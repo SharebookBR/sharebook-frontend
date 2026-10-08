@@ -24,6 +24,8 @@ import { ImporterService } from 'src/app/features/admin/services/importer.servic
     imports: [CommonModule, FormsModule, RouterLink, MatButtonModule, MatDialogModule, MatIconModule, MatProgressSpinnerModule]
 })
 export class ImporterDashboardComponent implements OnInit, OnDestroy {
+  private static readonly EstimatedWordsPerPage = 280;
+
   @ViewChild('metadataDialog') metadataDialog: TemplateRef<any>;
   @ViewChild('sourcePromptDialog') sourcePromptDialog: TemplateRef<any>;
   @ViewChild('adminNoteDialog') adminNoteDialog: TemplateRef<any>;
@@ -315,6 +317,126 @@ export class ImporterDashboardComponent implements OnInit, OnDestroy {
       return `Categoria #${item.plannedCategoryId.slice(0, 8)}…`;
     }
     return '';
+  }
+
+  getItemPageBadgeLabel(item: ImporterQueueListItem): string | null {
+    if (item.status === 'done') {
+      return null;
+    }
+
+    const pageCount = this.getItemPageCount(item);
+    if (!pageCount) {
+      return null;
+    }
+
+    const suffix = pageCount.estimated ? ' pág. est.' : ' pág.';
+    return `${pageCount.value}${suffix}`;
+  }
+
+  private getItemPageCount(item: ImporterQueueListItem): { value: number; estimated: boolean } | null {
+    const metadata = this.parseItemMetadata(item);
+    if (!metadata) {
+      return null;
+    }
+
+    const explicitPageCount = this.firstPositiveInteger(
+      metadata.page_count,
+      metadata.pageCount,
+      metadata.pages,
+      metadata.total_pages,
+      metadata.totalPages,
+      metadata.manifest?.page_count,
+      metadata.manifest?.pageCount,
+      metadata.manifest?.pages,
+      metadata.manifest?.total_pages,
+      metadata.manifest?.totalPages,
+      metadata.original?.page_count,
+      metadata.original?.pageCount,
+      metadata.original?.pages,
+      metadata.original?.total_pages,
+      metadata.original?.totalPages,
+      metadata.triage?.page_count,
+      metadata.triage?.pageCount,
+      metadata.triage?.pages,
+      metadata.triage?.total_pages,
+      metadata.triage?.totalPages,
+      metadata.translation?.page_count,
+      metadata.translation?.pageCount,
+      metadata.translation?.pages,
+      metadata.translation?.total_pages,
+      metadata.translation?.totalPages
+    );
+
+    if (explicitPageCount) {
+      return { value: explicitPageCount, estimated: false };
+    }
+
+    const wordCount = this.getItemWordCount(metadata);
+    if (!wordCount) {
+      return null;
+    }
+
+    return {
+      value: Math.max(1, Math.ceil(wordCount / ImporterDashboardComponent.EstimatedWordsPerPage)),
+      estimated: true,
+    };
+  }
+
+  private parseItemMetadata(item: ImporterQueueListItem): any | null {
+    if (!item.metadataJson) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(item.metadataJson);
+    } catch {
+      return null;
+    }
+  }
+
+  private getItemWordCount(metadata: any): number | null {
+    const directWordCount = this.firstPositiveInteger(
+      metadata.word_count,
+      metadata.wordCount,
+      metadata.manifest?.word_count,
+      metadata.manifest?.wordCount,
+      metadata.original?.word_count,
+      metadata.original?.wordCount,
+      metadata.translation?.word_count,
+      metadata.translation?.wordCount
+    );
+
+    if (directWordCount) {
+      return directWordCount;
+    }
+
+    const chapterWordCount = this.sumChapterWordCounts(metadata.original?.chapter_manifest)
+      || this.sumChapterWordCounts(metadata.translation?.chapter_manifest)
+      || this.sumChapterWordCounts(metadata.manifest?.chapter_manifest);
+
+    return chapterWordCount || null;
+  }
+
+  private sumChapterWordCounts(chapterManifest: any): number {
+    if (!Array.isArray(chapterManifest)) {
+      return 0;
+    }
+
+    return chapterManifest.reduce((sum, chapter) => {
+      const wordCount = this.firstPositiveInteger(chapter?.word_count, chapter?.wordCount);
+      return sum + (wordCount || 0);
+    }, 0);
+  }
+
+  private firstPositiveInteger(...values: any[]): number | null {
+    for (const value of values) {
+      const numberValue = Number(value);
+      if (Number.isInteger(numberValue) && numberValue > 0) {
+        return numberValue;
+      }
+    }
+
+    return null;
   }
 
   getItemSecondaryInfo(item: ImporterQueueListItem): string {

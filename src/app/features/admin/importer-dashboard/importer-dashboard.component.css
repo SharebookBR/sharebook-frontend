@@ -1124,6 +1124,11 @@
   color: #667085;
 }
 
+.importer-item__chip--pages {
+  background: rgba(41, 171, 226, 0.11);
+  color: #1f789f;
+}
+
 .importer-item__chip--resolution {
   background: rgba(154, 52, 18, 0.08);
   color: #9a3412;
