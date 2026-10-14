@@ -148,29 +148,6 @@
           </div>
           @if (userProfile.profile === 'Administrator' && itsEditMode && selectedBookType === 'Printed') {
             <div class="form-group col-md-8 mb-4">
-              <label class="col-form-label" for="userIdFacilitator">Facilitador <span class="text-danger">*</span></label>
-              <select class="form-control" formControlName="userIdFacilitator" id="userIdFacilitator">
-                <option value=""></option>
-                @for (facilitator of facilitators; track facilitator) {
-                  <option value="{{ facilitator.id }}">
-                    {{ facilitator.name }}
-                  </option>
-                }
-              </select>
-              @if (formGroup.controls['userIdFacilitator'].touched && !formGroup.controls['userIdFacilitator'].valid) {
-                <div
-                  >
-                  @if (formGroup.controls['userIdFacilitator'].hasError('required')) {
-                    <small class="form-text text-danger">
-                      Informe o facilitador do livro.
-                    </small>
-                  }
-                </div>
-              }
-            </div>
-          }
-          @if (userProfile.profile === 'Administrator' && itsEditMode && selectedBookType === 'Printed') {
-            <div class="form-group col-md-8 mb-4">
               <label class="col-form-label" for="chooseDate">Data de decisão</label>
               <input formControlName="chooseDate" id="chooseDate" type="date" class="form-control" />
               <small class="form-text text-muted">

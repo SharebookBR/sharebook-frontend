@@ -103,9 +103,6 @@
               @if (canShowWinner(element)) {
                 <div><b>Pessoa escolhida:</b> {{ element.winner }}</div>
               }
-              @if (canShowFacilitator(element)) {
-                <div><b>Facilitador:</b> {{ element.facilitator }}</div>
-              }
               @if (canShowTrackingInfo(element)) {
                 <div><b>Rastreio:</b> {{ element.trackingNumber }}</div>
               }
@@ -123,9 +120,6 @@
                   {{ getPrimaryActionLabel(element) }}
                 </app-action-button>
               }
-              <app-action-button variant="info" icon="sticky_note_2" (action)="onCustom('facilitatorNotes', element)">
-                Comentários
-              </app-action-button>
               @if (canOpenPdf(element)) {
                 <app-action-button
                   variant="danger"

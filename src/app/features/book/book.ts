@@ -31,7 +31,6 @@ export class Book {
   userId: string;
   categoryId: string;
   downloadCount?: number;
-  userIdFacilitator: string;
   category: Category | string;
   categoryInfo?: BookCategoryInfo;
   imageUrl: string;

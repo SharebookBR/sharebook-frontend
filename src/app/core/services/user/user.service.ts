@@ -94,10 +94,6 @@ export class UserService {
     return this._http.get<Profile>(`${this.config.apiEndpoint}/account/profile`);
   }
 
-  getAllFacilitators(userIdDonator: string) {
-    return this._http.get<User[]>(`${this.config.apiEndpoint}/Account/ListFacilitators/` + userIdDonator);
-  }
-
   downloadData() {
     return this._http.get<UserInfo>(`${this.config.apiEndpoint}/Account`);
   }

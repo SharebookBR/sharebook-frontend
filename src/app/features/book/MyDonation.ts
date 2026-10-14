@@ -5,9 +5,6 @@ export class MyDonation {
   downloadCount: number;
   winner: string;
   donor: string;
-  userIdFacilitator: string;
-  facilitator: string;
-  facilitatorNotes: string;
   phoneDonor: string;
   daysInShowcase: number;
   totalInterested: number;

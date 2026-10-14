@@ -11,8 +11,6 @@ export class BookToAdminProfile {
   donor: string;
   eBookDownloadLink?: string | null;
   eBookPdfPath?: string | null;
-  facilitator?: string | null;
-  facilitatorNotes?: string | null;
   freightOption: string;
   id: string;
   imageSlug: string;
@@ -27,6 +25,5 @@ export class BookToAdminProfile {
   trackingNumber?: string | null;
   type: string;
   userId: string;
-  userIdFacilitator?: string | null;
   winner: string;
 }

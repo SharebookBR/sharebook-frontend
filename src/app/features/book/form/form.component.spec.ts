@@ -1,6 +1,5 @@
 import { BookToAdminProfile } from 'src/app/features/book/BookToAdminProfile';
 import { Category } from 'src/app/features/category/category';
-import { User } from 'src/app/core/models/user';
 import { CategoryService } from 'src/app/features/category/services/category.service';
 import { BookService } from 'src/app/features/book/services/book.service';
 import { UserService } from './../../../core/services/user/user.service';
@@ -30,25 +29,6 @@ let fixture: ComponentFixture<FormComponent>;
 let userService: UserService;
 let bookService: BookService;
 let categoryService: CategoryService;
-
-const userArray: User[] = [
-  {
-    id: '54338afc-7674-46a3-9e35-1f8babd99d6b',
-    name: 'Cussa (3)',
-    email: undefined,
-    linkedin: undefined,
-    phone: undefined,
-    address: undefined,
-  },
-  {
-    id: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
-    name: 'Vagner (1)',
-    email: undefined,
-    linkedin: undefined,
-    phone: undefined,
-    address: undefined,
-  },
-];
 
 const validForm = {
   title: 'Book Title',
@@ -87,7 +67,6 @@ function setFormValues(formData) {
   component.formGroup.controls['title'].setValue(formData.title);
   component.formGroup.controls['author'].setValue(formData.author);
   component.formGroup.controls['categoryId'].setValue(formData.categoryId);
-  component.formGroup.controls['userIdFacilitator'].setValue(formData.userIdFacilitator);
   component.formGroup.controls['imageName'].setValue(formData.imageName);
   component.formGroup.controls['freightOption'].setValue(formData.freightOption);
   component.formGroup.controls['synopsis'].setValue(formData.synopsis);
@@ -185,8 +164,6 @@ describe('FormComponent Editing book', () => {
     donor: 'VAGNER',
     eBookDownloadLink: null,
     eBookPdfPath: null,
-    facilitator: null,
-    facilitatorNotes: null,
     freightOption: 'WithoutFreight',
     id: 'e2260775-b46e-4cd4-4651-08d931a7c4de',
     imageSlug: 'o-orfanato-da-srta-peregrine-para-criancas-pe_copy3.jpeg',
@@ -201,7 +178,6 @@ describe('FormComponent Editing book', () => {
     trackingNumber: null,
     type: 'Printed',
     userId: '29152b79-effd-4827-8002-0394ffa735e3',
-    userIdFacilitator: null,
     winner: '',
   };
 
@@ -212,9 +188,6 @@ describe('FormComponent Editing book', () => {
     author: 'test',
     winner: '',
     donor: 'Vagner',
-    userIdFacilitator: '54338afc-7674-46a3-9e35-1f8babd99d6b',
-    facilitator: 'Cussa',
-    facilitatorNotes: null,
     phoneDonor: '(22) 98831-7391',
     daysInShowcase: 5,
     totalInterested: 0,
@@ -240,7 +213,6 @@ describe('FormComponent Editing book', () => {
     author: bookObject.author,
     categoryId: bookObject.categoryId,
     userId: '41de867c-b1b6-413d-b8b0-5427d907ef0d',
-    userIdFacilitator: bookObject.userIdFacilitator,
     freightOption: bookObject.freightOption,
     synopsis: bookObject.synopsis,
     agreeToTerms: true,
@@ -300,7 +272,6 @@ describe('FormComponent Editing book', () => {
       profile: 'Administrator',
       message: 'OK',
     });
-    spyOn(userService, 'getAllFacilitators').and.returnValue(of(userArray));
     spyOn(bookService, 'getFreightOptions').and.returnValue(of(freightOptionsArray));
     spyOn(categoryService, 'getAll').and.returnValue(of(categoryServiceArray as any));
     spyOn(bookService, 'getById').and.returnValue(of(bookToAdminProfile));
@@ -317,7 +288,6 @@ describe('FormComponent Editing book', () => {
     expect(component.formGroup.controls['title'].value).toBe(bookToAdminProfile.title);
     expect(component.formGroup.controls['author'].value).toBe(bookToAdminProfile.author);
     expect(component.formGroup.controls['categoryId'].value).toBe(bookToAdminProfile.categoryId);
-    expect(component.formGroup.controls['userIdFacilitator'].value).toBe(bookToAdminProfile.userIdFacilitator);
     expect(compiled.querySelector('#buttonSave').textContent).toContain('Salvar');
   });
 

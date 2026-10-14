@@ -190,7 +190,7 @@ export class ContributorsService {
       {
         image: 'assets/img/top_contributors/montanha.jpg',
         name: 'Roberto Montanha',
-        position: 'Facilitador',
+        position: 'Voluntário',
         links: [
           {
             url: 'https://www.linkedin.com/in/robertomontanha/',
@@ -201,13 +201,13 @@ export class ContributorsService {
       {
         image: 'assets/img/top_contributors/manoel-jr.jpg',
         name: 'Manoel Júnior',
-        position: 'Facilitador',
+        position: 'Voluntário',
         links: [{ url: 'https://www.linkedin.com/in/msjunior/', content: 'Linkedin' }],
       },
       {
         image: 'assets/img/top_contributors/rodrigo-silva.jpg',
         name: 'Rodrigo Silva',
-        position: 'Facilitador',
+        position: 'Voluntário',
         links: [
           {
             url: 'https://www.linkedin.com/in/rodrigoesilva/',

@@ -12,7 +12,6 @@ import { map, filter } from 'rxjs/operators';
 
 import { APP_CONFIG, AppConfig } from 'src/app/app-config.module';
 import { TrackingNumberBookVM } from 'src/app/features/book/trackingNumberBookVM';
-import { FacilitatorNotes } from 'src/app/features/book/facilitatorNotes';
 import { Observable, Subject, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Requesters } from 'src/app/features/book/requesters';
@@ -297,13 +296,6 @@ export class BookService {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/InformTrackingNumber/${bookId}`,
       trackingNumberBookVM
-    );
-  }
-
-  public setFacilitatorNotes(facilitatorNotes: FacilitatorNotes) {
-    return this._http.post<any>(
-      `${this.config.apiEndpoint}/book/AddFacilitatorNotes`,
-      facilitatorNotes
     );
   }
 

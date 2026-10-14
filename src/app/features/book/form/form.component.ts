@@ -43,7 +43,6 @@ export class FormComponent implements OnInit, OnDestroy {
   freightOptions: FreightOptions[] = [];
   categories: Category[] = [];
   filteredCategories: Category[] = [];
-  facilitators: User[] = [];
   isSaved: Boolean;
 
   userProfile: Profile;
@@ -170,7 +169,6 @@ export class FormComponent implements OnInit, OnDestroy {
         ],
       ],
       categoryId: ['', [Validators.required]],
-      userIdFacilitator: [''],
       userId: ['', [Validators.required]],
       freightOption: [null],
       chooseDate: [null],
@@ -194,7 +192,6 @@ export class FormComponent implements OnInit, OnDestroy {
     const pdfControl = this.getRequiredControl('pdfBytes');
     const antiPiracyControl = this.getRequiredControl('agreeToAntiPiracy');
     const agreeToTermsControl = this.getRequiredControl('agreeToTerms');
-    const facilitatorControl = this.getRequiredControl('userIdFacilitator');
 
     if (this.selectedBookType === 'Printed') {
       freightControl.setValidators([Validators.required]);
@@ -212,23 +209,10 @@ export class FormComponent implements OnInit, OnDestroy {
       antiPiracyControl.setValidators([Validators.requiredTrue]);
     }
 
-    const facilitatorRequired =
-      this.userProfile?.profile === 'Administrator' &&
-      this.itsEditMode &&
-      this.selectedBookType === 'Printed';
-
-    if (facilitatorRequired) {
-      facilitatorControl.setValidators([Validators.required]);
-    } else {
-      facilitatorControl.clearValidators();
-      facilitatorControl.setValue(null, { emitEvent: false });
-    }
-
     freightControl.updateValueAndValidity();
     pdfControl.updateValueAndValidity();
     antiPiracyControl.updateValueAndValidity();
     agreeToTermsControl.updateValueAndValidity();
-    facilitatorControl.updateValueAndValidity();
   }
 
   findProfile() {
@@ -285,9 +269,6 @@ export class FormComponent implements OnInit, OnDestroy {
             title: book.title,
             author: book.author,
             categoryId: book.categoryId,
-            userIdFacilitator: !!book.userIdFacilitator
-              ? book.userIdFacilitator
-              : null,
             userId: book.userId,
             freightOption: book.freightOption,
             chooseDate: book.chooseDate ? this.formatDateForInput(book.chooseDate) : null,
@@ -320,14 +301,12 @@ export class FormComponent implements OnInit, OnDestroy {
           }
           this.formGroup.setValue(bookForUpdate);
           this.syncCategorySearchControl();
-          this.getAllFacilitators();
         });
     }
 
     // ao doar um livro, o userId é do usuário logado.
     if (!this.itsEditMode) {
       this.getRequiredControl('userId').setValue(this.shareBookUser['userId']);
-      this.getAllFacilitators();
     }
   }
 
@@ -489,10 +468,6 @@ export class FormComponent implements OnInit, OnDestroy {
     delete formValue.agreeToTerms;
     delete formValue.agreeToAntiPiracy;
 
-    if (!formValue.userIdFacilitator) {
-      delete formValue.userIdFacilitator;
-    }
-
     if (this.selectedBookType === 'Printed') {
       delete formValue.pdfBytes;
     } else {
@@ -565,16 +540,6 @@ export class FormComponent implements OnInit, OnDestroy {
       this.formGroup.controls['imageBytes'].setValue('');
       this.isImageLoaded = false;
     }
-  }
-
-  getAllFacilitators() {
-    this._scUser
-      .getAllFacilitators(this.getRequiredControl('userId').value)
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        catchError(() => of([] as User[]))
-      )
-      .subscribe(data => this.facilitators = data);
   }
 
   ngOnDestroy() {
