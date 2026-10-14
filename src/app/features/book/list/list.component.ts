@@ -9,6 +9,7 @@ import { AppConfig, APP_CONFIG } from 'src/app/app-config.module';
 import { BookService } from 'src/app/features/book/services/book.service';
 import { ConfirmationDialogComponent } from 'src/app/core/directives/confirmation-dialog/confirmation-dialog.component';
 import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
+import { AdminNotesComponent } from '../admin-notes/admin-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
 import { getStatusDescription } from 'src/app/features/book/getStatusDescription';
@@ -151,6 +152,22 @@ export class ListComponent implements OnInit, OnDestroy {
       }
       case 'edit': {
         this._router.navigate([`book/form/${param.id}`]);
+        break;
+      }
+      case 'adminNotes': {
+        const modalRef = this.dialog.open(AdminNotesComponent, {
+          width: 'min(92vw, 720px)',
+          maxWidth: '92vw',
+          panelClass: 'sharebook-mobile-dialog'
+        });
+
+        modalRef.afterClosed().subscribe((result) => {
+          if (result) this.reloadData();
+        });
+
+        modalRef.componentInstance.bookId = param.id;
+        modalRef.componentInstance.bookTitle = param.title;
+        modalRef.componentInstance.adminNotes = param.adminNotes === null ? '' : param.adminNotes;
         break;
       }
       case 'openPdf': {

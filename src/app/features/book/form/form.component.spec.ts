@@ -188,6 +188,7 @@ describe('FormComponent Editing book', () => {
     author: 'test',
     winner: '',
     donor: 'Vagner',
+    adminNotes: null,
     phoneDonor: '(22) 98831-7391',
     daysInShowcase: 5,
     totalInterested: 0,

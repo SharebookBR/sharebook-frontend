@@ -5,6 +5,7 @@ export class MyDonation {
   downloadCount: number;
   winner: string;
   donor: string;
+  adminNotes: string;
   phoneDonor: string;
   daysInShowcase: number;
   totalInterested: number;

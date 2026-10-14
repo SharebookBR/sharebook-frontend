@@ -73,6 +73,7 @@ import { RECAPTCHA_SETTINGS, RecaptchaSettings } from './core/recaptcha/recaptch
 import { NgxMaskModule } from 'ngx-mask';
 import { RequestComponent } from './features/book/request/request.component';
 import { TrackingComponent } from './features/book/tracking/tracking.component';
+import { AdminNotesComponent } from './features/book/admin-notes/admin-notes.component';
 import { MainUsersComponent } from './features/book/main-users/main-users.component';
 import { WinnerUsersComponent } from './features/book/winner-users/winner-users.component';
 import { ConfirmationDialogComponent } from './core/directives/confirmation-dialog/confirmation-dialog.component';
@@ -134,6 +135,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         DonatePageComponent,
         ConfirmationDialogComponent,
         TrackingComponent,
+        AdminNotesComponent,
         MainUsersComponent,
         WinnerUsersComponent,
         PrivacyPolicyComponent,

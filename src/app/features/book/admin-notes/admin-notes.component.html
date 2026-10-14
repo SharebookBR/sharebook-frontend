@@ -1,0 +1,46 @@
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
+</div>
+<h4 mat-dialog-title>Inclua novo comentário para o livro:</h4>
+<form [formGroup]="formGroup" (ngSubmit)="onTracking()">
+  <mat-dialog-content>
+    <h4 class="book-title">{{ bookTitle }}</h4>
+    <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
+    @if (state == 'request-error') {
+      <div class="text-center">
+        <p>Não foi possível concluir sua solicitação agora.</p>
+        <div class="alert alert-danger" role="alert">
+          {{ lastError }}
+        </div>
+      </div>
+    }
+    <h5>Comentários:</h5>
+    <div class="notes-list">
+      @for (adminNote of adminNotes.split('\n'); track adminNote) {
+        <p class="note-line">{{ adminNote }}</p>
+      }
+    </div>
+    <textarea
+      formControlName="adminNotes"
+      name="adminNotes"
+      type="text"
+      id="adminNotes"
+      class="md-textarea form-control"
+      rows="3"
+      maxlength="2000"
+    ></textarea>
+    @if (formGroup.controls['adminNotes'].touched && !formGroup.controls['adminNotes'].valid) {
+      <div>
+        @if (formGroup.controls['adminNotes'].hasError('required')) {
+          <small class="form-text text-danger">
+            Informe o comentário.
+          </small>
+        }
+      </div>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [disabled]="!formGroup.valid" type="submit">Confirmar</button>
+    <button mat-stroked-button mat-dialog-close>Cancelar</button>
+  </mat-dialog-actions>
+</form>
