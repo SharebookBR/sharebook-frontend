@@ -28,4 +28,5 @@ export class BookVMItem {
   eBookDownloadLink: string;
   eBookPdfFile: string;
   daysLate: number;
+  maxRequestsOverride?: number | null;
 }

@@ -154,6 +154,31 @@
                 Ajuste manual da data em que o livro sai da vitrine para a decisão da pessoa doadora.
               </small>
             </div>
+            <div class="form-group col-md-8 mb-4">
+              <label class="col-form-label" for="maxRequestsOverride">Limite de pedidos</label>
+              <input
+                formControlName="maxRequestsOverride"
+                id="maxRequestsOverride"
+                type="number"
+                min="1"
+                step="1"
+                class="form-control"
+                placeholder="Padrão global (50)"
+                />
+              <small class="form-text text-muted">
+                @if (formGroup.controls['maxRequestsOverride'].value) {
+                  Limite personalizado para este livro.
+                } @else {
+                  Usando o padrão global: 50 pedidos.
+                }
+              </small>
+              @if (formGroup.controls['maxRequestsOverride'].invalid && formGroup.controls['maxRequestsOverride'].touched) {
+                <small class="form-text text-danger">Informe um número inteiro maior que zero.</small>
+              }
+              <button type="button" mat-button color="primary" (click)="restoreDefaultRequestLimit()">
+                Restaurar padrão
+              </button>
+            </div>
           }
           <!-- Upload de PDF (apenas para Livro digital) -->
           @if (selectedBookType === 'Eletronic') {

@@ -178,6 +178,7 @@ export class FormComponent implements OnInit, OnDestroy {
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
+      maxRequestsOverride: [null, [Validators.min(1), Validators.pattern(/^\d+$/)]],
       agreeToTerms: [false],
       type: ['Printed'],
       pdfBytes: [null],
@@ -277,6 +278,7 @@ export class FormComponent implements OnInit, OnDestroy {
             imageUrl: book.imageUrl,
             imageSlug: book.imageSlug,
             synopsis: !!book.synopsis ? book.synopsis : '',
+            maxRequestsOverride: book.maxRequestsOverride ?? null,
             agreeToTerms: true,
             approve: false,
             type: book.type || 'Printed',
@@ -468,6 +470,10 @@ export class FormComponent implements OnInit, OnDestroy {
     delete formValue.agreeToTerms;
     delete formValue.agreeToAntiPiracy;
 
+    if (!(this.userProfile.profile === 'Administrator' && this.itsEditMode && this.selectedBookType === 'Printed')) {
+      delete formValue.maxRequestsOverride;
+    }
+
     if (this.selectedBookType === 'Printed') {
       delete formValue.pdfBytes;
     } else {
@@ -476,6 +482,10 @@ export class FormComponent implements OnInit, OnDestroy {
     }
 
     return formValue;
+  }
+
+  restoreDefaultRequestLimit() {
+    this.formGroup.controls['maxRequestsOverride'].setValue(null);
   }
 
   onChangeBookType(bookType: BookType) {

@@ -12,6 +12,7 @@ export class BookToAdminProfile {
   eBookDownloadLink?: string | null;
   adminNotes?: string | null;
   eBookPdfPath?: string | null;
+  maxRequestsOverride?: number | null;
   freightOption: string;
   id: string;
   imageSlug: string;

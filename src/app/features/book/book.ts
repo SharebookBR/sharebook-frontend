@@ -46,6 +46,7 @@ export class Book {
   type: BookType;
   pdfBytes?: string;
   eBookPdfPath?: string;
+  maxRequestsOverride?: number | null;
   donor?: BookDonorInfo;
   tags?: TagSummary[];
 }
