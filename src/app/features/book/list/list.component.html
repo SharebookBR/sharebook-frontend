@@ -99,7 +99,28 @@
                   {{ getDecisionNoticeLabel(element) }}
                 </div>
               }
-              <div>{{ getPrimaryMetric(element) }}</div>
+              @if (canShowRequestLimit(element)) {
+                <div class="request-limit">
+                  <div class="request-limit__header">
+                    <span>{{ getRequestCountLabel(element) }}</span>
+                    <span>{{ getRequestPercentage(element) }}%</span>
+                  </div>
+                  <div
+                    class="request-limit__track"
+                    role="progressbar"
+                    [attr.aria-label]="getRequestProgressAriaLabel(element)"
+                    aria-valuemin="0"
+                    [attr.aria-valuemax]="element.maxRequestsPerBook"
+                    [attr.aria-valuenow]="getRequestProgressValue(element)"
+                    [attr.aria-valuetext]="getRequestProgressAriaLabel(element)"
+                  >
+                    <span class="request-limit__fill" [style.width.%]="getRequestProgressPercentage(element)"></span>
+                  </div>
+                  <div class="request-limit__remaining">{{ getRequestAvailabilityLabel(element) }}</div>
+                </div>
+              } @else {
+                <div>{{ getPrimaryMetric(element) }}</div>
+              }
               @if (canShowWinner(element)) {
                 <div><b>Pessoa escolhida:</b> {{ element.winner }}</div>
               }

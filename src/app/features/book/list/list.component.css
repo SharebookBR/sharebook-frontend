@@ -202,6 +202,46 @@
   font-weight: 700;
 }
 
+.request-limit {
+  display: grid;
+  gap: 5px;
+  margin-top: 2px;
+  max-width: 30rem;
+}
+
+.request-limit__header,
+.request-limit__remaining {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.request-limit__header {
+  color: #273a55;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.request-limit__track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e4ebf2;
+}
+
+.request-limit__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #29abe2;
+  transition: width 0.2s ease;
+}
+
+.request-limit__remaining {
+  color: #60738e;
+  font-size: 12px;
+}
+
 .admin-card__actions {
   margin-top: 12px;
   display: grid;

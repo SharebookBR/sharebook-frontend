@@ -404,12 +404,61 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     if (!this.canShowInterestedCount(book)) {
-      return 'Sem etapa pública de pedidos ainda';
+      return 'Sem etapa pública de solicitações ainda';
     }
 
     const interestedCount = book.totalInterested || 0;
-    const interestedLabel = interestedCount === 1 ? 'interessado' : 'interessados';
+    const interestedLabel = interestedCount === 1 ? 'pessoa interessada' : 'pessoas interessadas';
     return `${interestedCount} ${interestedLabel}`;
+  }
+
+  public isPhysical(book: BookVMItem): boolean {
+    return (book.type || '').toLowerCase() === 'printed';
+  }
+
+  public canShowRequestLimit(book: BookVMItem): boolean {
+    return this.isPhysical(book) &&
+      book.status === BookDonationStatus.AVAILABLE &&
+      Number.isFinite(book.maxRequestsPerBook) &&
+      (book.maxRequestsPerBook || 0) > 0;
+  }
+
+  public getRequestCountLabel(book: BookVMItem): string {
+    return `${this.getRequestCount(book)} de ${book.maxRequestsPerBook} solicitações`;
+  }
+
+  public getRequestPercentage(book: BookVMItem): number {
+    const limit = book.maxRequestsPerBook || 0;
+    if (!limit) {
+      return 0;
+    }
+
+    return Math.min(Math.round((this.getRequestCount(book) / limit) * 100), 100);
+  }
+
+  public getRequestProgressPercentage(book: BookVMItem): number {
+    return Math.min(Math.max(this.getRequestPercentage(book), 0), 100);
+  }
+
+  public getRequestProgressValue(book: BookVMItem): number {
+    return Math.min(this.getRequestCount(book), book.maxRequestsPerBook || 0);
+  }
+
+  public getRequestAvailabilityLabel(book: BookVMItem): string {
+    const remaining = (book.maxRequestsPerBook || 0) - this.getRequestCount(book);
+    if (remaining <= 0) {
+      return 'Limite atingido';
+    }
+
+    return remaining === 1 ? 'Resta 1 vaga' : `Restam ${remaining} vagas`;
+  }
+
+  public getRequestProgressAriaLabel(book: BookVMItem): string {
+    return `${this.getRequestCountLabel(book)}; ${this.getRequestAvailabilityLabel(book)}`;
+  }
+
+  private getRequestCount(book: BookVMItem): number {
+    return Math.max(book.totalInterested || 0, 0);
   }
 
   public getPrimaryActionLabel(book: BookVMItem): string {
@@ -417,7 +466,7 @@ export class ListComponent implements OnInit, OnDestroy {
       return 'Escolher quem vai receber';
     }
 
-    return 'Ver pedidos';
+    return 'Ver solicitações';
   }
 
   public getPrimaryActionIcon(book: BookVMItem): string {
