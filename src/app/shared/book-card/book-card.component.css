@@ -61,3 +61,15 @@
 .badge-physical {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
+
+.book-release-badge {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  margin-top: 0.25rem;
+  border-radius: 0.3rem;
+  background: #fff4db;
+  color: #67470b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
