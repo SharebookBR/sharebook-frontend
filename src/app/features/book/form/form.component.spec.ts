@@ -177,6 +177,7 @@ describe('FormComponent Editing book', () => {
     totalInterested: 0,
     trackingNumber: null,
     type: 'Printed',
+    maxRequestsOverride: 12,
     userId: '29152b79-effd-4827-8002-0394ffa735e3',
     winner: '',
   };
@@ -289,7 +290,24 @@ describe('FormComponent Editing book', () => {
     expect(component.formGroup.controls['title'].value).toBe(bookToAdminProfile.title);
     expect(component.formGroup.controls['author'].value).toBe(bookToAdminProfile.author);
     expect(component.formGroup.controls['categoryId'].value).toBe(bookToAdminProfile.categoryId);
+    expect(component.formGroup.controls['maxRequestsOverride'].value).toBe(bookToAdminProfile.maxRequestsOverride);
     expect(compiled.querySelector('#buttonSave').textContent).toContain('Salvar');
+  });
+
+  it('should include the custom limit when an administrator edits a printed book', () => {
+    component.formGroup.controls['maxRequestsOverride'].setValue(18);
+
+    const payload = component.prepareBookPayload();
+
+    expect(payload.maxRequestsOverride).toBe(18);
+  });
+
+  it('should send null when restoring the global request limit', () => {
+    component.formGroup.controls['maxRequestsOverride'].setValue(18);
+
+    component.restoreDefaultRequestLimit();
+
+    expect(component.prepareBookPayload().maxRequestsOverride).toBeNull();
   });
 
   it('should update book', () => {
@@ -307,5 +325,23 @@ describe('FormComponent Editing book', () => {
     const getForm = fixture.debugElement.query(By.css('#formGroup'));
     expect(getForm.triggerEventHandler('submit', compiled)).toBeUndefined();
     expect(component.pageTitle).toBe('Registro atualizado');
+  });
+
+  it('should not send the custom limit when creating a common book', () => {
+    component.formGroup.controls['maxRequestsOverride'].setValue(18);
+    component.userProfile.profile = 'User';
+    component.itsEditMode = false;
+    component.selectedBookType = 'Printed';
+
+    expect(component.prepareBookPayload().maxRequestsOverride).toBeUndefined();
+  });
+
+  it('should not send the custom limit when editing an ebook', () => {
+    component.formGroup.controls['maxRequestsOverride'].setValue(18);
+    component.userProfile.profile = 'Administrator';
+    component.itsEditMode = true;
+    component.selectedBookType = 'Eletronic';
+
+    expect(component.prepareBookPayload().maxRequestsOverride).toBeUndefined();
   });
 });
