@@ -61,6 +61,7 @@ mat-dialog-content {
   border-radius: 8px;
   min-height: 40px;
   padding: 0 16px;
+  letter-spacing: normal;
 }
 
 .card-whatsapp-btn em {
@@ -76,8 +77,14 @@ mat-dialog-content {
 mat-dialog-actions .dialog-close-btn {
   width: auto;
   min-width: 0;
-  color: #4f5f79;
-  padding: 0 12px;
+  min-height: 40px;
+  color: #167da6;
+  background: #ffffff;
+  border-color: #29abe2;
+  border-radius: 8px;
+  padding: 0 18px;
+  letter-spacing: normal;
+  font-weight: 500;
 }
 
 .dialog-icon-close {

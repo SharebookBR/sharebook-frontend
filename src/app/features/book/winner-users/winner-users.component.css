@@ -41,6 +41,7 @@ mat-dialog-content {
   border-radius: 8px;
   min-height: 40px;
   padding: 0 16px;
+  letter-spacing: normal;
 }
 
 .winner-phone__whatsapp em {
