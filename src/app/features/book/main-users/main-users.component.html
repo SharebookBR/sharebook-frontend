@@ -1,6 +1,6 @@
-<div class="close">
-  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
-</div>
+<button mat-icon-button class="close dialog-icon-close" aria-label="Fechar" mat-dialog-close>
+  <i class="fa fa-times" aria-hidden="true"></i>
+</button>
 <h4 mat-dialog-title class="main-users-title">Informações de usuários</h4>
 <mat-dialog-content>
   <h4 class="main-users-book-title">{{ bookTitle }}</h4>
@@ -14,15 +14,17 @@
           <p class="card-text"><strong>Nome:</strong> {{ mainUser.name || 'Não informado' }}</p>
           <p class="card-text"><strong>E-mail:</strong> {{ mainUser.email || 'Não informado' }}</p>
           <p class="card-text"><strong>LinkedIn:</strong> {{ mainUser.linkedin || 'Não informado' }}</p>
-          <p class="card-text"><strong>Telefone:</strong> {{ mainUser.phone || 'Não informado' }}</p>
-          <button
-            mat-flat-button
-            class="card-whatsapp-btn"
-            [disabled]="!hasWhatsappPhone(mainUser)"
-            (click)="contactOnWhatsapp(mainUser)">
-            <em class="fa fa-whatsapp" aria-hidden="true"></em>
-            Chamar no WhatsApp
-          </button>
+          <div class="card-phone">
+            <p class="card-text"><strong>Telefone:</strong> {{ mainUser.phone || 'Não informado' }}</p>
+            <button
+              mat-stroked-button
+              class="card-whatsapp-btn"
+              [disabled]="!hasWhatsappPhone(mainUser)"
+              (click)="contactOnWhatsapp(mainUser)">
+              <em class="fa fa-whatsapp" aria-hidden="true"></em>
+              WhatsApp
+            </button>
+          </div>
           <p class="card-text">
             <strong>Endereço:</strong>
             {{ mainUser.address?.street || 'Não informado' }}, {{ mainUser.address?.number || 's/n' }}
@@ -39,5 +41,5 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-flat-button color="primary" mat-dialog-close>Ok, entendi</button>
+  <button mat-button class="dialog-close-btn" mat-dialog-close>Fechar</button>
 </mat-dialog-actions>

@@ -1,6 +1,6 @@
-<div class="close">
-  <em class="fa fa-times" aria-hidden="true" mat-dialog-close></em>
-</div>
+<button mat-icon-button class="close dialog-icon-close" aria-label="Fechar" mat-dialog-close>
+  <em class="fa fa-times" aria-hidden="true"></em>
+</button>
 
 <mat-dialog-content>
   <div class="text-center" [hidden]="!isLoading">
@@ -16,12 +16,12 @@
       <div class="winner-phone">
         <p class="card-text"><strong>Telefone:</strong> {{ winnerUser.phone }}</p>
         <button
-          mat-flat-button
+          mat-stroked-button
           class="winner-phone__whatsapp"
           [disabled]="!hasWhatsappPhone(winnerUser)"
           (click)="contactWinnerOnWhatsapp(winnerUser)">
           <em class="fa fa-whatsapp" aria-hidden="true"></em>
-          Chamar no WhatsApp
+          WhatsApp
         </button>
       </div>
       <p class="card-text">

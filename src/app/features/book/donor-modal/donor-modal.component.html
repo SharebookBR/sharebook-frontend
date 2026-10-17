@@ -1,6 +1,6 @@
-<div class="close">
-  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
-</div>
+<button mat-icon-button class="close dialog-icon-close" aria-label="Fechar" mat-dialog-close>
+  <i class="fa fa-times" aria-hidden="true"></i>
+</button>
 <h4 mat-dialog-title class="donor-title">Informações da pessoa doadora</h4>
 <mat-dialog-content>
   <h4 class="donor-book-title">{{ bookTitle }}</h4>
@@ -18,18 +18,20 @@
       <p class="card-text"><strong>Nome:</strong> {{ donor.name }}</p>
       <p class="card-text"><strong>E-mail:</strong> {{ donor.email }}</p>
       <p class="card-text"><strong>LinkedIn:</strong> {{ donor.linkedin }}</p>
-      <p class="card-text"><strong>Telefone:</strong> {{ donor.phone }}</p>
-      <button
-        mat-flat-button
-        class="card-whatsapp-btn"
-        [disabled]="!hasWhatsappPhone(donor)"
-        (click)="contactOnWhatsapp(donor)">
-        <em class="fa fa-whatsapp" aria-hidden="true"></em>
-        Chamar no WhatsApp
-      </button>
+      <div class="card-phone">
+        <p class="card-text"><strong>Telefone:</strong> {{ donor.phone }}</p>
+        <button
+          mat-stroked-button
+          class="card-whatsapp-btn"
+          [disabled]="!hasWhatsappPhone(donor)"
+          (click)="contactOnWhatsapp(donor)">
+          <em class="fa fa-whatsapp" aria-hidden="true"></em>
+          WhatsApp
+        </button>
+      </div>
     }
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-flat-button color="primary" mat-dialog-close>Ok, entendi</button>
+  <button mat-button class="dialog-close-btn" mat-dialog-close>Fechar</button>
 </mat-dialog-actions>

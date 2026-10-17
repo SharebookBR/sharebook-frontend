@@ -43,12 +43,23 @@ mat-dialog-content {
   word-break: break-word;
 }
 
+.card-phone {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.card-phone .card-text {
+  margin-bottom: 0;
+}
+
 .card-whatsapp-btn {
-  background: #25d366;
-  color: #ffffff;
-  border-radius: 999px;
+  color: #128c7e;
+  border-color: #128c7e;
+  border-radius: 8px;
   min-height: 40px;
-  margin-bottom: 10px;
   padding: 0 16px;
 }
 
@@ -58,8 +69,26 @@ mat-dialog-content {
 }
 
 .card-whatsapp-btn:disabled {
-  background: #cfd8dc;
-  color: #607d8b;
+  color: #90a4ae;
+  border-color: #cfd8dc;
+}
+
+mat-dialog-actions .dialog-close-btn {
+  width: auto;
+  min-width: 0;
+  color: #4f5f79;
+  padding: 0 12px;
+}
+
+.dialog-icon-close {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.dialog-icon-close i {
+  font-size: 18px;
+  color: #7a8795;
 }
 
 @media (max-width: 767px) {
@@ -67,8 +96,7 @@ mat-dialog-content {
     font-size: 20px;
   }
 
-  .card-whatsapp-btn {
-    width: 100%;
-    justify-content: center;
+  .card-phone {
+    justify-content: space-between;
   }
 }
