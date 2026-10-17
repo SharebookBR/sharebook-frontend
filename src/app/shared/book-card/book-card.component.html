@@ -12,6 +12,9 @@
         decoding="async"
       />
     </a>
+    @if (isUpcoming) {
+      <span class="book-release-badge">Em breve · {{ releaseLabel }}</span>
+    }
     <span class="book-type-badge" [ngClass]="isEbook ? 'badge-ebook' : 'badge-physical'">
       <i class="fa" [ngClass]="isEbook ? 'fa-cloud-download' : 'fa-book'"></i>
       {{ isEbook ? 'Livro digital' : 'Livro físico' }}
