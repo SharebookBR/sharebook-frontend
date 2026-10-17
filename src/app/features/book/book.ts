@@ -37,6 +37,7 @@ export class Book {
   thumbnailUrl?: string;
   imageName: string;
   chooseDate: Date;
+  releaseAtUtc?: string | null;
   synopsis: string;
   id: string;
   creationDate: Date;
