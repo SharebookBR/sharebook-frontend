@@ -26,6 +26,7 @@ import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-a
 import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-description';
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
+import { formatReleaseDate, releaseCountdownLabel } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-details',
@@ -45,6 +46,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   authenticated: Boolean = false;
   requested: Boolean = false;
   available: Boolean = false;
+  upcoming: Boolean = false;
 
   myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
@@ -130,6 +132,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.pageTitle = this.bookInfo.title;
                 this.available =
                   this.bookInfo.status === BookDonationStatus.AVAILABLE;
+                this.upcoming =
+                  this.bookInfo.status === BookDonationStatus.SCHEDULED;
 
                 const chooseDate = Math.floor(
                   new Date(this.bookInfo.chooseDate).getTime() /
@@ -312,6 +316,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
+  }
+
+  get releaseDateLabel(): string {
+    return formatReleaseDate(this.bookInfo?.releaseDate, true);
+  }
+
+  get releaseCountdown(): string {
+    return releaseCountdownLabel(this.bookInfo?.releaseDate);
   }
 
   isEbook(): boolean {

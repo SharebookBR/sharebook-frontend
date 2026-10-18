@@ -222,3 +222,8 @@
     grid-template-columns: 1fr;
   }
 }
+
+.details-upcoming__countdown {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
