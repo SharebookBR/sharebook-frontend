@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectorRef, Chan
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from 'src/express.tokens';
 import { Response } from 'express';
-import { Observable, Subject, of } from 'rxjs';
+import { Subject, of, timer, zip } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
@@ -27,7 +27,7 @@ import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-de
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
 import { ReleaseInterestStatus } from 'src/app/features/book/releaseInterestStatus';
-import { daysUntilRelease, formatReleaseDate, formatReleaseDateLong, releaseBadgeLabel } from 'src/app/core/utils/release-date';
+import { formatReleaseDateLong, releaseBadgeLabel } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-details',
@@ -50,6 +50,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   upcoming: Boolean = false;
   releaseInterest: ReleaseInterestStatus = { total: 0, subscribed: false };
   releaseInterestBusy = false;
+  justNotified = false;
 
   myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
@@ -241,54 +242,65 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /** Só para pessoa logada: descobre se já pediu o aviso. Visitante não faz chamada nenhuma. */
   private loadReleaseInterest(bookId: string): void {
-    // Logada: traz também se já pediu o aviso. Visitante: só o total.
-    const request$ = this.userProfile
-      ? this._scBook.getReleaseInterest(bookId)
-      : this._scBook.getReleaseInterestCount(bookId);
+    if (!this.userProfile) {
+      return;
+    }
 
-    request$
+    this._scBook
+      .getReleaseInterest(bookId)
       .pipe(
         takeUntil(this._destroySubscribes$),
         catchError(() => of(null))
       )
       .subscribe((status) => {
-        if (status) {
-          this.releaseInterest = status;
-          this._cdr.markForCheck();
+        if (!status) {
+          return;
+        }
+        this.releaseInterest = status;
+        this._cdr.markForCheck();
+
+        // Voltou do login clicando em "Quero ser avisado": conclui o pedido sozinho.
+        if (this._activatedRoute.snapshot.queryParamMap.get('avisar') === '1') {
+          this._router.navigate([], { queryParams: { avisar: null }, queryParamsHandling: 'merge', replaceUrl: true });
+          if (!status.subscribed) {
+            this.subscribeToRelease();
+          }
         }
       });
   }
 
-  get releaseInterestLabel(): string {
-    const total = this.releaseInterest.total;
-    if (total <= 0) {
-      return '';
-    }
-    return total === 1 ? '1 pessoa já pediu aviso' : `${total} pessoas já pediram aviso`;
-  }
-
   onWantToBeNotified(): void {
-    this.changeReleaseInterest(this._scBook.subscribeReleaseInterest(this.bookInfo.id), 'release_interest_subscribe');
+    if (!this.userProfile) {
+      // Mesmo botão para todo mundo: quem não está logada entra e volta aqui, e o pedido é concluído ao voltar.
+      this._router.navigate(['/login'], {
+        queryParams: { returnUrl: `/livros/${this.bookInfo.slug}?avisar=1` },
+      });
+      return;
+    }
+    this.subscribeToRelease();
   }
 
-  onCancelNotification(): void {
-    this.changeReleaseInterest(this._scBook.unsubscribeReleaseInterest(this.bookInfo.id), 'release_interest_unsubscribe');
-  }
-
-  private changeReleaseInterest(request$: Observable<ReleaseInterestStatus>, analyticsEvent: string): void {
+  private subscribeToRelease(): void {
     if (this.releaseInterestBusy) {
       return;
     }
     this.releaseInterestBusy = true;
+    this._cdr.markForCheck();
 
-    request$
+    // O tempo mínimo faz a animação do sino ser percebida mesmo quando a API responde na hora.
+    zip(this._scBook.subscribeReleaseInterest(this.bookInfo.id), timer(600))
       .pipe(takeUntil(this._destroySubscribes$))
       .subscribe(
-        (status) => {
+        ([status]) => {
           this.releaseInterest = status;
           this.releaseInterestBusy = false;
-          this._ga.sendEvent(analyticsEvent, { book_title: this.bookInfo.title, book_slug: this.bookInfo.slug });
+          this.justNotified = true;
+          this._toastr.success(
+            `Combinado! Avisaremos por e-mail em ${this.releaseDateLong}. Nesse dia, lembre-se de solicitar o livro.`
+          );
+          this._ga.sendEvent('release_interest_subscribe', { book_title: this.bookInfo.title, book_slug: this.bookInfo.slug });
           this._cdr.markForCheck();
         },
         (error) => {
@@ -296,7 +308,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           // O errorInterceptor já entrega as mensagens da API como array de textos.
           const message = Array.isArray(error) && error.length
             ? error.join(' ')
-            : 'Não foi possível atualizar o aviso agora. Tente novamente.';
+            : 'Não foi possível pedir o aviso agora. Tente novamente.';
           this._toastr.error(message);
           this._cdr.markForCheck();
         }
@@ -386,21 +398,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this._destroySubscribes$.complete();
   }
 
-  get releaseDateLabel(): string {
-    return formatReleaseDate(this.bookInfo?.releaseDate, true);
-  }
-
   get releaseBadge(): string {
     return releaseBadgeLabel(this.bookInfo?.releaseDate);
   }
 
   get releaseDateLong(): string {
     return formatReleaseDateLong(this.bookInfo?.releaseDate);
-  }
-
-  /** Dias até a abertura (0 = hoje). Nulo se a data estiver ausente ou inválida. */
-  get releaseDays(): number | null {
-    return daysUntilRelease(this.bookInfo?.releaseDate);
   }
 
   isEbook(): boolean {

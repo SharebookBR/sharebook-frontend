@@ -230,169 +230,42 @@
   }
 }
 
-.upcoming-card {
-  margin-top: 16px;
-  padding: 22px 24px 18px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #1d3a5f 0%, #1e8fc4 100%);
-  color: #fff;
-  box-shadow: 0 8px 22px rgba(30, 143, 196, 0.25);
+/* "Quero ser avisado": o sino balança enquanto o pedido é enviado e o selo de confirmação entra com um pulinho. */
+.notify-button--busy {
+  animation: notify-pulse 0.6s ease-in-out infinite;
 }
 
-.upcoming-card p {
-  margin: 0;
+.notify-button--busy ::ng-deep mat-icon {
+  transform-origin: 50% 10%;
+  animation: notify-ring 0.6s ease-in-out infinite;
 }
 
-.upcoming-card__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  opacity: 0.9;
+.upcoming-notified--pop {
+  animation: notify-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
 }
 
-.upcoming-card__eyebrow mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+@keyframes notify-ring {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-22deg); }
+  40% { transform: rotate(18deg); }
+  60% { transform: rotate(-12deg); }
+  80% { transform: rotate(8deg); }
 }
 
-.upcoming-card__countdown {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-top: 6px;
-  line-height: 1;
+@keyframes notify-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
 
-.upcoming-card__number {
-  font-size: 4rem;
-  font-weight: 800;
-  letter-spacing: -1px;
+@keyframes notify-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-.upcoming-card__number--text {
-  font-size: 3rem;
-}
-
-.upcoming-card__unit {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.upcoming-card__date {
-  margin-top: 6px;
-  font-size: 1.15rem;
-  opacity: 0.95;
-}
-
-.upcoming-card__action {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.upcoming-card__text {
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.upcoming-card__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 26px;
-  border: 0;
-  border-radius: 8px;
-  background: #fff;
-  color: #1a7aa8;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-.upcoming-card__cta:hover:not(:disabled) {
-  background: #eaf6fc;
-}
-
-.upcoming-card__cta:disabled,
-.upcoming-card__link:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.upcoming-card__sub {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  opacity: 0.95;
-}
-
-.upcoming-card__sub a {
-  color: #fff;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
-.upcoming-card__done {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.upcoming-card__done mat-icon {
-  color: #8df0b5;
-}
-
-.upcoming-card__link {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #fff;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  opacity: 0.9;
-  cursor: pointer;
-}
-
-.upcoming-card__proof {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.upcoming-card__proof mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.upcoming-card__note {
-  margin-top: 14px;
-  font-size: 0.78rem;
-  opacity: 0.75;
-}
-
-@media (max-width: 575px) {
-  .upcoming-card {
-    padding: 20px 18px 16px;
-  }
-
-  .upcoming-card__cta {
-    width: 100%;
+@media (prefers-reduced-motion: reduce) {
+  .notify-button--busy,
+  .notify-button--busy ::ng-deep mat-icon,
+  .upcoming-notified--pop {
+    animation: none;
   }
 }
