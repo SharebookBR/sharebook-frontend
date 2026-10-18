@@ -27,7 +27,7 @@ import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-de
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
 import { ReleaseInterestStatus } from 'src/app/features/book/releaseInterestStatus';
-import { formatReleaseDate, releaseBadgeLabel, releaseCountdownLabel } from 'src/app/core/utils/release-date';
+import { daysUntilRelease, formatReleaseDate, formatReleaseDateLong, releaseBadgeLabel } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-details',
@@ -265,7 +265,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (total <= 0) {
       return '';
     }
-    return total === 1 ? '1 pessoa quer ser avisada' : `${total} pessoas querem ser avisadas`;
+    return total === 1 ? '1 pessoa já pediu aviso' : `${total} pessoas já pediram aviso`;
   }
 
   onWantToBeNotified(): void {
@@ -394,8 +394,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return releaseBadgeLabel(this.bookInfo?.releaseDate);
   }
 
-  get releaseCountdown(): string {
-    return releaseCountdownLabel(this.bookInfo?.releaseDate);
+  get releaseDateLong(): string {
+    return formatReleaseDateLong(this.bookInfo?.releaseDate);
+  }
+
+  /** Dias até a abertura (0 = hoje). Nulo se a data estiver ausente ou inválida. */
+  get releaseDays(): number | null {
+    return daysUntilRelease(this.bookInfo?.releaseDate);
   }
 
   isEbook(): boolean {

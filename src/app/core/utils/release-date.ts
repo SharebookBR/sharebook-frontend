@@ -33,14 +33,6 @@ export function formatReleaseDate(releaseDate: string | null | undefined, withYe
   return withYear ? `${day}/${month}/${year}` : `${day}/${month}`;
 }
 
-export function releaseCountdownLabel(releaseDate: string | null | undefined, now: Date = new Date()): string {
-  const days = daysUntilRelease(releaseDate, now);
-  if (days === null || days <= 0) {
-    return '';
-  }
-  return days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`;
-}
-
 /** Texto curto do badge: 'Em breve · 14 dias', 'Em breve · amanhã', 'Em breve · hoje'. */
 export function releaseBadgeLabel(releaseDate: string | null | undefined, now: Date = new Date()): string {
   const days = daysUntilRelease(releaseDate, now);
@@ -51,4 +43,17 @@ export function releaseBadgeLabel(releaseDate: string | null | undefined, now: D
     return 'Em breve · hoje';
   }
   return days === 1 ? 'Em breve · amanhã' : `Em breve · ${days} dias`;
+}
+
+const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+/** '1º de novembro' (com o ano só quando não é o ano corrente em São Paulo). Não passa por Date, para não deslocar o dia. */
+export function formatReleaseDateLong(releaseDate: string | null | undefined, now: Date = new Date()): string {
+  if (!releaseDate || !/^\d{4}-\d{2}-\d{2}/.test(releaseDate)) {
+    return '';
+  }
+  const [year, month, day] = releaseDate.slice(0, 10).split('-').map(Number);
+  const dayLabel = day === 1 ? '1º' : String(day);
+  const currentYear = Number(todaySaoPaulo(now).slice(0, 4));
+  return `${dayLabel} de ${MONTHS[month - 1]}${year === currentYear ? '' : ` de ${year}`}`;
 }
