@@ -270,17 +270,15 @@
   }
 }
 
-/* Faixa de contagem do lançamento: só o número, a unidade e a data. A ação fica no botão "Quero ser avisado". */
+/* Faixa de contagem do lançamento: mesmo aviso azul-claro (alert-info) da seção do livro digital;
+   só o número, a unidade e a data ganham destaque. A ação fica no botão "Quero ser avisado". */
 .launch-countdown {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   margin-top: 16px;
-  padding: 12px 20px 12px 12px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #1d3a5f 0%, #1e8fc4 100%);
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(30, 143, 196, 0.22);
+  margin-bottom: 0;
+  padding: 10px 16px 10px 10px;
 }
 
 .launch-countdown__tile {
@@ -288,26 +286,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 78px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.16);
+  min-width: 70px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #bee5eb;
   line-height: 1;
 }
 
 .launch-countdown__number {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
 .launch-countdown__number--text {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
 .launch-countdown__unit {
   margin-top: 4px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -321,10 +320,8 @@
 
 .launch-countdown__label {
   font-size: 0.85rem;
-  opacity: 0.85;
 }
 
 .launch-countdown__date {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
-
