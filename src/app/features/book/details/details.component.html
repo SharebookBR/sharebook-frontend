@@ -134,6 +134,22 @@
                 <strong>Este livro digital não está mais disponível.</strong>
               </div>
             }
+            @if (upcoming) {
+              <div class="launch-countdown" role="status">
+                <div class="launch-countdown__tile">
+                  @if (releaseDays !== null && releaseDays > 0) {
+                    <span class="launch-countdown__number">{{ releaseDays }}</span>
+                    <span class="launch-countdown__unit">{{ releaseDays === 1 ? 'dia' : 'dias' }}</span>
+                  } @else {
+                    <span class="launch-countdown__number launch-countdown__number--text">Hoje</span>
+                  }
+                </div>
+                <div class="launch-countdown__text">
+                  <span class="launch-countdown__label">Será lançado em</span>
+                  <strong class="launch-countdown__date">{{ releaseDays !== null && releaseDays > 0 ? releaseDateLong : 'hoje' }}</strong>
+                </div>
+              </div>
+            }
             @if (!isEbook() && !available && !upcoming) {
               <div class="alert alert-info mt-3">
                 <strong>Este livro físico já foi doado.</strong><br />
