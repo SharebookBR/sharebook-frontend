@@ -269,3 +269,62 @@
     animation: none;
   }
 }
+
+/* Faixa de contagem do lançamento: só o número, a unidade e a data. A ação fica no botão "Quero ser avisado". */
+.launch-countdown {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 12px 20px 12px 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1d3a5f 0%, #1e8fc4 100%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(30, 143, 196, 0.22);
+}
+
+.launch-countdown__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  line-height: 1;
+}
+
+.launch-countdown__number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.launch-countdown__number--text {
+  font-size: 1.6rem;
+}
+
+.launch-countdown__unit {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.launch-countdown__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.launch-countdown__label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.launch-countdown__date {
+  font-size: 1.25rem;
+}
+
