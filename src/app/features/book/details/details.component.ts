@@ -26,7 +26,7 @@ import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-a
 import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-description';
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
-import { formatReleaseDate, releaseCountdownLabel } from 'src/app/core/utils/release-date';
+import { formatReleaseDate, releaseBadgeLabel, releaseCountdownLabel } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-details',
@@ -320,6 +320,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   get releaseDateLabel(): string {
     return formatReleaseDate(this.bookInfo?.releaseDate, true);
+  }
+
+  get releaseBadge(): string {
+    return releaseBadgeLabel(this.bookInfo?.releaseDate);
   }
 
   get releaseCountdown(): string {

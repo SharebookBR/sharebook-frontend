@@ -40,3 +40,15 @@ export function releaseCountdownLabel(releaseDate: string | null | undefined, no
   }
   return days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`;
 }
+
+/** Texto curto do badge: 'Em breve · 14 dias', 'Em breve · amanhã', 'Em breve · hoje'. */
+export function releaseBadgeLabel(releaseDate: string | null | undefined, now: Date = new Date()): string {
+  const days = daysUntilRelease(releaseDate, now);
+  if (days === null || days < 0) {
+    return 'Em breve';
+  }
+  if (days === 0) {
+    return 'Em breve · hoje';
+  }
+  return days === 1 ? 'Em breve · amanhã' : `Em breve · ${days} dias`;
+}

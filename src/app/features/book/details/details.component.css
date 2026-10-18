@@ -84,6 +84,13 @@
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
+.badge-upcoming {
+  background: #fff4db;
+  color: #67470b;
+  text-transform: none;
+  margin-left: 4px;
+}
+
 .details-actions {
   display: flex;
   justify-content: center;

@@ -30,6 +30,9 @@
                 <i class="fa" [ngClass]="isEbook() ? 'fa-cloud-download' : 'fa-book'"></i>
                 {{ getBookTypeLabel() }}
               </span>
+              @if (upcoming) {
+                <span class="book-type-badge details-book-type-badge badge-upcoming">{{ releaseBadge }}</span>
+              }
             </p>
             <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
             <p>
