@@ -1,9 +1,9 @@
 import {
   daysUntilRelease,
   formatReleaseDate,
+  formatReleaseDateLong,
   isUpcomingRelease,
   releaseBadgeLabel,
-  releaseCountdownLabel,
   todaySaoPaulo,
 } from './release-date';
 
@@ -44,17 +44,18 @@ describe('release-date', () => {
     expect(formatReleaseDate(null)).toBe('');
   });
 
+  it('formatReleaseDateLong writes the date out, with 1º and the year only when it is not this year', () => {
+    expect(formatReleaseDateLong('2026-11-01', morningSp)).toBe('1º de novembro');
+    expect(formatReleaseDateLong('2026-12-27', morningSp)).toBe('27 de dezembro');
+    expect(formatReleaseDateLong('2027-01-03', morningSp)).toBe('3 de janeiro de 2027');
+    expect(formatReleaseDateLong(null, morningSp)).toBe('');
+  });
+
   it('releaseBadgeLabel gives a short label for every distance', () => {
     expect(releaseBadgeLabel('2026-11-15', morningSp)).toBe('Em breve · 14 dias');
     expect(releaseBadgeLabel('2026-11-02', morningSp)).toBe('Em breve · amanhã');
     expect(releaseBadgeLabel('2026-11-01', morningSp)).toBe('Em breve · hoje');
     expect(releaseBadgeLabel('2026-10-30', morningSp)).toBe('Em breve');
     expect(releaseBadgeLabel(null, morningSp)).toBe('Em breve');
-  });
-
-  it('releaseCountdownLabel pluralizes and hides after release', () => {
-    expect(releaseCountdownLabel('2026-11-02', morningSp)).toBe('Falta 1 dia');
-    expect(releaseCountdownLabel('2026-11-15', morningSp)).toBe('Faltam 14 dias');
-    expect(releaseCountdownLabel('2026-11-01', morningSp)).toBe('');
   });
 });

@@ -135,41 +135,51 @@
               </div>
             }
             @if (upcoming) {
-              <div class="alert alert-info mt-3 details-upcoming" role="status">
-                <strong>Em breve no Sharebook{{ releaseDateLabel ? ' · ' + releaseDateLabel : '' }}</strong><br />
-                @if (releaseCountdown) {
-                  <span class="details-upcoming__countdown">{{ releaseCountdown }}</span><br />
-                }
-                As solicitações abrem nesse dia. Volte então para pedir este livro.
-              </div>
-              <div class="details-notify" role="group" aria-label="Aviso de liberação">
-                @if (releaseInterestLabel) {
-                  <p class="details-notify__proof"><mat-icon>notifications_active</mat-icon> {{ releaseInterestLabel }}</p>
-                }
-                @if (!userProfile) {
-                  <p class="details-notify__text">
-                    <strong>Quer ser avisado?</strong><br />
-                    Entre na sua conta e peça o aviso: no dia da liberação, mandamos um e-mail para você. Ainda não tem conta?
-                    <a class="details-link" routerLink="/register">Cadastre-se</a>, é rápido e gratuito.
+              <section class="upcoming-card" aria-label="Pré-lançamento">
+                <p class="upcoming-card__eyebrow"><mat-icon>event</mat-icon> Em breve</p>
+                @if (releaseDays !== null && releaseDays > 0) {
+                  <p class="upcoming-card__countdown" role="status">
+                    <span class="upcoming-card__number">{{ releaseDays }}</span>
+                    <span class="upcoming-card__unit">{{ releaseDays === 1 ? 'dia' : 'dias' }}</span>
                   </p>
-                  <app-action-button variant="primary" icon="login" (action)="onLoginBook()">Entrar para ser avisado</app-action-button>
-                } @else if (releaseInterest.subscribed) {
-                  <p class="details-notify__text details-notify__text--done">
-                    <strong>Pronto, você vai ser avisado.</strong><br />
-                    Mandamos um e-mail para você em {{ releaseDateLabel }}, quando as solicitações abrirem.
-                  </p>
-                  <app-action-button variant="primary" appearance="stroked" [disabled]="releaseInterestBusy" (action)="onCancelNotification()">
-                    Cancelar aviso
-                  </app-action-button>
+                  <p class="upcoming-card__date">Chega em {{ releaseDateLong }}</p>
                 } @else {
-                  <app-action-button variant="primary" icon="notifications" [disabled]="releaseInterestBusy" (action)="onWantToBeNotified()">
-                    Quero ser avisado
-                  </app-action-button>
+                  <p class="upcoming-card__countdown" role="status">
+                    <span class="upcoming-card__number upcoming-card__number--text">Hoje</span>
+                  </p>
+                  <p class="upcoming-card__date">As solicitações abrem hoje</p>
                 }
-                <p class="details-notify__note">
+
+                <div class="upcoming-card__action">
+                  @if (!userProfile) {
+                    <p class="upcoming-card__text">Entre na sua conta e peça o aviso: no dia da liberação, mandamos um e-mail para você.</p>
+                    <button type="button" class="upcoming-card__cta" (click)="onLoginBook()">
+                      <mat-icon>login</mat-icon> Entrar para ser avisado
+                    </button>
+                    <p class="upcoming-card__sub">
+                      Ainda não tem conta? <a routerLink="/register">Cadastre-se</a>, é rápido e gratuito.
+                    </p>
+                  } @else if (releaseInterest.subscribed) {
+                    <p class="upcoming-card__done"><mat-icon>check_circle</mat-icon> Combinado! Você vai receber um e-mail em {{ releaseDateLong }}.</p>
+                    <button type="button" class="upcoming-card__link" [disabled]="releaseInterestBusy" (click)="onCancelNotification()">
+                      Cancelar aviso
+                    </button>
+                  } @else {
+                    <p class="upcoming-card__text">Peça o aviso e saiba na hora em que abrir.</p>
+                    <button type="button" class="upcoming-card__cta" [disabled]="releaseInterestBusy" (click)="onWantToBeNotified()">
+                      <mat-icon>notifications</mat-icon> Quero ser avisado
+                    </button>
+                  }
+
+                  @if (releaseInterestLabel) {
+                    <p class="upcoming-card__proof"><mat-icon>groups</mat-icon> {{ releaseInterestLabel }}</p>
+                  }
+                </div>
+
+                <p class="upcoming-card__note">
                   O aviso é só um lembrete por e-mail: não reserva o livro nem dá prioridade. Para participar, é preciso solicitar quando abrir.
                 </p>
-              </div>
+              </section>
             }
             @if (!isEbook() && !available && !upcoming) {
               <div class="alert alert-info mt-3">
