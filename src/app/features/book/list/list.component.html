@@ -32,6 +32,7 @@
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'ebooks'" (click)="setFilter('ebooks')">Digitais</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'finished'" (click)="setFilter('finished')">Finalizados</button>
     <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'available'" (click)="setFilter('available')">Disponíveis</button>
+    <button mat-stroked-button class="filter-btn" [class.filter-btn--active]="selectedFilter === 'scheduled'" (click)="setFilter('scheduled')">Em breve ({{ summary.scheduled || 0 }})</button>
   </div>
 
   <div class="container mt-4">
@@ -89,6 +90,9 @@
             <div class="admin-card__meta">
               <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
               <div><b>Pessoa doadora:</b> {{ element.donor || '-' }}</div>
+              @if (element.status === 'Scheduled' && element.releaseDate) {
+                <div><b>Liberação:</b> {{ formatRelease(element.releaseDate) }}</div>
+              }
               @if (canShowDecisionDate(element)) {
                 <div>
                   <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}

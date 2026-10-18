@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { formatReleaseDate, isUpcomingRelease } from 'src/app/core/utils/release-date';
 
 export interface BookCardInput {
   slug: string;
@@ -6,7 +7,7 @@ export interface BookCardInput {
   thumbnailUrl?: string;
   title: string;
   type: string;
-  releaseAtUtc?: string | null;
+  releaseDate?: string | null;
 }
 
 @Component({
@@ -21,14 +22,11 @@ export class BookCardComponent {
   @Input() layout: 'default' | 'shelf' = 'default';
 
   get isUpcoming(): boolean {
-    const release = this.book?.releaseAtUtc;
-    return !this.isEbook && !!release && new Date(release).getTime() > Date.now();
+    return !this.isEbook && isUpcomingRelease(this.book?.releaseDate);
   }
 
   get releaseLabel(): string {
-    return this.book?.releaseAtUtc
-      ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeZone: 'America/Sao_Paulo' }).format(new Date(this.book.releaseAtUtc))
-      : '';
+    return formatReleaseDate(this.book?.releaseDate);
   }
 
   get isEbook(): boolean {

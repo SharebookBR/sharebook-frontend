@@ -325,10 +325,11 @@ export class BookService {
     );
   }
 
-  public approve(bookId: string) {
+  /** releaseDate ('YYYY-MM-DD', São Paulo) é opcional: futura = livro físico fica "Em breve" até a data. */
+  public approve(bookId: string, releaseDate?: string | null) {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/Approve/${bookId}`,
-      {}
+      releaseDate ? { releaseDate } : {}
     );
   }
 

@@ -13,6 +13,7 @@ export class BookVMItem {
   trackingNumber: string;
   creationDate: Date;
   chooseDate: Date;
+  releaseDate?: string | null;
   freightOption: string;
   categoryId: string;
   category: string;

@@ -117,6 +117,16 @@ describe('BookService', () => {
       }
     ));
 
+    it('approve: sends releaseDate when scheduling a future release', inject(
+      [HttpTestingController, BookService],
+      (httpMock: HttpTestingController, service: BookService) => {
+        service.approve('7', '2026-11-15').subscribe();
+        const req = httpMock.expectOne(`${config.apiEndpoint}/book/Approve/7`);
+        expect(req.request.body).toEqual({ releaseDate: '2026-11-15' });
+        req.flush({});
+      }
+    ));
+
     it('approve: POSTs an empty body to /book/Approve/:bookId', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {

@@ -13,11 +13,12 @@ import { AdminNotesComponent } from '../admin-notes/admin-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
 import { getStatusDescription } from 'src/app/features/book/getStatusDescription';
+import { formatReleaseDate } from 'src/app/core/utils/release-date';
 import { BookVMItem } from 'src/app/features/book/bookVMItem';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
 
-type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available';
+type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available' | 'scheduled';
 
 @Component({
     selector: 'app-list',
@@ -290,6 +291,7 @@ export class ListComponent implements OnInit, OnDestroy {
       case BookDonationStatus.SENT:
         return 'status-badge status-info';
       case BookDonationStatus.WAITING_APPROVAL:
+      case BookDonationStatus.SCHEDULED:
         return 'status-badge status-neutral';
       default:
         return 'status-badge status-neutral';
@@ -324,6 +326,10 @@ export class ListComponent implements OnInit, OnDestroy {
     this.selectedFilter = filter;
     this.currentPage = 1;
     this.loadBooks();
+  }
+
+  public formatRelease(releaseDate?: string | null): string {
+    return formatReleaseDate(releaseDate, true);
   }
 
   public isEbook(book: BookVMItem): boolean {
@@ -566,6 +572,7 @@ export class ListComponent implements OnInit, OnDestroy {
       ebooks: 0,
       finished: 0,
       available: 0,
+      scheduled: 0,
     };
   }
 }

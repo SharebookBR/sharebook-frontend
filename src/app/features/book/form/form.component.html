@@ -349,6 +349,15 @@
                 <label class="form-check-label" for="approve"> Aprovar essa doação. </label>
               </div>
             </div>
+            @if (userProfile.profile === 'Administrator' && selectedBookType === 'Printed') {
+              <div class="form-group col-md-8 mb-4">
+                <label class="col-form-label" for="releaseDate">Data de liberação (opcional)</label>
+                <input formControlName="releaseDate" id="releaseDate" type="date" class="form-control" [min]="todayIso" />
+                <small class="form-text text-muted">
+                  Com data futura, o livro aparece como "Em breve" e só abre para solicitações nesse dia (job das 7h, horário de São Paulo). Vazio = disponível ao aprovar.
+                </small>
+              </div>
+            }
           }
           <div class="form-group col-md-8">
             <div class="text-center" [hidden]="isLoading">
