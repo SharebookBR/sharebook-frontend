@@ -16,6 +16,8 @@ export function getStatusDescription(status) {
       return 'Recebido';
     case BookDonationStatus.CANCELED:
       return 'Cancelado';
+    case BookDonationStatus.SCHEDULED:
+      return 'Em breve';
     default:
       return '???';
   }

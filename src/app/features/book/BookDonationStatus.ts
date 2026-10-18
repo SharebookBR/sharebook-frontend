@@ -6,4 +6,5 @@ export enum BookDonationStatus {
   SENT = 'Sent',
   RECEIVED = 'Received',
   CANCELED = 'Canceled',
+  SCHEDULED = 'Scheduled',
 }

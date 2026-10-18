@@ -84,6 +84,13 @@
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
+.badge-upcoming {
+  background: #fff4db;
+  color: #67470b;
+  text-transform: none;
+  margin-left: 4px;
+}
+
 .details-actions {
   display: flex;
   justify-content: center;
@@ -221,4 +228,40 @@
   .share-modal-actions {
     grid-template-columns: 1fr;
   }
+}
+
+.details-upcoming__countdown {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.details-notify {
+  margin-top: 16px;
+  padding: 18px 20px;
+  border: 1px solid #d6e9f5;
+  border-radius: 8px;
+  background: #f7fbfe;
+}
+
+.details-notify__proof {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #1e8fc4;
+}
+
+.details-notify__text {
+  margin-bottom: 14px;
+}
+
+.details-notify__text--done {
+  color: #1b6e43;
+}
+
+.details-notify__note {
+  margin: 14px 0 0;
+  font-size: 0.85rem;
+  color: #777;
 }

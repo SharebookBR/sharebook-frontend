@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { releaseBadgeLabel } from 'src/app/core/utils/release-date';
 
 export interface BookCardInput {
   slug: string;
@@ -6,6 +7,7 @@ export interface BookCardInput {
   thumbnailUrl?: string;
   title: string;
   type: string;
+  releaseDate?: string | null;
 }
 
 @Component({
@@ -18,6 +20,15 @@ export interface BookCardInput {
 export class BookCardComponent {
   @Input() book: BookCardInput;
   @Input() layout: 'default' | 'shelf' = 'default';
+
+  // O backend só envia releaseDate enquanto o livro está Scheduled (vira null ao liberar).
+  get isUpcoming(): boolean {
+    return !this.isEbook && !!this.book?.releaseDate;
+  }
+
+  get releaseLabel(): string {
+    return releaseBadgeLabel(this.book?.releaseDate);
+  }
 
   get isEbook(): boolean {
     return this.book?.type === 'Eletronic';

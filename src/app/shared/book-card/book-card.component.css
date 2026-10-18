@@ -32,10 +32,19 @@
   max-width: 170px;
 }
 
-.book-type-badge {
+.book-badges {
   position: absolute;
   bottom: 8px;
   left: 8px;
+  right: 8px;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-type-badge {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 11px;
@@ -60,4 +69,10 @@
 
 .badge-physical {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.badge-upcoming {
+  background: #fff4db;
+  color: #67470b;
+  text-transform: none;
 }

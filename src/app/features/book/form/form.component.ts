@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 import { BookType } from 'src/app/features/book/book';
+import { todaySaoPaulo } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-form',
@@ -55,6 +56,7 @@ export class FormComponent implements OnInit, OnDestroy {
   isPdfLoaded: Boolean = false;
   canApprove: Boolean = false;
   status = '';
+  readonly todayIso = todaySaoPaulo();
 
   src: string;
   pdfFileName: string = '';
@@ -175,6 +177,7 @@ export class FormComponent implements OnInit, OnDestroy {
       imageBytes: [''],
       imageName: [''],
       approve: [''],
+      releaseDate: [null],
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
@@ -281,6 +284,7 @@ export class FormComponent implements OnInit, OnDestroy {
             maxRequestsOverride: book.maxRequestsOverride ?? null,
             agreeToTerms: true,
             approve: false,
+            releaseDate: null,
             type: book.type || 'Printed',
             pdfBytes: null,
             agreeToAntiPiracy: true,
@@ -465,6 +469,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     delete formValue.bookId;
     delete formValue.approve;
+    delete formValue.releaseDate;
     delete formValue.imageUrl;
     delete formValue.imageSlug;
     delete formValue.agreeToTerms;
@@ -568,7 +573,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   approve() {
     this._scBook
-      .approve(this.formGroup.value.bookId)
+      .approve(this.formGroup.value.bookId, this.selectedBookType === 'Printed' ? this.formGroup.value.releaseDate : null)
       .pipe(
         takeUntil(this._destroySubscribes$),
         catchError(() => {

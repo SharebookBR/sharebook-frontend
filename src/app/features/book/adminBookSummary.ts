@@ -6,4 +6,5 @@ export class AdminBookSummary {
   ebooks: number;
   finished: number;
   available: number;
+  scheduled: number;
 }

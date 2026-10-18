@@ -12,9 +12,14 @@
         decoding="async"
       />
     </a>
-    <span class="book-type-badge" [ngClass]="isEbook ? 'badge-ebook' : 'badge-physical'">
-      <i class="fa" [ngClass]="isEbook ? 'fa-cloud-download' : 'fa-book'"></i>
-      {{ isEbook ? 'Livro digital' : 'Livro físico' }}
+    <span class="book-badges">
+      <span class="book-type-badge" [ngClass]="isEbook ? 'badge-ebook' : 'badge-physical'">
+        <i class="fa" [ngClass]="isEbook ? 'fa-cloud-download' : 'fa-book'"></i>
+        {{ isEbook ? 'Livro digital' : 'Livro físico' }}
+      </span>
+      @if (isUpcoming) {
+        <span class="book-type-badge badge-upcoming book-release-badge">{{ releaseLabel }}</span>
+      }
     </span>
   </div>
   <figcaption class="figure-caption text-center">
