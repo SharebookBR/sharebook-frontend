@@ -254,11 +254,6 @@ export class BookService {
     );
   }
 
-  /** Aberto a visitantes: só o total (subscribed vem sempre false). */
-  public getReleaseInterestCount(bookId: string): Observable<ReleaseInterestStatus> {
-    return this._http.get<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}/Count`);
-  }
-
   public getReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
     return this._http.get<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`);
   }
@@ -266,10 +261,6 @@ export class BookService {
   /** "Quero ser avisado": pede o e-mail do dia da liberação. Não é solicitação nem reserva. */
   public subscribeReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
     return this._http.post<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`, {});
-  }
-
-  public unsubscribeReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
-    return this._http.delete<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`);
   }
 
   public getRequested(bookId: string) {

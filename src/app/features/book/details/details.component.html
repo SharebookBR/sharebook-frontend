@@ -134,53 +134,6 @@
                 <strong>Este livro digital não está mais disponível.</strong>
               </div>
             }
-            @if (upcoming) {
-              <section class="upcoming-card" aria-label="Pré-lançamento">
-                <p class="upcoming-card__eyebrow"><mat-icon>event</mat-icon> Em breve</p>
-                @if (releaseDays !== null && releaseDays > 0) {
-                  <p class="upcoming-card__countdown" role="status">
-                    <span class="upcoming-card__number">{{ releaseDays }}</span>
-                    <span class="upcoming-card__unit">{{ releaseDays === 1 ? 'dia' : 'dias' }}</span>
-                  </p>
-                  <p class="upcoming-card__date">Chega em {{ releaseDateLong }}</p>
-                } @else {
-                  <p class="upcoming-card__countdown" role="status">
-                    <span class="upcoming-card__number upcoming-card__number--text">Hoje</span>
-                  </p>
-                  <p class="upcoming-card__date">As solicitações abrem hoje</p>
-                }
-
-                <div class="upcoming-card__action">
-                  @if (!userProfile) {
-                    <p class="upcoming-card__text">Entre na sua conta e peça o aviso: no dia da liberação, mandamos um e-mail para você.</p>
-                    <button type="button" class="upcoming-card__cta" (click)="onLoginBook()">
-                      <mat-icon>login</mat-icon> Entrar para ser avisado
-                    </button>
-                    <p class="upcoming-card__sub">
-                      Ainda não tem conta? <a routerLink="/register">Cadastre-se</a>, é rápido e gratuito.
-                    </p>
-                  } @else if (releaseInterest.subscribed) {
-                    <p class="upcoming-card__done"><mat-icon>check_circle</mat-icon> Combinado! Você vai receber um e-mail em {{ releaseDateLong }}.</p>
-                    <button type="button" class="upcoming-card__link" [disabled]="releaseInterestBusy" (click)="onCancelNotification()">
-                      Cancelar aviso
-                    </button>
-                  } @else {
-                    <p class="upcoming-card__text">Peça o aviso e saiba na hora em que abrir.</p>
-                    <button type="button" class="upcoming-card__cta" [disabled]="releaseInterestBusy" (click)="onWantToBeNotified()">
-                      <mat-icon>notifications</mat-icon> Quero ser avisado
-                    </button>
-                  }
-
-                  @if (releaseInterestLabel) {
-                    <p class="upcoming-card__proof"><mat-icon>groups</mat-icon> {{ releaseInterestLabel }}</p>
-                  }
-                </div>
-
-                <p class="upcoming-card__note">
-                  O aviso é só um lembrete por e-mail. Não reserva e nem dá prioridade. Você ainda vai precisar solicitar o livro na data de lançamento.
-                </p>
-              </section>
-            }
             @if (!isEbook() && !available && !upcoming) {
               <div class="alert alert-info mt-3">
                 <strong>Este livro físico já foi doado.</strong><br />
@@ -192,6 +145,24 @@
         <div class="form-row">
           <div class="form-group col-lg-8 offset-lg-4">
             <div class="details-actions">
+              @if (upcoming) {
+                @if (releaseInterest.subscribed) {
+                  <span class="badge badge-success upcoming-notified" [class.upcoming-notified--pop]="justNotified" role="status">
+                    Aviso ativado! Você será avisado em {{ releaseDateLong }}.
+                  </span>
+                } @else {
+                  <app-action-button
+                    class="notify-button"
+                    [class.notify-button--busy]="releaseInterestBusy"
+                    variant="yellow"
+                    icon="notifications"
+                    [disabled]="releaseInterestBusy"
+                    (action)="onWantToBeNotified()"
+                    >
+                    Quero ser avisado
+                  </app-action-button>
+                }
+              }
               @if (available && requested && !isEbook()) {
                 <span class="badge badge-success">Você já solicitou. Aguarde e boa sorte!</span>
               }

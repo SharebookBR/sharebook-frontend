@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         data => {
           if (data.success || data.authenticated) {
             this._ga.sendEvent('login', { method: 'email' });
-            this._router.navigate([this.returnUrl]);
+            this._router.navigateByUrl(this.returnUrl);
           } else {
             this._toastr.error(data.messages[0]);
           }
