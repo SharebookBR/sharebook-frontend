@@ -14,6 +14,7 @@ export class BookVMItem {
   creationDate: Date;
   chooseDate: Date;
   releaseDate?: string | null;
+  releaseInterestCount?: number;
   freightOption: string;
   categoryId: string;
   category: string;

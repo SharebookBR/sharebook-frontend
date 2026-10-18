@@ -142,6 +142,34 @@
                 }
                 As solicitações abrem nesse dia. Volte então para pedir este livro.
               </div>
+              <div class="details-notify" role="group" aria-label="Aviso de liberação">
+                @if (releaseInterestLabel) {
+                  <p class="details-notify__proof"><mat-icon>notifications_active</mat-icon> {{ releaseInterestLabel }}</p>
+                }
+                @if (!userProfile) {
+                  <p class="details-notify__text">
+                    <strong>Quer ser avisado?</strong><br />
+                    Entre na sua conta e peça o aviso: no dia da liberação, mandamos um e-mail para você. Ainda não tem conta?
+                    <a class="details-link" routerLink="/register">Cadastre-se</a>, é rápido e gratuito.
+                  </p>
+                  <app-action-button variant="primary" icon="login" (action)="onLoginBook()">Entrar para ser avisado</app-action-button>
+                } @else if (releaseInterest.subscribed) {
+                  <p class="details-notify__text details-notify__text--done">
+                    <strong>Pronto, você vai ser avisado.</strong><br />
+                    Mandamos um e-mail para você em {{ releaseDateLabel }}, quando as solicitações abrirem.
+                  </p>
+                  <app-action-button variant="primary" appearance="stroked" [disabled]="releaseInterestBusy" (action)="onCancelNotification()">
+                    Cancelar aviso
+                  </app-action-button>
+                } @else {
+                  <app-action-button variant="primary" icon="notifications" [disabled]="releaseInterestBusy" (action)="onWantToBeNotified()">
+                    Quero ser avisado
+                  </app-action-button>
+                }
+                <p class="details-notify__note">
+                  O aviso é só um lembrete por e-mail: não reserva o livro nem dá prioridade. Para participar, é preciso solicitar quando abrir.
+                </p>
+              </div>
             }
             @if (!isEbook() && !available && !upcoming) {
               <div class="alert alert-info mt-3">

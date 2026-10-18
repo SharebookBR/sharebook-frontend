@@ -1,4 +1,5 @@
 import { BookToAdminProfile } from 'src/app/features/book/BookToAdminProfile';
+import { ReleaseInterestStatus } from 'src/app/features/book/releaseInterestStatus';
 import { UserInfoBook } from 'src/app/features/book/UserInfoBook';
 import { Injectable, Inject, PLATFORM_ID, makeStateKey, TransferState } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
@@ -251,6 +252,24 @@ export class BookService {
       `${this.config.apiEndpoint}/book/Request/`,
       request
     );
+  }
+
+  /** Aberto a visitantes: só o total (subscribed vem sempre false). */
+  public getReleaseInterestCount(bookId: string): Observable<ReleaseInterestStatus> {
+    return this._http.get<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}/Count`);
+  }
+
+  public getReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
+    return this._http.get<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`);
+  }
+
+  /** "Quero ser avisado": pede o e-mail do dia da liberação. Não é solicitação nem reserva. */
+  public subscribeReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
+    return this._http.post<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`, {});
+  }
+
+  public unsubscribeReleaseInterest(bookId: string): Observable<ReleaseInterestStatus> {
+    return this._http.delete<ReleaseInterestStatus>(`${this.config.apiEndpoint}/BookReleaseInterest/${bookId}`);
   }
 
   public getRequested(bookId: string) {

@@ -92,6 +92,7 @@
               <div><b>Pessoa doadora:</b> {{ element.donor || '-' }}</div>
               @if (element.status === 'Scheduled' && element.releaseDate) {
                 <div><b>Liberação:</b> {{ formatRelease(element.releaseDate) }}</div>
+                <div><b>Avisos pedidos:</b> {{ element.releaseInterestCount || 0 }}</div>
               }
               @if (canShowDecisionDate(element)) {
                 <div>

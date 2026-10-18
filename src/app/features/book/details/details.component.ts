@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectorRef, Chan
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from 'src/express.tokens';
 import { Response } from 'express';
-import { Subject, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
@@ -26,6 +26,7 @@ import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-a
 import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-description';
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
+import { ReleaseInterestStatus } from 'src/app/features/book/releaseInterestStatus';
 import { formatReleaseDate, releaseBadgeLabel, releaseCountdownLabel } from 'src/app/core/utils/release-date';
 
 @Component({
@@ -47,6 +48,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   requested: Boolean = false;
   available: Boolean = false;
   upcoming: Boolean = false;
+  releaseInterest: ReleaseInterestStatus = { total: 0, subscribed: false };
+  releaseInterestBusy = false;
 
   myUser: UserInfo = new UserInfo();
   bookInfo: Book = new Book();
@@ -134,6 +137,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
                   this.bookInfo.status === BookDonationStatus.AVAILABLE;
                 this.upcoming =
                   this.bookInfo.status === BookDonationStatus.SCHEDULED;
+                if (this.upcoming) {
+                  this.loadReleaseInterest(book.id);
+                }
 
                 const chooseDate = Math.floor(
                   new Date(this.bookInfo.chooseDate).getTime() /
@@ -233,6 +239,68 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.pageTitle = 'Ops... Não encontramos essa página :/';
       this.state = 'not-found';
     }
+  }
+
+  private loadReleaseInterest(bookId: string): void {
+    // Logada: traz também se já pediu o aviso. Visitante: só o total.
+    const request$ = this.userProfile
+      ? this._scBook.getReleaseInterest(bookId)
+      : this._scBook.getReleaseInterestCount(bookId);
+
+    request$
+      .pipe(
+        takeUntil(this._destroySubscribes$),
+        catchError(() => of(null))
+      )
+      .subscribe((status) => {
+        if (status) {
+          this.releaseInterest = status;
+          this._cdr.markForCheck();
+        }
+      });
+  }
+
+  get releaseInterestLabel(): string {
+    const total = this.releaseInterest.total;
+    if (total <= 0) {
+      return '';
+    }
+    return total === 1 ? '1 pessoa quer ser avisada' : `${total} pessoas querem ser avisadas`;
+  }
+
+  onWantToBeNotified(): void {
+    this.changeReleaseInterest(this._scBook.subscribeReleaseInterest(this.bookInfo.id), 'release_interest_subscribe');
+  }
+
+  onCancelNotification(): void {
+    this.changeReleaseInterest(this._scBook.unsubscribeReleaseInterest(this.bookInfo.id), 'release_interest_unsubscribe');
+  }
+
+  private changeReleaseInterest(request$: Observable<ReleaseInterestStatus>, analyticsEvent: string): void {
+    if (this.releaseInterestBusy) {
+      return;
+    }
+    this.releaseInterestBusy = true;
+
+    request$
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(
+        (status) => {
+          this.releaseInterest = status;
+          this.releaseInterestBusy = false;
+          this._ga.sendEvent(analyticsEvent, { book_title: this.bookInfo.title, book_slug: this.bookInfo.slug });
+          this._cdr.markForCheck();
+        },
+        (error) => {
+          this.releaseInterestBusy = false;
+          // O errorInterceptor já entrega as mensagens da API como array de textos.
+          const message = Array.isArray(error) && error.length
+            ? error.join(' ')
+            : 'Não foi possível atualizar o aviso agora. Tente novamente.';
+          this._toastr.error(message);
+          this._cdr.markForCheck();
+        }
+      );
   }
 
   onRequestBook() {

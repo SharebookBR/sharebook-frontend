@@ -117,6 +117,36 @@ describe('BookService', () => {
       }
     ));
 
+    it('release interest: count is public and hits /Count', inject(
+      [HttpTestingController, BookService],
+      (httpMock: HttpTestingController, service: BookService) => {
+        let result;
+        service.getReleaseInterestCount('9').subscribe((r) => (result = r));
+        const req = httpMock.expectOne(`${config.apiEndpoint}/BookReleaseInterest/9/Count`);
+        expect(req.request.method).toBe('GET');
+        req.flush({ total: 3, subscribed: false });
+        expect(result).toEqual({ total: 3, subscribed: false });
+      }
+    ));
+
+    it('release interest: logged-in status, subscribe and cancel use the same resource', inject(
+      [HttpTestingController, BookService],
+      (httpMock: HttpTestingController, service: BookService) => {
+        const url = `${config.apiEndpoint}/BookReleaseInterest/9`;
+
+        service.getReleaseInterest('9').subscribe();
+        expect(httpMock.expectOne(url).request.method).toBe('GET');
+
+        service.subscribeReleaseInterest('9').subscribe();
+        const post = httpMock.expectOne(url);
+        expect(post.request.method).toBe('POST');
+        expect(post.request.body).toEqual({});
+
+        service.unsubscribeReleaseInterest('9').subscribe();
+        expect(httpMock.expectOne(url).request.method).toBe('DELETE');
+      }
+    ));
+
     it('approve: sends releaseDate when scheduling a future release', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {
