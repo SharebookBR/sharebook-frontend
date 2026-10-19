@@ -272,6 +272,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   onWantToBeNotified(): void {
+    this._ga.sendEvent('release_interest_click', {
+      book_title: this.bookInfo.title,
+      book_slug: this.bookInfo.slug,
+      auth_state: this.userProfile ? 'logged_in' : 'logged_out'
+    });
+
     if (!this.userProfile) {
       // Mesmo botão para todo mundo: quem não está logada entra e volta aqui, e o pedido é concluído ao voltar.
       this._router.navigate(['/login'], {
