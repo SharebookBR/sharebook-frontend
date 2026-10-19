@@ -204,7 +204,12 @@
                 <a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a>
                 <span class="analytics-book-badges">
                   @if (bookTypeLabel(b)) {
-                    <span class="analytics-book-badge analytics-book-badge--type">{{ bookTypeLabel(b) }}</span>
+                    <span
+                      class="analytics-book-badge"
+                      [class.analytics-book-badge--physical]="b.type === 'Printed'"
+                      [class.analytics-book-badge--digital]="b.type === 'Eletronic'">
+                      {{ bookTypeLabel(b) }}
+                    </span>
                   }
                   @if (isPrelaunchBook(b)) {
                     <span class="analytics-book-badge analytics-book-badge--prelaunch">Pré-lançamento</span>

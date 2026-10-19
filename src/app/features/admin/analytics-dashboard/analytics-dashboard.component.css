@@ -298,9 +298,14 @@
   white-space: nowrap;
 }
 
-.analytics-book-badge--type {
-  background: #e8f7ef;
-  color: #177245;
+.analytics-book-badge--physical {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.analytics-book-badge--digital {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .analytics-book-badge--prelaunch {

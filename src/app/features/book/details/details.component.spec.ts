@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { DetailsComponent } from './details.component';
 
 describe('DetailsComponent release interest analytics', () => {
