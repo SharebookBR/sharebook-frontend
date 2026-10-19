@@ -35,4 +35,27 @@ describe('AnalyticsDashboardComponent', () => {
       'https://www.sharebook.com.br/livros/a-volta-ao-mundo-em-80-dias'
     )).toBe('a volta ao mundo em 80 dias');
   });
+
+  it('keeps the pre-launch funnel on its fixed measurement window', () => {
+    component.data = {
+      prelaunchInterestFunnel: { startDate: '2026-10-20', clicks: 8, conversions: 2 }
+    } as any;
+
+    expect(component.funnelPrelaunch).toEqual({
+      startDate: '2026-10-20',
+      clicks: 8,
+      conversions: 2,
+      rate: '25%'
+    });
+  });
+
+  it('maps view-ranking catalog metadata to the canonical badges', () => {
+    const scheduledPhysical = { type: 'Printed', isScheduled: true } as any;
+    const digital = { type: 'Eletronic', isScheduled: false } as any;
+
+    expect(component.bookTypeLabel(scheduledPhysical)).toBe('Físico');
+    expect(component.isPrelaunchBook(scheduledPhysical)).toBeTrue();
+    expect(component.bookTypeLabel(digital)).toBe('Digital');
+    expect(component.isPrelaunchBook(digital)).toBeFalse();
+  });
 });

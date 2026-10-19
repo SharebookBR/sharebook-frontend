@@ -200,7 +200,17 @@
           @for (b of currentTopViews; track b; let i = $index) {
             <tr>
               <td class="rank">{{ i + 1 }}</td>
-              <td class="title"><a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a></td>
+              <td class="title">
+                <a [href]="baseUrl + b.path" target="_blank">{{ b.title }}</a>
+                <span class="analytics-book-badges">
+                  @if (bookTypeLabel(b)) {
+                    <span class="analytics-book-badge analytics-book-badge--type">{{ bookTypeLabel(b) }}</span>
+                  }
+                  @if (isPrelaunchBook(b)) {
+                    <span class="analytics-book-badge analytics-book-badge--prelaunch">Pré-lançamento</span>
+                  }
+                </span>
+              </td>
               <td class="views">{{ b.count | number }}</td>
             </tr>
           }
@@ -253,6 +263,12 @@
               <td class="text-right">{{ funnelRequest.open | number }}</td>
               <td class="text-right">{{ funnelRequest.success | number }}</td>
               <td class="text-right funnel-rate">{{ funnelRequest.rate }}</td>
+            </tr>
+            <tr>
+              <td class="event-name">Interesse no pré-lançamento<br><small>release_interest_click → release_interest_subscribe · desde {{ formatIsoDate(funnelPrelaunch.startDate) }}</small></td>
+              <td class="text-right">{{ funnelPrelaunch.clicks | number }}</td>
+              <td class="text-right">{{ funnelPrelaunch.conversions | number }}</td>
+              <td class="text-right funnel-rate">{{ funnelPrelaunch.rate }}</td>
             </tr>
           </tbody>
         </table>

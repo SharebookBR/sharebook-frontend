@@ -11,8 +11,15 @@ import { environment } from 'src/environments/environment';
 Chart.register(...registerables);
 
 interface WeeklyPoint { label: string; value: number; }
-interface BookMetric { path: string; title: string; count: number; }
+interface BookMetric {
+  path: string;
+  title: string;
+  count: number;
+  type?: 'Printed' | 'Eletronic';
+  isScheduled?: boolean;
+}
 interface EventMetric { eventName: string; count: number; users: number; }
+interface PrelaunchInterestFunnel { startDate: string; clicks: number; conversions: number; }
 interface SearchTermMetric { term: string; count: number; users: number; }
 interface SearchDeviceMetric { device: string; count: number; users: number; }
 interface SearchAnalytics {
@@ -60,6 +67,7 @@ interface DashboardData {
   topBooksByDownloadsPerWeek: Record<string, BookMetric[]>;
   eventSummary: EventMetric[];
   eventSummaryPerWeek: Record<string, EventMetric[]>;
+  prelaunchInterestFunnel: PrelaunchInterestFunnel;
   searchAnalytics: SearchAnalytics;
   searchConsole?: SearchConsoleAnalytics;
 }
@@ -225,6 +233,28 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     const open = this.eventCount('book_request_modal_open');
     const success = this.eventCount('book_request_success');
     return { open, success, rate: open > 0 ? ((success / open) * 100).toFixed(0) + '%' : '—' };
+  }
+
+  get funnelPrelaunch(): { clicks: number; conversions: number; rate: string; startDate: string } {
+    const funnel = this.data?.prelaunchInterestFunnel ?? {
+      startDate: '2026-10-20',
+      clicks: 0,
+      conversions: 0
+    };
+    return {
+      clicks: funnel.clicks,
+      conversions: funnel.conversions,
+      startDate: funnel.startDate,
+      rate: funnel.clicks > 0 ? ((funnel.conversions / funnel.clicks) * 100).toFixed(0) + '%' : '—'
+    };
+  }
+
+  bookTypeLabel(book: BookMetric): string {
+    return book.type === 'Printed' ? 'Físico' : book.type === 'Eletronic' ? 'Digital' : '';
+  }
+
+  isPrelaunchBook(book: BookMetric): boolean {
+    return book.isScheduled === true;
   }
 
   get currentEventSummary(): EventMetric[] {
