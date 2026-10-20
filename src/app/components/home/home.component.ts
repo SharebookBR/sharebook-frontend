@@ -30,11 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public categoriesShowcase: CategoryShowcase[] = [];
   public topDownloadedEbooks: ShowcaseBookItem[] = [];
 
-  public mythologyShowcase: Book[] = [];
-
   public witchesShowcase: Book[] = [];
 
-  public horrorShowcase: Book[] = [];
+  public dangerousLoveShowcase: Book[] = [];
 
   public meetups: Meetup[] = [];
   public meetupsUpcoming: Meetup[] = [];
@@ -44,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private _destroySubscribes$ = new Subject<void>();
   private readonly _editorialShowcaseRandomSeed: number;
+  private _dangerousLovePool: Book[] = [];
   private _browserShuffleTimeouts: ReturnType<typeof setTimeout>[] = [];
 
   constructor(
@@ -92,30 +91,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this.getBooks();
     this.getEbooks();
-    this.getMythologyShowcase();
     this.getWitchesShowcase();
-    this.getHorrorShowcase();
+    this.getDangerousLoveShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
     this.getMeetups();
     this.getMeetupsUpcoming();
-  }
-
-  getMythologyShowcase() {
-    this._tagService
-      .getBooksByTag('mitologia-grega', 1, 30)
-      .pipe(
-        catchError(() => of({ page: 1, itemsPerPage: 30, totalItems: 0, items: [] } as TagBooksPage)),
-        takeUntil(this._destroySubscribes$)
-      )
-      .subscribe((response) => {
-        this.mythologyShowcase = this.shuffleBooks(
-          response.items ?? [],
-          this._editorialShowcaseRandomSeed + 1
-        );
-        this.shuffleShowcaseInBrowser('mythology');
-        this._cdr.markForCheck();
-      });
   }
 
   getWitchesShowcase() {
@@ -133,31 +114,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         this.witchesShowcase = this.shuffleBooks(
           response.items ?? [],
-          this._editorialShowcaseRandomSeed + 2
+          this._editorialShowcaseRandomSeed + 1
         );
         this.shuffleShowcaseInBrowser('witches');
         this._cdr.markForCheck();
       });
   }
 
-  getHorrorShowcase() {
-    this._categoryService
-      .getByHierarchySlugs('ficcao', 'terror')
+  getDangerousLoveShowcase() {
+    this._tagService
+      .getBooksByTag('amores-perigosos', 1, 100)
       .pipe(
-        switchMap((category) =>
-          category
-            ? this._scBook.getBooksByCategoryId(category.id, 1, 30)
-            : of({ items: [] })
-        ),
-        catchError(() => of({ items: [] })),
+        catchError(() => of({ page: 1, itemsPerPage: 100, totalItems: 0, items: [] } as TagBooksPage)),
         takeUntil(this._destroySubscribes$)
       )
       .subscribe((response) => {
-        this.horrorShowcase = this.shuffleBooks(
-          response.items ?? [],
-          this._editorialShowcaseRandomSeed + 3
+        this._dangerousLovePool = response.items ?? [];
+        this.dangerousLoveShowcase = this.selectShowcaseBooks(
+          this._dangerousLovePool,
+          this._editorialShowcaseRandomSeed + 2
         );
-        this.shuffleShowcaseInBrowser('horror');
+        this.shuffleShowcaseInBrowser('dangerousLove');
         this._cdr.markForCheck();
       });
   }
@@ -178,7 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return seed;
   }
 
-  private shuffleShowcaseInBrowser(showcase: 'mythology' | 'witches' | 'horror') {
+  private shuffleShowcaseInBrowser(showcase: 'witches' | 'dangerousLove') {
     if (!isPlatformBrowser(this._platformId)) {
       return;
     }
@@ -186,16 +163,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     const timeout = setTimeout(() => {
       const seed = this.createBrowserRandomSeed();
 
-      if (showcase === 'mythology' && this.mythologyShowcase.length > 1) {
-        this.mythologyShowcase = this.shuffleBooks(this.mythologyShowcase, seed + 1);
-      }
-
       if (showcase === 'witches' && this.witchesShowcase.length > 1) {
-        this.witchesShowcase = this.shuffleBooks(this.witchesShowcase, seed + 2);
+        this.witchesShowcase = this.shuffleBooks(this.witchesShowcase, seed + 1);
       }
 
-      if (showcase === 'horror' && this.horrorShowcase.length > 1) {
-        this.horrorShowcase = this.shuffleBooks(this.horrorShowcase, seed + 3);
+      if (showcase === 'dangerousLove' && this._dangerousLovePool.length > 1) {
+        this.dangerousLoveShowcase = this.selectShowcaseBooks(this._dangerousLovePool, seed + 2);
       }
 
       this._cdr.markForCheck();
@@ -218,6 +191,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     return shuffled;
+  }
+
+  private selectShowcaseBooks<T>(books: T[], seed: number): T[] {
+    return this.shuffleBooks(books, seed).slice(0, 12);
   }
 
   private createSeededRandom(seed: number): () => number {

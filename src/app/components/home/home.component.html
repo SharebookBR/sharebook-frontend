@@ -42,16 +42,6 @@
     ></app-book-shelf>
   }
 
-  <!-- VITRINE EDITORIAL FIXA — MITOLOGIA GREGA -->
-  @if (mythologyShowcase.length > 0) {
-    <app-book-shelf
-      title="Mitologia grega"
-      [books]="mythologyShowcase"
-      [moreLink]="['/tags', 'mitologia-grega']"
-      ariaLabel="Livros de mitologia grega"
-    ></app-book-shelf>
-  }
-
   <!-- VITRINE EDITORIAL FIXA — BRUXAS E MAGIA -->
   @if (witchesShowcase.length > 0) {
     <app-book-shelf
@@ -62,13 +52,14 @@
     ></app-book-shelf>
   }
 
-  <!-- VITRINE EDITORIAL FIXA — LITERATURA DE TERROR -->
-  @if (horrorShowcase.length > 0) {
+  <!-- VITRINE EDITORIAL TRANSVERSAL — AMORES PERIGOSOS -->
+  @if (dangerousLoveShowcase.length > 0) {
     <app-book-shelf
-      title="Literatura de Terror"
-      [books]="horrorShowcase"
-      [moreLink]="['/categorias', 'ficcao', 'terror']"
-      ariaLabel="Livros de literatura de terror"
+      title="Amores Perigosos"
+      description="Paixões marcadas por obsessão, pactos, ciúme, poder ou consequências fatais."
+      [books]="dangerousLoveShowcase"
+      [moreLink]="['/tags', 'amores-perigosos']"
+      ariaLabel="Livros sobre amores perigosos"
     ></app-book-shelf>
   }
 
