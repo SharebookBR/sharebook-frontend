@@ -1,4 +1,5 @@
 export enum RepositoriesUrls {
+  AGENT = 'https://github.com/SharebookBR/sharebook-agent',
   BACKEND = 'https://github.com/SharebookBR/sharebook-backend',
   FRONTEND = 'https://github.com/SharebookBR/sharebook-frontend',
   MOBILE = 'https://github.com/SharebookBR/sharebook-mobile-flutter',

@@ -19,6 +19,7 @@ import { BUILD_INFO } from 'src/environments/version';
 export class FooterComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   repositoriesLinks: Link[] = [
+    { url: RepositoriesUrls.AGENT, content: 'Agent' },
     { url: RepositoriesUrls.BACKEND, content: 'Backend' },
     { url: RepositoriesUrls.FRONTEND, content: 'Frontend' },
     { url: RepositoriesUrls.MOBILE, content: 'Mobile' }
