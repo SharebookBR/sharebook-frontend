@@ -111,8 +111,9 @@ export class UserService {
   }
 
   unsubscribe(userId: string, token: string) {
-    return this._http.get<{ success: boolean }>(`${this.config.apiEndpoint}/Account/Unsubscribe`, {
-      params: { userId, token },
+    return this._http.post<{ success: boolean }>(`${this.config.apiEndpoint}/Account/Unsubscribe`, {
+      userId,
+      token,
     });
   }
 }

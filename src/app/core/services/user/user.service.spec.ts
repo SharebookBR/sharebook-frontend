@@ -155,7 +155,7 @@ describe('UserService', () => {
     }
   ));
 
-  it('unsubscribe: GETs /Account/Unsubscribe with userId and token as query params', inject(
+  it('unsubscribe: POSTs userId and token to /Account/Unsubscribe', inject(
     [HttpTestingController, UserService],
     (httpMock: HttpTestingController, service: UserService) => {
       service.unsubscribe('7', 'tok-123').subscribe();
@@ -163,9 +163,8 @@ describe('UserService', () => {
       const req = httpMock.expectOne(
         (r) => r.url === `${config.apiEndpoint}/Account/Unsubscribe`
       );
-      expect(req.request.method).toBe('GET');
-      expect(req.request.params.get('userId')).toBe('7');
-      expect(req.request.params.get('token')).toBe('tok-123');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ userId: '7', token: 'tok-123' });
       req.flush({ success: true });
     }
   ));
