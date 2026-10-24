@@ -6,15 +6,18 @@ import { CommonEngine } from '@angular/ssr/node';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import http from 'http';
 import https from 'https';
+import { timingSafeEqual } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { REQUEST, RESPONSE } from './src/express.tokens';
+import { clearSsrDataCache } from './src/app/core/services/ssr-cache/ssr-cache.service';
 
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
 const HOME_CACHE_TTL_MS = 30 * 60 * 1000;
 const PDP_CACHE_TTL_MS = 30 * 60 * 1000;
 const PDP_CACHE_MAX_ENTRIES = 1000;
+const SSR_CACHE_INVALIDATION_TOKEN = process.env['SSR_CACHE_INVALIDATION_TOKEN'];
 const PERMANENT_REDIRECTS: Record<string, string> = {
   '/livros/eu-e-outras-poesias_copy1': '/livros/eu-e-outras-poesias',
   '/livros/the-art-of-high-performance-computing---volum':
@@ -35,6 +38,25 @@ let homeCache: SsrCacheEntry | null = null;
 let homeRenderInFlight: Promise<SsrRenderResult> | null = null;
 const pdpCache = new Map<string, SsrCacheEntry>();
 const pdpRenderInFlight = new Map<string, Promise<SsrRenderResult>>();
+
+const hasValidSsrCacheInvalidationToken = (req: Request): boolean => {
+  const receivedToken = req.get('X-SSR-Cache-Token');
+
+  if (!SSR_CACHE_INVALIDATION_TOKEN || !receivedToken) {
+    return false;
+  }
+
+  const expected = Buffer.from(SSR_CACHE_INVALIDATION_TOKEN);
+  const received = Buffer.from(receivedToken);
+
+  return expected.length === received.length && timingSafeEqual(expected, received);
+};
+
+const invalidateSsrCaches = (): void => {
+  homeCache = null;
+  pdpCache.clear();
+  clearSsrDataCache();
+};
 
 interface SitemapBook {
   slug: string;
@@ -342,6 +364,18 @@ export function app(): Express {
   server.set('views', distFolder);
   server.set('trust proxy', true);
   server.use(ssrAccessLogger);
+
+  // Operacional: permite renovar imediatamente os HTMLs SSR e seus dados
+  // internos, sem expor a ação ao navegador ou ao painel público.
+  server.post('/_internal/ssr-cache/invalidate', (req: Request, res: Response) => {
+    if (!hasValidSsrCacheInvalidationToken(req)) {
+      res.status(404).end();
+      return;
+    }
+
+    invalidateSsrCaches();
+    res.status(204).set('Cache-Control', 'no-store').end();
+  });
 
   server.get('/sitemap.xml', async (_req: Request, res: Response) => {
     try {

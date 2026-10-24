@@ -10,6 +10,8 @@ interface CacheEntry<T> {
 // Fora da classe: escopo de módulo Node.js, persiste entre requests SSR
 const _store = new Map<string, CacheEntry<unknown>>();
 
+export const clearSsrDataCache = (): void => _store.clear();
+
 @Injectable({ providedIn: 'root' })
 export class SsrCacheService {
 
