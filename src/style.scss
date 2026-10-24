@@ -235,3 +235,20 @@ OU CASO PREFIRA DEIXE-O DESABILITADO
 .cdk-overlay-pane {
   z-index: 2001 !important;
 }
+
+/* O recorte é uma tarefa de foco: no celular, ocupa a viewport e deixa espaço
+   suficiente para mover a moldura sem competir com a página do formulário. */
+@media (max-width: 767px) {
+  .cdk-overlay-pane.sharebook-crop-dialog {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  .sharebook-crop-dialog .mat-mdc-dialog-container,
+  .sharebook-crop-dialog .mat-mdc-dialog-surface {
+    height: 100%;
+    border-radius: 0;
+  }
+}

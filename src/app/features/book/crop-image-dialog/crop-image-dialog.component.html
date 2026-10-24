@@ -1,6 +1,11 @@
-<h2 mat-dialog-title>Recortar imagem da capa</h2>
+<h2 mat-dialog-title class="crop-dialog-title">
+  <span>Recortar capa</span>
+  <button mat-icon-button type="button" (click)="cancel()" aria-label="Fechar recorte">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
 
-<mat-dialog-content>
+<mat-dialog-content class="crop-dialog-content">
   @if (loadFailed) {
     <div class="load-failed">
       <mat-icon>broken_image</mat-icon>
@@ -10,25 +15,37 @@
   }
 
   @if (!loadFailed) {
-    <image-cropper
-      [imageURL]="data.imageUrl"
-      [imageBase64]="data.imageBase64"
-      [maintainAspectRatio]="false"
-      [transform]="transform"
-      format="jpeg"
-      (imageCropped)="onImageCropped($event)"
-      (loadImageFailed)="onLoadImageFailed()"
-    ></image-cropper>
+    <p class="crop-hint" id="crop-hint">
+      <mat-icon>south</mat-icon>
+      Arraste a borda inferior da moldura para cima e remova a parte de baixo da foto.
+    </p>
+
+    <div class="cropper-stage">
+      <image-cropper
+        [imageURL]="data.imageUrl"
+        [imageBase64]="data.imageBase64"
+        imageAltText="Prévia da capa para recorte"
+        [maintainAspectRatio]="false"
+        [transform]="transform"
+        [initialStepSize]="12"
+        format="jpeg"
+        aria-describedby="crop-hint"
+        (imageCropped)="onImageCropped($event)"
+        (loadImageFailed)="onLoadImageFailed()"
+      ></image-cropper>
+    </div>
   }
 </mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions class="crop-dialog-actions">
   <div class="actions-rotate">
-    <button mat-icon-button type="button" (click)="rotateLeft()" [disabled]="loadFailed" matTooltip="Girar para a esquerda">
+    <button mat-stroked-button type="button" (click)="rotateLeft()" [disabled]="loadFailed">
       <mat-icon>rotate_left</mat-icon>
+      Girar à esquerda
     </button>
-    <button mat-icon-button type="button" (click)="rotateRight()" [disabled]="loadFailed" matTooltip="Girar para a direita">
+    <button mat-stroked-button type="button" (click)="rotateRight()" [disabled]="loadFailed">
       <mat-icon>rotate_right</mat-icon>
+      Girar à direita
     </button>
   </div>
   <div class="actions-confirm">

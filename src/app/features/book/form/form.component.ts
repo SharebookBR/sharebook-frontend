@@ -438,7 +438,7 @@ export class FormComponent implements OnInit, OnDestroy {
       maxWidth: '96vw',
       maxHeight: '92vh',
       autoFocus: false,
-      panelClass: 'sharebook-mobile-dialog'
+      panelClass: 'sharebook-crop-dialog'
     });
 
     dialogRef.afterClosed().subscribe((croppedBase64: string) => {

@@ -1,3 +1,15 @@
+.crop-dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+}
+
+.crop-dialog-title button {
+  flex: 0 0 auto;
+}
+
 .load-failed {
   display: flex;
   flex-direction: column;
@@ -17,13 +29,43 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   max-height: min(68vh, 720px);
-  overflow: auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.crop-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: #4f5b62;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.crop-hint mat-icon {
+  flex: 0 0 auto;
+  color: #29abe2;
+}
+
+.cropper-stage {
+  display: flex;
+  flex: 1;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f1f4f5;
 }
 
 image-cropper {
+  flex: 1;
   display: block;
-  max-height: 60vh;
+  max-height: none;
+  --cropper-outline-color: rgba(0, 0, 0, 0.58);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
@@ -40,6 +82,10 @@ mat-dialog-actions {
   gap: 4px;
 }
 
+.actions-rotate button {
+  min-height: 44px;
+}
+
 .actions-confirm {
   display: flex;
   gap: 8px;
@@ -47,10 +93,28 @@ mat-dialog-actions {
 }
 
 @media (max-width: 767px) {
+  :host {
+    display: flex;
+    min-height: 0;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  mat-dialog-content {
+    flex: 1;
+    max-height: none;
+    padding-top: 12px;
+  }
+
+  .cropper-stage {
+    min-height: 0;
+  }
+
   /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-actions {
     flex-direction: column;
     align-items: stretch;
+    padding: 12px 0 max(12px, env(safe-area-inset-bottom));
   }
 
   .actions-rotate,
@@ -64,7 +128,12 @@ mat-dialog-actions {
     align-items: stretch;
   }
 
+  .actions-rotate button {
+    flex: 1;
+  }
+
   .actions-confirm button {
     width: 100%;
+    min-height: 48px;
   }
 }
