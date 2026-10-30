@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
-import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { ConfettiService } from 'src/app/core/services/confetti/confetti.service';
@@ -31,7 +30,6 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   public readonly BookRequestStatus = BookRequestStatus;
 
   private readonly _desktopColumns: string[] = ['requesterNickName', 'location', 'totalBooksWon', 'totalBooksDonated', 'requestText', 'action'];
-  private readonly _mobileColumns: string[] = ['mobileNickAction', 'requestText'];
   displayedColumns: string[] = this._desktopColumns;
 
   donateUsers = new MatTableDataSource<Requesters>();
@@ -62,7 +60,6 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialog: MatDialog,
     private _formBuilder: UntypedFormBuilder,
     private _confetti: ConfettiService,
-    private _breakpointObserver: BreakpointObserver,
     private _viewportScroller: ViewportScroller
   ) {
     this.formGroup = _formBuilder.group({
@@ -77,12 +74,6 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
     this.loadBook();
-
-    this._breakpointObserver.observe(['(max-width: 768px)'])
-      .pipe(takeUntil(this._destroySubscribes$))
-      .subscribe(result => {
-        this.displayedColumns = result.matches ? this._mobileColumns : this._desktopColumns;
-      });
   }
 
   ngAfterViewInit(): void {
