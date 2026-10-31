@@ -18,16 +18,6 @@ th.mat-mdc-header-cell {
   font-size: 18px;
 }
 
-.custom-badge {
-  display: inline-block;
-  width: fit-content;
-  text-align: center;
-  border-radius: 7px;
-  margin-top: 4px;
-  padding: 2px 8px;
-  white-space: nowrap;
-}
-
 .mat-mdc-unelevated-button {
   min-width: 34px;
   padding: 0px;
@@ -207,8 +197,9 @@ th.mat-mdc-header-cell {
   overflow-wrap: anywhere;
 }
 
-.donation-card__status {
-  margin-top: 0;
+.donation-card__author {
+  margin-top: 2px;
+  color: #5c6f89;
 }
 
 .donation-card__badges {
@@ -250,21 +241,47 @@ th.mat-mdc-header-cell {
   font-size: 14px;
   display: grid;
   gap: 4px;
-}
-
-.meta-line {
-  display: flex;
-  gap: 6px;
-  align-items: baseline;
-}
-
-.meta-label {
-  font-weight: 700;
-  color: #1e2f4a;
-}
-
-.meta-value {
   color: #273a55;
+}
+
+.donation-card__notice {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #856404;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.status-success {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-danger {
+  background-color: #fdecea;
+  color: #a71d2a;
+}
+
+.status-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-neutral {
+  background-color: #e9edf3;
+  color: #49596f;
 }
 
 .donation-card__actions {

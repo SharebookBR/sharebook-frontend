@@ -59,27 +59,37 @@
       @for (element of donatedBooks; track element) {
         <div class="donation-card">
           <div class="donation-card__header">
-            <div class="donation-card__title">{{ element.title }}</div>
+            <div>
+              <div class="donation-card__title">{{ element.title }}</div>
+              <div class="donation-card__author">{{ element.author || 'Autoria não informada' }}</div>
+            </div>
           </div>
           <div class="donation-card__badges">
-            <span
-              class="custom-badge donation-card__status"
-            [ngStyle]="{
-              backgroundColor: getStatusBadgeBackgroundColor(element.status),
-              color: getStatusBadgeTextColor(element.status)
-            }"
-              >{{ getTranslatedStatusDescription(element.status) }}</span
-              >
-              <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
-                <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
-                {{ isEbook(element) ? 'Livro digital' : 'Físico' }}
-              </span>
-            </div>
-            <div class="donation-card__meta">
-              <div class="meta-line">
-                <span class="meta-value">{{ getMobilePrimaryMetric(element) }}</span>
-              </div>
-            </div>
+            <span [class]="getStatusBadgeClass(element.status)">
+              {{ getTranslatedStatusDescription(element.status) }}
+            </span>
+            <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
+              <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
+              {{ isEbook(element) ? 'Livro digital' : 'Livro físico' }}
+            </span>
+          </div>
+          <div class="donation-card__meta">
+            @if (isEbook(element)) {
+              <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
+            } @else {
+              <div><b>Pessoas interessadas:</b> {{ element.totalInterested || 0 }}</div>
+              <div><b>Na vitrine:</b> {{ element.daysInShowcase || 0 }} dias</div>
+              @if (element.chooseDate) {
+                <div><b>Data de escolha:</b> {{ element.chooseDate | date: 'dd/MM/yyyy' }}</div>
+              }
+              @if (getDecisionNoticeLabel(element)) {
+                <div class="donation-card__notice">{{ getDecisionNoticeLabel(element) }}</div>
+              }
+              @if (canShowWinner(element)) {
+                <div><b>Pessoa escolhida:</b> {{ element.winner || '-' }}</div>
+              }
+            }
+          </div>
             <div class="donation-card__actions">
               @if (canPrimaryAction(element)) {
                 <app-action-button

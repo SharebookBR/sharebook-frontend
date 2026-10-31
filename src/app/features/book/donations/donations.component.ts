@@ -71,37 +71,20 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return getStatusDescription(status);
   }
 
-  public getStatusBadgeBackgroundColor(status) {
+  public getStatusBadgeClass(status: string): string {
     switch (status) {
       case BookDonationStatus.WAITING_APPROVAL:
       case BookDonationStatus.WAITING_DECISION:
       case BookDonationStatus.WAITING_SEND:
       case BookDonationStatus.SENT:
-        return '#ffc107'; // warning
+        return 'status-badge status-warning';
       case BookDonationStatus.AVAILABLE:
       case BookDonationStatus.RECEIVED:
-        return '#28a745'; // success
+        return 'status-badge status-success';
       case BookDonationStatus.CANCELED:
-        return '#dc3545'; // danger
+        return 'status-badge status-danger';
       default:
-        return '#6c757d'; // secondary
-    }
-  }
-
-  public getStatusBadgeTextColor(status) {
-    switch (status) {
-      case BookDonationStatus.WAITING_APPROVAL:
-      case BookDonationStatus.WAITING_DECISION:
-      case BookDonationStatus.WAITING_SEND:
-      case BookDonationStatus.SENT:
-        return '#212529';
-      case BookDonationStatus.AVAILABLE:
-      case BookDonationStatus.RECEIVED:
-        return '#fff';
-      case BookDonationStatus.CANCELED:
-        return '#fff';
-      default:
-        return '#fff';
+        return 'status-badge status-neutral';
     }
   }
 
@@ -448,7 +431,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return (book.type || '').toLowerCase() === 'eletronic';
   }
 
-  private getDecisionNoticeLabel(book: MyDonation): string {
+  public getDecisionNoticeLabel(book: MyDonation): string {
     if (!this.shouldShowDecisionNotice(book) || !book.chooseDate) {
       return '';
     }
