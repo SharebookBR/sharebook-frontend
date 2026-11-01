@@ -15,9 +15,9 @@ describe('DonationsComponent pre-launch interest', () => {
     );
   });
 
-  it('shows requested notifications only for scheduled physical books', () => {
+  it('shows requested notifications for physical books regardless of status', () => {
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.SCHEDULED } as any)).toBeTrue();
-    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
     expect(component.canShowReleaseInterest({ type: 'Eletronic', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
   });
 });
