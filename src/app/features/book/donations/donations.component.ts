@@ -431,6 +431,10 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return (book.type || '').toLowerCase() === 'eletronic';
   }
 
+  public canShowReleaseInterest(book: MyDonation): boolean {
+    return !this.isEbook(book) && book.status === BookDonationStatus.SCHEDULED;
+  }
+
   public getDecisionNoticeLabel(book: MyDonation): string {
     if (!this.shouldShowDecisionNotice(book) || !book.chooseDate) {
       return '';

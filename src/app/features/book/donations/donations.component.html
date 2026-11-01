@@ -77,6 +77,9 @@
             @if (isEbook(element)) {
               <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
             } @else {
+              @if (canShowReleaseInterest(element)) {
+                <div><b>Avisos pedidos:</b> {{ element.releaseInterestCount || 0 }}</div>
+              }
               <div><b>Pessoas interessadas:</b> {{ element.totalInterested || 0 }}</div>
               <div><b>Na vitrine:</b> {{ element.daysInShowcase || 0 }} dias</div>
               @if (element.chooseDate) {
