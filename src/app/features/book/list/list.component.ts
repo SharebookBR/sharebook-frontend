@@ -561,7 +561,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public canCancelDonation(book: BookVMItem): boolean {
-    return book.status !== BookDonationStatus.WAITING_APPROVAL;
+    return book.status !== BookDonationStatus.WAITING_APPROVAL &&
+      book.status !== BookDonationStatus.CANCELED;
   }
 
   public openApproveDonationDialog(book: BookVMItem): void {

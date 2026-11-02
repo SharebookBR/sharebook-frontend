@@ -78,6 +78,7 @@ describe('ListComponent request limit', () => {
 
   it('hides cancellation while a donation is awaiting approval', () => {
     expect(component.canCancelDonation({ status: BookDonationStatus.WAITING_APPROVAL } as any)).toBeFalse();
+    expect(component.canCancelDonation({ status: BookDonationStatus.CANCELED } as any)).toBeFalse();
     expect(component.canCancelDonation({ status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
   });
 });
