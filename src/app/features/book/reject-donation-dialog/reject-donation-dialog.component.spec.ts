@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { of } from 'rxjs';
 import { BookService } from '../services/book.service';
-import { RejectDonationDialogComponent } from './reject-donation-dialog.component';
+import { DEFAULT_REJECTION_REASON, RejectDonationDialogComponent } from './reject-donation-dialog.component';
 
 describe('RejectDonationDialogComponent', () => {
   let component: RejectDonationDialogComponent;
@@ -18,7 +17,7 @@ describe('RejectDonationDialogComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [RejectDonationDialogComponent],
-      imports: [ReactiveFormsModule, MatButtonModule, MatDialogModule],
+      imports: [MatButtonModule, MatDialogModule],
       providers: [
         { provide: BookService, useValue: bookService },
         { provide: MatDialogRef, useValue: dialogRef },
@@ -31,15 +30,14 @@ describe('RejectDonationDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('sends the custom reason and closes the dialog when the rejection succeeds', () => {
+  it('sends the standard reason and closes the dialog when the rejection succeeds', () => {
     bookService.rejectPendingDonation.and.returnValue(of({ success: true }));
-    component.formGroup.controls.reason.setValue('A obra não possui autorização para redistribuição.');
 
     component.reject();
 
     expect(bookService.rejectPendingDonation).toHaveBeenCalledWith(
       'book-1',
-      'A obra não possui autorização para redistribuição.'
+      DEFAULT_REJECTION_REASON
     );
     expect(dialogRef.close).toHaveBeenCalledWith(true);
   });

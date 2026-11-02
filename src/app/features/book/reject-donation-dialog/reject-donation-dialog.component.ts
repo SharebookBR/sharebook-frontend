@@ -1,6 +1,5 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,6 +10,12 @@ export interface RejectDonationDialogData {
   bookTitle: string;
 }
 
+export const DEFAULT_REJECTION_REASON = `Não conseguimos aprovar esta doação porque o livro é uma obra comercial protegida por direitos autorais e não temos autorização para distribuí-la digitalmente.
+
+Para respeitar autores, editoras e a legislação, cancelamos a doação. Obras autorais, em domínio público ou com licença explícita de distribuição são sempre bem-vindas.
+
+Obrigada pela compreensão.`;
+
 @Component({
   selector: 'app-reject-donation-dialog',
   templateUrl: './reject-donation-dialog.component.html',
@@ -18,34 +23,26 @@ export interface RejectDonationDialogData {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
-export class RejectDonationDialogComponent implements OnInit, OnDestroy {
-  formGroup: UntypedFormGroup;
+export class RejectDonationDialogComponent implements OnDestroy {
   isLoading = false;
   lastError = '';
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
-    private readonly formBuilder: UntypedFormBuilder,
     private readonly bookService: BookService,
     private readonly dialogRef: MatDialogRef<RejectDonationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public readonly data: RejectDonationDialogData
-  ) {
-    this.formGroup = this.formBuilder.group({
-      reason: ['', [Validators.required, Validators.maxLength(2000)]]
-    });
-  }
-
-  ngOnInit() { }
+  ) { }
 
   reject() {
-    if (this.formGroup.invalid || this.isLoading) {
+    if (this.isLoading) {
       return;
     }
 
     this.isLoading = true;
     this.lastError = '';
-    this.bookService.rejectPendingDonation(this.data.bookId, this.formGroup.value.reason)
+    this.bookService.rejectPendingDonation(this.data.bookId, DEFAULT_REJECTION_REASON)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => this.dialogRef.close(true),
