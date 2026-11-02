@@ -1,7 +1,9 @@
-<button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
-  <i class="fa fa-times" aria-hidden="true"></i>
-</button>
-<h4 mat-dialog-title>Reprovar doação</h4>
+<header class="sharebook-dialog-header">
+  <h4 mat-dialog-title>Reprovar doação</h4>
+  <button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+</header>
 <form (ngSubmit)="reject()">
   <mat-dialog-content>
     <p>Tem certeza de que deseja reprovar a doação de <strong>{{ data.bookTitle }}</strong>?</p>

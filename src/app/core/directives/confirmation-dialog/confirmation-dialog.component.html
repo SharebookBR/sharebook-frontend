@@ -1,7 +1,9 @@
-<button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
-  <i class="fa fa-times" aria-hidden="true"></i>
-</button>
-<h4 mat-dialog-title>{{ data.title }}</h4>
+<header class="sharebook-dialog-header">
+  <h4 mat-dialog-title>{{ data.title }}</h4>
+  <button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+</header>
 <mat-dialog-content>
   {{ data.message }}
 </mat-dialog-content>

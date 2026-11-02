@@ -1,9 +1,9 @@
-<h2 mat-dialog-title class="crop-dialog-title">
-  <span>Recortar capa</span>
+<header class="sharebook-dialog-header">
+  <h2 mat-dialog-title class="crop-dialog-title">Recortar capa</h2>
   <button mat-icon-button type="button" class="sharebook-dialog-close" (click)="cancel()" aria-label="Fechar recorte">
     <mat-icon>close</mat-icon>
   </button>
-</h2>
+</header>
 
 <mat-dialog-content class="crop-dialog-content">
   @if (loadFailed) {

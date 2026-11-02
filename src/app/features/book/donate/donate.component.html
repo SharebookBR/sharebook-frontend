@@ -1,8 +1,10 @@
-<button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
-  <i class="fa fa-times" aria-hidden="true"></i>
-</button>
 <form [formGroup]="formGroup" (ngSubmit)="onDonate()">
-  <h4 mat-dialog-title class="donate-title">Motivo da doação para {{ userNickName }}</h4>
+  <header class="sharebook-dialog-header">
+    <h4 mat-dialog-title class="donate-title">Motivo da doação para {{ userNickName }}</h4>
+    <button mat-icon-button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+  </header>
 
   <mat-dialog-content>
     <div class="text-center" [hidden]="!isLoading"><i class="fa fa-spinner fa-spin"></i> Aguarde...</div>
