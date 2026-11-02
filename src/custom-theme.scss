@@ -278,6 +278,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #3d4d63;
+  cursor: pointer;
 }
 
 /* Garante que os modais do Material apareçam acima do header (z-index: 1040) */
