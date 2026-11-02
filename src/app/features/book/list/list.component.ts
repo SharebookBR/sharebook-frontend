@@ -17,6 +17,7 @@ import { formatReleaseDate } from 'src/app/core/utils/release-date';
 import { BookVMItem } from 'src/app/features/book/bookVMItem';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
+import { RejectDonationDialogComponent } from '../reject-donation-dialog/reject-donation-dialog.component';
 
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available' | 'scheduled';
 
@@ -548,6 +549,34 @@ export class ListComponent implements OnInit, OnDestroy {
   public canShowTrackAction(book: BookVMItem): boolean {
     return !this.isEbook(book) &&
       (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public canRejectDonation(book: BookVMItem): boolean {
+    return book.status === BookDonationStatus.WAITING_APPROVAL;
+  }
+
+  public openRejectDonationDialog(book: BookVMItem): void {
+    const dialogRef = this.dialog.open(RejectDonationDialogComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      autoFocus: true,
+      panelClass: 'sharebook-mobile-dialog',
+      data: {
+        bookId: book.id,
+        bookTitle: book.title
+      }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((rejected) => {
+        if (!rejected) {
+          return;
+        }
+
+        this._toastr.success('Doação reprovada e pessoa doadora notificada.');
+        this.reloadData();
+      });
   }
 
   public canOpenPdf(book: BookVMItem): boolean {

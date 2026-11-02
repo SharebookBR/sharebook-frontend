@@ -63,4 +63,10 @@ describe('ListComponent request limit', () => {
     expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBeFalse();
     expect(component.getPrimaryMetric({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBe('2 pessoas interessadas');
   });
+
+  it('shows rejection only for donations awaiting approval', () => {
+    expect(component.canRejectDonation({ status: BookDonationStatus.WAITING_APPROVAL } as any)).toBeTrue();
+    expect(component.canRejectDonation({ status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
+    expect(component.canRejectDonation({ status: BookDonationStatus.CANCELED } as any)).toBeFalse();
+  });
 });
