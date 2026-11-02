@@ -1,0 +1,28 @@
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
+</div>
+<h4 mat-dialog-title>Reprovar doação</h4>
+<form [formGroup]="formGroup" (ngSubmit)="reject()">
+  <mat-dialog-content>
+    <p>A doação de <strong>{{ data.bookTitle }}</strong> será cancelada e a pessoa doadora receberá a mensagem abaixo.</p>
+    <textarea
+      class="form-control"
+      formControlName="reason"
+      rows="6"
+      maxlength="2000"
+      placeholder="Explique de forma clara por que a doação não foi aprovada."
+    ></textarea>
+    @if (formGroup.controls['reason'].touched && formGroup.controls['reason'].hasError('required')) {
+      <small class="text-danger">Escreva a mensagem para a pessoa doadora.</small>
+    }
+    @if (lastError) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">{{ lastError }}</div>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" mat-dialog-close [disabled]="isLoading">Voltar</button>
+    <button mat-flat-button color="warn" type="submit" [disabled]="formGroup.invalid || isLoading">
+      {{ isLoading ? 'Reprovando...' : 'Reprovar e avisar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

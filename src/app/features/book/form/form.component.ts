@@ -2,6 +2,7 @@ import { BookToAdminProfile } from 'src/app/features/book/BookToAdminProfile';
 import { Profile } from 'src/app/core/models/profile';
 import { FreightIncentiveDialogComponent } from './../freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from '../crop-image-dialog/crop-image-dialog.component';
+import { RejectDonationDialogComponent } from '../reject-donation-dialog/reject-donation-dialog.component';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -587,6 +588,32 @@ export class FormComponent implements OnInit, OnDestroy {
           return;
         }
         this.happyEnd();
+      });
+  }
+
+  openRejectDonationDialog() {
+    const dialogRef = this.dialog.open(RejectDonationDialogComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      autoFocus: true,
+      panelClass: 'sharebook-mobile-dialog',
+      data: {
+        bookId: this.formGroup.value.bookId,
+        bookTitle: this.formGroup.value.title
+      }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((rejected) => {
+        if (!rejected) {
+          return;
+        }
+
+        this.status = BookDonationStatus.CANCELED;
+        this.canApprove = false;
+        this.formGroup.controls['approve'].setValue(false);
+        this._toastr.success('Doação reprovada e pessoa doadora notificada.');
       });
   }
 

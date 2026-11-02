@@ -91,6 +91,7 @@ import { DataAnonymizationInfoComponent } from './features/static-pages/data-ano
 import { DonorModalComponent } from './features/book/donor-modal/donor-modal.component';
 import { FreightIncentiveDialogComponent } from './features/book/freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from './features/book/crop-image-dialog/crop-image-dialog.component';
+import { RejectDonationDialogComponent } from './features/book/reject-donation-dialog/reject-donation-dialog.component';
 import { MyaccountComponent } from './features/account/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './features/account/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './features/account/dialog-anonymize/dialog-anonymize.component';
@@ -145,6 +146,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         DonorModalComponent,
         FreightIncentiveDialogComponent,
         CropImageDialogComponent,
+        RejectDonationDialogComponent,
         MyaccountComponent,
         DialogWHoAccessedComponent,
         DialogAnonymizeComponent,

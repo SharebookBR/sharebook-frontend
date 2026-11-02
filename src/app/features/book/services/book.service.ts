@@ -343,6 +343,13 @@ export class BookService {
     );
   }
 
+  public rejectPendingDonation(bookId: string, reason: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/Reject/${bookId}`,
+      { reason }
+    );
+  }
+
   public cancelRequest(requestId: string) {
     return this._http.post<IRequestResult<boolean>>(
       `${this.config.apiEndpoint}/book/CancelRequest/${requestId}`,

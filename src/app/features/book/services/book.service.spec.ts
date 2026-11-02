@@ -153,6 +153,17 @@ describe('BookService', () => {
       }
     ));
 
+    it('rejectPendingDonation: POSTs the custom message to /book/Reject/:bookId', inject(
+      [HttpTestingController, BookService],
+      (httpMock: HttpTestingController, service: BookService) => {
+        service.rejectPendingDonation('7', 'O arquivo viola direitos autorais.').subscribe();
+        const req = httpMock.expectOne(`${config.apiEndpoint}/book/Reject/7`);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({ reason: 'O arquivo viola direitos autorais.' });
+        req.flush({ success: true });
+      }
+    ));
+
     it('donateBookUser: PUTs the donation payload to /book/Donate/:bookId', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {
