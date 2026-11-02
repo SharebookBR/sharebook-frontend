@@ -83,32 +83,35 @@ body {
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-/* Global Material Modal Responsive Fix */
+/* Modais compactos no celular: confirmação e formulários curtos não devem
+   ocupar a viewport inteira. O recorte de imagem é a exceção, tratada pelo
+   painel sharebook-crop-dialog em style.scss. */
 @media (max-width: 767px) {
   .cdk-global-overlay-wrapper {
-    align-items: stretch !important;
-    justify-content: stretch !important;
-    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
     box-sizing: border-box;
   }
 
-  .cdk-overlay-pane {
-    max-width: 100vw !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
+  .cdk-overlay-pane:not(.sharebook-crop-dialog) {
+    width: min(92vw, 560px) !important;
+    max-width: 92vw !important;
+    height: auto !important;
+    max-height: calc(100dvh - 32px) !important;
+    margin: auto !important;
   }
 
-  .mat-mdc-dialog-container {
-    border-radius: 0 !important;
-    padding: 16px !important;
+  .cdk-overlay-pane:not(.sharebook-crop-dialog) .mat-mdc-dialog-container {
+    border-radius: 12px !important;
+    padding: 20px !important;
     margin: 0 !important;
     box-sizing: border-box;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+    height: auto !important;
+    max-height: calc(100dvh - 32px) !important;
     overflow-y: auto !important;
   }
 
