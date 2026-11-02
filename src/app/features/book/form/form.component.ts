@@ -19,9 +19,7 @@ import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
-import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 import { BookType } from 'src/app/features/book/book';
-import { todaySaoPaulo } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-form',
@@ -54,9 +52,6 @@ export class FormComponent implements OnInit, OnDestroy {
   itsEditMode: Boolean = false;
   isImageLoaded: Boolean = false;
   isPdfLoaded: Boolean = false;
-  canApprove: Boolean = false;
-  status = '';
-  readonly todayIso = todaySaoPaulo();
 
   src: string;
   pdfFileName: string = '';
@@ -176,8 +171,6 @@ export class FormComponent implements OnInit, OnDestroy {
       chooseDate: [null],
       imageBytes: [''],
       imageName: [''],
-      approve: [''],
-      releaseDate: [null],
       imageUrl: '',
       imageSlug: '',
       synopsis: ['', [Validators.maxLength(2000)]],
@@ -266,8 +259,6 @@ export class FormComponent implements OnInit, OnDestroy {
             this._toastr.error('Não foi possível carregar os dados do livro agora.');
             return;
           }
-          this.status = book.status;
-          this.canApprove = book.status === BookDonationStatus.WAITING_APPROVAL;
           const bookForUpdate = {
             bookId: book.id,
             title: book.title,
@@ -283,8 +274,6 @@ export class FormComponent implements OnInit, OnDestroy {
             synopsis: !!book.synopsis ? book.synopsis : '',
             maxRequestsOverride: book.maxRequestsOverride ?? null,
             agreeToTerms: true,
-            approve: false,
-            releaseDate: null,
             type: book.type || 'Printed',
             pdfBytes: null,
             agreeToAntiPiracy: true,
@@ -406,11 +395,7 @@ export class FormComponent implements OnInit, OnDestroy {
         .subscribe(
           (resp) => {
             if (resp['success']) {
-              if (!this.formGroup.value.approve) {
-                this.happyEnd();
-              } else {
-                this.approve();
-              }
+              this.happyEnd();
             } else {
               const errorMessages = resp['messages']?.join(' ') || 'Erro inesperado.';
               this._toastr.error(errorMessages);
@@ -468,8 +453,6 @@ export class FormComponent implements OnInit, OnDestroy {
     const formValue = { ...this.formGroup.value };
 
     delete formValue.bookId;
-    delete formValue.approve;
-    delete formValue.releaseDate;
     delete formValue.imageUrl;
     delete formValue.imageSlug;
     delete formValue.agreeToTerms;
@@ -569,25 +552,6 @@ export class FormComponent implements OnInit, OnDestroy {
     }
 
     return parsedDate.toISOString().slice(0, 10);
-  }
-
-  approve() {
-    this._scBook
-      .approve(this.formGroup.value.bookId, this.selectedBookType === 'Printed' ? this.formGroup.value.releaseDate : null)
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        catchError(() => {
-          this._toastr.error('Não foi possível aprovar o livro agora. Tente novamente.');
-          this.isLoading = false;
-          return of(null);
-        })
-      )
-      .subscribe((resp) => {
-        if (!resp) {
-          return;
-        }
-        this.happyEnd();
-      });
   }
 
   happyEnd() {

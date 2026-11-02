@@ -134,6 +134,11 @@
               }
             </div>
             <div class="admin-card__actions">
+              @if (canApproveDonation(element)) {
+                <app-action-button variant="success" icon="check_circle" (action)="openApproveDonationDialog(element)">
+                  Aprovar
+                </app-action-button>
+              }
               <app-action-button variant="primary" icon="edit_note" (action)="onCustom('edit', element)">
                 Editar
               </app-action-button>

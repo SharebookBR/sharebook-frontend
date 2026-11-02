@@ -71,7 +71,6 @@ function setFormValues(formData) {
   component.formGroup.controls['freightOption'].setValue(formData.freightOption);
   component.formGroup.controls['synopsis'].setValue(formData.synopsis);
   component.formGroup.controls['agreeToTerms'].setValue(formData.agreeToTerms);
-  component.formGroup.controls['approve'].setValue(formData.approve);
 }
 
 describe('FormComponent', () => {
@@ -313,9 +312,6 @@ describe('FormComponent Editing book', () => {
   it('should update book', () => {
     spyOn(bookService, 'update').and.returnValue(
       of({ value: null, messages: [], successMessage: 'Livro alterado com sucesso!', success: true })
-    );
-    spyOn(bookService, 'approve').and.returnValue(
-      of({ value: null, messages: [], successMessage: 'Livro aprovado com sucesso.', success: true })
     );
     fixture.detectChanges();
 

@@ -69,4 +69,10 @@ describe('ListComponent request limit', () => {
     expect(component.canRejectDonation({ status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
     expect(component.canRejectDonation({ status: BookDonationStatus.CANCELED } as any)).toBeFalse();
   });
+
+  it('shows approval only for donations awaiting approval', () => {
+    expect(component.canApproveDonation({ status: BookDonationStatus.WAITING_APPROVAL } as any)).toBeTrue();
+    expect(component.canApproveDonation({ status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
+    expect(component.canApproveDonation({ status: BookDonationStatus.CANCELED } as any)).toBeFalse();
+  });
 });

@@ -18,6 +18,7 @@ import { BookVMItem } from 'src/app/features/book/bookVMItem';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
 import { RejectDonationDialogComponent } from '../reject-donation-dialog/reject-donation-dialog.component';
+import { ApproveDonationDialogComponent } from '../approve-donation-dialog/approve-donation-dialog.component';
 
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available' | 'scheduled';
 
@@ -553,6 +554,35 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public canRejectDonation(book: BookVMItem): boolean {
     return book.status === BookDonationStatus.WAITING_APPROVAL;
+  }
+
+  public canApproveDonation(book: BookVMItem): boolean {
+    return book.status === BookDonationStatus.WAITING_APPROVAL;
+  }
+
+  public openApproveDonationDialog(book: BookVMItem): void {
+    const dialogRef = this.dialog.open(ApproveDonationDialogComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      autoFocus: true,
+      panelClass: 'sharebook-mobile-dialog',
+      data: {
+        bookId: book.id,
+        bookTitle: book.title,
+        isEbook: this.isEbook(book)
+      }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe((approved) => {
+        if (!approved) {
+          return;
+        }
+
+        this._toastr.success('Doação aprovada com sucesso.');
+        this.reloadData();
+      });
   }
 
   public openRejectDonationDialog(book: BookVMItem): void {

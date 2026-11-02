@@ -1,0 +1,39 @@
+<div class="close">
+  <i class="fa fa-times" aria-hidden="true" mat-dialog-close></i>
+</div>
+<h4 mat-dialog-title>Aprovar doação</h4>
+<form [formGroup]="formGroup" (ngSubmit)="approve()">
+  <mat-dialog-content>
+    <p>A doação de <strong>{{ data.bookTitle }}</strong> será aprovada.</p>
+
+    @if (data.isEbook) {
+      <p class="text-muted mb-0">Este livro digital será publicado imediatamente.</p>
+    } @else {
+      <div class="form-check mb-3">
+        <input class="form-check-input" id="publishImmediately" type="checkbox" formControlName="publishImmediately" />
+        <label class="form-check-label" for="publishImmediately">Publicar imediatamente</label>
+      </div>
+
+      @if (!isPublishingImmediately) {
+        <div class="form-group mb-0">
+          <label for="releaseDate">Data de publicação</label>
+          <input class="form-control" id="releaseDate" type="date" [min]="minPublicationDate" formControlName="releaseDate" />
+          <small class="form-text text-muted">O livro ficará como “Em breve” até essa data.</small>
+          @if (formGroup.controls['releaseDate'].touched && formGroup.controls['releaseDate'].invalid) {
+            <small class="text-danger d-block">Escolha uma data a partir de amanhã.</small>
+          }
+        </div>
+      }
+    }
+
+    @if (lastError) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">{{ lastError }}</div>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" mat-dialog-close [disabled]="isLoading">Voltar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="formGroup.invalid || isLoading">
+      {{ isLoading ? 'Aprovando...' : (isPublishingImmediately ? 'Aprovar e publicar' : 'Aprovar e agendar') }}
+    </button>
+  </mat-dialog-actions>
+</form>
