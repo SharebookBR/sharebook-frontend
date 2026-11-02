@@ -270,7 +270,7 @@
   <div class="editorial-prompt-dialog">
     <div class="metadata-dialog__header">
       <h2 mat-dialog-title>{{ sourcePromptTitle }} — {{ sourcePromptSourceName }}</h2>
-      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+      <button mat-icon-button class="sharebook-dialog-close" mat-dialog-close aria-label="Fechar">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -301,7 +301,7 @@
   <div class="admin-note-dialog">
     <div class="metadata-dialog__header">
       <h2 mat-dialog-title>#{{ adminNoteItem?.id }} — Comentário do adm</h2>
-      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+      <button mat-icon-button class="sharebook-dialog-close" mat-dialog-close aria-label="Fechar">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -328,7 +328,7 @@
   <div class="history-dialog">
     <div class="metadata-dialog__header">
       <h2 mat-dialog-title>#{{ historyItem?.id }} — Histórico de status</h2>
-      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+      <button mat-icon-button class="sharebook-dialog-close" mat-dialog-close aria-label="Fechar">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -376,7 +376,7 @@
   <div class="metadata-dialog">
     <div class="metadata-dialog__header">
       <h2 mat-dialog-title>{{ selectedItemMetadata ? 'Metadata' : 'Dados do Registro' }}</h2>
-      <button mat-icon-button mat-dialog-close aria-label="Fechar">
+      <button mat-icon-button class="sharebook-dialog-close" mat-dialog-close aria-label="Fechar">
         <mat-icon>close</mat-icon>
       </button>
     </div>
