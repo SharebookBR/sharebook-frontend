@@ -163,8 +163,12 @@ body {
   .modal-title,
   [mat-dialog-title] {
     flex: 0 0 auto;
+    display: flex !important;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: max(64px, calc(env(safe-area-inset-top) + 56px));
     margin: 0 !important;
-    padding: max(20px, calc(env(safe-area-inset-top) + 12px)) 72px 16px 24px !important;
+    padding: max(8px, env(safe-area-inset-top)) 72px 8px 24px !important;
     font-size: 22px !important;
     line-height: 1.2 !important;
     word-break: break-word;
@@ -230,10 +234,14 @@ body {
   .metadata-dialog__header [mat-dialog-title] {
     padding: 0 !important;
     margin: 0 !important;
+    min-height: 0;
   }
 
   .metadata-dialog__header {
-    padding-right: 72px;
+    box-sizing: border-box;
+    min-height: max(64px, calc(env(safe-area-inset-top) + 56px));
+    margin: 0 0 16px !important;
+    padding: max(8px, env(safe-area-inset-top)) 72px 8px 24px;
   }
 
   .editorial-prompt-dialog__body,
