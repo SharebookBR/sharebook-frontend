@@ -560,6 +560,10 @@ export class ListComponent implements OnInit, OnDestroy {
     return book.status === BookDonationStatus.WAITING_APPROVAL;
   }
 
+  public canCancelDonation(book: BookVMItem): boolean {
+    return book.status !== BookDonationStatus.WAITING_APPROVAL;
+  }
+
   public openApproveDonationDialog(book: BookVMItem): void {
     const dialogRef = this.dialog.open(ApproveDonationDialogComponent, {
       width: 'min(92vw, 560px)',

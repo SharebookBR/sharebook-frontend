@@ -139,6 +139,15 @@
                   Aprovar
                 </app-action-button>
               }
+              @if (canRejectDonation(element)) {
+                <app-action-button
+                  variant="danger"
+                  icon="block"
+                  (action)="openRejectDonationDialog(element)"
+                  >
+                  Reprovar
+                </app-action-button>
+              }
               <app-action-button variant="primary" icon="edit_note" (action)="onCustom('edit', element)">
                 Editar
               </app-action-button>
@@ -154,16 +163,6 @@
               <app-action-button variant="info" icon="sticky_note_2" (action)="onCustom('adminNotes', element)">
                 Comentários
               </app-action-button>
-              @if (canRejectDonation(element)) {
-                <app-action-button
-                  variant="danger"
-                  appearance="stroked"
-                  icon="block"
-                  (action)="openRejectDonationDialog(element)"
-                  >
-                  Reprovar
-                </app-action-button>
-              }
               @if (canOpenPdf(element)) {
                 <app-action-button
                   variant="danger"
@@ -182,9 +181,11 @@
               <app-action-button variant="ghost" appearance="stroked" icon="group" (action)="onCustom('showUsersInfo', element)">
                 Usuários
               </app-action-button>
-              <app-action-button variant="danger" icon="delete_outline" (action)="onCustom('cancelDonation', element)">
-                Cancelar
-              </app-action-button>
+              @if (canCancelDonation(element)) {
+                <app-action-button variant="danger" icon="delete_outline" (action)="onCustom('cancelDonation', element)">
+                  Cancelar
+                </app-action-button>
+              }
             </div>
           </div>
         }
