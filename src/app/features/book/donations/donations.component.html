@@ -78,11 +78,15 @@
               <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
             } @else {
               @if (canShowReleaseInterest(element)) {
-                <div><b>Avisos pedidos:</b> {{ element.releaseInterestCount || 0 }}</div>
+                @if (element.releaseDate) {
+                  <div><b>Data de publicação:</b> {{ formatReleaseDate(element.releaseDate) }}</div>
+                }
+                <div><b>Pessoas aguardando aviso:</b> {{ element.releaseInterestCount || 0 }}</div>
               }
-              <div><b>Pessoas interessadas:</b> {{ element.totalInterested || 0 }}</div>
-              <div><b>Na vitrine:</b> {{ element.daysInShowcase || 0 }} dias</div>
-              @if (element.chooseDate) {
+              @if (!isPreLaunch(element)) {
+                <div><b>Pessoas interessadas:</b> {{ element.totalInterested || 0 }}</div>
+              }
+              @if (!isPreLaunch(element) && element.chooseDate) {
                 <div><b>Data de escolha:</b> {{ element.chooseDate | date: 'dd/MM/yyyy' }}</div>
               }
               @if (getDecisionNoticeLabel(element)) {

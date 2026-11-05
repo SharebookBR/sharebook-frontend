@@ -15,9 +15,15 @@ describe('DonationsComponent pre-launch interest', () => {
     );
   });
 
-  it('shows requested notifications for physical books regardless of status', () => {
+  it('shows pre-launch details and hides its primary action until publication', () => {
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.SCHEDULED } as any)).toBeTrue();
-    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
     expect(component.canShowReleaseInterest({ type: 'Eletronic', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
+    expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
+    expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
+  });
+
+  it('uses the canonical label for the requests action', () => {
+    expect(component.getPrimaryActionLabel({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBe('Ver solicitações');
   });
 });

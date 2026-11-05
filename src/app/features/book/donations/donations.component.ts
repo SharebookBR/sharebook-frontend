@@ -15,6 +15,7 @@ import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { UserDonationsList } from 'src/app/features/book/userDonationsList';
 import { UserDonationsSummary } from 'src/app/features/book/userDonationsSummary';
+import { formatReleaseDate } from 'src/app/core/utils/release-date';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -362,14 +363,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return `${book.totalInterested || 0}`;
   }
 
-  public getDesktopShowcaseValue(book: MyDonation): string {
-    if (this.isEbook(book)) {
-      return '-';
-    }
-
-    return `${book.daysInShowcase || 0}`;
-  }
-
   public getPrimaryActionLabel(book: MyDonation): string {
     if (this.isEbook(book)) {
       return '';
@@ -379,7 +372,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
       return 'Escolher quem vai receber';
     }
 
-    return 'Ver pedidos';
+    return 'Ver solicitações';
   }
 
   public canChooseWinnerNow(book: MyDonation): boolean {
@@ -424,7 +417,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   public canPrimaryAction(book: MyDonation): boolean {
-    return !this.isEbook(book);
+    return !this.isEbook(book) && !this.isPreLaunch(book);
   }
 
   public isEbook(book: MyDonation): boolean {
@@ -432,7 +425,15 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   public canShowReleaseInterest(book: MyDonation): boolean {
-    return !this.isEbook(book);
+    return !this.isEbook(book) && this.isPreLaunch(book);
+  }
+
+  public isPreLaunch(book: MyDonation): boolean {
+    return book.status === BookDonationStatus.SCHEDULED;
+  }
+
+  public formatReleaseDate(releaseDate?: string | null): string {
+    return formatReleaseDate(releaseDate, true);
   }
 
   public getDecisionNoticeLabel(book: MyDonation): string {
