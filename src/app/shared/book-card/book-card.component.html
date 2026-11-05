@@ -18,7 +18,7 @@
         {{ isEbook ? 'Livro digital' : 'Livro físico' }}
       </span>
       @if (isUpcoming) {
-        <span class="book-type-badge badge-upcoming book-release-badge">{{ releaseLabel }}</span>
+        <app-release-badge class="book-release-badge" [releaseDate]="book.releaseDate"></app-release-badge>
       }
     </span>
   </div>

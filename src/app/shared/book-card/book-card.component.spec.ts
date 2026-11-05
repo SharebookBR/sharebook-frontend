@@ -3,13 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { BookCardComponent, BookCardInput } from './book-card.component';
+import { ReleaseBadgeModule } from '../release-badge/release-badge.module';
 
 describe('BookCardComponent', () => {
   let fixture: ComponentFixture<BookCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule],
+      imports: [CommonModule, ReleaseBadgeModule],
       declarations: [BookCardComponent],
     }).compileComponents();
 

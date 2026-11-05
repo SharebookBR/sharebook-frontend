@@ -53,6 +53,7 @@ import { CardMeetupComponent } from './components/card-meetup/card-meetup.compon
 import { BookCardModule } from './shared/book-card/book-card.module';
 import { BookShelfModule } from './shared/book-shelf/book-shelf.module';
 import { ActionButtonModule } from './shared/action-button/action-button.module';
+import { ReleaseBadgeModule } from './shared/release-badge/release-badge.module';
 
 
 import { jwtInterceptor, errorInterceptor, transferStateInterceptor } from './core/helpers';
@@ -194,7 +195,8 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         MatDividerModule,
         BookCardModule,
         BookShelfModule,
-        ActionButtonModule], providers: [
+        ActionButtonModule,
+        ReleaseBadgeModule], providers: [
         BookService,
         CategoryService,
         TagService,

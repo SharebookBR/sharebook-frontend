@@ -65,9 +65,13 @@
             </div>
           </div>
           <div class="donation-card__badges">
-            <span [class]="getStatusBadgeClass(element.status)">
-              {{ getTranslatedStatusDescription(element.status) }}
-            </span>
+            @if (isPreLaunch(element) && element.releaseDate) {
+              <app-release-badge [releaseDate]="element.releaseDate"></app-release-badge>
+            } @else {
+              <span [class]="getStatusBadgeClass(element.status)">
+                {{ getTranslatedStatusDescription(element.status) }}
+              </span>
+            }
             <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
               <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
               {{ isEbook(element) ? 'Livro digital' : 'Livro físico' }}
@@ -78,9 +82,6 @@
               <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
             } @else {
               @if (canShowReleaseInterest(element)) {
-                @if (element.releaseDate) {
-                  <div><b>Data de publicação:</b> {{ formatReleaseDate(element.releaseDate) }}</div>
-                }
                 <div><b>Pessoas aguardando aviso:</b> {{ element.releaseInterestCount || 0 }}</div>
               }
               @if (!isPreLaunch(element)) {

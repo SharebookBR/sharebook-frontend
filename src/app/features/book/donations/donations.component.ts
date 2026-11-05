@@ -15,7 +15,6 @@ import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { UserDonationsList } from 'src/app/features/book/userDonationsList';
 import { UserDonationsSummary } from 'src/app/features/book/userDonationsSummary';
-import { formatReleaseDate } from 'src/app/core/utils/release-date';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -430,10 +429,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   public isPreLaunch(book: MyDonation): boolean {
     return book.status === BookDonationStatus.SCHEDULED;
-  }
-
-  public formatReleaseDate(releaseDate?: string | null): string {
-    return formatReleaseDate(releaseDate, true);
   }
 
   public getDecisionNoticeLabel(book: MyDonation): string {

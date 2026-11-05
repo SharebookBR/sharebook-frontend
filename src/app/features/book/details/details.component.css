@@ -83,11 +83,9 @@
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
-.badge-upcoming {
-  background: #fff4db;
-  color: #67470b;
-  text-transform: none;
+.details-release-badge {
   margin-left: 4px;
+  margin-bottom: 4px;
 }
 
 .details-actions {

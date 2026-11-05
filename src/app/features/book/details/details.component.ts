@@ -27,7 +27,7 @@ import { buildBookMetaDescription } from 'src/app/core/services/seo/book-meta-de
 import { BookCardInput } from 'src/app/shared/book-card/book-card.component';
 import { EbookDownloadUrlService } from 'src/app/features/book/services/ebook-download-url.service';
 import { ReleaseInterestStatus } from 'src/app/features/book/releaseInterestStatus';
-import { daysUntilRelease, formatReleaseDateLong, releaseBadgeLabel } from 'src/app/core/utils/release-date';
+import { daysUntilRelease, formatReleaseDateLong } from 'src/app/core/utils/release-date';
 
 @Component({
     selector: 'app-details',
@@ -402,10 +402,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();
-  }
-
-  get releaseBadge(): string {
-    return releaseBadgeLabel(this.bookInfo?.releaseDate);
   }
 
   /** Dias até a abertura (0 = hoje). Nulo se a data estiver ausente ou inválida. */

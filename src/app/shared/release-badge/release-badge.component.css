@@ -1,0 +1,16 @@
+:host {
+  display: inline-flex;
+}
+
+.release-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #fff4db;
+  color: #67470b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: normal;
+}

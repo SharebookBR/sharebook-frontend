@@ -31,7 +31,7 @@
                 {{ getBookTypeLabel() }}
               </span>
               @if (upcoming) {
-                <span class="book-type-badge details-book-type-badge badge-upcoming">{{ releaseBadge }}</span>
+                <app-release-badge class="details-release-badge" [releaseDate]="bookInfo.releaseDate"></app-release-badge>
               }
             </p>
             <p><strong>Título:</strong><br />{{ bookInfo.title }}</p>
