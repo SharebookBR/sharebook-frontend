@@ -81,4 +81,22 @@ describe('ListComponent request limit', () => {
     expect(component.canCancelDonation({ status: BookDonationStatus.CANCELED } as any)).toBeFalse();
     expect(component.canCancelDonation({ status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
   });
+
+  it('provides administrative actions only from the admin page model', () => {
+    const card = component.getCard({
+      title: 'Livro pendente',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_APPROVAL,
+      creationDate: '2026-11-02',
+    } as any);
+
+    expect(card.actions.map((action) => action.id)).toEqual([
+      'approve',
+      'reject',
+      'edit',
+      'adminNotes',
+      'showUsersInfo',
+    ]);
+  });
 });

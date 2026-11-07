@@ -19,6 +19,11 @@ import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
 import { RejectDonationDialogComponent } from '../reject-donation-dialog/reject-donation-dialog.component';
 import { ApproveDonationDialogComponent } from '../approve-donation-dialog/approve-donation-dialog.component';
+import {
+  DonationCardAction,
+  DonationCardDetail,
+  DonationCardViewModel,
+} from 'src/app/shared/donation-card/donation-card.component';
 
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available' | 'scheduled';
 
@@ -463,6 +468,127 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getRequestProgressAriaLabel(book: BookVMItem): string {
     return `${this.getRequestCountLabel(book)}; ${this.getRequestAvailabilityLabel(book)}`;
+  }
+
+  public getCard(book: BookVMItem): DonationCardViewModel {
+    const details: DonationCardDetail[] = [
+      { label: 'Inclusão', value: this.formatCardDate(book.creationDate) },
+      { label: 'Pessoa doadora', value: book.donor || '-' },
+    ];
+
+    if (book.status === BookDonationStatus.SCHEDULED && book.releaseDate) {
+      details.push(
+        { label: 'Liberação', value: this.formatRelease(book.releaseDate) },
+        { label: 'Avisos pedidos', value: book.releaseInterestCount || 0 },
+      );
+    }
+
+    if (this.canShowDecisionDate(book)) {
+      details.push({
+        label: 'Data de escolha',
+        value: this.formatCardDate(book.chooseDate),
+      });
+    }
+
+    if (!this.canShowRequestLimit(book)) {
+      details.push({ value: this.getPrimaryMetric(book) });
+    }
+
+    if (this.canShowWinner(book)) {
+      details.push({ label: 'Pessoa escolhida', value: book.winner });
+    }
+
+    if (this.canShowTrackingInfo(book)) {
+      details.push({ label: 'Código de rastreio', value: book.trackingNumber });
+    }
+
+    return {
+      title: book.title,
+      author: book.author,
+      isDigital: this.isEbook(book),
+      statusLabel: this.getTranslatedStatusDescription(book.status),
+      statusClass: this.getStatusBadgeClass(book.status),
+      decisionNotice: this.getDecisionNoticeLabel(book),
+      details,
+      progress: this.canShowRequestLimit(book)
+        ? {
+            label: this.getRequestCountLabel(book),
+            percentage: this.getRequestProgressPercentage(book),
+            value: this.getRequestProgressValue(book),
+            max: book.maxRequestsPerBook || 0,
+            ariaLabel: this.getRequestProgressAriaLabel(book),
+          }
+        : undefined,
+      actions: this.getCardActions(book),
+    };
+  }
+
+  public onCardAction(actionId: string, book: BookVMItem): void {
+    if (actionId === 'approve') {
+      this.openApproveDonationDialog(book);
+      return;
+    }
+
+    if (actionId === 'reject') {
+      this.openRejectDonationDialog(book);
+      return;
+    }
+
+    this.onCustom(actionId, book);
+  }
+
+  private getCardActions(book: BookVMItem): DonationCardAction[] {
+    const actions: DonationCardAction[] = [];
+
+    if (this.canApproveDonation(book)) {
+      actions.push({ id: 'approve', label: 'Aprovar', icon: 'check_circle', variant: 'success' });
+    }
+
+    if (this.canRejectDonation(book)) {
+      actions.push({ id: 'reject', label: 'Reprovar', icon: 'block', variant: 'danger' });
+    }
+
+    actions.push({ id: 'edit', label: 'Editar', icon: 'edit_note', variant: 'primary' });
+
+    if (this.canShowPrimaryAction(book)) {
+      actions.push({
+        id: 'donate',
+        label: this.getPrimaryActionLabel(book),
+        icon: this.getPrimaryActionIcon(book),
+        variant: 'yellow',
+      });
+    }
+
+    actions.push({ id: 'adminNotes', label: 'Comentários', icon: 'sticky_note_2', variant: 'info' });
+
+    if (this.canOpenPdf(book)) {
+      actions.push({ id: 'openPdf', label: 'Ver PDF', icon: 'picture_as_pdf', variant: 'danger', appearance: 'stroked' });
+    }
+
+    if (this.canShowTrackAction(book)) {
+      actions.push({ id: 'trackNumber', label: 'Rastreio', icon: 'local_shipping', variant: 'neutral' });
+    }
+
+    actions.push({ id: 'showUsersInfo', label: 'Usuários', icon: 'group', variant: 'ghost', appearance: 'stroked' });
+
+    if (this.canCancelDonation(book)) {
+      actions.push({ id: 'cancelDonation', label: 'Cancelar', icon: 'delete_outline', variant: 'danger' });
+    }
+
+    return actions;
+  }
+
+  private formatCardDate(value?: Date | string | null): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '-';
+    }
+
+    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   private getRequestCount(book: BookVMItem): number {

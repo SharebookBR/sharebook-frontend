@@ -15,6 +15,11 @@ import { WinnerUsersComponent } from '../winner-users/winner-users.component';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { UserDonationsList } from 'src/app/features/book/userDonationsList';
 import { UserDonationsSummary } from 'src/app/features/book/userDonationsSummary';
+import {
+  DonationCardAction,
+  DonationCardDetail,
+  DonationCardViewModel,
+} from 'src/app/shared/donation-card/donation-card.component';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -360,6 +365,112 @@ export class DonationsComponent implements OnInit, OnDestroy {
     }
 
     return `${book.totalInterested || 0}`;
+  }
+
+  public getCard(book: MyDonation): DonationCardViewModel {
+    const details: DonationCardDetail[] = [];
+
+    if (this.isEbook(book)) {
+      details.push({ label: 'Downloads', value: book.downloadCount || 0 });
+    } else {
+      if (this.canShowReleaseInterest(book)) {
+        details.push({ label: 'Pessoas aguardando aviso', value: book.releaseInterestCount || 0 });
+      }
+
+      if (!this.isPreLaunch(book)) {
+        details.push({ label: 'Pessoas interessadas', value: book.totalInterested || 0 });
+      }
+
+      if (!this.isPreLaunch(book) && book.chooseDate) {
+        details.push({ label: 'Data de escolha', value: this.formatCardDate(book.chooseDate) });
+      }
+
+      if (this.canShowWinner(book)) {
+        details.push({ label: 'Pessoa escolhida', value: book.winner || '-' });
+      }
+    }
+
+    return {
+      title: book.title,
+      author: book.author,
+      isDigital: this.isEbook(book),
+      statusLabel: this.getTranslatedStatusDescription(book.status),
+      statusClass: this.getStatusBadgeClass(book.status),
+      releaseDate: this.isPreLaunch(book) ? book.releaseDate : undefined,
+      decisionNotice: this.getDecisionNoticeLabel(book),
+      details,
+      actions: this.getCardActions(book),
+    };
+  }
+
+  public onCardAction(actionId: string, book: MyDonation): void {
+    if (actionId === 'donate') {
+      this.executePrimaryAction(book);
+      return;
+    }
+
+    this.onCustom(actionId, book);
+  }
+
+  private getCardActions(book: MyDonation): DonationCardAction[] {
+    const actions: DonationCardAction[] = [];
+
+    if (this.canPrimaryAction(book)) {
+      actions.push({
+        id: 'donate',
+        label: this.getPrimaryActionLabel(book),
+        icon: this.canChooseWinnerNow(book) ? 'emoji_events' : 'chat_bubble_outline',
+        variant: this.canChooseWinnerNow(book) ? 'success' : 'primary',
+      });
+    }
+
+    if (this.canRenew(book)) {
+      actions.push({
+        id: 'renewChooseDate',
+        label: 'Adiar decisão',
+        icon: 'calendar_month',
+        variant: 'ghost',
+        appearance: 'stroked',
+      });
+    }
+
+    if (this.canTrack(book)) {
+      actions.push({
+        id: 'markAsFinished',
+        label: 'Marcar finalizado',
+        icon: 'check_circle_outline',
+        variant: 'success',
+      });
+    }
+
+    if (this.canShowWinner(book)) {
+      actions.push({
+        id: 'ShowWinnerInfo',
+        label: 'Ver pessoa escolhida',
+        icon: 'person',
+        variant: 'ghost',
+        appearance: 'stroked',
+      });
+    }
+
+    if (this.canCancel(book)) {
+      actions.push({ id: 'CancelDonation', label: 'Cancelar', icon: 'delete_outline', variant: 'danger' });
+    }
+
+    return actions;
+  }
+
+  private formatCardDate(value?: Date | string | null): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '-';
+    }
+
+    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   public getPrimaryActionLabel(book: MyDonation): string {

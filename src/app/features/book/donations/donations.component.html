@@ -57,80 +57,8 @@
 
     <div class="donation-cards-grid">
       @for (element of donatedBooks; track element) {
-        <div class="donation-card">
-          <div class="donation-card__header">
-            <div>
-              <div class="donation-card__title">{{ element.title }}</div>
-              <div class="donation-card__author">{{ element.author || 'Autoria não informada' }}</div>
-            </div>
-          </div>
-          <div class="donation-card__badges">
-            <span class="book-type-badge" [ngClass]="isEbook(element) ? 'badge-ebook' : 'badge-physical'">
-              <i class="fa" [ngClass]="isEbook(element) ? 'fa-cloud-download' : 'fa-book'"></i>
-              {{ isEbook(element) ? 'Livro digital' : 'Livro físico' }}
-            </span>
-            @if (isPreLaunch(element) && element.releaseDate) {
-              <app-release-badge [releaseDate]="element.releaseDate"></app-release-badge>
-            } @else {
-              <span [class]="getStatusBadgeClass(element.status)">
-                {{ getTranslatedStatusDescription(element.status) }}
-              </span>
-            }
-          </div>
-          <div class="donation-card__meta">
-            @if (isEbook(element)) {
-              <div><b>Downloads:</b> {{ element.downloadCount || 0 }}</div>
-            } @else {
-              @if (canShowReleaseInterest(element)) {
-                <div><b>Pessoas aguardando aviso:</b> {{ element.releaseInterestCount || 0 }}</div>
-              }
-              @if (!isPreLaunch(element)) {
-                <div><b>Pessoas interessadas:</b> {{ element.totalInterested || 0 }}</div>
-              }
-              @if (!isPreLaunch(element) && element.chooseDate) {
-                <div><b>Data de escolha:</b> {{ element.chooseDate | date: 'dd/MM/yyyy' }}</div>
-              }
-              @if (getDecisionNoticeLabel(element)) {
-                <div class="donation-card__notice">{{ getDecisionNoticeLabel(element) }}</div>
-              }
-              @if (canShowWinner(element)) {
-                <div><b>Pessoa escolhida:</b> {{ element.winner || '-' }}</div>
-              }
-            }
-          </div>
-            <div class="donation-card__actions">
-              @if (canPrimaryAction(element)) {
-                <app-action-button
-                  [variant]="canChooseWinnerNow(element) ? 'success' : 'primary'"
-                  [icon]="canChooseWinnerNow(element) ? 'emoji_events' : 'chat_bubble_outline'"
-                  (action)="executePrimaryAction(element)"
-                  >
-                  {{ getPrimaryActionLabel(element) }}
-                </app-action-button>
-              }
-              @if (canRenew(element)) {
-                <app-action-button variant="ghost" appearance="stroked" icon="calendar_month" (action)="onCustom('renewChooseDate', element)">
-                  Adiar decisão
-                </app-action-button>
-              }
-              @if (canTrack(element)) {
-                <app-action-button variant="success" icon="check_circle_outline" (action)="onCustom('markAsFinished', element)">
-                  Marcar finalizado
-                </app-action-button>
-              }
-              @if (canShowWinner(element)) {
-                <app-action-button variant="ghost" appearance="stroked" icon="person" (action)="onCustom('ShowWinnerInfo', element)">
-                  Ver pessoa escolhida
-                </app-action-button>
-              }
-              @if (canCancel(element)) {
-                <app-action-button variant="danger" icon="delete_outline" (action)="onCustom('CancelDonation', element)">
-                  Cancelar
-                </app-action-button>
-              }
-            </div>
-          </div>
-        }
+        <app-donation-card [card]="getCard(element)" (action)="onCardAction($event, element)"></app-donation-card>
+      }
       </div>
 
       @if ((isLoading$ | async) === false && totalItems > 0) {

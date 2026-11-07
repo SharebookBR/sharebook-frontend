@@ -1,0 +1,64 @@
+<article class="donation-card">
+  <header class="donation-card__header">
+    <div class="donation-card__title">{{ card.title }}</div>
+    <div class="donation-card__author">{{ card.author || 'Autoria não informada' }}</div>
+  </header>
+
+  <div class="donation-card__badges">
+    <span class="book-type-badge" [ngClass]="card.isDigital ? 'badge-digital' : 'badge-physical'">
+      <mat-icon class="badge-icon">{{ card.isDigital ? 'menu_book' : 'book' }}</mat-icon>
+      {{ card.isDigital ? 'Livro digital' : 'Livro físico' }}
+    </span>
+    @if (card.releaseDate) {
+      <app-release-badge [releaseDate]="card.releaseDate"></app-release-badge>
+    } @else {
+      <span [class]="card.statusClass">{{ card.statusLabel }}</span>
+    }
+    @if (card.decisionNotice) {
+      <span class="donation-card__notice">{{ card.decisionNotice }}</span>
+    }
+  </div>
+
+  <div class="donation-card__meta">
+    @for (detail of card.details; track $index) {
+      <div>
+        @if (detail.label) { <b>{{ detail.label }}:</b> }
+        {{ detail.value ?? '-' }}
+      </div>
+    }
+    @if (card.progress) {
+      <div class="request-limit">
+        <div class="request-limit__header">
+          <span>{{ card.progress.label }}</span>
+          <span>{{ card.progress.percentage }}%</span>
+        </div>
+        <div
+          class="request-limit__track"
+          role="progressbar"
+          [attr.aria-label]="card.progress.ariaLabel"
+          aria-valuemin="0"
+          [attr.aria-valuemax]="card.progress.max"
+          [attr.aria-valuenow]="card.progress.value"
+          [attr.aria-valuetext]="card.progress.ariaLabel"
+        >
+          <span class="request-limit__fill" [style.width.%]="card.progress.percentage"></span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (card.actions.length) {
+    <div class="donation-card__actions">
+      @for (item of card.actions; track item.id) {
+        <app-action-button
+          [variant]="item.variant"
+          [appearance]="item.appearance || 'flat'"
+          [icon]="item.icon"
+          (action)="selectAction(item.id)"
+        >
+          {{ item.label }}
+        </app-action-button>
+      }
+    </div>
+  }
+</article>

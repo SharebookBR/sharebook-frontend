@@ -26,4 +26,19 @@ describe('DonationsComponent pre-launch interest', () => {
   it('uses the canonical label for the requests action', () => {
     expect(component.getPrimaryActionLabel({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBe('Ver solicitações');
   });
+
+  it('provides only donor actions to the shared card', () => {
+    const card = component.getCard({
+      title: 'Livro da pessoa doadora',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.AVAILABLE,
+      totalInterested: 2,
+    } as any);
+
+    expect(card.actions.map((action) => action.id)).toEqual(['donate', 'CancelDonation']);
+    expect(card.actions.map((action) => action.id)).not.toContain('edit');
+    expect(card.actions.map((action) => action.id)).not.toContain('adminNotes');
+    expect(card.actions.map((action) => action.id)).not.toContain('approve');
+  });
 });

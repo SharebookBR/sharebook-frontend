@@ -54,6 +54,7 @@ import { BookCardModule } from './shared/book-card/book-card.module';
 import { BookShelfModule } from './shared/book-shelf/book-shelf.module';
 import { ActionButtonModule } from './shared/action-button/action-button.module';
 import { ReleaseBadgeModule } from './shared/release-badge/release-badge.module';
+import { DonationCardModule } from './shared/donation-card/donation-card.module';
 
 
 import { jwtInterceptor, errorInterceptor, transferStateInterceptor } from './core/helpers';
@@ -196,7 +197,8 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         BookCardModule,
         BookShelfModule,
         ActionButtonModule,
-        ReleaseBadgeModule], providers: [
+        ReleaseBadgeModule,
+        DonationCardModule], providers: [
         BookService,
         CategoryService,
         TagService,

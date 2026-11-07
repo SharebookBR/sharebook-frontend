@@ -121,160 +121,10 @@
   color: #1f3352;
 }
 
-/* Book type badges */
-.book-type-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.book-type-badge .badge-icon {
-  font-size: 14px;
-  width: 14px;
-  height: 14px;
-}
-
-.badge-ebook {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.badge-physical {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  color: white;
-}
-
 .admin-cards-grid {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.admin-card {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-  border: 1px solid #dbe6f7;
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 8px 22px rgba(22, 47, 93, 0.12);
-}
-
-.admin-card__title {
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #1c2b3f;
-}
-
-.admin-card__author {
-  margin-top: 2px;
-  color: #5c6f89;
-}
-
-.admin-card__badges {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.admin-card__meta {
-  margin-top: 10px;
-  font-size: 14px;
-  display: grid;
-  gap: 4px;
-  color: #273a55;
-}
-
-.admin-card__notice {
-  display: inline-flex;
-  width: fit-content;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #fff3cd;
-  color: #856404;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.request-limit {
-  display: grid;
-  gap: 5px;
-  margin-top: 2px;
-  max-width: 30rem;
-}
-
-.request-limit__header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.request-limit__header {
-  color: #273a55;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.request-limit__track {
-  height: 7px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: #e4ebf2;
-}
-
-.request-limit__fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: #29abe2;
-  transition: width 0.2s ease;
-}
-
-.admin-card__actions {
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.status-success {
-  background-color: #e6f4ea;
-  color: #1e7e34;
-}
-
-.status-danger {
-  background-color: #fdecea;
-  color: #a71d2a;
-}
-
-.status-warning {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-info {
-  background-color: #e7f3ff;
-  color: #0c5460;
-}
-
-.status-neutral {
-  background-color: #f1f3f5;
-  color: #495057;
 }
 
 .pagination-bar {
@@ -339,10 +189,6 @@
 
   .summary-value {
     font-size: 22px;
-  }
-
-  .admin-card__title {
-    font-size: 20px;
   }
 
   .results-toolbar {
