@@ -86,6 +86,11 @@
               <span [class]="getStatusBadgeClass(element.status)">
                 {{ getTranslatedStatusDescription(element.status) }}
               </span>
+              @if (shouldShowDecisionNotice(element)) {
+                <span class="admin-card__notice">
+                  {{ getDecisionNoticeLabel(element) }}
+                </span>
+              }
             </div>
             <div class="admin-card__meta">
               <div><b>Inclusão:</b> {{ element.creationDate | date: 'dd/MM/yyyy' }}</div>
@@ -97,11 +102,6 @@
               @if (canShowDecisionDate(element)) {
                 <div>
                   <b>Escolha:</b> {{ element.chooseDate ? (element.chooseDate | date: 'dd/MM/yyyy') : '-' }}
-                </div>
-              }
-              @if (shouldShowDecisionNotice(element)) {
-                <div class="admin-card__notice">
-                  {{ getDecisionNoticeLabel(element) }}
                 </div>
               }
               @if (canShowRequestLimit(element)) {
@@ -121,7 +121,6 @@
                   >
                     <span class="request-limit__fill" [style.width.%]="getRequestProgressPercentage(element)"></span>
                   </div>
-                  <div class="request-limit__remaining">{{ getRequestAvailabilityLabel(element) }}</div>
                 </div>
               } @else {
                 <div>{{ getPrimaryMetric(element) }}</div>
