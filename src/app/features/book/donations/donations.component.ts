@@ -576,7 +576,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   public canShowReleaseInterest(book: MyDonation): boolean {
-    return !this.isEbook(book) && this.isPreLaunch(book);
+    return !this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL;
   }
 
   public isPreLaunch(book: MyDonation): boolean {

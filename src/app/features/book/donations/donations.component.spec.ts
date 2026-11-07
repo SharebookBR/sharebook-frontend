@@ -1,7 +1,7 @@
 import { DonationsComponent } from './donations.component';
 import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 
-describe('DonationsComponent pre-launch interest', () => {
+describe('DonationsComponent release interest', () => {
   let component: DonationsComponent;
 
   beforeEach(() => {
@@ -15,10 +15,17 @@ describe('DonationsComponent pre-launch interest', () => {
     );
   });
 
-  it('shows pre-launch details and hides its primary action until publication', () => {
+  it('shows release-interest details in every physical donation status except waiting approval', () => {
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.SCHEDULED } as any)).toBeTrue();
-    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeFalse();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.WAITING_DECISION } as any)).toBeTrue();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.WAITING_SEND } as any)).toBeTrue();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.RECEIVED } as any)).toBeTrue();
+    expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.WAITING_APPROVAL } as any)).toBeFalse();
     expect(component.canShowReleaseInterest({ type: 'Eletronic', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
+  });
+
+  it('hides the primary action for a pre-launch donation', () => {
     expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
     expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
   });
