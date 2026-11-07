@@ -67,4 +67,17 @@ describe('DonationsComponent release interest', () => {
       max: 50,
     }));
   });
+
+  it('keeps the decision date exclusively in its badge', () => {
+    const card = component.getCard({
+      title: 'Livro da pessoa doadora',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.AVAILABLE,
+      chooseDate: '2026-11-15T03:00:00Z',
+    } as any);
+
+    expect(card.details.map((detail) => detail.label)).not.toContain('Data de escolha');
+    expect(card.decisionNotice).toContain('Decisão');
+  });
 });

@@ -381,10 +381,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
         details.push({ label: 'Pessoas interessadas', value: book.totalInterested || 0 });
       }
 
-      if (!this.isPreLaunch(book) && book.chooseDate) {
-        details.push({ label: 'Data de escolha', value: this.formatCardDate(book.chooseDate) });
-      }
-
       if (this.canShowWinner(book)) {
         details.push({ label: 'Pessoa escolhida', value: book.winner || '-' });
       }
@@ -467,19 +463,6 @@ export class DonationsComponent implements OnInit, OnDestroy {
     }
 
     return actions;
-  }
-
-  private formatCardDate(value?: Date | string | null): string {
-    if (!value) {
-      return '-';
-    }
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return '-';
-    }
-
-    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   public getPrimaryActionLabel(book: MyDonation): string {
