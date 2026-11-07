@@ -374,7 +374,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
       details.push({ label: 'Downloads', value: book.downloadCount || 0 });
     } else {
       if (this.canShowReleaseInterest(book)) {
-        details.push({ label: 'Pessoas aguardando aviso', value: book.releaseInterestCount || 0 });
+        details.push({ label: 'Notificações lançamento', value: book.releaseInterestCount || 0 });
       }
 
       if (!this.isPreLaunch(book) && !this.canShowRequestLimit(book)) {

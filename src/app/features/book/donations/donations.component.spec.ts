@@ -30,6 +30,21 @@ describe('DonationsComponent release interest', () => {
     expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
   });
 
+  it('labels release interest as launch notifications', () => {
+    const card = component.getCard({
+      title: 'Livro da pessoa doadora',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.AVAILABLE,
+      releaseInterestCount: 24,
+    } as any);
+
+    expect(card.details).toContain(jasmine.objectContaining({
+      label: 'Notificações lançamento',
+      value: 24,
+    }));
+  });
+
   it('uses the canonical label for the requests action', () => {
     expect(component.getPrimaryActionLabel({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBe('Ver solicitações');
   });
