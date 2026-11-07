@@ -377,7 +377,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
         details.push({ label: 'Pessoas aguardando aviso', value: book.releaseInterestCount || 0 });
       }
 
-      if (!this.isPreLaunch(book)) {
+      if (!this.isPreLaunch(book) && !this.canShowRequestLimit(book)) {
         details.push({ label: 'Pessoas interessadas', value: book.totalInterested || 0 });
       }
 
@@ -399,6 +399,15 @@ export class DonationsComponent implements OnInit, OnDestroy {
       releaseDate: this.isPreLaunch(book) ? book.releaseDate : undefined,
       decisionNotice: this.getDecisionNoticeLabel(book),
       details,
+      progress: this.canShowRequestLimit(book)
+        ? {
+            label: this.getRequestCountLabel(book),
+            percentage: this.getRequestProgressPercentage(book),
+            value: this.getRequestProgressValue(book),
+            max: book.maxRequestsPerBook || 0,
+            ariaLabel: this.getRequestProgressAriaLabel(book),
+          }
+        : undefined,
       actions: this.getCardActions(book),
     };
   }
@@ -530,8 +539,40 @@ export class DonationsComponent implements OnInit, OnDestroy {
     return !this.isEbook(book) && !this.isPreLaunch(book);
   }
 
+  public canShowRequestLimit(book: MyDonation): boolean {
+    return !this.isEbook(book) &&
+      book.status === BookDonationStatus.AVAILABLE &&
+      Number.isFinite(book.maxRequestsPerBook) &&
+      (book.maxRequestsPerBook || 0) > 0;
+  }
+
+  public getRequestCountLabel(book: MyDonation): string {
+    return `${this.getRequestCount(book)} de ${book.maxRequestsPerBook} solicitações`;
+  }
+
+  public getRequestProgressPercentage(book: MyDonation): number {
+    const limit = book.maxRequestsPerBook || 0;
+    if (!limit) {
+      return 0;
+    }
+
+    return Math.min(Math.max(Math.round((this.getRequestCount(book) / limit) * 100), 0), 100);
+  }
+
+  public getRequestProgressValue(book: MyDonation): number {
+    return Math.min(this.getRequestCount(book), book.maxRequestsPerBook || 0);
+  }
+
+  public getRequestProgressAriaLabel(book: MyDonation): string {
+    return this.getRequestCountLabel(book);
+  }
+
   public isEbook(book: MyDonation): boolean {
     return (book.type || '').toLowerCase() === 'eletronic';
+  }
+
+  private getRequestCount(book: MyDonation): number {
+    return Math.max(book.totalInterested || 0, 0);
   }
 
   public canShowReleaseInterest(book: MyDonation): boolean {

@@ -41,4 +41,23 @@ describe('DonationsComponent pre-launch interest', () => {
     expect(card.actions.map((action) => action.id)).not.toContain('adminNotes');
     expect(card.actions.map((action) => action.id)).not.toContain('approve');
   });
+
+  it('shows the request-limit progress for an available physical donation', () => {
+    const card = component.getCard({
+      title: 'Livro da pessoa doadora',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.AVAILABLE,
+      totalInterested: 10,
+      maxRequestsPerBook: 50,
+    } as any);
+
+    expect(card.details.map((detail) => detail.label)).not.toContain('Pessoas interessadas');
+    expect(card.progress).toEqual(jasmine.objectContaining({
+      label: '10 de 50 solicitações',
+      percentage: 20,
+      value: 10,
+      max: 50,
+    }));
+  });
 });

@@ -26,6 +26,7 @@ export class MyDonation {
   slug: string;
   userId: string;
   type: string;
+  maxRequestsPerBook?: number | null;
   eBookDownloadLink: string;
   eBookPdfFile: string;
 }
