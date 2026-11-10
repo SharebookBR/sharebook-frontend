@@ -109,6 +109,7 @@ describe('ListComponent request limit', () => {
       creationDate: '2026-11-10',
       releaseDate: '2026-12-01',
       chooseDate: '2027-01-01T00:00:00Z',
+      donor: 'Roberto Montanha',
       releaseInterestCount: 3,
     } as any);
 
@@ -117,8 +118,10 @@ describe('ListComponent request limit', () => {
       'Inclusão',
       'Liberação',
       'Decisão',
+      'Pessoa doadora',
       'Notificações',
     ]);
+    expect(card.details[3].value).toBe('Roberto Montanha');
     expect(card.details[card.details.length - 1].icon).toBe('notifications');
   });
 

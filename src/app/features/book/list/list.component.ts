@@ -477,6 +477,7 @@ export class ListComponent implements OnInit, OnDestroy {
       details.push(
         { label: 'Liberação', value: this.formatRelease(book.releaseDate) },
         { label: 'Decisão', value: this.formatCardDate(book.chooseDate) },
+        { label: 'Pessoa doadora', value: book.donor || '-' },
         { label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 },
       );
     } else {
