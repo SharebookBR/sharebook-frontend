@@ -101,6 +101,19 @@
   font-size: 14px;
 }
 
+.donation-card__detail {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.donation-card__detail-icon {
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
+  color: #5c6f89;
+}
+
 .request-limit {
   display: grid;
   gap: 5px;

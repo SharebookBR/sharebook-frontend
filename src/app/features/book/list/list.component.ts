@@ -420,9 +420,7 @@ export class ListComponent implements OnInit, OnDestroy {
       return 'Sem etapa pública de solicitações ainda';
     }
 
-    const interestedCount = book.totalInterested || 0;
-    const interestedLabel = interestedCount === 1 ? 'pessoa interessada' : 'pessoas interessadas';
-    return `${interestedCount} ${interestedLabel}`;
+    return `${book.totalInterested || 0}`;
   }
 
   public isPhysical(book: BookVMItem): boolean {
@@ -473,14 +471,16 @@ export class ListComponent implements OnInit, OnDestroy {
   public getCard(book: BookVMItem): DonationCardViewModel {
     const details: DonationCardDetail[] = [
       { label: 'Inclusão', value: this.formatCardDate(book.creationDate) },
-      { label: 'Pessoa doadora', value: book.donor || '-' },
     ];
 
     if (book.status === BookDonationStatus.SCHEDULED && book.releaseDate) {
       details.push(
         { label: 'Liberação', value: this.formatRelease(book.releaseDate) },
-        { label: 'Avisos pedidos', value: book.releaseInterestCount || 0 },
+        { label: 'Decisão', value: this.formatCardDate(book.chooseDate) },
+        { label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 },
       );
+    } else {
+      details.push({ label: 'Pessoa doadora', value: book.donor || '-' });
     }
 
     if (this.canShowDecisionDate(book)) {
@@ -490,8 +490,8 @@ export class ListComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (!this.canShowRequestLimit(book)) {
-      details.push({ value: this.getPrimaryMetric(book) });
+    if (!this.canShowRequestLimit(book) && book.status !== BookDonationStatus.SCHEDULED) {
+      details.push({ label: 'Solicitações', icon: 'assignment', value: this.getPrimaryMetric(book) });
     }
 
     if (this.canShowWinner(book)) {
@@ -508,6 +508,7 @@ export class ListComponent implements OnInit, OnDestroy {
       isDigital: this.isEbook(book),
       statusLabel: this.getTranslatedStatusDescription(book.status),
       statusClass: this.getStatusBadgeClass(book.status),
+      releaseDate: book.status === BookDonationStatus.SCHEDULED ? book.releaseDate : undefined,
       decisionNotice: this.getDecisionNoticeLabel(book),
       details,
       progress: this.canShowRequestLimit(book)

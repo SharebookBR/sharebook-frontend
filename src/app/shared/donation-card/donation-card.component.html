@@ -21,7 +21,10 @@
 
   <div class="donation-card__meta">
     @for (detail of card.details; track $index) {
-      <div>
+      <div class="donation-card__detail">
+        @if (detail.icon) {
+          <mat-icon class="donation-card__detail-icon" [attr.aria-label]="detail.label || null">{{ detail.icon }}</mat-icon>
+        }
         @if (detail.label) { <b>{{ detail.label }}:</b> }
         {{ detail.value ?? '-' }}
       </div>

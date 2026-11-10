@@ -4,6 +4,7 @@ import { ActionButtonAppearance, ActionButtonVariant } from 'src/app/shared/acti
 
 export interface DonationCardDetail {
   label?: string;
+  icon?: string;
   value: string | number | null | undefined;
 }
 

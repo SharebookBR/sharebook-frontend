@@ -61,7 +61,7 @@ describe('ListComponent request limit', () => {
 
     expect(component.canShowRequestLimit({ ...baseBook, type: 'Eletronic' })).toBeFalse();
     expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBeFalse();
-    expect(component.getPrimaryMetric({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBe('2 pessoas interessadas');
+    expect(component.getPrimaryMetric({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBe('2');
   });
 
   it('shows rejection only for donations awaiting approval', () => {
@@ -98,5 +98,40 @@ describe('ListComponent request limit', () => {
       'adminNotes',
       'showUsersInfo',
     ]);
+  });
+
+  it('shows scheduled dates in calendar order with notification and request icons', () => {
+    const card = component.getCard({
+      title: 'Livro agendado',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.SCHEDULED,
+      creationDate: '2026-11-10',
+      releaseDate: '2026-12-01',
+      chooseDate: '2027-01-01T00:00:00Z',
+      releaseInterestCount: 3,
+    } as any);
+
+    expect(card.releaseDate).toBe('2026-12-01');
+    expect(card.details.map((detail) => detail.label)).toEqual([
+      'Inclusão',
+      'Liberação',
+      'Decisão',
+      'Notificações',
+    ]);
+    expect(card.details[card.details.length - 1].icon).toBe('notifications');
+  });
+
+  it('labels public interest as requests with an assignment icon', () => {
+    const card = component.getCard({
+      title: 'Livro disponível',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_DECISION,
+      creationDate: '2026-11-10',
+      totalInterested: 2,
+    } as any);
+
+    expect(card.details[card.details.length - 1]).toEqual({ label: 'Solicitações', icon: 'assignment', value: '2' });
   });
 });
