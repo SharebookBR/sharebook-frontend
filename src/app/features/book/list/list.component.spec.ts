@@ -123,12 +123,10 @@ describe('ListComponent request limit', () => {
       { date: '01/12/2026', label: 'Liberação' },
       { date: '01/01/2027', label: 'Decisão' },
     ]);
-    expect(card.details.map((detail) => detail.label)).toEqual([
-      'Pessoa doadora',
-      'Notificações',
-    ]);
+    expect(card.details.map((detail) => detail.label)).toEqual(['Pessoa doadora']);
+    expect(card.footerDetails?.map((detail) => detail.label)).toEqual(['Notificações']);
     expect(card.details[0].value).toBe('Roberto Montanha');
-    expect(card.details[card.details.length - 1].icon).toBe('notifications');
+    expect(card.footerDetails?.[0].icon).toBe('notifications');
   });
 
   it('uses the request progress bar after the book has left pre-launch', () => {
@@ -164,10 +162,29 @@ describe('ListComponent request limit', () => {
       releaseInterestCount: 4,
     } as any);
 
-    expect(approvedCard.details).toContain(jasmine.objectContaining({
+    expect(approvedCard.footerDetails).toContain(jasmine.objectContaining({
       label: 'Notificações', icon: 'notifications', value: 4,
     }));
-    expect(pendingCard.details.map((detail) => detail.label)).not.toContain('Notificações');
+    expect(pendingCard.footerDetails?.map((detail) => detail.label)).not.toContain('Notificações');
+  });
+
+  it('keeps donor, winner, request progress and notifications in that order', () => {
+    const card = component.getCard({
+      title: 'Livro com ciclo completo',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_SEND,
+      creationDate: '2026-11-10',
+      donor: 'Pessoa doadora',
+      winner: 'Pessoa escolhida',
+      totalInterested: 11,
+      maxRequestsPerBook: 50,
+      releaseInterestCount: 3,
+    } as any);
+
+    expect(card.details.map((detail) => detail.label)).toEqual(['Pessoa doadora', 'Pessoa escolhida']);
+    expect(card.progress?.label).toBe('11 de 50 solicitações');
+    expect(card.footerDetails?.map((detail) => detail.label)).toEqual(['Notificações']);
   });
 
   it('keeps the timeline for a released book and bolds only dates already reached', () => {

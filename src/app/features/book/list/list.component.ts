@@ -467,23 +467,24 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getCard(book: BookVMItem): DonationCardViewModel {
     const details: DonationCardDetail[] = [];
+    const footerDetails: DonationCardDetail[] = [];
 
     details.push({ label: 'Pessoa doadora', value: book.donor || '-' });
 
-    if (this.canShowReleaseInterest(book)) {
-      details.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
+    if (this.canShowWinner(book)) {
+      details.push({ label: 'Pessoa escolhida', value: book.winner });
     }
 
     if (!this.canShowRequestLimit(book) && book.status !== BookDonationStatus.SCHEDULED) {
       details.push({ label: 'Solicitações', icon: 'assignment', value: this.getPrimaryMetric(book) });
     }
 
-    if (this.canShowWinner(book)) {
-      details.push({ label: 'Pessoa escolhida', value: book.winner });
-    }
-
     if (this.canShowTrackingInfo(book)) {
       details.push({ label: 'Código de rastreio', value: book.trackingNumber });
+    }
+
+    if (this.canShowReleaseInterest(book)) {
+      footerDetails.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
     }
 
     return {
@@ -512,6 +513,7 @@ export class ListComponent implements OnInit, OnDestroy {
             ariaLabel: this.getRequestProgressAriaLabel(book),
           }
         : undefined,
+      footerDetails,
       actions: this.getCardActions(book),
     };
   }

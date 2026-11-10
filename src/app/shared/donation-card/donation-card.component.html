@@ -62,6 +62,17 @@
         </div>
       </div>
     }
+    @if (card.footerDetails?.length) {
+      @for (detail of card.footerDetails; track $index) {
+        <div class="donation-card__detail">
+          @if (detail.icon) {
+            <mat-icon class="donation-card__detail-icon" [attr.aria-label]="detail.label || null">{{ detail.icon }}</mat-icon>
+          }
+          @if (detail.label) { <b>{{ detail.label }}:</b> }
+          {{ detail.value ?? '-' }}
+        </div>
+      }
+    }
   </div>
 
   @if (card.actions.length) {

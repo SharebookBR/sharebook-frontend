@@ -39,7 +39,7 @@ describe('DonationsComponent release interest', () => {
       releaseInterestCount: 24,
     } as any);
 
-    expect(card.details).toContain(jasmine.objectContaining({
+    expect(card.footerDetails).toContain(jasmine.objectContaining({
       label: 'Notificações',
       icon: 'notifications',
       value: 24,
@@ -108,5 +108,22 @@ describe('DonationsComponent release interest', () => {
 
     expect(card.timeline?.map((item) => item.label)).toEqual(['Inclusão', 'Liberação', 'Decisão']);
     expect(card.decisionNotice).toContain('Decisão');
+  });
+
+  it('keeps the winner before request progress and notifications after it', () => {
+    const card = component.getCard({
+      title: 'Livro da pessoa doadora',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_SEND,
+      winner: 'Pessoa escolhida',
+      totalInterested: 11,
+      maxRequestsPerBook: 50,
+      releaseInterestCount: 3,
+    } as any);
+
+    expect(card.details.map((detail) => detail.label)).toEqual(['Pessoa escolhida']);
+    expect(card.progress?.label).toBe('11 de 50 solicitações');
+    expect(card.footerDetails?.map((detail) => detail.label)).toEqual(['Notificações']);
   });
 });

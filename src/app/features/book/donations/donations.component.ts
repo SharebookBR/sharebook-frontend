@@ -370,20 +370,21 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   public getCard(book: MyDonation): DonationCardViewModel {
     const details: DonationCardDetail[] = [];
+    const footerDetails: DonationCardDetail[] = [];
 
     if (this.isEbook(book)) {
       details.push({ label: 'Downloads', value: book.downloadCount || 0 });
     } else {
-      if (this.canShowReleaseInterest(book)) {
-        details.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
+      if (this.canShowWinner(book)) {
+        details.push({ label: 'Pessoa escolhida', value: book.winner || '-' });
       }
 
       if (!this.isPreLaunch(book) && !this.canShowRequestLimit(book)) {
         details.push({ label: 'Pessoas interessadas', value: book.totalInterested || 0 });
       }
 
-      if (this.canShowWinner(book)) {
-        details.push({ label: 'Pessoa escolhida', value: book.winner || '-' });
+      if (this.canShowReleaseInterest(book)) {
+        footerDetails.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
       }
     }
 
@@ -413,6 +414,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
             ariaLabel: this.getRequestProgressAriaLabel(book),
           }
         : undefined,
+      footerDetails,
       actions: this.getCardActions(book),
     };
   }

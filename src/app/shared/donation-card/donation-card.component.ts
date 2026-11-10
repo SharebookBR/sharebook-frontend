@@ -38,6 +38,7 @@ export interface DonationCardViewModel {
   timeline?: DonationCardTimelineItem[];
   details: DonationCardDetail[];
   progress?: DonationCardProgress;
+  footerDetails?: DonationCardDetail[];
   actions: DonationCardAction[];
 }
 
