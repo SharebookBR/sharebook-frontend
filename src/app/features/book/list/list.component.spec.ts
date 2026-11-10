@@ -114,14 +114,16 @@ describe('ListComponent request limit', () => {
     } as any);
 
     expect(card.releaseDate).toBe('2026-12-01');
+    expect(card.timeline).toEqual([
+      { date: '10/11/2026', label: 'Inclusão' },
+      { date: '01/12/2026', label: 'Liberação' },
+      { date: '01/01/2027', label: 'Decisão' },
+    ]);
     expect(card.details.map((detail) => detail.label)).toEqual([
-      'Inclusão',
-      'Liberação',
-      'Decisão',
       'Pessoa doadora',
       'Notificações',
     ]);
-    expect(card.details[3].value).toBe('Roberto Montanha');
+    expect(card.details[0].value).toBe('Roberto Montanha');
     expect(card.details[card.details.length - 1].icon).toBe('notifications');
   });
 

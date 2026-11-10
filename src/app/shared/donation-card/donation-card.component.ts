@@ -8,6 +8,11 @@ export interface DonationCardDetail {
   value: string | number | null | undefined;
 }
 
+export interface DonationCardTimelineItem {
+  date: string;
+  label: string;
+}
+
 export interface DonationCardProgress {
   label: string;
   percentage: number;
@@ -32,6 +37,7 @@ export interface DonationCardViewModel {
   statusClass: string;
   releaseDate?: string | null;
   decisionNotice?: string;
+  timeline?: DonationCardTimelineItem[];
   details: DonationCardDetail[];
   progress?: DonationCardProgress;
   actions: DonationCardAction[];

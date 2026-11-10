@@ -19,6 +19,20 @@
     }
   </div>
 
+  @if (card.timeline?.length) {
+    <section class="donation-card__timeline" aria-label="Linha do tempo da doação">
+      @for (item of card.timeline; track item.label) {
+        <div class="donation-card__timeline-item">
+          <span class="donation-card__timeline-marker" aria-hidden="true">
+            <mat-icon>calendar_today</mat-icon>
+          </span>
+          <time class="donation-card__timeline-date">{{ item.date }}</time>
+          <span class="donation-card__timeline-label">{{ item.label }}</span>
+        </div>
+      }
+    </section>
+  }
+
   <div class="donation-card__meta">
     @for (detail of card.details; track $index) {
       <div class="donation-card__detail">

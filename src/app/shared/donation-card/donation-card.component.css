@@ -93,12 +93,70 @@
   font-weight: 700;
 }
 
+.donation-card__timeline {
+  position: relative;
+  display: grid;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.donation-card__timeline::before {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: 9px;
+  width: 1px;
+  content: '';
+  background: #cfe6f3;
+}
+
+.donation-card__timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(86px, auto) 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.donation-card__timeline-marker {
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: #29abe2;
+  background: #ffffff;
+}
+
+.donation-card__timeline-marker mat-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.donation-card__timeline-date {
+  color: #273a55;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.donation-card__timeline-label {
+  color: #78889d;
+  font-size: 13px;
+}
+
 .donation-card__meta {
   margin-top: 10px;
   display: grid;
   gap: 4px;
   color: #273a55;
   font-size: 14px;
+}
+
+.donation-card__timeline + .donation-card__meta {
+  margin-top: 14px;
 }
 
 .donation-card__detail {

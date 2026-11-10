@@ -469,19 +469,18 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public getCard(book: BookVMItem): DonationCardViewModel {
-    const details: DonationCardDetail[] = [
-      { label: 'Inclusão', value: this.formatCardDate(book.creationDate) },
-    ];
+    const details: DonationCardDetail[] = [];
 
     if (book.status === BookDonationStatus.SCHEDULED && book.releaseDate) {
       details.push(
-        { label: 'Liberação', value: this.formatRelease(book.releaseDate) },
-        { label: 'Decisão', value: this.formatCardDate(book.chooseDate) },
         { label: 'Pessoa doadora', value: book.donor || '-' },
         { label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 },
       );
     } else {
-      details.push({ label: 'Pessoa doadora', value: book.donor || '-' });
+      details.push(
+        { label: 'Inclusão', value: this.formatCardDate(book.creationDate) },
+        { label: 'Pessoa doadora', value: book.donor || '-' },
+      );
     }
 
     if (this.canShowDecisionDate(book)) {
@@ -511,6 +510,13 @@ export class ListComponent implements OnInit, OnDestroy {
       statusClass: this.getStatusBadgeClass(book.status),
       releaseDate: book.status === BookDonationStatus.SCHEDULED ? book.releaseDate : undefined,
       decisionNotice: this.getDecisionNoticeLabel(book),
+      timeline: book.status === BookDonationStatus.SCHEDULED && book.releaseDate
+        ? [
+            { date: this.formatCardDate(book.creationDate), label: 'Inclusão' },
+            { date: this.formatRelease(book.releaseDate), label: 'Liberação' },
+            { date: this.formatCardDate(book.chooseDate), label: 'Decisão' },
+          ]
+        : undefined,
       details,
       progress: this.canShowRequestLimit(book)
         ? {
