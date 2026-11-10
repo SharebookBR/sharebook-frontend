@@ -30,7 +30,7 @@ describe('DonationsComponent release interest', () => {
     expect(component.canPrimaryAction({ type: 'Printed', status: BookDonationStatus.AVAILABLE } as any)).toBeTrue();
   });
 
-  it('labels release interest as launch notifications', () => {
+  it('uses the same notification detail shown in the administrative cards', () => {
     const card = component.getCard({
       title: 'Livro da pessoa doadora',
       author: 'Pessoa autora',
@@ -40,7 +40,8 @@ describe('DonationsComponent release interest', () => {
     } as any);
 
     expect(card.details).toContain(jasmine.objectContaining({
-      label: 'Notificações lançamento',
+      label: 'Notificações',
+      icon: 'notifications',
       value: 24,
     }));
   });
@@ -83,16 +84,18 @@ describe('DonationsComponent release interest', () => {
     }));
   });
 
-  it('keeps the decision date exclusively in its badge', () => {
+  it('uses the shared timeline for the donation cycle', () => {
     const card = component.getCard({
       title: 'Livro da pessoa doadora',
       author: 'Pessoa autora',
       type: 'Printed',
       status: BookDonationStatus.AVAILABLE,
+      creationDate: '2000-01-01T00:00:00Z',
+      approvedAt: '2001-01-01T00:00:00Z',
       chooseDate: '2026-11-15T03:00:00Z',
     } as any);
 
-    expect(card.details.map((detail) => detail.label)).not.toContain('Data de escolha');
+    expect(card.timeline?.map((item) => item.label)).toEqual(['Inclusão', 'Liberação', 'Decisão']);
     expect(card.decisionNotice).toContain('Decisão');
   });
 });

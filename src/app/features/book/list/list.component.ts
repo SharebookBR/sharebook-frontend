@@ -13,7 +13,6 @@ import { AdminNotesComponent } from '../admin-notes/admin-notes.component';
 import { TrackingComponent } from '../tracking/tracking.component';
 import { MainUsersComponent } from '../main-users/main-users.component';
 import { getStatusDescription } from 'src/app/features/book/getStatusDescription';
-import { formatReleaseDate, todaySaoPaulo } from 'src/app/core/utils/release-date';
 import { BookVMItem } from 'src/app/features/book/bookVMItem';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
@@ -22,9 +21,9 @@ import { ApproveDonationDialogComponent } from '../approve-donation-dialog/appro
 import {
   DonationCardAction,
   DonationCardDetail,
-  DonationCardTimelineItem,
   DonationCardViewModel,
 } from 'src/app/shared/donation-card/donation-card.component';
+import { buildDonationCardTimeline } from 'src/app/shared/donation-card/donation-card-timeline';
 
 type AdminBooksFilter = 'all' | 'needsAction' | 'shipping' | 'finished' | 'ebooks' | 'physical' | 'available' | 'scheduled';
 
@@ -336,10 +335,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.loadBooks();
   }
 
-  public formatRelease(releaseDate?: string | null): string {
-    return formatReleaseDate(releaseDate, true);
-  }
-
   public isEbook(book: BookVMItem): boolean {
     return (book.type || '').toLowerCase() === 'eletronic';
   }
@@ -472,15 +467,10 @@ export class ListComponent implements OnInit, OnDestroy {
   public getCard(book: BookVMItem): DonationCardViewModel {
     const details: DonationCardDetail[] = [];
 
-    if (book.status === BookDonationStatus.SCHEDULED && book.releaseDate) {
-      details.push(
-        { label: 'Pessoa doadora', value: book.donor || '-' },
-        { label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 },
-      );
-    } else {
-      details.push(
-        { label: 'Pessoa doadora', value: book.donor || '-' },
-      );
+    details.push({ label: 'Pessoa doadora', value: book.donor || '-' });
+
+    if (this.canShowReleaseInterest(book)) {
+      details.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
     }
 
     if (!this.canShowRequestLimit(book) && book.status !== BookDonationStatus.SCHEDULED) {
@@ -503,7 +493,14 @@ export class ListComponent implements OnInit, OnDestroy {
       statusClass: this.getStatusBadgeClass(book.status),
       releaseDate: book.status === BookDonationStatus.SCHEDULED ? book.releaseDate : undefined,
       decisionNotice: this.getDecisionNoticeLabel(book),
-      timeline: this.getTimeline(book),
+      timeline: buildDonationCardTimeline({
+        creationDate: book.creationDate,
+        approvedAt: book.approvedAt,
+        chooseDate: book.chooseDate,
+        releaseDate: book.releaseDate,
+        isDigital: this.isEbook(book),
+        isScheduled: book.status === BookDonationStatus.SCHEDULED,
+      }),
       details,
       progress: this.canShowRequestLimit(book)
         ? {
@@ -573,19 +570,6 @@ export class ListComponent implements OnInit, OnDestroy {
     return actions;
   }
 
-  private formatCardDate(value?: Date | string | null): string {
-    if (!value) {
-      return '-';
-    }
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return '-';
-    }
-
-    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  }
-
   private getRequestCount(book: BookVMItem): number {
     return Math.max(book.totalInterested || 0, 0);
   }
@@ -652,50 +636,11 @@ export class ListComponent implements OnInit, OnDestroy {
       (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
   }
 
-  private getTimeline(book: BookVMItem): DonationCardTimelineItem[] {
-    const timeline: DonationCardTimelineItem[] = [
-      this.timelineItem(book.creationDate, 'Inclusão'),
-    ];
-    const releaseDate = book.status === BookDonationStatus.SCHEDULED
-      ? book.releaseDate
-      : book.approvedAt;
-
-    if (releaseDate) {
-      timeline.push(this.timelineItem(
-        releaseDate,
-        this.isEbook(book) ? 'Publicação' : 'Liberação',
-        book.status === BookDonationStatus.SCHEDULED,
-      ));
-    }
-
-    if (!this.isEbook(book) && book.chooseDate) {
-      timeline.push(this.timelineItem(book.chooseDate, 'Decisão'));
-    }
-
-    return timeline;
-  }
-
-  private timelineItem(value: Date | string, label: string, isReleaseDate = false): DonationCardTimelineItem {
-    return {
-      date: isReleaseDate ? this.formatRelease(value as string) : this.formatCardDate(value),
-      label,
-      isReached: this.isOnOrBeforeToday(value),
-    };
-  }
-
-  private isOnOrBeforeToday(value?: Date | string | null): boolean {
-    if (!value) {
-      return false;
-    }
-
-    const isoDate = typeof value === 'string'
-      ? value.slice(0, 10)
-      : `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
-
-    return /^\d{4}-\d{2}-\d{2}$/.test(isoDate) && isoDate <= todaySaoPaulo();
-  }
-
   public canShowInterestedCount(book: BookVMItem): boolean {
+    return !this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL;
+  }
+
+  public canShowReleaseInterest(book: BookVMItem): boolean {
     return !this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL;
   }
 

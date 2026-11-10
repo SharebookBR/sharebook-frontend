@@ -1,17 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ActionButtonAppearance, ActionButtonVariant } from 'src/app/shared/action-button/action-button.component';
+import { DonationCardTimelineItem } from './donation-card-timeline';
+
+export { DonationCardTimelineItem } from './donation-card-timeline';
 
 export interface DonationCardDetail {
   label?: string;
   icon?: string;
   value: string | number | null | undefined;
-}
-
-export interface DonationCardTimelineItem {
-  date: string;
-  label: string;
-  isReached: boolean;
 }
 
 export interface DonationCardProgress {

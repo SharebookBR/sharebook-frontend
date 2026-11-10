@@ -140,6 +140,30 @@ describe('ListComponent request limit', () => {
     expect(card.details[card.details.length - 1]).toEqual({ label: 'Solicitações', icon: 'assignment', value: '2' });
   });
 
+  it('shows notifications in every physical status except awaiting approval', () => {
+    const approvedCard = component.getCard({
+      title: 'Livro disponível',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_SEND,
+      creationDate: '2026-11-10',
+      releaseInterestCount: 4,
+    } as any);
+    const pendingCard = component.getCard({
+      title: 'Livro pendente',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_APPROVAL,
+      creationDate: '2026-11-10',
+      releaseInterestCount: 4,
+    } as any);
+
+    expect(approvedCard.details).toContain(jasmine.objectContaining({
+      label: 'Notificações', icon: 'notifications', value: 4,
+    }));
+    expect(pendingCard.details.map((detail) => detail.label)).not.toContain('Notificações');
+  });
+
   it('keeps the timeline for a released book and bolds only dates already reached', () => {
     const card = component.getCard({
       title: 'Livro disponível',

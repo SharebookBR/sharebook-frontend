@@ -20,6 +20,7 @@ import {
   DonationCardDetail,
   DonationCardViewModel,
 } from 'src/app/shared/donation-card/donation-card.component';
+import { buildDonationCardTimeline } from 'src/app/shared/donation-card/donation-card-timeline';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -374,7 +375,7 @@ export class DonationsComponent implements OnInit, OnDestroy {
       details.push({ label: 'Downloads', value: book.downloadCount || 0 });
     } else {
       if (this.canShowReleaseInterest(book)) {
-        details.push({ label: 'Notificações lançamento', value: book.releaseInterestCount || 0 });
+        details.push({ label: 'Notificações', icon: 'notifications', value: book.releaseInterestCount || 0 });
       }
 
       if (!this.isPreLaunch(book) && !this.canShowRequestLimit(book)) {
@@ -394,6 +395,14 @@ export class DonationsComponent implements OnInit, OnDestroy {
       statusClass: this.getStatusBadgeClass(book.status),
       releaseDate: this.isPreLaunch(book) ? book.releaseDate : undefined,
       decisionNotice: this.getDecisionNoticeLabel(book),
+      timeline: buildDonationCardTimeline({
+        creationDate: book.creationDate,
+        approvedAt: book.approvedAt,
+        chooseDate: book.chooseDate,
+        releaseDate: book.releaseDate,
+        isDigital: this.isEbook(book),
+        isScheduled: this.isPreLaunch(book),
+      }),
       details,
       progress: this.canShowRequestLimit(book)
         ? {
