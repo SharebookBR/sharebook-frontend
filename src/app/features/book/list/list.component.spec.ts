@@ -52,7 +52,7 @@ describe('ListComponent request limit', () => {
     expect(component.getRequestProgressValue(book)).toBe(10);
   });
 
-  it('does not show the limit block for ebooks or non-available books', () => {
+  it('shows the limit block in every physical status except awaiting approval and pre-launch', () => {
     const baseBook = {
       status: BookDonationStatus.AVAILABLE,
       totalInterested: 2,
@@ -60,8 +60,12 @@ describe('ListComponent request limit', () => {
     } as any;
 
     expect(component.canShowRequestLimit({ ...baseBook, type: 'Eletronic' })).toBeFalse();
-    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBeFalse();
-    expect(component.getPrimaryMetric({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBe('2');
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_APPROVAL })).toBeFalse();
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.SCHEDULED })).toBeFalse();
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_DECISION })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.WAITING_SEND })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.SENT })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseBook, type: 'Printed', status: BookDonationStatus.RECEIVED })).toBeTrue();
   });
 
   it('shows rejection only for donations awaiting approval', () => {
@@ -127,7 +131,7 @@ describe('ListComponent request limit', () => {
     expect(card.details[card.details.length - 1].icon).toBe('notifications');
   });
 
-  it('labels public interest as requests with an assignment icon', () => {
+  it('uses the request progress bar after the book has left pre-launch', () => {
     const card = component.getCard({
       title: 'Livro disponível',
       author: 'Pessoa autora',
@@ -135,9 +139,11 @@ describe('ListComponent request limit', () => {
       status: BookDonationStatus.WAITING_DECISION,
       creationDate: '2026-11-10',
       totalInterested: 2,
+      maxRequestsPerBook: 50,
     } as any);
 
-    expect(card.details[card.details.length - 1]).toEqual({ label: 'Solicitações', icon: 'assignment', value: '2' });
+    expect(card.details.map((detail) => detail.label)).not.toContain('Solicitações');
+    expect(card.progress).toEqual(jasmine.objectContaining({ label: '2 de 50 solicitações', value: 2, max: 50 }));
   });
 
   it('shows notifications in every physical status except awaiting approval', () => {

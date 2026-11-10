@@ -533,7 +533,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
 
   public canShowRequestLimit(book: MyDonation): boolean {
     return !this.isEbook(book) &&
-      book.status === BookDonationStatus.AVAILABLE &&
+      book.status !== BookDonationStatus.WAITING_APPROVAL &&
+      book.status !== BookDonationStatus.SCHEDULED &&
       Number.isFinite(book.maxRequestsPerBook) &&
       (book.maxRequestsPerBook || 0) > 0;
   }

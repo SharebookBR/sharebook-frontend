@@ -84,6 +84,17 @@ describe('DonationsComponent release interest', () => {
     }));
   });
 
+  it('shows the request-limit progress in every physical status except awaiting approval and pre-launch', () => {
+    const baseDonation = { type: 'Printed', totalInterested: 3, maxRequestsPerBook: 50 } as any;
+
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.WAITING_APPROVAL })).toBeFalse();
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.SCHEDULED })).toBeFalse();
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.WAITING_DECISION })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.WAITING_SEND })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.SENT })).toBeTrue();
+    expect(component.canShowRequestLimit({ ...baseDonation, status: BookDonationStatus.RECEIVED })).toBeTrue();
+  });
+
   it('uses the shared timeline for the donation cycle', () => {
     const card = component.getCard({
       title: 'Livro da pessoa doadora',
