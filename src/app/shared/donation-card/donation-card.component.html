@@ -26,7 +26,7 @@
           <span class="donation-card__timeline-marker" aria-hidden="true">
             <mat-icon>calendar_today</mat-icon>
           </span>
-          <time class="donation-card__timeline-date">{{ item.date }}</time>
+          <time class="donation-card__timeline-date" [class.donation-card__timeline-date--reached]="item.isReached">{{ item.date }}</time>
           <span class="donation-card__timeline-label">{{ item.label }}</span>
         </div>
       }

@@ -102,12 +102,12 @@
 
 .donation-card__timeline::before {
   position: absolute;
-  top: 9px;
-  bottom: 9px;
-  left: 9px;
-  width: 1px;
+  top: 18px;
+  bottom: 18px;
+  left: 8px;
+  width: 2px;
   content: '';
-  background: #cfe6f3;
+  background: #70bddf;
 }
 
 .donation-card__timeline-item {
@@ -139,6 +139,10 @@
   color: #273a55;
   font-size: 13px;
   font-style: normal;
+  font-weight: 400;
+}
+
+.donation-card__timeline-date--reached {
   font-weight: 700;
 }
 

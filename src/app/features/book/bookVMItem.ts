@@ -12,6 +12,7 @@ export class BookVMItem {
   status: string;
   trackingNumber: string;
   creationDate: Date;
+  approvedAt?: Date | string | null;
   chooseDate: Date;
   releaseDate?: string | null;
   releaseInterestCount?: number;

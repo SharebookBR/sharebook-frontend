@@ -114,7 +114,7 @@ describe('ListComponent request limit', () => {
     } as any);
 
     expect(card.releaseDate).toBe('2026-12-01');
-    expect(card.timeline).toEqual([
+    expect(card.timeline?.map(({ date, label }) => ({ date, label }))).toEqual([
       { date: '10/11/2026', label: 'Inclusão' },
       { date: '01/12/2026', label: 'Liberação' },
       { date: '01/01/2027', label: 'Decisão' },
@@ -138,5 +138,24 @@ describe('ListComponent request limit', () => {
     } as any);
 
     expect(card.details[card.details.length - 1]).toEqual({ label: 'Solicitações', icon: 'assignment', value: '2' });
+  });
+
+  it('keeps the timeline for a released book and bolds only dates already reached', () => {
+    const card = component.getCard({
+      title: 'Livro disponível',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.AVAILABLE,
+      creationDate: '2000-01-01T00:00:00Z',
+      approvedAt: '2001-01-01T00:00:00Z',
+      chooseDate: '2999-01-01T00:00:00Z',
+      donor: 'Pessoa doadora',
+    } as any);
+
+    expect(card.timeline?.map(({ label, isReached }) => ({ label, isReached }))).toEqual([
+      { label: 'Inclusão', isReached: true },
+      { label: 'Liberação', isReached: true },
+      { label: 'Decisão', isReached: false },
+    ]);
   });
 });

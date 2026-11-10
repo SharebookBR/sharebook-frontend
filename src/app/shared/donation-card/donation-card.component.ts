@@ -11,6 +11,7 @@ export interface DonationCardDetail {
 export interface DonationCardTimelineItem {
   date: string;
   label: string;
+  isReached: boolean;
 }
 
 export interface DonationCardProgress {
