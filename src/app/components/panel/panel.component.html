@@ -26,22 +26,11 @@
 
   @if (isAdmin) {
     <div class="card">
-      <a routerLink="/admin/analytics" title="Analytics">
-        <img class="card-img-top panel-item" src="../../../assets/img/ga4.png" alt="Analytics" />
+      <a routerLink="/admin/analises" title="Abrir análises">
+        <img class="card-img-top panel-item" src="../../../assets/img/ga4.png" alt="Painéis de análises" />
       </a>
       <div class="card-body">
-        <h5 class="card-title">Analytics</h5>
-      </div>
-    </div>
-  }
-
-  @if (isAdmin) {
-    <div class="card">
-      <a routerLink="/admin/onboarding" title="Acompanhar onboarding por e-mail">
-        <img class="card-img-top panel-item" src="../../../assets/img/informativo.png" alt="Painel de onboarding por e-mail" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Onboarding por e-mail</h5>
+        <h5 class="card-title">Análises</h5>
       </div>
     </div>
   }
@@ -53,17 +42,6 @@
       </a>
       <div class="card-body">
         <h5 class="card-title">Painel de Jobs</h5>
-      </div>
-    </div>
-  }
-
-  @if (isAdmin) {
-    <div class="card">
-      <a routerLink="/admin/download-logs" title="Análise de downloads">
-        <img class="card-img-top panel-item" src="../../../assets/img/importer-icon.png" alt="Análise de Downloads" />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Análise de Downloads</h5>
       </div>
     </div>
   }

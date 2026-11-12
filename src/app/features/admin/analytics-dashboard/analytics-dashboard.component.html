@@ -4,7 +4,8 @@
     <nav aria-label="breadcrumb" class="mb-0">
       <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+        <li class="breadcrumb-item"><a routerLink="/admin/analises">Análises</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Visão geral</li>
       </ol>
     </nav>
     <select class="week-select" [(ngModel)]="selectedWeek" (ngModelChange)="onWeekChange($event)">

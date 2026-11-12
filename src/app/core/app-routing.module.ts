@@ -78,6 +78,14 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'admin/analises',
+    loadComponent: () =>
+      import('../features/admin/analytics-hub/analytics-hub.component').then(
+        (m) => m.AnalyticsHubComponent
+      ),
+    canActivate: [authGuardAdmin],
+  },
+  {
     path: 'admin/analytics',
     loadComponent: () =>
       import('../features/admin/analytics-dashboard/analytics-dashboard.component').then(

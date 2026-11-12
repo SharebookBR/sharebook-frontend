@@ -1,6 +1,6 @@
 <main class="container onboarding-container">
   <header class="onboarding-header">
-    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li><li class="breadcrumb-item active" aria-current="page">Onboarding</li></ol></nav>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li><li class="breadcrumb-item"><a routerLink="/admin/analises">Análises</a></li><li class="breadcrumb-item active" aria-current="page">Onboarding por e-mail</li></ol></nav>
     <label>Período<select [(ngModel)]="days" (ngModelChange)="load()"><option [ngValue]="7">7 dias</option><option [ngValue]="30">30 dias</option><option [ngValue]="90">90 dias</option></select></label>
   </header>
   @if (loading) { <p class="state">Carregando onboarding...</p> }

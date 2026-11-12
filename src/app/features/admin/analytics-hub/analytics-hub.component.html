@@ -1,0 +1,42 @@
+<main class="analytics-hub container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Análises</li>
+    </ol>
+  </nav>
+
+  <header class="analytics-hub__header">
+    <h1>Análises</h1>
+    <p>Dados para entender o uso do Sharebook e tomar decisões com clareza.</p>
+  </header>
+
+  <section class="analytics-hub__grid" aria-label="Painéis de análise">
+    <a class="analytics-card" routerLink="/admin/analytics">
+      <span class="analytics-card__icon analytics-card__icon--blue"><mat-icon>insights</mat-icon></span>
+      <span class="analytics-card__content">
+        <strong>Visão geral</strong>
+        <small>Audiência, uso e catálogo.</small>
+      </span>
+      <mat-icon class="analytics-card__arrow" aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+
+    <a class="analytics-card" routerLink="/admin/download-logs">
+      <span class="analytics-card__icon analytics-card__icon--green"><mat-icon>download</mat-icon></span>
+      <span class="analytics-card__content">
+        <strong>Downloads</strong>
+        <small>Volume, limites e comportamento.</small>
+      </span>
+      <mat-icon class="analytics-card__arrow" aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+
+    <a class="analytics-card" routerLink="/admin/onboarding">
+      <span class="analytics-card__icon analytics-card__icon--pink"><mat-icon>mark_email_read</mat-icon></span>
+      <span class="analytics-card__content">
+        <strong>Onboarding por e-mail</strong>
+        <small>Jornadas, aberturas e cliques.</small>
+      </span>
+      <mat-icon class="analytics-card__arrow" aria-hidden="true">arrow_forward</mat-icon>
+    </a>
+  </section>
+</main>
