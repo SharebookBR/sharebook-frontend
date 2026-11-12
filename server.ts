@@ -11,6 +11,13 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { REQUEST, RESPONSE } from './src/express.tokens';
 import { clearSsrDataCache } from './src/app/core/services/ssr-cache/ssr-cache.service';
+import {
+  DEFAULT_MAX_CONCURRENT_BOT_RENDERS,
+  DEFAULT_MAX_CONCURRENT_RENDERS,
+  isCrawlerUserAgent,
+  parsePositiveInt,
+  SsrRenderLimiter,
+} from './src/app/core/ssr/ssr-render-limiter';
 
 const SITE_URL = 'https://www.sharebook.com.br';
 const API_URL = process.env['API_URL'] || 'https://api.sharebook.com.br/api';
@@ -38,6 +45,28 @@ let homeCache: SsrCacheEntry | null = null;
 let homeRenderInFlight: Promise<SsrRenderResult> | null = null;
 const pdpCache = new Map<string, SsrCacheEntry>();
 const pdpRenderInFlight = new Map<string, Promise<SsrRenderResult>>();
+
+// Proteção contra rajada de crawler: acima do limite de renderizações simultâneas,
+// responde 503 na hora em vez de segurar a requisição por dezenas de segundos.
+// Ver backlog/todo/protecao-sobrecarga-ssr.md no repositório sharebook-agent.
+const ssrRenderLimiter = new SsrRenderLimiter(
+  parsePositiveInt(process.env['SSR_MAX_CONCURRENT_RENDERS'], DEFAULT_MAX_CONCURRENT_RENDERS),
+  parsePositiveInt(process.env['SSR_MAX_CONCURRENT_BOT_RENDERS'], DEFAULT_MAX_CONCURRENT_BOT_RENDERS)
+);
+const SSR_OVERLOAD_RETRY_AFTER_SECONDS = 5;
+const SSR_OVERLOAD_LOG_INTERVAL_MS = 1000;
+let overloadRejectedSinceLastLog = 0;
+let overloadLastLogAt = 0;
+
+class SsrOverloadedError extends Error {
+  readonly code = 'SSR_OVERLOADED';
+  constructor(readonly isBot: boolean, readonly path: string, readonly ip: string, readonly userAgent: string) {
+    super('SSR overloaded');
+  }
+}
+
+const isSsrOverloadedError = (error: unknown): error is SsrOverloadedError =>
+  (error as { code?: string } | null)?.code === 'SSR_OVERLOADED';
 
 const hasValidSsrCacheInvalidationToken = (req: Request): boolean => {
   const receivedToken = req.get('X-SSR-Cache-Token');
@@ -162,8 +191,17 @@ const renderSsr = (
   publicPath: string,
   req: Request,
   res: Response
-): Promise<SsrRenderResult> =>
-  commonEngine
+): Promise<SsrRenderResult> => {
+  // Healthcheck local nunca é recusado: um 503 aqui faria o orquestrador reiniciar o container.
+  const userAgent = cleanLogValue(firstHeaderValue(req.headers['user-agent']), 180);
+  const isBot = isCrawlerUserAgent(userAgent);
+  const release = isLocalHealthCheck(req) ? () => undefined : ssrRenderLimiter.tryAcquire(isBot);
+
+  if (!release) {
+    return Promise.reject(new SsrOverloadedError(isBot, req.path, clientIp(req), userAgent));
+  }
+
+  return commonEngine
     .render({
       bootstrap: AppServerModule,
       documentFilePath,
@@ -175,7 +213,44 @@ const renderSsr = (
         { provide: REQUEST, useValue: req },
       ],
     })
-    .then(html => ({ html, statusCode: res.statusCode }));
+    .then(html => ({ html, statusCode: res.statusCode }))
+    .finally(release);
+};
+
+const respondSsrOverloaded = (res: Response, error: SsrOverloadedError): void => {
+  overloadRejectedSinceLastLog++;
+  const now = Date.now();
+  if (now - overloadLastLogAt >= SSR_OVERLOAD_LOG_INTERVAL_MS) {
+    // Uma linha por segundo no máximo, para o próprio log não virar parte da sobrecarga.
+    console.warn(JSON.stringify({
+      event: 'ssr_overloaded',
+      rejectedSinceLastLog: overloadRejectedSinceLastLog,
+      lastPath: error.path,
+      lastIsBot: error.isBot,
+      lastIp: error.ip,
+      lastUserAgent: error.userAgent,
+      ...ssrRenderLimiter.snapshot(),
+    }));
+    overloadRejectedSinceLastLog = 0;
+    overloadLastLogAt = now;
+  }
+
+  res
+    .status(503)
+    .set('Retry-After', String(SSR_OVERLOAD_RETRY_AFTER_SECONDS))
+    .set('Cache-Control', 'no-store')
+    .type('text/plain; charset=utf-8')
+    .send('Servidor ocupado, tente novamente em instantes.');
+};
+
+const handleRenderError = (error: unknown, res: Response, next: NextFunction): void => {
+  if (isSsrOverloadedError(error)) {
+    respondSsrOverloaded(res, error);
+    return;
+  }
+  res.set('Cache-Control', 'no-store');
+  next(error);
+};
 
 const setHomeCacheHeaders = (res: Response, status: 'MISS' | 'HIT' | 'COALESCED'): void => {
   res.set('Cache-Control', 'public, max-age=1800');
@@ -284,8 +359,7 @@ const serveCachedHome = async (
     }
     res.status(result.statusCode).send(result.html);
   } catch (error) {
-    res.set('Cache-Control', 'no-store');
-    next(error);
+    handleRenderError(error, res, next);
   } finally {
     if (isLeader) {
       homeRenderInFlight = null;
@@ -343,8 +417,7 @@ const serveCachedPdp = async (
     }
     res.status(result.statusCode).send(result.html);
   } catch (error) {
-    res.set('Cache-Control', 'no-store');
-    next(error);
+    handleRenderError(error, res, next);
   } finally {
     if (isLeader) {
       pdpRenderInFlight.delete(cacheKey);
@@ -421,7 +494,7 @@ export function app(): Express {
   server.get('*', (req: Request, res: Response, next: NextFunction) => {
     void renderSsr(indexHtml, distFolder, req, res)
       .then(result => res.status(result.statusCode).send(result.html))
-      .catch(next);
+      .catch(error => handleRenderError(error, res, next));
   });
 
   return server;
