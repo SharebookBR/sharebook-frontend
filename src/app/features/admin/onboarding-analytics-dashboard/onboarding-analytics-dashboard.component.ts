@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,6 +15,7 @@ interface OnboardingDashboard { days: number; journeysStarted: number; journeysC
   selector: 'app-onboarding-analytics-dashboard',
   templateUrl: './onboarding-analytics-dashboard.component.html',
   styleUrls: ['./onboarding-analytics-dashboard.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink]
 })
