@@ -86,6 +86,14 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'admin/onboarding',
+    loadComponent: () =>
+      import('../features/admin/onboarding-analytics-dashboard/onboarding-analytics-dashboard.component').then(
+        (m) => m.OnboardingAnalyticsDashboardComponent
+      ),
+    canActivate: [authGuardAdmin],
+  },
+  {
     path: 'admin/download-logs',
     loadComponent: () =>
       import('../features/admin/download-logs-dashboard/download-logs-dashboard.component').then(

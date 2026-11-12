@@ -1,0 +1,24 @@
+.onboarding-container { padding-top: 24px; padding-bottom: 40px; }
+.onboarding-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
+.breadcrumb { background: none; padding: 0; margin: 0; font-size: 14px; }
+.onboarding-header label { display: grid; gap: 4px; color: #596872; font-size: 13px; font-weight: 700; }
+.onboarding-header select { border: 1px solid #cbd8de; border-radius: 6px; background: #fff; padding: 7px 10px; color: #2f3b43; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+.kpi-card, .funnel-card { border: 1px solid #e1ebf0; border-radius: 10px; background: #fff; box-shadow: 0 2px 8px rgba(47,59,67,.05); }
+.kpi-card { padding: 18px; display: grid; gap: 4px; }
+.kpi-card span, .kpi-card small, .card-heading p, .muted, td small { color: #788892; }
+.kpi-card strong { color: #2f3b43; font-size: 30px; line-height: 1.1; }
+.funnel-card { padding: 24px; }
+.card-heading { display: flex; align-items: start; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+.card-heading h1 { margin: 0 0 6px; color: #2f3b43; font-size: 22px; }
+.card-heading p { margin: 0; }
+.card-heading > span { border-radius: 999px; background: #e1ebf0; color: #596872; padding: 5px 10px; font-size: 13px; white-space: nowrap; }
+table { width: 100%; border-collapse: collapse; }
+th { color: #596872; font-size: 12px; letter-spacing: .03em; text-transform: uppercase; }
+th, td { padding: 13px 10px; border-bottom: 1px solid #e9f0f3; text-align: left; vertical-align: middle; }
+td:first-child { color: #2f3b43; font-weight: 700; }
+td small { display: inline-block; margin-left: 4px; }
+.cta { display: inline-block; margin: 2px 5px 2px 0; padding: 3px 7px; border-radius: 999px; background: #eef8fc; color: #187ba8; font-size: 12px; }
+.state { text-align: center; padding: 40px; color: #596872; }
+.state.error { color: #b71c1c; }
+@media (max-width: 768px) { .onboarding-header { align-items: start; flex-direction: column; }.kpi-grid { grid-template-columns: repeat(2, 1fr); }.funnel-card { padding: 16px; }.table-responsive { overflow-x: auto; } table { min-width: 720px; } }

@@ -37,6 +37,17 @@
 
   @if (isAdmin) {
     <div class="card">
+      <a routerLink="/admin/onboarding" title="Acompanhar onboarding por e-mail">
+        <img class="card-img-top panel-item" src="../../../assets/img/informativo.png" alt="Painel de onboarding por e-mail" />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">Onboarding por e-mail</h5>
+      </div>
+    </div>
+  }
+
+  @if (isAdmin) {
+    <div class="card">
       <a routerLink="/admin/jobs" title="Acompanhar jobs">
         <img class="card-img-top panel-item" src="../../../assets/img/jobs-dashboard.png" alt="Painel de Jobs" />
       </a>
