@@ -12,6 +12,9 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
     standalone: false
 })
 export class NotFoundPageComponent implements OnInit {
+  /** A API falhou durante a renderização (503): não é que a página não exista. */
+  unavailable = false;
+
   constructor(
     @Optional() @Inject(RESPONSE) private response: Response,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -22,13 +25,22 @@ export class NotFoundPageComponent implements OnInit {
     if (isPlatformServer(this.platformId) && this.response) {
       // A página de livro também renderiza este componente quando a API falha; nesse caso o
       // status já foi definido como 503 e não pode virar um 404 falso (ver ssr-degraded.ts).
-      if (this.response.statusCode !== 503) {
+      if (this.response.statusCode === 503) {
+        this.unavailable = true;
+      } else {
         this.response.status(404);
       }
     }
-    this._seo.generateTags({
-      title: 'Página não encontrada',
-      description: 'Ops! A página que você está procurando não existe ou foi movida.',
-    });
+    this._seo.generateTags(
+      this.unavailable
+        ? {
+            title: 'Instabilidade temporária',
+            description: 'Não conseguimos carregar esta página agora. Tente novamente em instantes.',
+          }
+        : {
+            title: 'Página não encontrada',
+            description: 'Ops! A página que você está procurando não existe ou foi movida.',
+          }
+    );
   }
 }

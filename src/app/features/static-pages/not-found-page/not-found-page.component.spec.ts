@@ -8,7 +8,7 @@ describe('NotFoundPageComponent (SSR)', () => {
   const render = (initialStatus: number) => {
     const response = {
       statusCode: initialStatus,
-      status: jasmine.createSpy('status').and.callFake(function (this: any, code: number) {
+      status: jasmine.createSpy('status').and.callFake((code: number) => {
         response.statusCode = code;
         return response;
       }),
@@ -23,18 +23,24 @@ describe('NotFoundPageComponent (SSR)', () => {
         { provide: SeoService, useValue: { generateTags: () => {} } },
       ],
     });
-    TestBed.createComponent(NotFoundPageComponent).detectChanges();
-    return response;
+    const fixture = TestBed.createComponent(NotFoundPageComponent);
+    fixture.detectChanges();
+    return { response, text: fixture.nativeElement.textContent as string };
   };
 
-  it('responde 404 em uma página que realmente não existe', () => {
-    expect(render(200).statusCode).toBe(404);
+  it('responde 404 e mostra "não encontrada" em uma página que realmente não existe', () => {
+    const { response, text } = render(200);
+
+    expect(response.statusCode).toBe(404);
+    expect(text).toContain('Página não encontrada');
   });
 
-  it('não transforma em 404 um 503 já definido porque a API falhou', () => {
-    const response = render(503);
+  it('não transforma em 404 um 503 já definido porque a API falhou, e avisa da instabilidade', () => {
+    const { response, text } = render(503);
 
     expect(response.statusCode).toBe(503);
     expect(response.status).not.toHaveBeenCalled();
+    expect(text).toContain('instabilidade');
+    expect(text).not.toContain('Página não encontrada');
   });
 });
