@@ -12,14 +12,14 @@ interface StepMetric { step: number; label: string; queued: number; opened: numb
 interface OnboardingDashboard { days: number; journeysStarted: number; journeysCompleted: number; journeysCanceled: number; overdueJourneys: number; steps: StepMetric[]; }
 
 @Component({
-  selector: 'app-onboarding-analytics-dashboard',
-  templateUrl: './onboarding-analytics-dashboard.component.html',
-  styleUrls: ['./onboarding-analytics-dashboard.component.css'],
+  selector: 'app-analise-onboarding',
+  templateUrl: './analise-onboarding.component.html',
+  styleUrls: ['./analise-onboarding.component.css'],
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink]
 })
-export class OnboardingAnalyticsDashboardComponent implements OnInit, OnDestroy {
+export class AnaliseOnboardingComponent implements OnInit, OnDestroy {
   data: OnboardingDashboard | null = null;
   days = 30;
   loading = true;

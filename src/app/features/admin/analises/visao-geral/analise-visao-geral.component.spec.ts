@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { AnalyticsDashboardComponent } from './analytics-dashboard.component';
+import { AnaliseVisaoGeralComponent } from './analise-visao-geral.component';
 
-describe('AnalyticsDashboardComponent', () => {
-  let component: AnalyticsDashboardComponent;
+describe('AnaliseVisaoGeralComponent', () => {
+  let component: AnaliseVisaoGeralComponent;
 
   beforeEach(() => {
-    component = new AnalyticsDashboardComponent({} as HttpClient);
+    component = new AnaliseVisaoGeralComponent({} as HttpClient);
   });
 
   it('formats period comparisons without implying a verdict', () => {

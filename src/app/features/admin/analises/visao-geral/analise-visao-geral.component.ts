@@ -73,14 +73,14 @@ interface DashboardData {
 }
 
 @Component({
-    selector: 'app-analytics-dashboard',
-    templateUrl: './analytics-dashboard.component.html',
-    styleUrls: ['./analytics-dashboard.component.css'],
+    selector: 'app-analise-visao-geral',
+    templateUrl: './analise-visao-geral.component.html',
+    styleUrls: ['./analise-visao-geral.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
     imports: [CommonModule, FormsModule, RouterLink]
 })
-export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AnaliseVisaoGeralComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chartSessions') chartSessionsRef: ElementRef<HTMLCanvasElement>;
   @ViewChild('chartDownloads') chartDownloadsRef: ElementRef<HTMLCanvasElement>;
   @ViewChild('chartOrganic') chartOrganicRef: ElementRef<HTMLCanvasElement>;

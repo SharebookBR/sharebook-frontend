@@ -79,36 +79,14 @@ const routes: Routes = [
   },
   {
     path: 'admin/analises',
-    loadComponent: () =>
-      import('../features/admin/analytics-hub/analytics-hub.component').then(
-        (m) => m.AnalyticsHubComponent
-      ),
+    loadChildren: () =>
+      import('../features/admin/analises/analises.routes').then((m) => m.ANALISES_ROUTES),
     canActivate: [authGuardAdmin],
   },
-  {
-    path: 'admin/analytics',
-    loadComponent: () =>
-      import('../features/admin/analytics-dashboard/analytics-dashboard.component').then(
-        (m) => m.AnalyticsDashboardComponent
-      ),
-    canActivate: [authGuardAdmin],
-  },
-  {
-    path: 'admin/onboarding',
-    loadComponent: () =>
-      import('../features/admin/onboarding-analytics-dashboard/onboarding-analytics-dashboard.component').then(
-        (m) => m.OnboardingAnalyticsDashboardComponent
-      ),
-    canActivate: [authGuardAdmin],
-  },
-  {
-    path: 'admin/download-logs',
-    loadComponent: () =>
-      import('../features/admin/download-logs-dashboard/download-logs-dashboard.component').then(
-        (m) => m.DownloadLogsDashboardComponent
-      ),
-    canActivate: [authGuardAdmin],
-  },
+  // URLs antigas das análises (favoritos e links já compartilhados)
+  { path: 'admin/analytics', redirectTo: 'admin/analises/visao-geral', pathMatch: 'full' },
+  { path: 'admin/download-logs', redirectTo: 'admin/analises/downloads', pathMatch: 'full' },
+  { path: 'admin/onboarding', redirectTo: 'admin/analises/onboarding', pathMatch: 'full' },
   {
     path: 'book/requesteds',
     component: RequestedsComponent,

@@ -33,14 +33,14 @@ interface PagedDownloadLogEvents {
 }
 
 @Component({
-    selector: 'app-download-logs-dashboard',
-    templateUrl: './download-logs-dashboard.component.html',
-    styleUrls: ['./download-logs-dashboard.component.css'],
+    selector: 'app-analise-downloads',
+    templateUrl: './analise-downloads.component.html',
+    styleUrls: ['./analise-downloads.component.css'],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
     imports: [CommonModule, FormsModule, RouterLink]
 })
-export class DownloadLogsDashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class AnaliseDownloadsComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('chartDownloads') chartRef: ElementRef<HTMLCanvasElement>;
 
   from = '';
