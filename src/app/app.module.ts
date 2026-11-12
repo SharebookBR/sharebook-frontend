@@ -57,7 +57,7 @@ import { ReleaseBadgeModule } from './shared/release-badge/release-badge.module'
 import { DonationCardModule } from './shared/donation-card/donation-card.module';
 
 
-import { jwtInterceptor, errorInterceptor, transferStateInterceptor } from './core/helpers';
+import { jwtInterceptor, errorInterceptor, transferStateInterceptor, timeoutInterceptor } from './core/helpers';
 import { BookService } from './features/book/services/book.service';
 import { CategoryService } from './features/category/services/category.service';
 import { AuthenticationService } from './core/services/authentication/authentication.service';
@@ -215,7 +215,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
             } as RecaptchaSettings,
         },
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-        provideHttpClient(withXhr(), withInterceptors([jwtInterceptor, errorInterceptor, transferStateInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([jwtInterceptor, errorInterceptor, transferStateInterceptor, timeoutInterceptor])),
         provideClientHydration(withEventReplay()),
         { provide: APP_ID, useValue: 'angular' },
     ] })

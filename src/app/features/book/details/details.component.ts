@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy, Optional, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RESPONSE } from 'src/express.tokens';
+import { respondBookNotLoaded } from 'src/app/core/ssr/ssr-degraded';
 import { Response } from 'express';
 import { Subject, of, timer, zip } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -229,7 +230,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
           },
           (err) => {
             console.error(err);
-            this.response?.status(404);
+            // 404 só se o livro de fato não existe; se a API falhou na renderização, 503.
+            respondBookNotLoaded(this.response);
             this.pageTitle = 'Ops... Não encontramos essa página :/';
             this.state = 'not-found';
             this._cdr.markForCheck();

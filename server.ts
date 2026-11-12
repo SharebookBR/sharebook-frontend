@@ -11,6 +11,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { REQUEST, RESPONSE } from './src/express.tokens';
 import { clearSsrDataCache } from './src/app/core/services/ssr-cache/ssr-cache.service';
+import { isSsrDegraded } from './src/app/core/ssr/ssr-degraded';
 import {
   DEFAULT_MAX_CONCURRENT_BOT_RENDERS,
   DEFAULT_MAX_CONCURRENT_RENDERS,
@@ -39,6 +40,8 @@ interface SsrCacheEntry {
 interface SsrRenderResult {
   html: string;
   statusCode: number;
+  /** Alguma chamada à API falhou durante a renderização: a página saiu incompleta e não pode ser cacheada. */
+  degraded: boolean;
 }
 
 let homeCache: SsrCacheEntry | null = null;
@@ -213,7 +216,7 @@ const renderSsr = (
         { provide: REQUEST, useValue: req },
       ],
     })
-    .then(html => ({ html, statusCode: res.statusCode }))
+    .then(html => ({ html, statusCode: res.statusCode, degraded: isSsrDegraded(res) }))
     .finally(release);
 };
 
@@ -340,7 +343,7 @@ const serveCachedHome = async (
   if (isLeader) {
     setHomeCacheHeaders(res, 'MISS');
     homeRenderInFlight = renderSsr(documentFilePath, publicPath, req, res).then(result => {
-      if (result.statusCode === 200) {
+      if (result.statusCode === 200 && !result.degraded) {
         homeCache = {
           html: result.html,
           expiresAt: Date.now() + HOME_CACHE_TTL_MS,
@@ -354,7 +357,7 @@ const serveCachedHome = async (
 
   try {
     const result = await homeRenderInFlight!;
-    if (result.statusCode !== 200) {
+    if (result.statusCode !== 200 || result.degraded) {
       res.set('Cache-Control', 'no-store');
     }
     res.status(result.statusCode).send(result.html);
@@ -393,7 +396,7 @@ const serveCachedPdp = async (
   const existingRender = pdpRenderInFlight.get(cacheKey);
   const isLeader = existingRender === undefined;
   const renderPromise = existingRender || renderSsr(documentFilePath, publicPath, req, res).then(result => {
-    if (result.statusCode === 200) {
+    if (result.statusCode === 200 && !result.degraded) {
       prunePdpCache();
       pdpCache.set(cacheKey, {
         html: result.html,
@@ -412,7 +415,7 @@ const serveCachedPdp = async (
 
   try {
     const result = await renderPromise;
-    if (result.statusCode !== 200) {
+    if (result.statusCode !== 200 || result.degraded) {
       res.set('Cache-Control', 'no-store');
     }
     res.status(result.statusCode).send(result.html);
@@ -493,7 +496,12 @@ export function app(): Express {
   // All regular routes use the Angular engine
   server.get('*', (req: Request, res: Response, next: NextFunction) => {
     void renderSsr(indexHtml, distFolder, req, res)
-      .then(result => res.status(result.statusCode).send(result.html))
+      .then(result => {
+        if (result.degraded) {
+          res.set('Cache-Control', 'no-store');
+        }
+        res.status(result.statusCode).send(result.html);
+      })
       .catch(error => handleRenderError(error, res, next));
   });
 

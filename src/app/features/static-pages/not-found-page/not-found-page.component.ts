@@ -20,7 +20,11 @@ export class NotFoundPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformServer(this.platformId) && this.response) {
-      this.response.status(404);
+      // A página de livro também renderiza este componente quando a API falha; nesse caso o
+      // status já foi definido como 503 e não pode virar um 404 falso (ver ssr-degraded.ts).
+      if (this.response.statusCode !== 503) {
+        this.response.status(404);
+      }
     }
     this._seo.generateTags({
       title: 'Página não encontrada',
