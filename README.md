@@ -42,84 +42,75 @@ Outros pluguins que recomendamos para evitar possíveis erros: TSLint, ESLint e 
 
 Hora de colocar a mão na massa. A parte mais divertida, trabalhar no código-fonte. Depois de concluir e testar, envie sua PULL REQUEST para a branch DEVELOP e aguarde ser aprovado.
 
-### 4.4 LOGIN DE TESTES EM DEV
+### 4.4 LOGIN PARA TESTES
 
-Caso você necessite logar para testar localmente o projeto, pode utilizar o login abaixo:\
-Login: vagner@sharebook.com\
-Senha: 132456
+Não há mais ambiente de dev público (`dev.sharebook.com.br` e `api-dev.sharebook.com.br` estão desligados). Para testar com login, rode o [backend](https://github.com/SharebookBR/sharebook-backend) localmente e crie uma conta pelo próprio site em `http://localhost:4200`.
 
 ### 5 MISSÃO CUMPRIDA. VC AJUDOU O PROJETO. ❤️
 
 ## Tecnologias utilizadas
 
-- **Angular**: 13.3.12
-- **Angular CLI**: 13.2.5
-- **TypeScript**: 4.5.5
-- **Angular Material**: 13.3.9
-- **Bootstrap**: 4.5.0
-- **Node.js**: Recomendado 14.x (versões superiores podem apresentar warnings)
+- **Angular** e **Angular CLI**: 22.1
+- **Angular Material**: 22.1
+- **TypeScript**: 6.0
+- **Bootstrap**: 4.6
+- **Node.js**: 24 (`>=24.15.0 <25`, conforme `engines` do `package.json`)
+- **npm**: 11 ou superior
 
-## Observações:
-
-Verifique a versão do Node - Recomendamos Versão 14.
-Outras versões tem apresentado instabilidades com pacotes presente no projeto.
+O build ainda usa os builders Webpack (`@angular-devkit/build-angular`). O CLI avisa que estão depreciados; os avisos são esperados e não impedem nada.
 
 # Rodar o app pela primeira vez
 
 ```bash
-# Instalar dependências (necessário usar --legacy-peer-deps devido a conflitos de versão)
-npm install --legacy-peer-deps
-
-# Iniciar o servidor de desenvolvimento
-npm start
-
-# crie seu primeiro componente. Exemplo.
-ng generate component book/list nomeDoComponente
+# Instalar dependências (--legacy-peer-deps é necessário por conflitos de peer deps)
+npm ci --legacy-peer-deps
 ```
 
-# Rodar o app pela primeira vez com Docker
+Escolha o modo conforme a API que você quer usar:
 
-Os comandos abaixo irão rodar o frontend em container docker com hot reload, ou seja, qualquer alteração feita no front será automaticamente atualizada.
+| Comando | SSR | API usada | Quando usar |
+|---|---|---|---|
+| `npm run start-local` | não | `http://localhost:8000/api` (backend local) | Dia a dia, com hot reload |
+| `npm run dev:ssr` | sim | `http://localhost:8000/api` (backend local) | Validar renderização no servidor contra o backend local |
+| `npm start` | sim | `https://api.sharebook.com.br/api` (**produção**) | Conferir o front contra dados reais. Cuidado: tudo o que você fizer logado acontece em produção |
+
+Todos abrem em http://localhost:4200. A configuração `local` também desliga o Google Analytics, então a navegação local não suja as métricas.
 
 ```bash
-# Criando imagem e rodando o container com Backend DEV
-docker-compose up -d --build
-
-# Criando imagem e rodando o container com Backend LOCAL
-docker-compose -f docker-compose-local.yml up -d --build
-
-# Rodando todos os testes unitários
-docker-compose run --rm sharebook npm run test
-
-# Para rodar o teste unitário dentro do container e verificar os possíveis erros
-docker exec -it sharebook-frontend-dev bash
-npm run test-debug
-acessar a URL que aparece no console: http://localhost:9876/
-clicar no botão DEBUG
-
-# Parando o container
-docker-compose stop
-
-# Parando e eliminando o container
-docker-compose down
+# crie seu primeiro componente. Exemplo.
+npx ng generate component book/list nomeDoComponente
 ```
 
-## Acessando o frontend no navegador
+## Testes
 
-http://localhost:4200
+```bash
+# Testes unitários (Karma, Chrome headless). É o mesmo gate que roda no build de produção.
+npm test
 
-## API no ambiente de dev
+# Testes unitários com o Chrome aberto para depurar (abrir http://localhost:9876/ e clicar em DEBUG)
+npm run test-debug
 
-https://api-dev.sharebook.com.br/swagger/
+# Testes end-to-end (Playwright)
+npm run e2e
+```
+
+## Build igual ao de produção
+
+```bash
+npm run build:ssr     # build do browser + build do servidor SSR, em dist/angular/
+npm run serve:ssr     # sobe o servidor SSR em http://localhost:4000 (ou na porta da variável PORT)
+```
 
 ---
 
 # Colinha docker VPS
 
+O `devops/Dockerfile` é o da produção: roda `npm test` como gate, faz o `build:ssr` e serve o SSR na porta 80. Não tem hot reload; para desenvolver, use os comandos `npm` acima.
+
 ```bash
 # Build da imagem
 docker build -t sharebook-front -f devops/Dockerfile .
 
-# Run com environment Development
-docker run -d -p 4200:80 --name sharebook-frontk-container sharebook-front
+# Run, publicando a porta 80 do container em http://localhost:4200
+docker run -d -p 4200:80 --name sharebook-front-container sharebook-front
 ```
