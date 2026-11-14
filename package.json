@@ -23,7 +23,9 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "node ./node_modules/@angular/cli/bin/ng run angular:serve-ssr --configuration production",
+    "prestart": "npm run build-info",
+    "start": "node ./node_modules/@angular/cli/bin/ng run angular:serve-ssr:production",
+    "prestart-local": "npm run build-info",
     "start-local": "ng serve --configuration=local",
     "build-info": "node scripts/generate-build-info.js",
     "prebuild-dev": "npm run build-info",
@@ -37,6 +39,7 @@
     "lint": "ng lint",
     "e2e": "playwright test",
     "docker-dev": "ng build && docker image build -t sharebook .",
+    "predev:ssr": "npm run build-info",
     "dev:ssr": "node ./node_modules/@angular/cli/bin/ng run angular:serve-ssr",
     "serve:ssr": "node dist/angular/server/main.js",
     "prebuild:ssr": "npm run build-info",
