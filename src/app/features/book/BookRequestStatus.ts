@@ -2,7 +2,8 @@ export enum BookRequestStatus {
   DONATED = 'Donated',
   REFUSED = 'Denied',
   AWAITING_ACTION = 'WaitingAction',
-  CANCELED = 'Canceled'
+  CANCELED = 'Canceled',
+  SELECTION_REOPENED = 'SelectionReopened'
 }
 
 export function getStatusDescription(RequestStatus): string {
@@ -15,6 +16,8 @@ export function getStatusDescription(RequestStatus): string {
       return 'Aguardando decisão da pessoa doadora';
     case BookRequestStatus.CANCELED:
       return 'Cancelado';
+    case BookRequestStatus.SELECTION_REOPENED:
+      return 'Seleção refeita';
     default:
       return '???';
   }

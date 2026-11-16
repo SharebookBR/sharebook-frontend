@@ -95,6 +95,7 @@ import { FreightIncentiveDialogComponent } from './features/book/freight-incenti
 import { CropImageDialogComponent } from './features/book/crop-image-dialog/crop-image-dialog.component';
 import { RejectDonationDialogComponent } from './features/book/reject-donation-dialog/reject-donation-dialog.component';
 import { ApproveDonationDialogComponent } from './features/book/approve-donation-dialog/approve-donation-dialog.component';
+import { ChooseAnotherWinnerDialogComponent } from './features/book/choose-another-winner-dialog/choose-another-winner-dialog.component';
 import { MyaccountComponent } from './features/account/myaccount/myaccount.component';
 import { DialogWHoAccessedComponent } from './features/account/dialog-who-accessed/dialog-who-accessed.component';
 import { DialogAnonymizeComponent } from './features/account/dialog-anonymize/dialog-anonymize.component';
@@ -151,6 +152,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         CropImageDialogComponent,
         RejectDonationDialogComponent,
         ApproveDonationDialogComponent,
+        ChooseAnotherWinnerDialogComponent,
         MyaccountComponent,
         DialogWHoAccessedComponent,
         DialogAnonymizeComponent,

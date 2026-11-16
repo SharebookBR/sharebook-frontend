@@ -236,6 +236,13 @@ export class BookService {
     );
   }
 
+  public chooseAnotherWinner(bookId: string, reason: string) {
+    return this._http.post<any>(
+      `${this.config.apiEndpoint}/book/ChooseAnotherWinner/${bookId}`,
+      { reason }
+    );
+  }
+
   public renewChooseDate(bookId: string) {
     return this._http.put<any>(
       `${this.config.apiEndpoint}/book/RenewChooseDate/${bookId}`,

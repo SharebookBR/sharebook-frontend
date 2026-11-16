@@ -176,6 +176,17 @@ describe('BookService', () => {
       }
     ));
 
+    it('chooseAnotherWinner: POSTs the internal reason to /book/ChooseAnotherWinner/:bookId', inject(
+      [HttpTestingController, BookService],
+      (httpMock: HttpTestingController, service: BookService) => {
+        service.chooseAnotherWinner('7', 'Não houve retorno ao contato.').subscribe();
+        const req = httpMock.expectOne(`${config.apiEndpoint}/book/ChooseAnotherWinner/7`);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({ reason: 'Não houve retorno ao contato.' });
+        req.flush({});
+      }
+    ));
+
     it('cancelDonation: POSTs to /book/cancel/:bookId', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {

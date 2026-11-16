@@ -17,6 +17,8 @@ import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 import { Requesters } from 'src/app/features/book/requesters';
 import { UserInfo } from 'src/app/core/models/userInfo';
 import { BookRequestStatus } from 'src/app/features/book/BookRequestStatus';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { ChooseAnotherWinnerDialogComponent } from '../choose-another-winner-dialog/choose-another-winner-dialog.component';
 
 @Component({
     selector: 'app-donate-page',
@@ -50,6 +52,7 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedWinner: UserInfo | null = null;
   donorFirstName = '';
   confettiActive = false;
+  isAdmin = false;
 
   private _destroySubscribes$ = new Subject<void>();
 
@@ -60,7 +63,8 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialog: MatDialog,
     private _formBuilder: UntypedFormBuilder,
     private _confetti: ConfettiService,
-    private _viewportScroller: ViewportScroller
+    private _viewportScroller: ViewportScroller,
+    private _userService: UserService
   ) {
     this.formGroup = _formBuilder.group({
       myNote: ['', [Validators.required]]
@@ -73,6 +77,9 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(param => (this.bookSlug = param.id));
 
     this.returnUrl = this._activatedRoute.snapshot.queryParams['returnUrl'] || '/panel';
+    this._userService.getProfile()
+      .pipe(takeUntil(this._destroySubscribes$))
+      .subscribe(profile => this.isAdmin = profile?.profile === 'Administrator');
     this.loadBook();
   }
 
@@ -131,6 +138,29 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   back() {
     this._router.navigate([this.returnUrl]);
+  }
+
+  chooseAnotherWinner() {
+    const modalRef = this.dialog.open(ChooseAnotherWinnerDialogComponent, {
+      width: 'min(92vw, 560px)',
+      maxWidth: '92vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      panelClass: 'sharebook-mobile-dialog',
+      data: { bookId: this.book.id, bookTitle: this.book.title }
+    });
+
+    modalRef.afterClosed().subscribe(result => {
+      if (!result) return;
+
+      this.winnerSelected = false;
+      this.selectedWinner = null;
+      this.selectedWinnerNickname = '';
+      this.showWarningWinnerChoosed = false;
+      this._confetti.stop();
+      this.confettiActive = false;
+      this.loadBook();
+    });
   }
 
 

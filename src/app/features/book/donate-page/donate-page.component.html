@@ -54,6 +54,14 @@
     <div class="alert alert-success" role="alert" [hidden]="!showWarningWinnerChoosed">
       Você já escolheu quem vai receber.
     </div>
+    @if (isAdmin && book.status === BookDonationStatus.WAITING_SEND) {
+      <div class="mb-3">
+        <button mat-stroked-button color="primary" (click)="chooseAnotherWinner()">
+          <mat-icon>restart_alt</mat-icon>
+          Escolher outro ganhador
+        </button>
+      </div>
+    }
     <div class="requesters-content" matSort>
       <div class="requesters-search">
         <mat-form-field appearance="outline">
