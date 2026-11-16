@@ -18,7 +18,7 @@ import { Requesters } from 'src/app/features/book/requesters';
 import { UserInfo } from 'src/app/core/models/userInfo';
 import { BookRequestStatus } from 'src/app/features/book/BookRequestStatus';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { ChooseAnotherWinnerDialogComponent } from '../choose-another-winner-dialog/choose-another-winner-dialog.component';
+import { ChangeBookStatusDialogComponent } from '../change-book-status-dialog/change-book-status-dialog.component';
 
 @Component({
     selector: 'app-donate-page',
@@ -140,14 +140,19 @@ export class DonatePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this._router.navigate([this.returnUrl]);
   }
 
-  chooseAnotherWinner() {
-    const modalRef = this.dialog.open(ChooseAnotherWinnerDialogComponent, {
+  changeStatus() {
+    const modalRef = this.dialog.open(ChangeBookStatusDialogComponent, {
       width: 'min(92vw, 560px)',
       maxWidth: '92vw',
       maxHeight: '90vh',
       autoFocus: false,
       panelClass: 'sharebook-mobile-dialog',
-      data: { bookId: this.book.id, bookTitle: this.book.title }
+      data: {
+        bookId: this.book.id,
+        bookTitle: this.book.title,
+        currentStatus: this.book.status,
+        allowedNewStatuses: [BookDonationStatus.WAITING_DECISION]
+      }
     });
 
     modalRef.afterClosed().subscribe(result => {

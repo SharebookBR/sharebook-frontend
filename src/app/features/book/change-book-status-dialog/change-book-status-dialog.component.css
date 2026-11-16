@@ -1,0 +1,4 @@
+:host { display: block; }
+.full-width { display: block; width: 100%; }
+.status-current { display: grid; gap: 0.25rem; margin-bottom: 1rem; }
+.status-current span { color: rgba(0, 0, 0, 0.6); font-size: 0.875rem; }

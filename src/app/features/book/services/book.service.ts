@@ -6,6 +6,7 @@ import { isPlatformServer } from '@angular/common';
 
 import { HttpClient, HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
 import { Book } from 'src/app/features/book/book';
+import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 import { BookVM } from 'src/app/features/book/bookVM';
 import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { DonateBookUser } from 'src/app/features/book/donateBookUser';
@@ -236,10 +237,10 @@ export class BookService {
     );
   }
 
-  public chooseAnotherWinner(bookId: string, reason: string) {
+  public changeStatus(bookId: string, newStatus: BookDonationStatus, reason: string) {
     return this._http.post<any>(
-      `${this.config.apiEndpoint}/book/ChooseAnotherWinner/${bookId}`,
-      { reason }
+      `${this.config.apiEndpoint}/book/ChangeStatus/${bookId}`,
+      { newStatus, reason }
     );
   }
 

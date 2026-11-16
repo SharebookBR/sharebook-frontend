@@ -1,19 +1,39 @@
 <header class="sharebook-dialog-header">
-  <h4 mat-dialog-title>Escolher outro ganhador</h4>
+  <h4 mat-dialog-title>Mudar status</h4>
   <button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close [disabled]="isLoading">
     <i class="fa fa-times" aria-hidden="true"></i>
   </button>
 </header>
-<form [formGroup]="form" (ngSubmit)="chooseAnotherWinner()">
+<form [formGroup]="form" (ngSubmit)="changeStatus()">
   <mat-dialog-content>
-    <p>Você vai refazer a escolha de <strong>{{ data.bookTitle }}</strong>.</p>
+    <p>Altere o status de <strong>{{ data.bookTitle }}</strong>.</p>
+
+    <div class="status-current">
+      <span>Status atual</span>
+      <strong>{{ currentStatusDescription }}</strong>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Novo status</mat-label>
+      <mat-select formControlName="newStatus">
+        @for (status of statusOptions; track status.value) {
+          <mat-option [value]="status.value">{{ status.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="alert alert-info" role="alert">
+      Por enquanto, só é possível alterar de Aguardando envio para Aguardando decisão da pessoa doadora.
+    </div>
+
     <p class="text-muted">A pessoa antes escolhida será avisada, as demais solicitações voltam a aguardar decisão e este comentário ficará no histórico administrativo.</p>
+
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Motivo interno</mat-label>
       <textarea matInput formControlName="reason" rows="4" maxlength="600"></textarea>
       <mat-hint align="end">{{ form.controls['reason'].value?.length || 0 }}/600</mat-hint>
       @if (form.controls['reason'].touched && form.controls['reason'].invalid) {
-        <mat-error>Informe o motivo para registrar esta decisão.</mat-error>
+        <mat-error>Informe o motivo para registrar esta alteração.</mat-error>
       }
     </mat-form-field>
     @if (lastError) {
@@ -23,7 +43,7 @@
   <mat-dialog-actions align="end">
     <button mat-stroked-button type="button" mat-dialog-close [disabled]="isLoading">Cancelar</button>
     <button mat-flat-button color="primary" type="submit" [disabled]="isLoading || form.invalid">
-      {{ isLoading ? 'Refazendo...' : 'Escolher outro ganhador' }}
+      {{ isLoading ? 'Alterando...' : 'Confirmar alteração' }}
     </button>
   </mat-dialog-actions>
 </form>

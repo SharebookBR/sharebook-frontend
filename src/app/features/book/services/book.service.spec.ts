@@ -7,6 +7,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { BookService } from './book.service';
 import { SsrCacheService } from 'src/app/core/services/ssr-cache/ssr-cache.service';
 import { APP_CONFIG } from 'src/app/app-config.module';
+import { BookDonationStatus } from 'src/app/features/book/BookDonationStatus';
 
 describe('BookService', () => {
   const config = { apiEndpoint: 'http://api.test' };
@@ -176,13 +177,13 @@ describe('BookService', () => {
       }
     ));
 
-    it('chooseAnotherWinner: POSTs the internal reason to /book/ChooseAnotherWinner/:bookId', inject(
+    it('changeStatus: POSTs the requested status and internal reason to /book/ChangeStatus/:bookId', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {
-        service.chooseAnotherWinner('7', 'Não houve retorno ao contato.').subscribe();
-        const req = httpMock.expectOne(`${config.apiEndpoint}/book/ChooseAnotherWinner/7`);
+        service.changeStatus('7', BookDonationStatus.WAITING_DECISION, 'Não houve retorno ao contato.').subscribe();
+        const req = httpMock.expectOne(`${config.apiEndpoint}/book/ChangeStatus/7`);
         expect(req.request.method).toBe('POST');
-        expect(req.request.body).toEqual({ reason: 'Não houve retorno ao contato.' });
+        expect(req.request.body).toEqual({ newStatus: BookDonationStatus.WAITING_DECISION, reason: 'Não houve retorno ao contato.' });
         req.flush({});
       }
     ));

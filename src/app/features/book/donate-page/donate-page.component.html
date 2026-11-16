@@ -56,9 +56,9 @@
     </div>
     @if (isAdmin && book.status === BookDonationStatus.WAITING_SEND) {
       <div class="mb-3">
-        <button mat-stroked-button color="primary" (click)="chooseAnotherWinner()">
-          <mat-icon>restart_alt</mat-icon>
-          Escolher outro ganhador
+        <button mat-stroked-button color="primary" (click)="changeStatus()">
+          <mat-icon>sync_alt</mat-icon>
+          Mudar status
         </button>
       </div>
     }
