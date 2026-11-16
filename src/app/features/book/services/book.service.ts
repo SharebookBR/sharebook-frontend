@@ -343,11 +343,17 @@ export class BookService {
     );
   }
 
-  /** releaseDate ('YYYY-MM-DD', São Paulo) é opcional: futura = livro físico fica "Em breve" até a data. */
-  public approve(bookId: string, releaseDate?: string | null) {
+  /**
+   * releaseDate ('YYYY-MM-DD', São Paulo) é opcional: futura = livro físico fica "Em breve" até a data.
+   * chooseDate ('YYYY-MM-DD') é opcional: data da decisão do doador; sem ela o backend usa o padrão.
+   */
+  public approve(bookId: string, releaseDate?: string | null, chooseDate?: string | null) {
+    const body: { releaseDate?: string; chooseDate?: string } = {};
+    if (releaseDate) { body.releaseDate = releaseDate; }
+    if (chooseDate) { body.chooseDate = chooseDate; }
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/Approve/${bookId}`,
-      releaseDate ? { releaseDate } : {}
+      body
     );
   }
 

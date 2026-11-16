@@ -45,7 +45,8 @@ export class ApproveDonationDialogComponent implements OnInit, OnDestroy {
   ) {
     this.formGroup = this.formBuilder.group({
       publishImmediately: [true],
-      releaseDate: [null]
+      releaseDate: [null],
+      chooseDate: [null, publicationDateValidator(this.minPublicationDate)]
     });
   }
 
@@ -63,10 +64,11 @@ export class ApproveDonationDialogComponent implements OnInit, OnDestroy {
     }
 
     const releaseDate = this.isPublishingImmediately ? null : this.formGroup.value.releaseDate;
+    const chooseDate = this.data.isEbook ? null : this.formGroup.value.chooseDate || null;
     this.isLoading = true;
     this.lastError = '';
 
-    this.bookService.approve(this.data.bookId, releaseDate)
+    this.bookService.approve(this.data.bookId, releaseDate, chooseDate)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => this.dialogRef.close(true),

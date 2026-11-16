@@ -37,7 +37,7 @@ describe('ApproveDonationDialogComponent', () => {
 
     component.approve();
 
-    expect(bookService.approve).toHaveBeenCalledWith('book-1', null);
+    expect(bookService.approve).toHaveBeenCalledWith('book-1', null, null);
     expect(dialogRef.close).toHaveBeenCalledWith(true);
   });
 
@@ -48,7 +48,22 @@ describe('ApproveDonationDialogComponent', () => {
 
     component.approve();
 
-    expect(bookService.approve).toHaveBeenCalledWith('book-1', component.minPublicationDate);
+    expect(bookService.approve).toHaveBeenCalledWith('book-1', component.minPublicationDate, null);
     expect(dialogRef.close).toHaveBeenCalledWith(true);
+  });
+
+  it('sends the informed decision date together with the approval', () => {
+    component.formGroup.controls.chooseDate.setValue(component.minPublicationDate);
+    bookService.approve.and.returnValue(of({ success: true }));
+
+    component.approve();
+
+    expect(bookService.approve).toHaveBeenCalledWith('book-1', null, component.minPublicationDate);
+  });
+
+  it('rejects a decision date before tomorrow', () => {
+    component.formGroup.controls.chooseDate.setValue('2000-01-01');
+
+    expect(component.formGroup.controls.chooseDate.invalid).toBeTrue();
   });
 });

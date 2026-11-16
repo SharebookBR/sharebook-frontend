@@ -288,6 +288,26 @@ body {
   cursor: pointer;
 }
 
+/* Cabeçalho de modal: título à esquerda e botão de fechar no canto superior direito (desktop). */
+.sharebook-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 12px 0 24px;
+}
+
+.sharebook-dialog-header [mat-dialog-title] {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+}
+
+.sharebook-dialog-header .sharebook-dialog-close {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
 /* Garante que os modais do Material apareçam acima do header (z-index: 1040) */
 .cdk-overlay-container {
   z-index: 1100;

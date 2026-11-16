@@ -26,6 +26,15 @@
           }
         </div>
       }
+
+      <div class="form-group mt-3 mb-0">
+        <label for="chooseDate">Data de decisão <span class="text-muted">(opcional)</span></label>
+        <input class="form-control" id="chooseDate" type="date" [min]="minPublicationDate" formControlName="chooseDate" />
+        <small class="form-text text-muted">Se ficar em branco, usamos o prazo padrão.</small>
+        @if (formGroup.controls['chooseDate'].touched && formGroup.controls['chooseDate'].invalid) {
+          <small class="text-danger d-block">Escolha uma data a partir de amanhã.</small>
+        }
+      </div>
     }
 
     @if (lastError) {
