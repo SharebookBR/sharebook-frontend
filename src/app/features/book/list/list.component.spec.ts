@@ -187,6 +187,19 @@ describe('ListComponent request limit', () => {
     expect(card.footerDetails?.map((detail) => detail.label)).toEqual(['Notificações']);
   });
 
+  it('shows change status only while the book is awaiting shipment', () => {
+    const waitingSendBook = {
+      title: 'Livro aguardando envio',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_SEND,
+    } as any;
+
+    expect(component.getCard(waitingSendBook).actions)
+      .toContain(jasmine.objectContaining({ id: 'changeStatus', label: 'Mudar status' }));
+    expect(component.canChangeStatus(waitingSendBook)).toBeTrue();
+    expect(component.canChangeStatus({ ...waitingSendBook, status: BookDonationStatus.SENT })).toBeFalse();
+  });
+
   it('keeps the timeline for a released book and bolds only dates already reached', () => {
     const card = component.getCard({
       title: 'Livro disponível',

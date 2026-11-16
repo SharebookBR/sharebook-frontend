@@ -18,6 +18,7 @@ import { AdminBookList } from 'src/app/features/book/adminBookList';
 import { AdminBookSummary } from 'src/app/features/book/adminBookSummary';
 import { RejectDonationDialogComponent } from '../reject-donation-dialog/reject-donation-dialog.component';
 import { ApproveDonationDialogComponent } from '../approve-donation-dialog/approve-donation-dialog.component';
+import { ChangeBookStatusDialogComponent } from '../change-book-status-dialog/change-book-status-dialog.component';
 import {
   DonationCardAction,
   DonationCardDetail,
@@ -206,6 +207,26 @@ export class ListComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.bookTitle = param.title;
         modalRef.componentInstance.trackingNumber = param.trackingNumber;
 
+        break;
+      }
+      case 'changeStatus': {
+        const modalRef = this.dialog.open(ChangeBookStatusDialogComponent, {
+          width: 'min(92vw, 560px)',
+          maxWidth: '92vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          panelClass: 'sharebook-mobile-dialog',
+          data: {
+            bookId: param.id,
+            bookTitle: param.title,
+            currentStatus: param.status,
+            allowedNewStatuses: [BookDonationStatus.WAITING_DECISION]
+          }
+        });
+
+        modalRef.afterClosed().subscribe((result) => {
+          if (result) this.reloadData();
+        });
         break;
       }
       case 'showUsersInfo': {
@@ -564,6 +585,10 @@ export class ListComponent implements OnInit, OnDestroy {
       actions.push({ id: 'trackNumber', label: 'Rastreio', icon: 'local_shipping', variant: 'neutral' });
     }
 
+    if (this.canChangeStatus(book)) {
+      actions.push({ id: 'changeStatus', label: 'Mudar status', icon: 'sync_alt', variant: 'primary' });
+    }
+
     actions.push({ id: 'showUsersInfo', label: 'Usuários', icon: 'group', variant: 'ghost', appearance: 'stroked' });
 
     if (this.canCancelDonation(book)) {
@@ -662,6 +687,10 @@ export class ListComponent implements OnInit, OnDestroy {
   public canShowTrackAction(book: BookVMItem): boolean {
     return !this.isEbook(book) &&
       (book.status === BookDonationStatus.WAITING_SEND || book.status === BookDonationStatus.SENT);
+  }
+
+  public canChangeStatus(book: BookVMItem): boolean {
+    return book.status === BookDonationStatus.WAITING_SEND;
   }
 
   public canRejectDonation(book: BookVMItem): boolean {
