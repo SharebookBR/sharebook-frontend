@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public availableEbooksCount: number = 0;
   public categoriesShowcase: CategoryShowcase[] = [];
   public topDownloadedEbooks: ShowcaseBookItem[] = [];
+  public allTimeTopDownloadedEbooks: ShowcaseBookItem[] = [];
 
   public witchesShowcase: Book[] = [];
 
@@ -233,10 +234,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getTopDownloadedEbooks() {
     this._scBook
-      .getTopDownloadedEbooks(30)
-      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as Book[])))
+      .getTopDownloadedEbooks(15)
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as ShowcaseBookItem[])))
       .subscribe((books) => {
         this.topDownloadedEbooks = books;
+        this._cdr.markForCheck();
+      });
+
+    this._scBook
+      .getTopDownloadedEbooks(0)
+      .pipe(takeUntil(this._destroySubscribes$), catchError(() => of([] as ShowcaseBookItem[])))
+      .subscribe((books) => {
+        this.allTimeTopDownloadedEbooks = books;
         this._cdr.markForCheck();
       });
   }

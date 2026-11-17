@@ -63,13 +63,23 @@
     ></app-book-shelf>
   }
 
-  <!-- MAIS BAIXADOS -->
+  <!-- MAIS BAIXADOS — ÚLTIMOS 15 DIAS -->
   @if (topDownloadedEbooks.length > 0) {
     <app-book-shelf
-      title="Mais baixados"
+      title="Mais baixados — últimos 15 dias"
       [books]="topDownloadedEbooks"
       [showDownloadCount]="true"
-      ariaLabel="Livros digitais mais baixados nos últimos 30 dias"
+      ariaLabel="Livros digitais mais baixados nos últimos 15 dias"
+    ></app-book-shelf>
+  }
+
+  <!-- MAIS BAIXADOS — TODOS OS TEMPOS -->
+  @if (allTimeTopDownloadedEbooks.length > 0) {
+    <app-book-shelf
+      title="Mais baixados — todos os tempos"
+      [books]="allTimeTopDownloadedEbooks"
+      [showDownloadCount]="true"
+      ariaLabel="Livros digitais mais baixados de todos os tempos"
     ></app-book-shelf>
   }
 

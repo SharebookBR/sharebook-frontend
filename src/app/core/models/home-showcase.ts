@@ -7,6 +7,7 @@ export interface ShowcaseBookItem {
   thumbnailUrl?: string;
   type: string;
   releaseDate?: string | null;
+  downloadCount?: number;
 }
 
 export interface CategoryShowcase {
