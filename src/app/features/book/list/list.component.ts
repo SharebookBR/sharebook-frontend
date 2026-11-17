@@ -655,8 +655,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public canShowPrimaryAction(book: BookVMItem): boolean {
-    return !this.isEbook(book) &&
-      (book.status === BookDonationStatus.AVAILABLE || book.status === BookDonationStatus.WAITING_DECISION);
+    return !this.isEbook(book) && book.status !== BookDonationStatus.SCHEDULED;
   }
 
   public canShowDecisionDate(book: BookVMItem): boolean {

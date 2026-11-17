@@ -99,9 +99,25 @@ describe('ListComponent request limit', () => {
       'approve',
       'reject',
       'edit',
+      'donate',
       'adminNotes',
       'showUsersInfo',
     ]);
+  });
+
+  it('keeps the requester-list action available after a person has been chosen', () => {
+    const card = component.getCard({
+      title: 'Livro aguardando envio',
+      author: 'Pessoa autora',
+      type: 'Printed',
+      status: BookDonationStatus.WAITING_SEND,
+      creationDate: '2026-11-02',
+    } as any);
+
+    expect(card.actions).toContain(jasmine.objectContaining({
+      id: 'donate',
+      label: 'Ver solicitações',
+    }));
   });
 
   it('shows scheduled dates in calendar order with notification and request icons', () => {
