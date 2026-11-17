@@ -5,8 +5,6 @@ import { takeUntil, catchError, switchMap } from 'rxjs/operators';
 
 import { BookService } from 'src/app/features/book/services/book.service';
 import { Book } from 'src/app/features/book/book';
-import { MeetupService } from '../../core/services/meetup/meetup.service';
-import { Meetup } from '../../core/models/Meetup';
 import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
@@ -35,12 +33,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public dangerousLoveShowcase: Book[] = [];
 
-  public meetups: Meetup[] = [];
-  public meetupsUpcoming: Meetup[] = [];
-  public meetupsCurrentPage: number = 1;
-  public meetupsPerPage: number = 10;
-  public showButtonMoreMeetups: boolean = true;
-
   private _destroySubscribes$ = new Subject<void>();
   private readonly _editorialShowcaseRandomSeed: number;
   private _dangerousLovePool: Book[] = [];
@@ -48,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _scBook: BookService,
-    private _scMeetup: MeetupService,
     private _seo: SeoService,
     private _categoryService: CategoryService,
     private _tagService: TagService,
@@ -96,8 +87,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getDangerousLoveShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
-    this.getMeetups();
-    this.getMeetupsUpcoming();
   }
 
   getWitchesShowcase() {
@@ -274,44 +263,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.availableEbooksCount = response?.total || 0;
         this._cdr.markForCheck();
       });
-  }
-
-  getMeetups() {
-    // meetups já realizados
-    this._scMeetup
-      .get(this.meetupsCurrentPage, this.meetupsPerPage)
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        catchError(() => of({ items: [], totalItems: 0, itemsPerPage: this.meetupsPerPage, page: this.meetupsCurrentPage }))
-      )
-      .subscribe((meetups) => {
-        this.meetups.push(...(meetups.items || []));
-
-        const maxPage = Math.ceil(meetups.totalItems / meetups.itemsPerPage);
-        this.showButtonMoreMeetups = this.meetupsCurrentPage < maxPage;
-        this._cdr.markForCheck();
-      });
-  }
-
-  getMeetupsUpcoming() {
-    // próximos meetups
-    this._scMeetup
-      .get(1, 50, true)
-      .pipe(
-        takeUntil(this._destroySubscribes$),
-        catchError(() => of({ items: [], totalItems: 0, itemsPerPage: 50, page: 1 }))
-      )
-      .subscribe((meetups) => {
-        this.meetupsUpcoming.push(...(meetups.items || []));
-
-        this.meetupsUpcoming.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
-        this._cdr.markForCheck();
-      });
-  }
-
-  showMoreMetups() {
-    this.meetupsCurrentPage++;
-    this.getMeetups();
   }
 
   ngOnDestroy() {

@@ -104,27 +104,4 @@
     ></app-book-shelf>
   }
 
-  <!-- PRÓXIMOS MEETUPS -->
-  @if (meetupsUpcoming.length > 0) {
-    <h2 class="shelf-title shelf-title--meetup">Próximos Meetups</h2>
-    @for (meetup of meetupsUpcoming; track meetup) {
-      <app-card-meetup [meetup]="meetup"></app-card-meetup>
-    }
-    <div style="clear:both; height:20px"></div>
-  }
-
-  <!-- MEETUPS JÁ REALIZADOS -->
-  <h2 class="shelf-title shelf-title--meetup">Meetups já realizados</h2>
-  @for (meetup of meetups; track meetup) {
-    <app-card-meetup [meetup]="meetup"></app-card-meetup>
-  }
-  @if (showButtonMoreMeetups) {
-    <div class="meetup">
-      <button mat-flat-button color="primary" (click)="showMoreMetups()">
-        Carregar mais Meetups...
-      </button>
-    </div>
-  }
-  <div style="clear:both; height:20px"></div>
-
 </div>

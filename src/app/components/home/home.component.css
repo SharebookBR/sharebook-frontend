@@ -74,18 +74,6 @@
   padding-bottom: 48px;
 }
 
-.shelf-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1a3a5c;
-  margin: 0;
-}
-
-.shelf-title--meetup {
-  margin-top: 48px;
-  margin-bottom: 16px;
-}
-
 /* ─── LEGACY (mantido por segurança) ───────────────────── */
 
 /* Categories Section */
@@ -498,20 +486,6 @@
 
 #book-covers {
   margin: 1rem;
-}
-
-.meetup-card {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.meetup button {
-  margin-top: 70px;
-}
-
-.meetup {
-  margin-top: 5rem;
 }
 
 /*carousel*/
