@@ -24,5 +24,11 @@
   </div>
   <figcaption class="figure-caption text-center">
     {{ book.title }}
+    @if (hasDownloadCount) {
+      <span class="book-download-count" aria-label="{{ book.downloadCount }} downloads">
+        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+        {{ book.downloadCount }} downloads
+      </span>
+    }
   </figcaption>
 </figure>

@@ -69,3 +69,16 @@
 .badge-physical {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
+
+.book-download-count {
+  display: block;
+  margin-top: 4px;
+  color: #6b7b91;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.book-download-count i {
+  margin-right: 3px;
+  color: #29abe2;
+}

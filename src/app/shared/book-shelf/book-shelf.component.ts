@@ -38,6 +38,7 @@ export class BookShelfComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() badgeText = '';
   @Input() appearance: BookShelfAppearance = 'default';
   @Input() ariaLabel = 'Livros';
+  @Input() showDownloadCount = false;
 
   @Output() bookSelected = new EventEmitter<BookShelfSelection>();
 

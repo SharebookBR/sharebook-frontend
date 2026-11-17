@@ -71,4 +71,14 @@ describe('BookShelfComponent', () => {
 
     expect(track.scrollLeft).toBe(0);
   }));
+
+  it('passes the download count visibility to its cards', () => {
+    const created = TestBed.createComponent(BookShelfComponent);
+    created.componentInstance.title = 'Mais baixados';
+    created.componentInstance.books = books;
+    created.componentInstance.showDownloadCount = true;
+    created.detectChanges();
+
+    expect(created.debugElement.query(By.css('app-book-card')).componentInstance.showDownloadCount).toBeTrue();
+  });
 });

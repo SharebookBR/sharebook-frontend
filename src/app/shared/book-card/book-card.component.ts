@@ -7,6 +7,7 @@ export interface BookCardInput {
   title: string;
   type: string;
   releaseDate?: string | null;
+  downloadCount?: number;
 }
 
 @Component({
@@ -19,6 +20,7 @@ export interface BookCardInput {
 export class BookCardComponent {
   @Input() book: BookCardInput;
   @Input() layout: 'default' | 'shelf' = 'default';
+  @Input() showDownloadCount = false;
 
   // O backend só envia releaseDate enquanto o livro está Scheduled (vira null ao liberar).
   get isUpcoming(): boolean {
@@ -27,6 +29,10 @@ export class BookCardComponent {
 
   get isEbook(): boolean {
     return this.book?.type === 'Eletronic';
+  }
+
+  get hasDownloadCount(): boolean {
+    return this.showDownloadCount && this.isEbook && (this.book?.downloadCount ?? 0) > 0;
   }
 
   useOriginalCover(event: Event): void {

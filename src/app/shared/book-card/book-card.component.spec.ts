@@ -44,9 +44,13 @@ describe('BookCardComponent', () => {
     expect(image.src).toContain('/Images/Books/clean-code.png');
   });
 
-  function renderBook(overrides: Partial<BookCardInput>): ComponentFixture<BookCardComponent> {
+  function renderBook(
+    overrides: Partial<BookCardInput>,
+    showDownloadCount = false
+  ): ComponentFixture<BookCardComponent> {
     const created = TestBed.createComponent(BookCardComponent);
     created.componentInstance.book = { ...fixture.componentInstance.book, ...overrides };
+    created.componentInstance.showDownloadCount = showDownloadCount;
     created.detectChanges();
     return created;
   }
@@ -65,5 +69,12 @@ describe('BookCardComponent', () => {
 
   it('hides the coming-soon badge for ebooks even with a release date', () => {
     expect(renderBook({ type: 'Eletronic', releaseDate: '2999-01-01' }).debugElement.query(By.css('.book-release-badge'))).toBeNull();
+  });
+
+  it('shows the download count only when the shelf asks for it', () => {
+    expect(
+      renderBook({ downloadCount: 42 }, true).debugElement.query(By.css('.book-download-count')).nativeElement.textContent
+    ).toContain('42 downloads');
+    expect(renderBook({ downloadCount: 42 }).debugElement.query(By.css('.book-download-count'))).toBeNull();
   });
 });
