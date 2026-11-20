@@ -6,6 +6,24 @@
   text-align: center;
   color: #fff;
   margin-bottom: 48px;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.35s ease;
+}
+
+.hero--campaign {
+  background: linear-gradient(135deg, #0d587a 0%, #29abe2 100%);
+}
+
+.hero__body {
+  margin: 0 auto;
+  max-width: 760px;
+  min-height: 252px;
+  position: relative;
+}
+
+.hero__slide {
+  animation: hero-slide-in 0.35s ease-out;
 }
 
 .hero__title {
@@ -44,6 +62,58 @@
   flex-wrap: wrap;
 }
 
+.hero__controls {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.hero__indicator {
+  background: rgba(255, 255, 255, 0.46);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  height: 8px;
+  padding: 0;
+  transition: background-color 0.2s ease, width 0.2s ease;
+  width: 8px;
+}
+
+.hero__indicator--active {
+  background: #fff;
+  width: 24px;
+}
+
+.hero__indicator:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.hero__progress {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  bottom: -40px;
+  height: 3px;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+}
+
+.hero__progress span {
+  animation: hero-progress-a 8s linear infinite;
+  background: #fff;
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+}
+
+.hero__progress .hero__progress-bar--paused {
+  animation-play-state: paused;
+}
+
 .hero__btn-primary {
   background: #fff !important;
   color: #1a3a5c !important;
@@ -64,8 +134,37 @@
 }
 
 @media (max-width: 575px) {
+  .hero { padding: 56px 24px 68px; }
+  .hero__body { min-height: 334px; }
   .hero__title { font-size: 1.9rem; }
   .hero__actions { flex-direction: column; align-items: center; }
+  .hero__actions a { min-width: 238px; }
+  .hero__progress { bottom: -28px; }
+}
+
+@keyframes hero-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-progress-a {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes hero-progress-b {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .hero__slide,
+  .hero__indicator,
+  .hero__progress span {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* ─── SHELVES ───────────────────────────────────────────── */

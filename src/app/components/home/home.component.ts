@@ -20,6 +20,10 @@ const EDITORIAL_SHOWCASE_RANDOM_SEED_KEY = makeStateKey<number>('home:editorial-
     standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  public readonly campaignUrl = 'https://www.vakinha.com.br/vaquinha/doe-um-livro?utm_source=sharebook&utm_medium=hero&utm_campaign=livros-em-movimento';
+  public activeHeroSlide = 0;
+  public heroAutoAdvancePaused = false;
+  public heroProgressAnimationName = 'hero-progress-a';
   public availableBooks: ShowcaseBookItem[] = [];
   public hasBook: Boolean = true;
   public ebooks: Book[] = [];
@@ -37,6 +41,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly _editorialShowcaseRandomSeed: number;
   private _dangerousLovePool: Book[] = [];
   private _browserShuffleTimeouts: ReturnType<typeof setTimeout>[] = [];
+  private _heroAutoAdvanceInterval: ReturnType<typeof setInterval> | null = null;
+  private _heroTouchStartX: number | null = null;
+  private readonly _heroSlideCount = 2;
+  private readonly _heroAutoAdvanceMs = 8000;
 
   constructor(
     private _scBook: BookService,
@@ -87,6 +95,75 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getDangerousLoveShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
+    this.resumeHeroAutoAdvance();
+  }
+
+  public selectHeroSlide(index: number): void {
+    this.activeHeroSlide = index;
+    this.resetHeroProgress();
+    this._cdr.markForCheck();
+    this.restartHeroAutoAdvance();
+  }
+
+  public pauseHeroAutoAdvance(): void {
+    if (this._heroAutoAdvanceInterval !== null) {
+      clearInterval(this._heroAutoAdvanceInterval);
+      this._heroAutoAdvanceInterval = null;
+    }
+    this.heroAutoAdvancePaused = true;
+    this._cdr.markForCheck();
+  }
+
+  public resumeHeroAutoAdvance(): void {
+    if (!isPlatformBrowser(this._platformId) || this.prefersReducedMotion() || this._heroAutoAdvanceInterval !== null) {
+      return;
+    }
+
+    this.heroAutoAdvancePaused = false;
+    this._heroAutoAdvanceInterval = setInterval(() => this.advanceHeroSlide(), this._heroAutoAdvanceMs);
+    this._cdr.markForCheck();
+  }
+
+  public onHeroFocusOut(event: FocusEvent): void {
+    const nextFocusedElement = event.relatedTarget as Node | null;
+    if (!(event.currentTarget as HTMLElement).contains(nextFocusedElement)) {
+      this.resumeHeroAutoAdvance();
+    }
+  }
+
+  public onHeroTouchStart(event: TouchEvent): void {
+    this._heroTouchStartX = event.touches.item(0)?.clientX ?? null;
+    this.pauseHeroAutoAdvance();
+  }
+
+  public onHeroTouchEnd(event: TouchEvent): void {
+    const touchEndX = event.changedTouches.item(0)?.clientX;
+    if (this._heroTouchStartX !== null && touchEndX !== undefined && Math.abs(touchEndX - this._heroTouchStartX) >= 48) {
+      this.selectHeroSlide(touchEndX < this._heroTouchStartX ? 1 : 0);
+    }
+    this._heroTouchStartX = null;
+    this.resumeHeroAutoAdvance();
+  }
+
+  private advanceHeroSlide(): void {
+    this.activeHeroSlide = (this.activeHeroSlide + 1) % this._heroSlideCount;
+    this.resetHeroProgress();
+    this._cdr.markForCheck();
+  }
+
+  private restartHeroAutoAdvance(): void {
+    this.pauseHeroAutoAdvance();
+    this.resumeHeroAutoAdvance();
+  }
+
+  private prefersReducedMotion(): boolean {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  private resetHeroProgress(): void {
+    this.heroProgressAnimationName = this.heroProgressAnimationName === 'hero-progress-a'
+      ? 'hero-progress-b'
+      : 'hero-progress-a';
   }
 
   getWitchesShowcase() {
@@ -266,6 +343,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.pauseHeroAutoAdvance();
     this._browserShuffleTimeouts.forEach((timeout) => clearTimeout(timeout));
     this._destroySubscribes$.next();
     this._destroySubscribes$.complete();

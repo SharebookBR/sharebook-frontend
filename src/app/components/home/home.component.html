@@ -1,23 +1,78 @@
 <!-- HERO -->
-<section class="hero">
+<section
+  class="hero"
+  [class.hero--campaign]="activeHeroSlide === 0"
+  aria-roledescription="carrossel"
+  aria-label="Destaques do Sharebook"
+  (mouseenter)="pauseHeroAutoAdvance()"
+  (mouseleave)="resumeHeroAutoAdvance()"
+  (focusin)="pauseHeroAutoAdvance()"
+  (focusout)="onHeroFocusOut($event)"
+  (touchstart)="onHeroTouchStart($event)"
+  (touchend)="onHeroTouchEnd($event)"
+>
   <div class="hero__body">
-    <p class="hero__eyebrow">Doe. Ganhe. Leia.</p>
-    <h1 class="hero__title">Encontre livros gratuitos para ler e compartilhar</h1>
-    <p class="hero__sub">
-      Explore
-      @if (availableEbooksCount > 0) {
-        <strong>
-          {{ availableEbooksCount | number:'1.0-0':'pt-BR' }} livros digitais gratuitos
-        </strong>
+    <div class="hero__slide" [attr.aria-label]="'Slide ' + (activeHeroSlide + 1) + ' de 2'">
+      @if (activeHeroSlide === 0) {
+        <p class="hero__eyebrow">Livros em movimento</p>
+        <h1 class="hero__title">Ajude um livro a chegar a quem pediu</h1>
+        <p class="hero__sub">
+          Cada bloco de <strong>R$ 30 confirmado</strong> viabiliza o próximo exemplar usado e o frete.
+        </p>
+        <div class="hero__actions">
+          <a
+            mat-flat-button
+            [href]="campaignUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero__btn-primary"
+          >Conhecer a vaquinha</a>
+        </div>
+      } @else {
+        <p class="hero__eyebrow">Doe. Ganhe. Leia.</p>
+        <h1 class="hero__title">Encontre livros gratuitos para ler e compartilhar</h1>
+        <p class="hero__sub">
+          Explore
+          @if (availableEbooksCount > 0) {
+            <strong>
+              {{ availableEbooksCount | number:'1.0-0':'pt-BR' }} livros digitais gratuitos
+            </strong>
+          }
+          @if (availableEbooksCount === 0) {
+            <strong>milhares de livros digitais gratuitos</strong>
+          }
+          e encontre livros físicos disponíveis para doação.
+        </p>
+        <div class="hero__actions">
+          <a mat-flat-button routerLink="/livros" class="hero__btn-primary">Explorar livros</a>
+          <a mat-stroked-button routerLink="/livros/doar" class="hero__btn-secondary">Doe um livro</a>
+        </div>
       }
-      @if (availableEbooksCount === 0) {
-        <strong>milhares de livros digitais gratuitos</strong>
-      }
-      e encontre livros físicos disponíveis para doação.
-    </p>
-    <div class="hero__actions">
-      <a mat-flat-button routerLink="/livros" class="hero__btn-primary">Explorar livros</a>
-      <a mat-stroked-button routerLink="/livros/doar" class="hero__btn-secondary">Doe um livro</a>
+    </div>
+
+    <div class="hero__controls" aria-label="Navegação dos destaques">
+      <button
+        type="button"
+        class="hero__indicator"
+        [class.hero__indicator--active]="activeHeroSlide === 0"
+        [attr.aria-pressed]="activeHeroSlide === 0"
+        aria-label="Mostrar a vaquinha"
+        (click)="selectHeroSlide(0)"
+      ></button>
+      <button
+        type="button"
+        class="hero__indicator"
+        [class.hero__indicator--active]="activeHeroSlide === 1"
+        [attr.aria-pressed]="activeHeroSlide === 1"
+        aria-label="Mostrar os livros gratuitos"
+        (click)="selectHeroSlide(1)"
+      ></button>
+    </div>
+    <div class="hero__progress" aria-hidden="true">
+      <span
+        [class.hero__progress-bar--paused]="heroAutoAdvancePaused"
+        [style.animation-name]="heroProgressAnimationName"
+      ></span>
     </div>
   </div>
 </section>
