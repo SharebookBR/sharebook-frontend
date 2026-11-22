@@ -91,6 +91,15 @@
                   >
                   {{ bookInfo.donor.displayName }}
                 </a>
+              } @else if (bookInfo.donor?.instagram) {
+                <a
+                  class="details-link"
+                  [href]="bookInfo.donor.instagram"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >
+                  {{ bookInfo.donor.displayName }}
+                </a>
               } @else {
                 {{ bookInfo.donor.displayName }}
               }

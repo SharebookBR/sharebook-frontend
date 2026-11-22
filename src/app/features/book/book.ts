@@ -13,6 +13,7 @@ export interface BookCategoryInfo {
 export interface BookDonorInfo {
   displayName: string;
   linkedin?: string | null;
+  instagram?: string | null;
 }
 
 export interface TagSummary {

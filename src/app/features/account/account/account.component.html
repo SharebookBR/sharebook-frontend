@@ -108,6 +108,26 @@
         }
       </div>
 
+      <div class="form-group col-md-6 offset-md-3 mb-2">
+        <label class="col-form-label" for="instagram">Instagram</label>
+        <div class="input-group">
+          <input formControlName="instagram" type="text" class="form-control" placeholder="@seuusuario" />
+          <div class="input-group-addon append">
+            <i class="fa fa-instagram"></i>
+          </div>
+        </div>
+
+        @if (formGroup.controls['instagram'].touched && !formGroup.controls['instagram'].valid) {
+          <div>
+            @if (formGroup.controls['instagram'].hasError('maxlength')) {
+              <small class="form-text text-danger">
+                O Instagram deve ter no máximo 100 caracteres.
+              </small>
+            }
+          </div>
+        }
+      </div>
+
       <div formGroupName="Address">
         <div class="form-group col-md-6 offset-md-3 mb-2">
           <label class="col-form-label" for="postalCode">CEP</label>

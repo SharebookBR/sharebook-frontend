@@ -37,6 +37,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.pattern(AppConst.emailPattern)]],
       phone: ['', [Validators.required, Validators.pattern(AppConst.phonePattern)]],
       linkedin: ['', [Validators.pattern(AppConst.linkedInUrlPattern)]],
+      instagram: ['', [Validators.maxLength(100)]],
       allowSendingEmail: [''],
       Address: _formBuilder.group({
         postalCode: ['', [Validators.required, Validators.pattern(AppConst.postalCodePattern)]],
@@ -70,6 +71,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         email: userInfo.email,
         phone: userInfo.phone,
         linkedin: userInfo.linkedin,
+        instagram: userInfo.instagram,
         allowSendingEmail: userInfo.allowSendingEmail,
         Address: {
           postalCode: userInfo.address.postalCode,
