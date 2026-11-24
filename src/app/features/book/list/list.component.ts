@@ -738,7 +738,8 @@ export class ListComponent implements OnInit, OnDestroy {
       panelClass: 'sharebook-mobile-dialog',
       data: {
         bookId: book.id,
-        bookTitle: book.title
+        bookTitle: book.title,
+        isEbook: this.isEbook(book)
       }
     });
 
