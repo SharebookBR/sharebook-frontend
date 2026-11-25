@@ -201,10 +201,11 @@ export class BookService {
     return this._http.delete(`${this.config.apiEndpoint}/book/${bookId}`);
   }
 
-  public cancelDonation(bookId: string) {
+  public cancelDonation(bookId: string, reason: string) {
     return this._http.post<any>(
       `${this.config.apiEndpoint}/book/cancel/${bookId}`,
-      null
+      null,
+      { params: new HttpParams().set('reason', reason) }
     );
   }
 

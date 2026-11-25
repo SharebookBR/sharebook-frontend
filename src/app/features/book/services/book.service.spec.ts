@@ -198,12 +198,13 @@ describe('BookService', () => {
       }
     ));
 
-    it('cancelDonation: POSTs to /book/cancel/:bookId', inject(
+    it('cancelDonation: POSTs the message to /book/cancel/:bookId', inject(
       [HttpTestingController, BookService],
       (httpMock: HttpTestingController, service: BookService) => {
-        service.cancelDonation('7').subscribe();
-        const req = httpMock.expectOne(`${config.apiEndpoint}/book/cancel/7`);
+        service.cancelDonation('7', 'Não vamos seguir com esta doação.').subscribe();
+        const req = httpMock.expectOne(`${config.apiEndpoint}/book/cancel/7?reason=N%C3%A3o%20vamos%20seguir%20com%20esta%20doa%C3%A7%C3%A3o.`);
         expect(req.request.method).toBe('POST');
+        expect(req.request.body).toBeNull();
         req.flush({});
       }
     ));

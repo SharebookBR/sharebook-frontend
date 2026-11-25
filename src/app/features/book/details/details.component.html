@@ -138,7 +138,7 @@
                 <span>{{ getEbookSocialProofLabel() }}</span>
               </div>
             }
-            @if (isEbook() && !available) {
+            @if (isEbook() && !available && !upcoming) {
               <div class="alert alert-warning mt-3">
                 <strong>Este livro digital não está mais disponível.</strong>
               </div>

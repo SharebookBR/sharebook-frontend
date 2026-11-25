@@ -24,7 +24,7 @@ export class BookCardComponent {
 
   // O backend só envia releaseDate enquanto o livro está Scheduled (vira null ao liberar).
   get isUpcoming(): boolean {
-    return !this.isEbook && !!this.book?.releaseDate;
+    return !!this.book?.releaseDate;
   }
 
   get isEbook(): boolean {

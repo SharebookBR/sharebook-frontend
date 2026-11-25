@@ -95,6 +95,7 @@ import { DonorModalComponent } from './features/book/donor-modal/donor-modal.com
 import { FreightIncentiveDialogComponent } from './features/book/freight-incentive-dialog/freight-incentive-dialog.component';
 import { CropImageDialogComponent } from './features/book/crop-image-dialog/crop-image-dialog.component';
 import { RejectDonationDialogComponent } from './features/book/reject-donation-dialog/reject-donation-dialog.component';
+import { CancelDonationDialogComponent } from './features/book/cancel-donation-dialog/cancel-donation-dialog.component';
 import { ApproveDonationDialogComponent } from './features/book/approve-donation-dialog/approve-donation-dialog.component';
 import { ChangeBookStatusDialogComponent } from './features/book/change-book-status-dialog/change-book-status-dialog.component';
 import { MyaccountComponent } from './features/account/myaccount/myaccount.component';
@@ -152,6 +153,7 @@ import { NotFoundPageComponent } from './features/static-pages/not-found-page/no
         FreightIncentiveDialogComponent,
         CropImageDialogComponent,
         RejectDonationDialogComponent,
+        CancelDonationDialogComponent,
         ApproveDonationDialogComponent,
         ChangeBookStatusDialogComponent,
         MyaccountComponent,

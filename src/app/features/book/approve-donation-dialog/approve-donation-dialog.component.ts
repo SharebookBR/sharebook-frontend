@@ -80,7 +80,7 @@ export class ApproveDonationDialogComponent implements OnInit, OnDestroy {
   }
 
   get isPublishingImmediately(): boolean {
-    return this.data.isEbook || this.formGroup.value.publishImmediately;
+    return this.formGroup.value.publishImmediately;
   }
 
   ngOnDestroy(): void {

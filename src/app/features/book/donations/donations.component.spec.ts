@@ -22,7 +22,7 @@ describe('DonationsComponent release interest', () => {
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.WAITING_SEND } as any)).toBeTrue();
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.RECEIVED } as any)).toBeTrue();
     expect(component.canShowReleaseInterest({ type: 'Printed', status: BookDonationStatus.WAITING_APPROVAL } as any)).toBeFalse();
-    expect(component.canShowReleaseInterest({ type: 'Eletronic', status: BookDonationStatus.SCHEDULED } as any)).toBeFalse();
+    expect(component.canShowReleaseInterest({ type: 'Eletronic', status: BookDonationStatus.SCHEDULED } as any)).toBeTrue();
   });
 
   it('hides the primary action for a pre-launch donation', () => {

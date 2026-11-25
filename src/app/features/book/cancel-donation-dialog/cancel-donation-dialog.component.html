@@ -1,0 +1,47 @@
+<header class="sharebook-dialog-header">
+  <h4 mat-dialog-title>{{ data.isEbook ? 'Retirar livro digital' : 'Cancelar doação física' }}</h4>
+  <button type="button" class="sharebook-dialog-close" aria-label="Fechar" mat-dialog-close>
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+</header>
+<form (ngSubmit)="cancel()">
+  <mat-dialog-content>
+    <p>Você está encerrando <strong>{{ data.bookTitle }}</strong>.</p>
+
+    @if (data.isEbook) {
+      <p class="text-muted">O livro sairá da vitrine e não receberá novos downloads. Cópias já baixadas continuam com quem as recebeu.</p>
+    } @else if (data.hasInterestedPeople) {
+      <p class="text-muted">A doação será encerrada e as pessoas interessadas serão avisadas.</p>
+    } @else {
+      <p class="text-muted">A doação será encerrada.</p>
+    }
+
+    <div class="form-group mb-0">
+      <label for="cancellation-message"><strong>Mensagem para a pessoa doadora</strong></label>
+      <textarea
+        id="cancellation-message"
+        class="form-control"
+        name="cancellation-message"
+        rows="7"
+        [(ngModel)]="reason"
+        [attr.maxlength]="maxReasonLength"
+        [disabled]="isLoading"
+        required
+        aria-describedby="cancellation-message-help cancellation-message-counter"></textarea>
+      <small id="cancellation-message-help" class="form-text text-muted">Esta mensagem será enviada por e-mail e registrada no histórico da doação.</small>
+      <small id="cancellation-message-counter" class="cancellation-counter" [class.text-danger]="reason.length > maxReasonLength">
+        {{ reason.length }}/{{ maxReasonLength }}
+      </small>
+    </div>
+
+    @if (lastError) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">{{ lastError }}</div>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" mat-dialog-close [disabled]="isLoading">Voltar</button>
+    <button mat-flat-button color="warn" type="submit" [disabled]="isLoading || !reason.trim() || reason.length > maxReasonLength">
+      {{ isLoading ? 'Cancelando...' : (data.isEbook ? 'Retirar e enviar mensagem' : 'Cancelar e enviar mensagem') }}
+    </button>
+  </mat-dialog-actions>
+</form>

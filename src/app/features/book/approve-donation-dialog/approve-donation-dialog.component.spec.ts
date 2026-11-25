@@ -66,4 +66,15 @@ describe('ApproveDonationDialogComponent', () => {
 
     expect(component.formGroup.controls.chooseDate.invalid).toBeTrue();
   });
+
+  it('allows scheduling an ebook without a decision date', () => {
+    (component.data as any).isEbook = true;
+    component.formGroup.controls.publishImmediately.setValue(false);
+    component.formGroup.controls.releaseDate.setValue(component.minPublicationDate);
+    bookService.approve.and.returnValue(of({ success: true }));
+
+    component.approve();
+
+    expect(bookService.approve).toHaveBeenCalledWith('book-1', component.minPublicationDate, null);
+  });
 });

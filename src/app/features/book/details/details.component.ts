@@ -306,7 +306,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.releaseInterestBusy = false;
           this.justNotified = true;
           this._toastr.success(
-            `Combinado! Avisaremos por e-mail em ${this.releaseDateLong}. Nesse dia, lembre-se de solicitar o livro.`
+            `Combinado! Avisaremos por e-mail em ${this.releaseDateLong}. Nesse dia, ${this.isEbook() ? 'o livro digital estará disponível para você baixar.' : 'lembre-se de solicitar o livro.'}`
           );
           this._ga.sendEvent('release_interest_subscribe', { book_title: this.bookInfo.title, book_slug: this.bookInfo.slug });
           this._cdr.markForCheck();

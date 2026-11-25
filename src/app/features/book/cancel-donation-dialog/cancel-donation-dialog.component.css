@@ -1,0 +1,11 @@
+:host { display: block; }
+
+textarea { resize: vertical; }
+
+.cancellation-counter {
+  display: block;
+  margin-top: 0.25rem;
+  text-align: right;
+  color: #6c757d;
+  font-size: 0.75rem;
+}

@@ -67,8 +67,8 @@ describe('BookCardComponent', () => {
     expect(renderBook({ type: 'Printed', releaseDate: null }).debugElement.query(By.css('.book-release-badge'))).toBeNull();
   });
 
-  it('hides the coming-soon badge for ebooks even with a release date', () => {
-    expect(renderBook({ type: 'Eletronic', releaseDate: '2999-01-01' }).debugElement.query(By.css('.book-release-badge'))).toBeNull();
+  it('shows the coming-soon badge for ebooks with a scheduled release date', () => {
+    expect(renderBook({ type: 'Eletronic', releaseDate: '2999-01-01' }).debugElement.query(By.css('.book-release-badge'))).not.toBeNull();
   });
 
   it('shows the download count only when the shelf asks for it', () => {

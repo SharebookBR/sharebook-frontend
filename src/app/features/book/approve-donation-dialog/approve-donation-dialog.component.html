@@ -8,25 +8,23 @@
   <mat-dialog-content>
     <p>A doação de <strong>{{ data.bookTitle }}</strong> será aprovada.</p>
 
-    @if (data.isEbook) {
-      <p class="text-muted mb-0">Este livro digital será publicado imediatamente.</p>
-    } @else {
-      <div class="form-check mb-3">
-        <input class="form-check-input" id="publishImmediately" type="checkbox" formControlName="publishImmediately" />
-        <label class="form-check-label" for="publishImmediately">Publicar imediatamente</label>
+    <div class="form-check mb-3">
+      <input class="form-check-input" id="publishImmediately" type="checkbox" formControlName="publishImmediately" />
+      <label class="form-check-label" for="publishImmediately">Publicar imediatamente</label>
+    </div>
+
+    @if (!isPublishingImmediately) {
+      <div class="form-group mb-0">
+        <label for="releaseDate">Data de publicação</label>
+        <input class="form-control" id="releaseDate" type="date" [min]="minPublicationDate" formControlName="releaseDate" />
+        <small class="form-text text-muted">O livro ficará como “Em breve” até essa data.</small>
+        @if (formGroup.controls['releaseDate'].touched && formGroup.controls['releaseDate'].invalid) {
+          <small class="text-danger d-block">Escolha uma data a partir de amanhã.</small>
+        }
       </div>
+    }
 
-      @if (!isPublishingImmediately) {
-        <div class="form-group mb-0">
-          <label for="releaseDate">Data de publicação</label>
-          <input class="form-control" id="releaseDate" type="date" [min]="minPublicationDate" formControlName="releaseDate" />
-          <small class="form-text text-muted">O livro ficará como “Em breve” até essa data.</small>
-          @if (formGroup.controls['releaseDate'].touched && formGroup.controls['releaseDate'].invalid) {
-            <small class="text-danger d-block">Escolha uma data a partir de amanhã.</small>
-          }
-        </div>
-      }
-
+    @if (!data.isEbook) {
       <div class="form-group mt-3 mb-0">
         <label for="chooseDate">Data de decisão <span class="text-muted">(opcional)</span></label>
         <input class="form-control" id="chooseDate" type="date" [min]="minPublicationDate" formControlName="chooseDate" />

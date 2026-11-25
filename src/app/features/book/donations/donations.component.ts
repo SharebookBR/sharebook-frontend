@@ -21,6 +21,7 @@ import {
   DonationCardViewModel,
 } from 'src/app/shared/donation-card/donation-card.component';
 import { buildDonationCardTimeline } from 'src/app/shared/donation-card/donation-card-timeline';
+import { CancelDonationDialogComponent } from '../cancel-donation-dialog/cancel-donation-dialog.component';
 
 type DonationsFilter = 'all' | 'needsAction' | 'physical' | 'digital' | 'finished';
 
@@ -207,34 +208,23 @@ export class DonationsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const modalRef = this.dialog.open(ConfirmationDialogComponent,
-          {
-            data: {
-              title: 'Atenção!',
-              message: 'Confirma o cancelamento da doação?',
-              btnOkText: 'Confirmar',
-              btnCancelText: 'Cancelar'
-            }
-          });
+        const modalRef = this.dialog.open(CancelDonationDialogComponent, {
+          width: 'min(92vw, 560px)',
+          maxWidth: '92vw',
+          autoFocus: true,
+          panelClass: 'sharebook-mobile-dialog',
+          data: {
+            bookId: param.id,
+            bookTitle: param.title,
+            isEbook: this.isEbook(param),
+            hasInterestedPeople: (param.totalInterested || 0) > 0,
+          },
+        });
 
-        modalRef.afterClosed().subscribe(result => {
+        modalRef.afterClosed().pipe(takeUntil(this._destroySubscribes$)).subscribe(result => {
           if (result) {
-            this._bookService
-              .cancelDonation(param.id)
-              .pipe(
-                takeUntil(this._destroySubscribes$),
-                catchError((error) => {
-                  const msg = error?.error?.messages?.join(' ') || error?.message || 'Erro ao cancelar a doação. Tente novamente.';
-                  this._toastr.error(msg);
-                  return of(null);
-                })
-              )
-              .subscribe((resp) => {
-                if (resp?.['success']) {
-                  this._toastr.success('Doação cancelada com sucesso.');
-                  this.getDonations();
-                }
-              });
+            this._toastr.success(this.isEbook(param) ? 'Livro digital retirado da vitrine.' : 'Doação cancelada com sucesso.');
+            this.getDonations();
           }
         });
 
@@ -571,7 +561,8 @@ export class DonationsComponent implements OnInit, OnDestroy {
   }
 
   public canShowReleaseInterest(book: MyDonation): boolean {
-    return !this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL;
+    return book.status === BookDonationStatus.SCHEDULED ||
+      (!this.isEbook(book) && book.status !== BookDonationStatus.WAITING_APPROVAL);
   }
 
   public isPreLaunch(book: MyDonation): boolean {
