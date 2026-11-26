@@ -235,6 +235,12 @@ export class AnaliseVisaoGeralComponent implements OnInit, AfterViewInit, OnDest
     return { open, success, rate: open > 0 ? ((success / open) * 100).toFixed(0) + '%' : '—' };
   }
 
+  get funnelVakinha(): { views: number; clicks: number; rate: string } {
+    const views = this.eventCount('vakinha_banner_view');
+    const clicks = this.eventCount('vakinha_cta_click');
+    return { views, clicks, rate: views > 0 ? ((clicks / views) * 100).toFixed(0) + '%' : '—' };
+  }
+
   get funnelPrelaunch(): { clicks: number; conversions: number; rate: string; startDate: string } {
     const funnel = this.data?.prelaunchInterestFunnel ?? {
       startDate: '2026-10-20',

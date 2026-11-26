@@ -271,6 +271,12 @@
               <td class="text-right funnel-rate">{{ funnelRequest.rate }}</td>
             </tr>
             <tr>
+              <td class="event-name">Vaquinha<br><small>vakinha_banner_view → vakinha_cta_click</small></td>
+              <td class="text-right">{{ funnelVakinha.views | number }}</td>
+              <td class="text-right">{{ funnelVakinha.clicks | number }}</td>
+              <td class="text-right funnel-rate">{{ funnelVakinha.rate }}</td>
+            </tr>
+            <tr>
               <td class="event-name">Interesse no pré-lançamento<br><small>release_interest_click → release_interest_subscribe · desde {{ formatIsoDate(funnelPrelaunch.startDate) }}</small></td>
               <td class="text-right">{{ funnelPrelaunch.clicks | number }}</td>
               <td class="text-right">{{ funnelPrelaunch.conversions | number }}</td>

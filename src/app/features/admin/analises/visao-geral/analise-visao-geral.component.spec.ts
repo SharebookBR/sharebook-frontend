@@ -49,6 +49,18 @@ describe('AnaliseVisaoGeralComponent', () => {
     });
   });
 
+  it('calculates the Vakinha banner click-through rate from its GA4 events', () => {
+    component.data = {
+      eventSummary: [
+        { eventName: 'vakinha_banner_view', count: 80, users: 70 },
+        { eventName: 'vakinha_cta_click', count: 12, users: 11 }
+      ],
+      eventSummaryPerWeek: {}
+    } as any;
+
+    expect(component.funnelVakinha).toEqual({ views: 80, clicks: 12, rate: '15%' });
+  });
+
   it('maps view-ranking catalog metadata to the canonical badges', () => {
     const scheduledPhysical = { type: 'Printed', isScheduled: true } as any;
     const digital = { type: 'Eletronic', isScheduled: false } as any;

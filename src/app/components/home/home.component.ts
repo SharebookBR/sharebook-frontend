@@ -9,6 +9,7 @@ import { SeoService } from 'src/app/core/services/seo/seo.service';
 import { CategoryService } from 'src/app/features/category/services/category.service';
 import { CategoryShowcase, ShowcaseBookItem } from '../../core/models/home-showcase';
 import { TagBooksPage, TagService } from 'src/app/features/tag/services/tag.service';
+import { GoogleAnalyticsService } from 'src/app/core/services/analytics/google-analytics.service';
 
 const EDITORIAL_SHOWCASE_RANDOM_SEED_KEY = makeStateKey<number>('home:editorial-showcase-random-seed');
 
@@ -37,6 +38,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly _editorialShowcaseRandomSeed: number;
   private _dangerousLovePool: Book[] = [];
   private _browserShuffleTimeouts: ReturnType<typeof setTimeout>[] = [];
+  private readonly _campaignViewSessionKey = 'sharebook:analytics:vakinha-banner-view';
+  private readonly _campaignAnalyticsParams = {
+    placement: 'home_hero',
+    campaign: 'livros_em_movimento',
+    variant: 'editorial_warm'
+  };
 
   constructor(
     private _scBook: BookService,
@@ -45,6 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _tagService: TagService,
     private _cdr: ChangeDetectorRef,
     private _transferState: TransferState,
+    private _analytics: GoogleAnalyticsService,
     @Inject(PLATFORM_ID) private _platformId: Object
   ) {
     this._editorialShowcaseRandomSeed = this.getEditorialShowcaseRandomSeed();
@@ -87,6 +95,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getDangerousLoveShowcase();
     this.getTopDownloadedEbooks();
     this.getCategoriesShowcase();
+    this.trackCampaignBannerView();
+  }
+
+  public trackCampaignCtaClick(): void {
+    this._analytics.sendEvent('vakinha_cta_click', this._campaignAnalyticsParams);
+  }
+
+  private trackCampaignBannerView(): void {
+    if (!isPlatformBrowser(this._platformId) || sessionStorage.getItem(this._campaignViewSessionKey)) {
+      return;
+    }
+
+    this._analytics.sendEvent('vakinha_banner_view', this._campaignAnalyticsParams);
+    sessionStorage.setItem(this._campaignViewSessionKey, '1');
   }
 
   getWitchesShowcase() {
