@@ -7,6 +7,7 @@ import { Routes } from '@angular/router';
  *   /admin/analises/visao-geral   → audiência, busca, SEO e catálogo
  *   /admin/analises/downloads     → volume, limites e comportamento de downloads
  *   /admin/analises/onboarding    → jornadas de e-mail de boas-vindas
+ *   /admin/analises/onboarding-legado → rollout da base anterior ao onboarding
  */
 export const ANALISES_ROUTES: Routes = [
   {
@@ -29,5 +30,10 @@ export const ANALISES_ROUTES: Routes = [
     path: 'onboarding',
     loadComponent: () =>
       import('./onboarding/analise-onboarding.component').then((m) => m.AnaliseOnboardingComponent),
+  },
+  {
+    path: 'onboarding-legado',
+    loadComponent: () =>
+      import('./onboarding-legado/analise-onboarding-legado.component').then((m) => m.AnaliseOnboardingLegadoComponent),
   },
 ];

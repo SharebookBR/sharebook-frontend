@@ -1,0 +1,59 @@
+<main class="container rollout-container">
+  <header class="rollout-header">
+    <div>
+      <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a routerLink="/panel">Painel</a></li><li class="breadcrumb-item"><a routerLink="/admin/analises">Análises</a></li><li class="breadcrumb-item active" aria-current="page">Rollout do onboarding legado</li></ol></nav>
+      <h1>Rollout do onboarding legado</h1>
+      <p>Acompanhe as remessas da base anterior ao onboarding e compare coortes na mesma maturidade.</p>
+    </div>
+    <a class="journey-link" routerLink="/admin/analises/onboarding">Ver jornada completa</a>
+  </header>
+
+  @if (loading) { <p class="state">Carregando rollout...</p> }
+  @if (error) { <p class="state error">Não foi possível carregar o rollout. Tente atualizar a página.</p> }
+
+  @if (data && !loading) {
+    <section class="hero-card" aria-label="Previsão do rollout">
+      <div class="hero-copy"><span class="eyebrow">Visão operacional</span><h2>O plano avança em remessas de até {{ data.batchSize | number }} jornadas.</h2><p>A projeção usa a base elegível agora. Ela muda se pessoas cancelarem o recebimento, sofrerem bounce ou se a execução real atrasar.</p></div>
+      <div class="hero-stats">
+        <article><span>Restam</span><strong>{{ data.remainingEligibleJourneys | number }}</strong><small>jornadas elegíveis</small></article>
+        <article><span>Próxima remessa</span><strong>@if (data.nextBatchAtUtc) { {{ data.nextBatchAtUtc | date:'dd/MM':'GMT-3' }} } @else { — }</strong><small>@if (data.nextBatchAtUtc) { {{ data.nextBatchAtUtc | date:'HH:mm':'GMT-3' }} · Brasília } @else { rollout concluído }</small></article>
+        <article><span>Ritmo</span><strong>15 dias</strong><small>após a última execução bem-sucedida</small></article>
+        <article><span>Estimativa final</span><strong>@if (data.estimatedFinalBatchAtUtc) { {{ data.estimatedFinalBatchAtUtc | date:'dd/MM/yy':'GMT-3' }} } @else { concluído }</strong><small>{{ data.remainingBatches | number }} remessas previstas</small></article>
+      </div>
+    </section>
+
+    <section class="section-heading"><div><span class="eyebrow">Calendário</span><h2>Próximas remessas</h2></div><p>Datas previstas, não promessas fixas: o relógio recomeça a cada execução real.</p></section>
+    @if (data.upcomingBatches.length > 0) {
+      <div class="timeline" aria-label="Calendário das próximas remessas">
+        @for (batch of data.upcomingBatches; track batch.sequenceNumber) {
+          <article class="timeline-item"><span class="timeline-number">{{ batch.sequenceNumber }}</span><strong>{{ batch.scheduledAtUtc | date:'dd MMM':'GMT-3' }}</strong><small>{{ batch.scheduledAtUtc | date:'yyyy · HH:mm':'GMT-3' }} · Brasília</small><span>{{ batch.estimatedJourneys | number }} jornadas</span></article>
+        }
+      </div>
+    } @else { <p class="empty-state">Nenhuma remessa futura prevista. A base legada elegível foi concluída.</p> }
+
+    <section class="section-heading remittances-heading"><div><span class="eyebrow">Histórico</span><h2>Remessas realizadas</h2></div><p>O tamanho original é preservado mesmo que alguma conta tenha sido removida depois.</p></section>
+    <div class="batch-grid">
+      @for (batch of data.batches; track batch.id) {
+        <article class="batch-card">
+          <header><div><span class="batch-label">Remessa {{ batch.sequenceNumber }}</span><h3>{{ batch.executedAtUtc | date:'dd MMMM yyyy':'GMT-3' }}</h3></div><span class="status" [class.maturing]="!batch.isComparable">@if (batch.isComparable) { Comparável em D+7 } @else { Em maturação · D+{{ batch.ageInDays }} }</span></header>
+          <p class="range">Cadastros de {{ batch.oldestUserCreationAtUtc | date:'dd/MM/yy':'GMT-3' }} a {{ batch.newestUserCreationAtUtc | date:'dd/MM/yy':'GMT-3' }}</p>
+          <div class="batch-kpis"><div><span>Jornadas criadas</span><strong>{{ batch.enrolledCount | number }}</strong><small>@if (batch.currentJourneys !== batch.enrolledCount) { {{ batch.currentJourneys | number }} ainda ativas no histórico } @else { coorte preservada }</small></div><div><span>1º e-mail enfileirado</span><strong>{{ batch.currentMetrics.firstEmailQueued | number }}</strong><small>{{ percentage(batch.currentMetrics.firstEmailQueued, batch.enrolledCount) | number:'1.0-1' }}% da remessa</small></div></div>
+          <div class="metric-row"><span>Aberturas rastreáveis</span><strong>{{ batch.currentMetrics.firstEmailOpened | number }} <small>{{ percentage(batch.currentMetrics.firstEmailOpened, batch.currentMetrics.firstEmailQueued) | number:'1.0-1' }}%</small></strong></div>
+          <div class="metric-row"><span>Cliques</span><strong>{{ batch.currentMetrics.firstEmailClicked | number }} <small>{{ percentage(batch.currentMetrics.firstEmailClicked, batch.currentMetrics.firstEmailQueued) | number:'1.0-1' }}%</small></strong></div>
+        </article>
+      }
+    </div>
+
+    <section class="comparison-card">
+      <div class="comparison-heading"><div><span class="eyebrow">Leitura de coorte</span><h2>Comparar remessas</h2><p>Os números abaixo usam os primeiros sete dias de cada coorte, para não comparar uma jornada recém-iniciada com outra já madura.</p></div></div>
+      @if (comparableBatches.length < 2) {
+        <p class="empty-state">A comparação aparece quando duas remessas completarem sete dias. Por enquanto, o painel já acompanha a maturação de cada uma.</p>
+      } @else {
+        <div class="comparison-selects"><label>Primeira remessa<select [(ngModel)]="firstBatchId">@for (batch of comparableBatches; track batch.id) { <option [value]="batch.id">Remessa {{ batch.sequenceNumber }} · {{ batch.executedAtUtc | date:'dd/MM/yy':'GMT-3' }}</option> }</select></label><label>Segunda remessa<select [(ngModel)]="secondBatchId">@for (batch of comparableBatches; track batch.id) { <option [value]="batch.id">Remessa {{ batch.sequenceNumber }} · {{ batch.executedAtUtc | date:'dd/MM/yy':'GMT-3' }}</option> }</select></label></div>
+        @if (firstBatch && secondBatch) {
+          <div class="comparison-grid"><article><span>Indicador em D+7</span><strong>Remessa {{ firstBatch.sequenceNumber }}</strong><div><b>{{ firstBatch.firstSevenDaysMetrics?.firstEmailQueued | number }}</b> 1º e-mail enfileirado</div><div><b>{{ percentage(firstBatch.firstSevenDaysMetrics?.firstEmailOpened ?? 0, firstBatch.firstSevenDaysMetrics?.firstEmailQueued ?? 0) | number:'1.0-1' }}%</b> de aberturas rastreáveis</div><div><b>{{ percentage(firstBatch.firstSevenDaysMetrics?.firstEmailClicked ?? 0, firstBatch.firstSevenDaysMetrics?.firstEmailQueued ?? 0) | number:'1.0-1' }}%</b> de cliques</div></article><article><span>Indicador em D+7</span><strong>Remessa {{ secondBatch.sequenceNumber }}</strong><div><b>{{ secondBatch.firstSevenDaysMetrics?.firstEmailQueued | number }}</b> 1º e-mail enfileirado</div><div><b>{{ percentage(secondBatch.firstSevenDaysMetrics?.firstEmailOpened ?? 0, secondBatch.firstSevenDaysMetrics?.firstEmailQueued ?? 0) | number:'1.0-1' }}%</b> de aberturas rastreáveis</div><div><b>{{ percentage(secondBatch.firstSevenDaysMetrics?.firstEmailClicked ?? 0, secondBatch.firstSevenDaysMetrics?.firstEmailQueued ?? 0) | number:'1.0-1' }}%</b> de cliques</div></article></div>
+        }
+      }
+    </section>
+  }
+</main>
